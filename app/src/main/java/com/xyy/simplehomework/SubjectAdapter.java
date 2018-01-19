@@ -1,8 +1,10 @@
 package com.xyy.simplehomework;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +26,26 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         if (mContext == null) {
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.subject_item,
                 parent, false);
-        return new ViewHolder(view);
+        final ViewHolder holder = new ViewHolder(view);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            // 用 intent 传入下一个 activity
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                MySubject mySubject = mySubjects.get(position<0?1:position);
+                Intent intent = new Intent(mContext, SubjectActivity.class);
+                intent.putExtra(SubjectActivity.SUBJECT_NAME, mySubject.getName());
+                intent.putExtra(SubjectActivity.SUBJECT_IMAGE_ID, mySubject.getImgId());
+                mContext.startActivity(intent);
+            }
+        });
+        return holder;
     }
 
     @Override

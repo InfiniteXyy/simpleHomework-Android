@@ -13,14 +13,15 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,9 +60,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         ActionBar actionBar = getSupportActionBar();
+        Date date = new Date();
+        actionBar.setTitle(new SimpleDateFormat("MM-dd").format(date));
+
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_list_white_24dp);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_dehaze_white_24dp);
         }
 
         setFab();
@@ -74,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // 设置下拉刷新
-        swipeRefresh = (SwipeRefreshLayout)  findViewById(R.id.swipe_refresh);
+        swipeRefresh = findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -118,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "你点击了确认", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("了解", new View.OnClickListener() {
+                        .setAction("了解~", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Toast.makeText(MainActivity.this, "什么都没有发生",

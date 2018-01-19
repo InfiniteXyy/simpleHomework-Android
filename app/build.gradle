@@ -1,24 +1,9 @@
-//noinspection GradleCompatible
-apply plugin: 'com.android.application'
-apply plugin: 'io.objectbox'
-
-android {
-    compileSdkVersion 27
-    defaultConfig {
-        applicationId "com.xyy.simplehomework"
-        minSdkVersion 15
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+buildscript {
+    dependencies {
+        classpath "io.objectbox:objectbox-gradle-plugin:$objectboxVersion"
     }
 }
+apply plugin: 'com.android.application'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -32,5 +17,23 @@ dependencies {
     compile 'com.android.support:cardview-v7:27.0.2'
     compile 'com.android.support:recyclerview-v7:27.0.2'
     compile 'com.github.bumptech.glide:glide:4.5.0'
+
+    debugImplementation "io.objectbox:objectbox-android-objectbrowser:$objectboxVersion"
+    releaseImplementation "io.objectbox:objectbox-android:$objectboxVersion"
 }
+
+apply plugin: 'io.objectbox'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.xyy.simplehomework"
+        minSdkVersion 15
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+}
+
 

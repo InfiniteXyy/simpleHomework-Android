@@ -1,6 +1,7 @@
 package com.xyy.simplehomework;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -19,31 +20,32 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import io.objectbox.Box;
+import io.objectbox.BoxStore;
+import io.objectbox.android.AndroidObjectBrowser;
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
 
-    private MySubject[] subjects = {
-            new MySubject("one",   R.drawable.n_0),
-            new MySubject("two",   R.drawable.n_1),
-            new MySubject("three", R.drawable.n_2),
-            new MySubject("four",  R.drawable.n_3),
-            new MySubject("five",  R.drawable.n_4),
-            new MySubject("six",   R.drawable.n_5),
-            new MySubject("seven", R.drawable.n_6),
-    };
-
-    private List<MySubject> subjectList;
+    private Box<MySubject> subjectBox;
 
     private SubjectAdapter adapter;
 
     private SwipeRefreshLayout swipeRefresh;
 
+    private int num_pics[] =  {
+            R.drawable.n_0,
+            R.drawable.n_1,
+            R.drawable.n_2,
+            R.drawable.n_3,
+            R.drawable.n_4,
+            R.drawable.n_5,
+            R.drawable.n_6,
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         });
         ActionBar actionBar = getSupportActionBar();
         Date date = new Date();
-        actionBar.setTitle(new SimpleDateFormat("MM-dd").format(date));
+        actionBar.setTitle(new SimpleDateFormat("MM月dd日").format(date));
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -69,12 +71,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setFab();
-        subjectList = new ArrayList<>();
-        initSubject();
+
+        // 初始化数据库
+        BoxStore boxStore = MyObjectBox.builder().androidContext(this).build();
+        subjectBox = boxStore.boxFor(MySubject.class);
+        subjectBox.removeAll();
+
+        // *数据库调试*
+        if (BuildConfig.DEBUG) {
+            new AndroidObjectBrowser(boxStore).start(this);
+        }
+        // 在数据库中添加数据
+        initSubjectDemo();
+
+        // 设置列表
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new SubjectAdapter(subjectList);
+        adapter = new SubjectAdapter(subjectBox.getAll());
         recyclerView.setAdapter(adapter);
 
         // 设置下拉刷新
@@ -88,18 +102,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    void initSubject() {
-        subjectList.clear();
-        subjectList.addAll(Arrays.asList(subjects).subList(0, 7));
+    void initSubjectDemo() {
+
+        for (int i = 0; i < 7; i++) {
+            subjectBox.put(new MySubject("num_"+i, num_pics[i]));
+        }
     }
-    // 设置toolbar样式
+    // 设置 toolbar 样式
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
         return true;
     }
 
-    // 设置toolbar监听
+    // 设置 toolbar 监听
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -145,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        initSubject();
+                        initSubjectDemo();
                         adapter.notifyDataSetChanged();
                         swipeRefresh.setRefreshing(false);
                     }

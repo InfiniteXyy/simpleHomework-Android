@@ -1,13 +1,21 @@
 package com.xyy.simplehomework;
 
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Id;
+
 /**
  * Created by xyy on 2018/1/19.
  */
 
+@Entity
 public class MySubject {
-    private String name;
 
-    private int imgId;
+    @Id
+    long id;
+
+
+    String name;
+    int imgId;
 
     public MySubject(String name, int imgId) {
         this.name = name;

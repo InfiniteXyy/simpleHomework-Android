@@ -1,16 +1,17 @@
 package com.xyy.simplehomework;
 
 import android.content.Intent;
-import android.drm.DrmStore;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -32,6 +33,21 @@ public class SubjectActivity extends AppCompatActivity {
         // 设置 toolbar(title，img)
         Toolbar toolbar = findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        findViewById(R.id.delete_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 点击后问询删除这个文件
+                Snackbar.make(v, "确定要删除吗", Snackbar.LENGTH_SHORT)
+                        .setAction("确定", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                finish();
+                                Toast.makeText(SubjectActivity.this, "已删除",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }).show();
+            }
+        });
         ImageView subjectImageView = findViewById(R.id.subject_image_view);
         TextView subjectContentView = findViewById(R.id.subject_content_text);
         setSupportActionBar(toolbar);

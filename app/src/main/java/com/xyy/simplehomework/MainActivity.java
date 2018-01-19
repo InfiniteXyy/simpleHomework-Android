@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
-                Toast.makeText(this, "打开侧边栏", Toast.LENGTH_SHORT).show();
                 break;
             default:
         }

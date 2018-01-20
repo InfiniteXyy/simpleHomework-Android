@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,7 +22,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private Query<MySubject> subjectQuery;
     private SubjectAdapter adapter;
     private DataSubscriptionList subscriptions = new DataSubscriptionList();
+
+    private MaterialDialog addDialog;
 
     final private int num_pics[] =  {
             R.drawable.n_0,
@@ -104,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // 设置列表
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        final RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new SubjectAdapter();
         recyclerView.setAdapter(adapter);
@@ -115,14 +122,11 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "你点击了确认", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("了解~", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Toast.makeText(MainActivity.this, "什么都没有发生",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }).show();
+                new MaterialDialog.Builder(MainActivity.this)
+                        .title("title")
+                        .content("this is my content")
+                        .positiveText("agree")
+                        .show();
             }
         });
 
@@ -135,6 +139,25 @@ public class MainActivity extends AppCompatActivity {
                 refreshItems();
             }
         });
+
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            arrayList.add(i);
+        }
+
+        addDialog = new MaterialDialog.Builder(this)
+                .title("Choose A Subject")
+                .items(arrayList)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        if (which >=0)
+                            subjectBox.put(new MySubject("num_"+which, num_pics[which]));
+                        return true;
+                    }
+                })
+                .positiveText("choose")
+                .build();
     }
 
     // 设置刷新监听
@@ -170,21 +193,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add:
-                List<MySubject> mySubjects = adapter.getMySubjects();
-                for (int i = 0; i < 7; i++) {
-                    boolean exist = false;
-                    for (MySubject subject : mySubjects) {
-                        if (subject.getName().equals("num_"+i)) {
-                            exist = true;
-                            break;
-                        }
-                    }
-                    if (!exist) {
-                        subjectBox.put(new MySubject("num_"+i, num_pics[i]));
-                        return true;
-                    }
-                }
-                Toast.makeText(this, "is full ", Toast.LENGTH_SHORT).show();
+                addDialog.show();
                 break;
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);

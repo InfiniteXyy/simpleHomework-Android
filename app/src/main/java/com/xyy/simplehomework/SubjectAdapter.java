@@ -8,11 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHolder>{
@@ -20,6 +23,10 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     private Context mContext;
 
     private List<MySubject> mySubjects;
+
+    public SubjectAdapter() {
+        this.mySubjects = new ArrayList<>();
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
@@ -41,6 +48,13 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
                 mContext.startActivity(intent);
             }
         });
+
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "虽然很想删除，但是还不知道怎么联系数据库", Toast.LENGTH_SHORT).show();
+            }
+        });
         return holder;
     }
 
@@ -60,20 +74,18 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         return mySubjects.size();
     }
 
-    public List<MySubject> getMySubjects() {
-        return mySubjects;
-    }
-
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         ImageView subjectImg;
         TextView subjectName;
+        Button deleteBtn;
 
         public ViewHolder(View view) {
             super(view);
             cardView = (CardView) view;
             subjectImg = view.findViewById(R.id.subject_image);
             subjectName = view.findViewById(R.id.subject_name);
+            deleteBtn = view.findViewById(R.id.card_btn_delete);
         }
     }
 }

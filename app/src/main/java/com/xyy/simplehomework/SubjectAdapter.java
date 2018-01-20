@@ -21,10 +21,6 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
 
     private List<MySubject> mySubjects;
 
-    public SubjectAdapter(List<MySubject> mySubjects) {
-        this.mySubjects = mySubjects;
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         if (mContext == null) {
@@ -48,6 +44,10 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         return holder;
     }
 
+    public void setMySubjects(List<MySubject> subjects) {
+        mySubjects = subjects;
+        notifyDataSetChanged();
+    }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         MySubject mySubject = mySubjects.get(position);
@@ -58,6 +58,10 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     @Override
     public int getItemCount() {
         return mySubjects.size();
+    }
+
+    public List<MySubject> getMySubjects() {
+        return mySubjects;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

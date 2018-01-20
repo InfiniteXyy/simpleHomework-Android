@@ -15,6 +15,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.util.List;
+
+import io.objectbox.Box;
+import io.objectbox.BoxStore;
+import io.objectbox.query.Query;
+
 
 public class SubjectActivity extends AppCompatActivity {
 
@@ -28,8 +34,8 @@ public class SubjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_subject);
         // 从 intent 获得需要的数据
         Intent intent = getIntent();
-        String subjectName = intent.getStringExtra(SUBJECT_NAME);
-        int subjectImageId = intent.getIntExtra(SUBJECT_IMAGE_ID, 0);
+        final String subjectName = intent.getStringExtra(SUBJECT_NAME);
+        final int subjectImageId = intent.getIntExtra(SUBJECT_IMAGE_ID, 0);
         // 设置 toolbar(title，img)
         Toolbar toolbar = findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
@@ -42,6 +48,11 @@ public class SubjectActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 finish();
+                                BoxStore boxStore = ((App) getApplication()).getBoxStore();
+                                Box<MySubject> subjectBox = boxStore.boxFor(MySubject.class);
+                                List<MySubject> subject = subjectBox.query().
+                                        equal(MySubject_.name, subjectName).build().find();
+                                subjectBox.remove(subject.get(0));
                                 Toast.makeText(SubjectActivity.this, "已删除",
                                         Toast.LENGTH_SHORT).show();
                             }
@@ -60,6 +71,7 @@ public class SubjectActivity extends AppCompatActivity {
         Glide.with(this).load(subjectImageId).into(subjectImageView);
         subjectContentView.setText(genDemoTxt(subjectName));
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

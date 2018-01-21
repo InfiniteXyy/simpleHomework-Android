@@ -1,4 +1,4 @@
-package com.xyy.simplehomework;
+package com.xyy.simplehomework.cards;
 
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
@@ -12,7 +12,6 @@ public class MySubject {
 
     @Id
     long id;
-
 
     String name;
     int imgId;

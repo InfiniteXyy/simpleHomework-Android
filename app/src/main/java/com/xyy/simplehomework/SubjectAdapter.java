@@ -1,5 +1,6 @@
 package com.xyy.simplehomework;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
@@ -17,6 +18,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.objectbox.Box;
+import io.objectbox.BoxStore;
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHolder>{
 
@@ -52,7 +56,11 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "虽然很想删除，但是还不知道怎么联系数据库", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "删除了！", Toast.LENGTH_SHORT).show();
+                BoxStore box = ((App) ((Activity) mContext).getApplication()).getBoxStore();
+                Box<MySubject> subjectBox = box.boxFor(MySubject.class);
+                subjectBox.remove(mySubjects.get(holder.getAdapterPosition()));
+
             }
         });
         return holder;

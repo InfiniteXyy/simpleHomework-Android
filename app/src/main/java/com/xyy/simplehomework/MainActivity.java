@@ -132,16 +132,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//        MySubject chinese = new MySubject("语文", R.drawable.chinese_pic);
-//        MySubject math = new MySubject("数学", R.drawable.math_pic);
-//        MySubject english = new MySubject("英语", R.drawable.english_pic);
+        MySubject chinese = new MySubject("语文", R.drawable.chinese_pic);
+        MySubject math = new MySubject("数学", R.drawable.math_pic);
+        MySubject english = new MySubject("英语", R.drawable.english_pic);
 
         // 设置增加框监听
-//        subjectBox.removeAll();
-//        projectBox.removeAll();
-//        subjectBox.put(chinese);
-//        subjectBox.put(math);
-//        subjectBox.put(english);
+        subjectBox.removeAll();
+        projectBox.removeAll();
+        subjectBox.put(chinese);
+        subjectBox.put(math);
+        subjectBox.put(english);
         subjectQuery = subjectBox.query().build();
         List<MySubject> subjects = subjectQuery.find();
         final ArrayList<String> subjectNames = new ArrayList<>();
@@ -194,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d("projects count", "run: "+projectAdapter.getItemCount());
                         projectAdapter.notifyDataSetChanged();
                         swipeRefresh.setRefreshing(false);
                     }

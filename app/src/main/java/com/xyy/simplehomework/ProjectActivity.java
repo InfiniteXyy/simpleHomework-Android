@@ -58,7 +58,7 @@ public class ProjectActivity extends AppCompatActivity {
                         .setAction("确定", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                subjectBox.remove(subject_id);
+                                projectBox.remove(project_id);
                                 Toast.makeText(ProjectActivity.this, "已删除",
                                         Toast.LENGTH_SHORT).show();
                                 finish();

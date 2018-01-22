@@ -22,10 +22,43 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "2:8859149205018645613",
+      "lastPropertyId": "6:5887929124268645901",
+      "name": "MyProject",
+      "properties": [
+        {
+          "id": "1:7271628703743316927",
+          "name": "id"
+        },
+        {
+          "id": "2:6597560004224668276",
+          "name": "book"
+        },
+        {
+          "id": "3:1098021758219194624",
+          "name": "deadline"
+        },
+        {
+          "id": "4:5685457143676847693",
+          "name": "initDate"
+        },
+        {
+          "id": "5:8842504259665490212",
+          "name": "score"
+        },
+        {
+          "id": "6:5887929124268645901",
+          "indexId": "1:3320962478104188159",
+          "name": "subjectId"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "1:2169375455557565758",
-  "lastIndexId": "0:0",
+  "lastEntityId": "2:8859149205018645613",
+  "lastIndexId": "1:3320962478104188159",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 4,

@@ -12,13 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.xyy.simplehomework.cards.MyProject;
 import com.xyy.simplehomework.cards.MySubject;
-import com.xyy.simplehomework.cards.SubjectAdapter;
+import com.xyy.simplehomework.cards.MySubject_;
+import com.xyy.simplehomework.cards.ProjectAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,38 +44,34 @@ public class MainActivity extends AppCompatActivity {
 
     private Box<MySubject> subjectBox;
     private Query<MySubject> subjectQuery;
-    private SubjectAdapter adapter;
+    private Box<MyProject> projectBox;
+    private Query<MyProject> projectQuery;
+
+
+    private ProjectAdapter projectAdapter;
     private DataSubscriptionList subscriptions = new DataSubscriptionList();
 
-    private MaterialDialog addDialog;
-
-    final private int num_pics[] = {
-            R.drawable.n_0,
-            R.drawable.n_1,
-            R.drawable.n_2,
-            R.drawable.n_3,
-            R.drawable.n_4,
-            R.drawable.n_5,
-            R.drawable.n_6,
-    };
+    private MaterialDialog chooseDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setUpViews();
         BoxStore boxStore = ((App) getApplication()).getBoxStore();
         subjectBox = boxStore.boxFor(MySubject.class);
-        subjectQuery = subjectBox.query().build();
+        projectBox = boxStore.boxFor(MyProject.class);
+        setUpViews();
 
-        subjectQuery.subscribe().on(AndroidScheduler.mainThread())
-                .observer(new DataObserver<List<MySubject>>() {
+        projectQuery = projectBox.query().build();
+        projectQuery.subscribe(subscriptions).on(AndroidScheduler.mainThread())
+                .observer(new DataObserver<List<MyProject>>() {
                     @Override
-                    public void onData(List<MySubject> subjects) {
-                        adapter.setMySubjects(subjects);
+                    public void onData(List<MyProject> projects) {
+                        projectAdapter.setMyProjects(projects);
                     }
                 });
+
     }
 
     @Override
@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         subscriptions.cancel();
         super.onDestroy();
     }
-
 
     private void setUpViews() {
         // 设置工具栏和侧边框
@@ -106,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
         final RecyclerView recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new SubjectAdapter();
-        recyclerView.setAdapter(adapter);
+        projectAdapter = new ProjectAdapter();
+        recyclerView.setAdapter(projectAdapter);
 
         // 设置悬浮按钮监听
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -132,24 +131,54 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            arrayList.add(i);
+
+//        MySubject chinese = new MySubject("语文", R.drawable.chinese_pic);
+//        MySubject math = new MySubject("数学", R.drawable.math_pic);
+//        MySubject english = new MySubject("英语", R.drawable.english_pic);
+
+        // 设置增加框监听
+//        subjectBox.removeAll();
+//        projectBox.removeAll();
+//        subjectBox.put(chinese);
+//        subjectBox.put(math);
+//        subjectBox.put(english);
+        subjectQuery = subjectBox.query().build();
+        List<MySubject> subjects = subjectQuery.find();
+        final ArrayList<String> subjectNames = new ArrayList<>();
+        for (MySubject subject : subjects) {
+            subjectNames.add(subject.name);
         }
 
-        addDialog = new MaterialDialog.Builder(this)
+        chooseDialog = new MaterialDialog.Builder(this)
                 .title("Choose A Subject")
-                .items(arrayList)
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                .items(subjectNames)
+                .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        if (which >= 0)
-                            subjectBox.put(new MySubject("num_" + which, num_pics[which]));
+                        final MySubject selectedSubject = subjectBox.query().equal(MySubject_.name, subjectNames.get(which)).build().findFirst();
+                        new MaterialDialog.Builder(MainActivity.this)
+                                .title("Decide the name")
+                                .inputType(
+                                        InputType.TYPE_CLASS_TEXT
+                                                | InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+                                                | InputType.TYPE_TEXT_FLAG_CAP_WORDS)
+                                .input("Homework name", "",false, new MaterialDialog.InputCallback() {
+                                    @Override
+                                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                        MyProject myProject = new MyProject();
+                                        myProject.book = input.toString();
+                                        myProject.subject.setTarget(selectedSubject);
+                                        projectBox.put(myProject);
+                                    }
+                                })
+                                .build()
+                                .show();
                         return true;
                     }
                 })
                 .positiveText("choose")
                 .build();
+
     }
 
     // 设置刷新监听
@@ -165,7 +194,8 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.notifyDataSetChanged();
+                        Log.d("projects count", "run: "+projectAdapter.getItemCount());
+                        projectAdapter.notifyDataSetChanged();
                         swipeRefresh.setRefreshing(false);
                     }
                 });
@@ -185,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add:
-                addDialog.show();
+                chooseDialog.show();
                 break;
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);

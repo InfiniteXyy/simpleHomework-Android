@@ -1,7 +1,11 @@
 package com.xyy.simplehomework.cards;
 
+import com.xyy.simplehomework.R;
+
+import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.relation.ToMany;
 
 /**
  * Created by xyy on 2018/1/19.
@@ -13,28 +17,19 @@ public class MySubject {
     @Id
     long id;
 
-    String name;
-    int imgId;
+    @Backlink
+    public ToMany<MyProject> projects;
+
+    public String name;
+    public int imgId;
+
 
     public MySubject(String name, int imgId) {
         this.name = name;
         this.imgId = imgId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getImgId() {
-        return imgId;
-    }
-
-    public void setImgId(int imgId) {
-        this.imgId = imgId;
+    public MySubject() {
     }
 }
 

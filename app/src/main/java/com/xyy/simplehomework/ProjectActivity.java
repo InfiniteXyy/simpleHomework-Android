@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.xyy.simplehomework.cards.MyProject;
+import com.xyy.simplehomework.cards.MyProject_;
 import com.xyy.simplehomework.cards.MySubject;
 import com.xyy.simplehomework.cards.MySubject_;
 
@@ -23,20 +25,28 @@ import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
 
-public class SubjectActivity extends AppCompatActivity {
+public class ProjectActivity extends AppCompatActivity {
 
-    public static final String SUBJECT_NAME = "subject_name";
+    public static final String PROJECT_ID = "project_id";
 
-    public static final String SUBJECT_IMAGE_ID = "subject_image_id";
+    public static final String SUBJECT_ID = "subject_id";
+
+    private Box<MyProject> projectBox;
+    private Box<MySubject> subjectBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subject);
+        setContentView(R.layout.activity_project);
         // 从 intent 获得需要的数据
         Intent intent = getIntent();
-        final String subjectName = intent.getStringExtra(SUBJECT_NAME);
-        final int subjectImageId = intent.getIntExtra(SUBJECT_IMAGE_ID, 0);
+        final long project_id = intent.getLongExtra(PROJECT_ID, 0);
+        final long subject_id = intent.getLongExtra(SUBJECT_ID, 0);
+
+        BoxStore boxStore = ((App) getApplication()).getBoxStore();
+        projectBox = boxStore.boxFor(MyProject.class);
+        subjectBox = boxStore.boxFor(MySubject.class);
+
         // 设置 toolbar(title，img)
         Toolbar toolbar = findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
@@ -48,14 +58,10 @@ public class SubjectActivity extends AppCompatActivity {
                         .setAction("确定", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                finish();
-                                BoxStore boxStore = ((App) getApplication()).getBoxStore();
-                                Box<MySubject> subjectBox = boxStore.boxFor(MySubject.class);
-                                List<MySubject> subject = subjectBox.query().
-                                        equal(MySubject_.name, subjectName).build().find();
-                                subjectBox.remove(subject.get(0));
-                                Toast.makeText(SubjectActivity.this, "已删除",
+                                subjectBox.remove(subject_id);
+                                Toast.makeText(ProjectActivity.this, "已删除",
                                         Toast.LENGTH_SHORT).show();
+                                finish();
                             }
                         }).show();
             }
@@ -68,9 +74,13 @@ public class SubjectActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        collapsingToolbarLayout.setTitle(subjectName);
-        Glide.with(this).load(subjectImageId).into(subjectImageView);
-        subjectContentView.setText(genDemoTxt(subjectName));
+
+        MySubject mySubject = subjectBox.get(subject_id);
+        MyProject myProject = projectBox.get(project_id);
+
+        collapsingToolbarLayout.setTitle(mySubject.name + " : " + myProject.book);
+        Glide.with(this).load(mySubject.imgId).into(subjectImageView);
+        subjectContentView.setText(genDemoTxt(mySubject.name));
     }
 
 

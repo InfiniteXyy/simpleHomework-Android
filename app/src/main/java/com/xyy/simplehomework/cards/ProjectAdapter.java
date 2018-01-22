@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.xyy.simplehomework.App;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.SubjectActivity;
+import com.xyy.simplehomework.ProjectActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,22 +24,27 @@ import java.util.List;
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
-public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHolder>{
+public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHolder>{
 
     private Context mContext;
-
-    private List<MySubject> mySubjects;
-
-    public SubjectAdapter() {
-        this.mySubjects = new ArrayList<>();
+    private List<MyProject> myProjects;
+    public ProjectAdapter() {
+        this.myProjects = new ArrayList<>();
     }
+    private Box<MyProject> projectBox;
+    private Box<MySubject> subjectBox;
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         if (mContext == null) {
             mContext = parent.getContext();
         }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.subject_item,
+
+        BoxStore box = ((App) ((Activity) mContext).getApplication()).getBoxStore();
+        projectBox = box.boxFor(MyProject.class);
+        subjectBox = box.boxFor(MySubject.class);
+
+        View view = LayoutInflater.from(mContext).inflate(R.layout.project_item,
                 parent, false);
         final ViewHolder holder = new ViewHolder(view);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -47,10 +52,12 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                MySubject mySubject = mySubjects.get(position<0?1:position);
-                Intent intent = new Intent(mContext, SubjectActivity.class);
-                intent.putExtra(SubjectActivity.SUBJECT_NAME, mySubject.getName());
-                intent.putExtra(SubjectActivity.SUBJECT_IMAGE_ID, mySubject.getImgId());
+                MyProject myProject = myProjects.get(position);
+                MySubject thisSubject = subjectBox.get(myProject.subject.getTargetId());
+
+                Intent intent = new Intent(mContext, ProjectActivity.class);
+                intent.putExtra(ProjectActivity.PROJECT_ID, projectBox.getId(myProject));
+                intent.putExtra(ProjectActivity.SUBJECT_ID, subjectBox.getId(thisSubject));
                 mContext.startActivity(intent);
             }
         });
@@ -59,29 +66,28 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "删除了！", Toast.LENGTH_SHORT).show();
-                BoxStore box = ((App) ((Activity) mContext).getApplication()).getBoxStore();
-                Box<MySubject> subjectBox = box.boxFor(MySubject.class);
-                subjectBox.remove(mySubjects.get(holder.getAdapterPosition()));
+                projectBox.remove(myProjects.get(holder.getAdapterPosition()));
 
             }
         });
         return holder;
     }
 
-    public void setMySubjects(List<MySubject> subjects) {
-        mySubjects = subjects;
+    public void setMyProjects(List<MyProject> projects) {
+        myProjects = projects;
         notifyDataSetChanged();
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        MySubject mySubject = mySubjects.get(position);
-        holder.subjectName.setText(mySubject.getName());
-        Glide.with(mContext).load(mySubject.getImgId()).into(holder.subjectImg);
+        MyProject myProject = myProjects.get(position);
+        MySubject mySubject = myProject.subject.getTarget();
+        holder.subjectName.setText(myProject.book);
+        Glide.with(mContext).load(mySubject.imgId).into(holder.subjectImg);
     }
 
     @Override
     public int getItemCount() {
-        return mySubjects.size();
+        return myProjects.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

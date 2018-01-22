@@ -2,6 +2,7 @@ package com.xyy.simplehomework;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setTitle(new SimpleDateFormat("MM月dd日").format(date));
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_dehaze_white_24dp);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_dehaze_24px);
         }
 
         // 设置列表
@@ -132,16 +133,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        MySubject chinese = new MySubject("语文", R.drawable.chinese_pic);
-        MySubject math = new MySubject("数学", R.drawable.math_pic);
-        MySubject english = new MySubject("英语", R.drawable.english_pic);
 
         // 设置增加框监听
-        subjectBox.removeAll();
-        projectBox.removeAll();
-        subjectBox.put(chinese);
-        subjectBox.put(math);
-        subjectBox.put(english);
+
+        // 语数英demo
+        if (subjectBox.getAll().isEmpty()) {
+            subjectBox.removeAll();
+            subjectBox.put(new MySubject("语文", R.drawable.chinese_pic));
+            subjectBox.put(new MySubject("数学", R.drawable.math_pic));
+            subjectBox.put(new MySubject("英语", R.drawable.english_pic));
+        }
         subjectQuery = subjectBox.query().build();
         List<MySubject> subjects = subjectQuery.find();
         final ArrayList<String> subjectNames = new ArrayList<>();

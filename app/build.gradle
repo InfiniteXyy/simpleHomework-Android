@@ -17,6 +17,10 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.0.2'
     implementation 'com.github.bumptech.glide:glide:4.5.0'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+
+    compile 'com.github.florent37:hollyviewpager:1.0.1'
+    compile 'com.github.ksoichiro:android-observablescrollview:1.5.2'
+
     debugImplementation "io.objectbox:objectbox-android-objectbrowser:$objectboxVersion"
     releaseImplementation "io.objectbox:objectbox-android:$objectboxVersion"
 }

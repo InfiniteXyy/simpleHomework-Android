@@ -2,16 +2,16 @@ package com.xyy.simplehomework;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
@@ -20,15 +20,18 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.florent37.hollyviewpager.HollyViewPager;
+import com.github.florent37.hollyviewpager.HollyViewPagerConfigurator;
 import com.xyy.simplehomework.cards.MyProject;
 import com.xyy.simplehomework.cards.MySubject;
 import com.xyy.simplehomework.cards.MySubject_;
-import com.xyy.simplehomework.cards.ProjectAdapter;
+import com.xyy.simplehomework.cards.RecyclerViewFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
@@ -42,37 +45,34 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private SwipeRefreshLayout swipeRefresh;
 
+    private MaterialDialog chooseDialog;
 
     private Box<MySubject> subjectBox;
     private Query<MySubject> subjectQuery;
     private Box<MyProject> projectBox;
     private Query<MyProject> projectQuery;
 
-
-    private ProjectAdapter projectAdapter;
+    private RecyclerViewManager recyclerViewManager;
     private DataSubscriptionList subscriptions = new DataSubscriptionList();
-
-    private MaterialDialog chooseDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        recyclerViewManager = new RecyclerViewManager();
 
         BoxStore boxStore = ((App) getApplication()).getBoxStore();
         subjectBox = boxStore.boxFor(MySubject.class);
         projectBox = boxStore.boxFor(MyProject.class);
-        setUpViews();
-
         projectQuery = projectBox.query().build();
         projectQuery.subscribe(subscriptions).on(AndroidScheduler.mainThread())
                 .observer(new DataObserver<List<MyProject>>() {
                     @Override
                     public void onData(List<MyProject> projects) {
-                        projectAdapter.setMyProjects(projects);
+                        recyclerViewManager.updateProjects(projects);
                     }
                 });
-
+        setUpViews();
     }
 
     @Override
@@ -99,28 +99,44 @@ public class MainActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setTitle(new SimpleDateFormat("MM月dd日").format(date));
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_dehaze_24px);
         }
 
-        // 设置列表
-        final RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        projectAdapter = new ProjectAdapter();
-        recyclerView.setAdapter(projectAdapter);
-
-        // 设置悬浮按钮监听
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        // 设置 HollyViewPager
+        final Random random = new Random(1);
+        HollyViewPager hollyViewPager = findViewById(R.id.hollyViewPager);
+        hollyViewPager.setConfigurator(new HollyViewPagerConfigurator() {
             @Override
-            public void onClick(View view) {
-                new MaterialDialog.Builder(MainActivity.this)
-                        .title("title")
-                        .content("this is my content")
-                        .positiveText("agree")
-                        .show();
+            public float getHeightPercentForPage(int page) {
+                return ((random.nextInt(10))%10)/11f;
             }
         });
+
+
+        hollyViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public int getCount() { return 5; }
+            @Override
+            public Fragment getItem(int position) {
+                return recyclerViewManager.recyclerViewFragments.get(position);
+            }
+        });
+
+        Log.d("123", "margin: "+hollyViewPager.getViewPager().getPageMargin());
+        Log.d("123", "currentItem: "+hollyViewPager.getViewPager().getCurrentItem());
+
+
+//        // 设置悬浮按钮监听
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                new MaterialDialog.Builder(MainActivity.this)
+//                        .title("title")
+//                        .content("this is my content")
+//                        .positiveText("agree")
+//                        .show();
+//            }
+//        });
 
         // 设置下拉刷新
         swipeRefresh = findViewById(R.id.swipe_refresh);
@@ -132,18 +148,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         // 设置增加框监听
 
         // 语数英demo
-        if (subjectBox.getAll().isEmpty()) {
-            subjectBox.removeAll();
-            subjectBox.put(new MySubject("语文", R.drawable.chinese_pic));
-            subjectBox.put(new MySubject("数学", R.drawable.math_pic));
-            subjectBox.put(new MySubject("英语", R.drawable.english_pic));
-        }
+//        subjectBox.removeAll();
+//        projectBox.removeAll();
+//        MySubject chinese = new MySubject("语文", R.drawable.chinese_pic);
+//        subjectBox.put(chinese);
+//        subjectBox.put(new MySubject("数学", R.drawable.math_pic));
+//        subjectBox.put(new MySubject("英语", R.drawable.english_pic));
+//        MyProject myProject = new MyProject();
+//        myProject.book = "123";
         subjectQuery = subjectBox.query().build();
+//        myProject.subject.setTarget(subjectQuery.findFirst());
+//        projectBox.put(myProject);
         List<MySubject> subjects = subjectQuery.find();
         final ArrayList<String> subjectNames = new ArrayList<>();
         for (MySubject subject : subjects) {
@@ -195,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        projectAdapter.notifyDataSetChanged();
                         swipeRefresh.setRefreshing(false);
                     }
                 });

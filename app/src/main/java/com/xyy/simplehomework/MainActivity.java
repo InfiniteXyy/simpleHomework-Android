@@ -1,9 +1,8 @@
 package com.xyy.simplehomework;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -21,12 +20,11 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.florent37.hollyviewpager.HollyViewPager;
-import com.github.florent37.hollyviewpager.HollyViewPagerAnimator;
 import com.github.florent37.hollyviewpager.HollyViewPagerConfigurator;
 import com.xyy.simplehomework.cards.MyProject;
 import com.xyy.simplehomework.cards.MySubject;
 import com.xyy.simplehomework.cards.MySubject_;
-import com.xyy.simplehomework.cards.RecyclerViewFragment;
+import com.xyy.simplehomework.cards.RecyclerViewManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -100,6 +98,15 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.day:  break;
+                    case R.id.week: break;
+                    case R.id.month:break;
+                    case R.id.year:
+                        Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
+                        getApplicationContext().startActivity(intent);
+                        break;
+                }
                 return true;
             }
         });

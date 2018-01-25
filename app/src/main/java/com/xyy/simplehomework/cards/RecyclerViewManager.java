@@ -1,4 +1,4 @@
-package com.xyy.simplehomework;
+package com.xyy.simplehomework.cards;
 
 
 import com.xyy.simplehomework.cards.MyProject;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public class RecyclerViewManager {
-    List<RecyclerViewFragment> recyclerViewFragments;
+    public List<RecyclerViewFragment> recyclerViewFragments;
     List<MyProject> projects;
 
     public RecyclerViewManager() {

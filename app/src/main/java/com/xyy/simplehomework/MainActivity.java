@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.xyy.simplehomework.cards.MyProject;
@@ -29,6 +31,7 @@ import com.xyy.simplehomework.cards.RecyclerViewManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -42,13 +45,7 @@ import io.objectbox.reactive.DataSubscriptionList;
 
 public class MainActivity extends AppCompatActivity {
 
-    final static String num2word[] = {
-            "周一",
-            "周二",
-            "周三",
-            "周四",
-            "周五"
-    };
+    String[] weeks = {"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
 
     private DrawerLayout drawerLayout;
     private SwipeRefreshLayout swipeRefresh;
@@ -113,11 +110,26 @@ public class MainActivity extends AppCompatActivity {
         });
         ActionBar actionBar = getSupportActionBar();
         Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int week_index = cal.get(Calendar.DAY_OF_WEEK) - 1;
         if (actionBar != null) {
-            actionBar.setTitle(new SimpleDateFormat("MM月dd日").format(date));
+            actionBar.setTitle(new SimpleDateFormat("M.d").format(date));
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        // 设置大字显示
+        final TextView dayName = findViewById(R.id.day_name);
+        dayName.setText(weeks[week_index].toUpperCase());
+        AppBarLayout appBarLayout = findViewById(R.id.app_bar);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                int newAlpha = 255 + verticalOffset;
+                newAlpha = newAlpha < 0 ? 0 : newAlpha;
+                dayName.setAlpha((float) newAlpha/255);
+            }
+        });
 //        // 设置悬浮按钮监听
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -181,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                         final MySubject selectedSubject = subjectBox.query().equal(MySubject_.name, subjectNames.get(which)).build().findFirst();
                         new MaterialDialog.Builder(MainActivity.this)
                                 .title("选择日期")
-                                .items(num2word)
+                                .items(weeks)
                                 .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
                                     @Override
                                     public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
@@ -223,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public CharSequence getPageTitle(int position) {
-                return num2word[position];
+                return weeks[position];
             }
         });
     }

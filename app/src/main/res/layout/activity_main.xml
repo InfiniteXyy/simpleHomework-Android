@@ -15,14 +15,32 @@
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
             android:background="@android:color/transparent"
             app:elevation="0dp">
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="@drawable/ic_dehaze_24px"/>
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:navigationIcon="@drawable/ic_dehaze_24px"
+                    app:layout_collapseMode="pin" />
+
+                <TextView
+                    android:id="@+id/day_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MONDAY"
+                    android:textColor="@android:color/black"
+                    android:textSize="65sp"
+                    app:layout_collapseMode="pin"
+                    />
+            </android.support.design.widget.CollapsingToolbarLayout>
+
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
@@ -31,11 +49,10 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/swipe_refresh">
 
-            <com.github.florent37.hollyviewpager.HollyViewPager
-                android:id="@+id/hollyViewPager"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/MyViewPager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:hvp_headerHeight="160dp" />
+                android:layout_height="match_parent" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
 

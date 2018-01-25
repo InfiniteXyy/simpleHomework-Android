@@ -17,7 +17,6 @@ public class MySubject {
 
     @Backlink
     public ToMany<MyProject> projects;
-
     public String name;
     public int imgId;
 

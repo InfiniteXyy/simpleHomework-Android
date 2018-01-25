@@ -1,5 +1,6 @@
 package com.xyy.simplehomework;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -19,11 +21,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.florent37.hollyviewpager.HollyViewPager;
-import com.github.florent37.hollyviewpager.HollyViewPagerConfigurator;
 import com.xyy.simplehomework.cards.MyProject;
 import com.xyy.simplehomework.cards.MySubject;
 import com.xyy.simplehomework.cards.MySubject_;
+import com.xyy.simplehomework.cards.ProjectAdapter;
 import com.xyy.simplehomework.cards.RecyclerViewManager;
 
 import java.text.SimpleDateFormat;
@@ -116,35 +117,6 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setTitle(new SimpleDateFormat("MM月dd日").format(date));
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        // 设置 HollyViewPager
-        final Random random = new Random(1);
-        HollyViewPager hollyViewPager = findViewById(R.id.hollyViewPager);
-        hollyViewPager.setConfigurator(new HollyViewPagerConfigurator() {
-            @Override
-            public float getHeightPercentForPage(int page) {
-                return ((random.nextInt(10))%10)/11f;
-            }
-
-        });
-
-
-        hollyViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public int getCount() { return 5; }
-            @Override
-            public Fragment getItem(int position) {
-                return recyclerViewManager.recyclerViewFragments.get(position);
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return num2word[position];
-            }
-        });
-        hollyViewPager.getViewPager().setPageMargin(-100);
-        Log.d("123", "setUpViews: "+hollyViewPager.getViewPager().getPageMargin());
-
 
 //        // 设置悬浮按钮监听
 //        FloatingActionButton fab = findViewById(R.id.fab);
@@ -239,6 +211,21 @@ public class MainActivity extends AppCompatActivity {
                 .positiveText("choose")
                 .build();
 
+        // 设置 ViewPager
+        ViewPager viewPager = findViewById(R.id.MyViewPager);
+
+        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public int getCount() { return 5; }
+            @Override
+            public Fragment getItem(int position) {
+                return recyclerViewManager.recyclerViewFragments.get(position);
+            }
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return num2word[position];
+            }
+        });
     }
 
     // 设置刷新监听
@@ -283,6 +270,11 @@ public class MainActivity extends AppCompatActivity {
             default:
         }
         return true;
+    }
+
+    public static int px2dip(Context context, float pxValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
     }
 }
 

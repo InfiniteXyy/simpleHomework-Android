@@ -1,7 +1,5 @@
 package com.xyy.simplehomework.cards;
 
-import com.xyy.simplehomework.R;
-
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;

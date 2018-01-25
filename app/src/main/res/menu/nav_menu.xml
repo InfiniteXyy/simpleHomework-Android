@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/one"
-            android:title="one"/>
+            android:id="@+id/day"
+            android:title="日程"/>
         <item
-            android:id="@+id/two"
-            android:title="two"/>
+            android:id="@+id/week"
+            android:title="周记"/>
         <item
-            android:id="@+id/three"
-            android:title="three"/>
+            android:id="@+id/month"
+            android:title="月影"/>
         <item
-            android:id="@+id/four"
-            android:title="four"/>
+            android:id="@+id/year"
+            android:title="年代记"/>
     </group>
 
 </menu>

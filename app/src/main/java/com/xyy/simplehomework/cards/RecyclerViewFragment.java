@@ -21,7 +21,7 @@ import java.util.List;
 
 public class RecyclerViewFragment extends Fragment{
     RecyclerView recyclerView;
-    private ProjectAdapter adapter;
+    public ProjectAdapter adapter;
     public RecyclerViewFragment(){
         adapter = new ProjectAdapter();
     }

@@ -74,7 +74,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
                     @Override
                     public void onClick(View v) {
                         int position = holder.getAdapterPosition();
-                        MyProject myProject = myProjects.get(position);
+                        MyProject myProject = myProjects.get(position-1);
                         MySubject thisSubject = subjectBox.get(myProject.subject.getTargetId());
 
                         Intent intent = new Intent(mContext, ProjectActivity.class);
@@ -103,7 +103,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (holder.type == TYPE_HEADER) return;
-        MyProject myProject = myProjects.get(position);
+        MyProject myProject = myProjects.get(position-1);
         MySubject mySubject = myProject.subject.getTarget();
         holder.subjectName.setText(myProject.book);
         Glide.with(mContext).load(mySubject.imgId).into(holder.subjectImg);
@@ -111,7 +111,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return myProjects.size();
+        return myProjects.size() + 1;
+        // 头部也包含在内了
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

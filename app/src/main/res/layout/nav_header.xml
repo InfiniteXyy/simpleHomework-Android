@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:text="简记作业"
         android:textColor="#FFF"
-        android:layout_margin="10dp"
+        android:layout_margin="20dp"
         android:textSize="40dp"/>
 
 </android.support.constraint.ConstraintLayout>

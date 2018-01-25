@@ -21,6 +21,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.florent37.hollyviewpager.HollyViewPager;
+import com.github.florent37.hollyviewpager.HollyViewPagerAnimator;
 import com.github.florent37.hollyviewpager.HollyViewPagerConfigurator;
 import com.xyy.simplehomework.cards.MyProject;
 import com.xyy.simplehomework.cards.MySubject;
@@ -41,6 +42,14 @@ import io.objectbox.reactive.DataObserver;
 import io.objectbox.reactive.DataSubscriptionList;
 
 public class MainActivity extends AppCompatActivity {
+
+    final static String num2word[] = {
+            "周一",
+            "周二",
+            "周三",
+            "周四",
+            "周五"
+    };
 
     private DrawerLayout drawerLayout;
     private SwipeRefreshLayout swipeRefresh;
@@ -87,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.one);
+        navigationView.setCheckedItem(R.id.day);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -109,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
             public float getHeightPercentForPage(int page) {
                 return ((random.nextInt(10))%10)/11f;
             }
+
         });
 
 
@@ -119,10 +129,14 @@ public class MainActivity extends AppCompatActivity {
             public Fragment getItem(int position) {
                 return recyclerViewManager.recyclerViewFragments.get(position);
             }
-        });
 
-        Log.d("123", "margin: "+hollyViewPager.getViewPager().getPageMargin());
-        Log.d("123", "currentItem: "+hollyViewPager.getViewPager().getCurrentItem());
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return num2word[position];
+            }
+        });
+        hollyViewPager.getViewPager().setPageMargin(-100);
+        Log.d("123", "setUpViews: "+hollyViewPager.getViewPager().getPageMargin());
 
 
 //        // 设置悬浮按钮监听
@@ -151,17 +165,28 @@ public class MainActivity extends AppCompatActivity {
         // 设置增加框监听
 
         // 语数英demo
-//        subjectBox.removeAll();
-//        projectBox.removeAll();
-//        MySubject chinese = new MySubject("语文", R.drawable.chinese_pic);
-//        subjectBox.put(chinese);
-//        subjectBox.put(new MySubject("数学", R.drawable.math_pic));
-//        subjectBox.put(new MySubject("英语", R.drawable.english_pic));
-//        MyProject myProject = new MyProject();
-//        myProject.book = "123";
         subjectQuery = subjectBox.query().build();
-//        myProject.subject.setTarget(subjectQuery.findFirst());
-//        projectBox.put(myProject);
+        subjectBox.removeAll();
+        projectBox.removeAll();
+        MySubject chinese = new MySubject("语文", R.drawable.chinese_pic);
+        MySubject english = new MySubject("英语", R.drawable.english_pic);
+        subjectBox.put(chinese);
+        subjectBox.put(english);
+        subjectBox.put(new MySubject("数学", R.drawable.math_pic));
+        MyProject myProject = new MyProject("当代学生");
+        MyProject myProject1 = new MyProject("春风");
+        MyProject myProject2 = new MyProject("新课标");
+        MyProject myProject3 = new MyProject("sbbook");
+
+        myProject.subject.setTarget(chinese);
+        myProject1.subject.setTarget(english);
+        myProject2.subject.setTarget(chinese);
+        myProject3.subject.setTarget(chinese);
+        projectBox.put(myProject);
+        projectBox.put(myProject1);
+        projectBox.put(myProject2);
+        projectBox.put(myProject3);
+
         List<MySubject> subjects = subjectQuery.find();
         final ArrayList<String> subjectNames = new ArrayList<>();
         for (MySubject subject : subjects) {
@@ -213,6 +238,8 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        recyclerViewManager.updateProjects(projectQuery.find());
+
                         swipeRefresh.setRefreshing(false);
                     }
                 });

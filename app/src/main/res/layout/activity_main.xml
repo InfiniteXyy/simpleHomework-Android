@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/bg"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.CoordinatorLayout
@@ -22,7 +22,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:titleTextColor="@android:color/white"
                 app:navigationIcon="@drawable/ic_dehaze_24px"/>
         </android.support.design.widget.AppBarLayout>
 

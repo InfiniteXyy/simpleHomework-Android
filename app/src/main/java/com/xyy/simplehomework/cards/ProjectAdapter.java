@@ -88,7 +88,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(mContext, "删除了！", Toast.LENGTH_SHORT).show();
-                        projectBox.remove(myProjects.get(holder.getAdapterPosition()));
+                        projectBox.remove(myProjects.get(holder.getAdapterPosition()-1));
 
                     }
                 });
@@ -96,10 +96,11 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
         return holder;
     }
 
-    public void setMyProjects(List<MyProject> projects) {
+    void setMyProjects(List<MyProject> projects) {
         myProjects = projects;
         notifyDataSetChanged();
     }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (holder.type == TYPE_HEADER) return;

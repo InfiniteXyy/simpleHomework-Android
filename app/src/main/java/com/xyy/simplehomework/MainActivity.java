@@ -208,23 +208,32 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         final MySubject selectedSubject = subjectBox.query().equal(MySubject_.name, subjectNames.get(which)).build().findFirst();
                         new MaterialDialog.Builder(MainActivity.this)
-                                .title("Decide the name")
-                                .inputType(
-                                        InputType.TYPE_CLASS_TEXT
-                                                | InputType.TYPE_TEXT_VARIATION_PERSON_NAME
-                                                | InputType.TYPE_TEXT_FLAG_CAP_WORDS)
-                                .input("Homework name", "",false, new MaterialDialog.InputCallback() {
+                                .title("选择日期")
+                                .items(num2word)
+                                .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
                                     @Override
-                                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                        MyProject myProject = new MyProject();
-                                        myProject.book = input.toString();
-                                        myProject.subject.setTarget(selectedSubject);
-                                        projectBox.put(myProject);
+                                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                                        final int selectedDate = which;
+                                        new MaterialDialog.Builder(MainActivity.this)
+                                                .title("Decide the name")
+                                                .input("Homework name", "",false, new MaterialDialog.InputCallback() {
+                                                    @Override
+                                                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                                        MyProject myProject = new MyProject(input.toString());
+                                                        myProject.testDate = selectedDate;
+                                                        myProject.subject.setTarget(selectedSubject);
+                                                        projectBox.put(myProject);
+                                                    }
+                                                })
+                                                .build()
+                                                .show();
+                                        return false;
                                     }
                                 })
+                                .positiveText("choose")
                                 .build()
                                 .show();
-                        return true;
+                        return false;
                     }
                 })
                 .positiveText("choose")

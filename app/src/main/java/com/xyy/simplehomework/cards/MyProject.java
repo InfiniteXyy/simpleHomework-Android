@@ -15,6 +15,7 @@ public class MyProject {
     @Id
     long id;
 
+    public int testDate;
     public String book;
     public Date deadline;
     public Date initDate;
@@ -23,6 +24,7 @@ public class MyProject {
 
     public MyProject(String book) {
         this.book = book;
+        testDate = 0;// 测试用例，默认为0
     }
 
     public MyProject() {

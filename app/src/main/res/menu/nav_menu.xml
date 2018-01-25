@@ -3,16 +3,20 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/day"
-            android:title="日程"/>
+            android:title="@string/day"/>
         <item
             android:id="@+id/week"
-            android:title="周记"/>
+            android:title="@string/week"/>
         <item
             android:id="@+id/month"
-            android:title="月影"/>
+            android:title="@string/month"/>
         <item
             android:id="@+id/year"
-            android:title="年代记"/>
+            android:title="@string/year"/>
+        <item
+            android:id="@+id/setting"
+            android:title="@string/setting"
+            />
     </group>
 
 </menu>

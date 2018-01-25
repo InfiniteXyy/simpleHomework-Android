@@ -26,8 +26,13 @@ public class RecyclerViewManager {
 
     public void updateProjects(List<MyProject> projects) {
         this.projects = projects;
-        for (RecyclerViewFragment rvf : recyclerViewFragments) {
-            rvf.updateDailyProjects(projects);
+        for (int i = 0; i < 5; i++) {
+            List<MyProject> temp = new ArrayList<>();
+            for (MyProject myProject : projects) {
+                if (myProject.testDate == i)
+                    temp.add(myProject);
+            }
+            recyclerViewFragments.get(i).updateDailyProjects(temp);
         }
     }
 

@@ -2,6 +2,8 @@ package com.xyy.simplehomework;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -14,19 +16,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.xyy.simplehomework.cards.MyProject;
 import com.xyy.simplehomework.cards.MySubject;
 import com.xyy.simplehomework.cards.MySubject_;
-import com.xyy.simplehomework.cards.ProjectAdapter;
 import com.xyy.simplehomework.cards.RecyclerViewManager;
 
 import java.text.SimpleDateFormat;
@@ -34,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
@@ -46,6 +47,7 @@ import io.objectbox.reactive.DataSubscriptionList;
 public class MainActivity extends AppCompatActivity {
 
     String[] weeks = {"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
+
 
     private DrawerLayout drawerLayout;
     private SwipeRefreshLayout swipeRefresh;
@@ -87,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpViews() {
+        // 导入字体
+        Typeface typeFace =Typeface.createFromAsset(getAssets(),"fonts/Lato-Regular.ttf");
+
         // 设置工具栏和侧边框
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -120,7 +125,9 @@ public class MainActivity extends AppCompatActivity {
 
         // 设置大字显示
         final TextView dayName = findViewById(R.id.day_name);
+        final LinearLayout status = findViewById(R.id.status);
         dayName.setText(weeks[week_index].toUpperCase());
+        dayName.setTypeface(typeFace, Typeface.BOLD);
         AppBarLayout appBarLayout = findViewById(R.id.app_bar);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -128,7 +135,9 @@ public class MainActivity extends AppCompatActivity {
                 int newAlpha = 255 + verticalOffset;
                 newAlpha = newAlpha < 0 ? 0 : newAlpha;
                 dayName.setAlpha((float) newAlpha/255);
+                status.setAlpha((float) newAlpha/255);
             }
+
         });
 //        // 设置悬浮按钮监听
 //        FloatingActionButton fab = findViewById(R.id.fab);
@@ -224,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         // 设置 ViewPager
-        ViewPager viewPager = findViewById(R.id.MyViewPager);
+        final ViewPager viewPager = findViewById(R.id.MyViewPager);
 
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
@@ -238,10 +247,51 @@ public class MainActivity extends AppCompatActivity {
                 return weeks[position];
             }
         });
+
+        final CardView[] weekStatusLayout = {
+                findViewById(R.id.monday_status    ),
+                findViewById(R.id.tuesday_status   ),
+                findViewById(R.id.wednesday_status ),
+                findViewById(R.id.thursday_status  ),
+                findViewById(R.id.friday_status    ),
+        };
+
+        for (int i = 0; i < 5; i++) {
+            final int finalI = i;
+            weekStatusLayout[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    viewPager.setCurrentItem(finalI, false);
+                    for (CardView card : weekStatusLayout) {
+                        if (card != weekStatusLayout[finalI]) {
+                            card.setAlpha(0.5f);
+                        }
+                    }
+                }
+            });
+        }
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                weekStatusLayout[position].setAlpha(1-positionOffset/2);
+                if (position < 4)
+                    weekStatusLayout[position+1].setAlpha(positionOffset/2 + 0.5f);
+            }
+            @Override
+            public void onPageSelected(int position) {
+                recyclerViewManager.updateProjects(projectQuery.find());
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) { }
+        });
+
+
     }
 
     // 设置刷新监听
     private void refreshItems() {
+
         new Thread(new Runnable() {
             @Override
             public void run() {

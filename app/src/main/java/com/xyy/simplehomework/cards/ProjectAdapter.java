@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.xyy.simplehomework.App;
-import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.ProjectActivity;
+import com.xyy.simplehomework.R;
 
 import java.util.ArrayList;
 import java.util.List;

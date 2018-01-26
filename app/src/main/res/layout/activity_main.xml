@@ -33,13 +33,14 @@
 
                 <TextView
                     android:id="@+id/day_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:maxLines="1"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_horizontal"
                     android:paddingTop="60dp"
                     android:text="MONDAY"
                     android:textColor="@android:color/black"
-                    android:textSize="65sp"
+                    android:textSize="65dp"
                     app:layout_collapseMode="parallax" />
 
                 <LinearLayout

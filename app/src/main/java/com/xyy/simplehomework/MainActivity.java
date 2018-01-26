@@ -1,8 +1,7 @@
 package com.xyy.simplehomework;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,7 +17,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,11 +60,19 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewManager recyclerViewManager;
     private DataSubscriptionList subscriptions = new DataSubscriptionList();
 
+    private final CardView[] weekStatusLayout = new CardView[5];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerViewManager = new RecyclerViewManager();
+
+
+        weekStatusLayout[0] = findViewById(R.id.monday_status    );
+        weekStatusLayout[1] = findViewById(R.id.tuesday_status   );
+        weekStatusLayout[2] = findViewById(R.id.wednesday_status );
+        weekStatusLayout[3] = findViewById(R.id.thursday_status  );
+        weekStatusLayout[4] = findViewById(R.id.friday_status    );
 
         BoxStore boxStore = ((App) getApplication()).getBoxStore();
         subjectBox = boxStore.boxFor(MySubject.class);
@@ -77,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onData(List<MyProject> projects) {
                         recyclerViewManager.updateProjects(projects);
+                        for (int i = 0; i < 5; i++) {
+                            weekStatusLayout[i].getLayoutParams().height = (recyclerViewManager.getDailyNum(i)*18+20);
+                        }
                     }
                 });
         setUpViews();
@@ -86,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         subscriptions.cancel();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        recyclerViewManager.updateProjects(projectQuery.find());
+        super.onResume();
     }
 
     private void setUpViews() {
@@ -123,7 +138,8 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        // 设置大字显示
+
+        // 设置 AppBar
         final TextView dayName = findViewById(R.id.day_name);
         final LinearLayout status = findViewById(R.id.status);
         dayName.setText(weeks[week_index].toUpperCase());
@@ -137,20 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 dayName.setAlpha((float) newAlpha/255);
                 status.setAlpha((float) newAlpha/255);
             }
-
         });
-//        // 设置悬浮按钮监听
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                new MaterialDialog.Builder(MainActivity.this)
-//                        .title("title")
-//                        .content("this is my content")
-//                        .positiveText("agree")
-//                        .show();
-//            }
-//        });
 
         // 设置下拉刷新
         swipeRefresh = findViewById(R.id.swipe_refresh);
@@ -248,13 +251,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final CardView[] weekStatusLayout = {
-                findViewById(R.id.monday_status    ),
-                findViewById(R.id.tuesday_status   ),
-                findViewById(R.id.wednesday_status ),
-                findViewById(R.id.thursday_status  ),
-                findViewById(R.id.friday_status    ),
-        };
+
 
         for (int i = 0; i < 5; i++) {
             final int finalI = i;
@@ -323,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add:
+            case R.id.add_projects:
                 chooseDialog.show();
                 break;
             case android.R.id.home:
@@ -334,9 +331,17 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public static int px2dip(Context context, float pxValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+    public static int px2dip(int pxValue)
+    {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
+    }
+
+
+    public static float dip2px(float dipValue)
+    {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
+        return  (dipValue * scale + 0.5f);
     }
 }
 

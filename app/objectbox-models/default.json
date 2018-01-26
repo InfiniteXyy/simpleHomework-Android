@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:2169375455557565758",
-      "lastPropertyId": "3:2104348455191094186",
+      "lastPropertyId": "4:5320264492168441608",
       "name": "MySubject",
       "properties": [
         {
@@ -19,6 +19,10 @@
         {
           "id": "3:2104348455191094186",
           "name": "imgId"
+        },
+        {
+          "id": "4:5320264492168441608",
+          "name": "colorId"
         }
       ],
       "relations": []

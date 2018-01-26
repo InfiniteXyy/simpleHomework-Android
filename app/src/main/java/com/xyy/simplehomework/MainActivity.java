@@ -171,11 +171,12 @@ public class MainActivity extends AppCompatActivity {
         subjectQuery = subjectBox.query().build();
         subjectBox.removeAll();
         projectBox.removeAll();
-        MySubject chinese = new MySubject("语文", R.drawable.chinese_pic);
-        MySubject english = new MySubject("英语", R.drawable.english_pic);
+        MySubject chinese = new MySubject("计算机系统", R.drawable.chinese_pic, R.color.japanBrown);
+        MySubject english = new MySubject("高等数学", R.drawable.english_pic, R.color.japanBlue);
+        MySubject math = new MySubject("线性代数", R.drawable.math_pic, R.color.japanPink);
         subjectBox.put(chinese);
         subjectBox.put(english);
-        subjectBox.put(new MySubject("数学", R.drawable.math_pic));
+        subjectBox.put(math);
         MyProject myProject = new MyProject("当代学生");
         MyProject myProject1 = new MyProject("春风");
         MyProject myProject2 = new MyProject("新课标");
@@ -183,12 +184,10 @@ public class MainActivity extends AppCompatActivity {
 
         myProject.subject.setTarget(chinese);
         myProject1.subject.setTarget(english);
-        myProject2.subject.setTarget(chinese);
-        myProject3.subject.setTarget(chinese);
+        myProject2.subject.setTarget(math);
         projectBox.put(myProject);
         projectBox.put(myProject1);
         projectBox.put(myProject2);
-        projectBox.put(myProject3);
 
         List<MySubject> subjects = subjectQuery.find();
         final ArrayList<String> subjectNames = new ArrayList<>();
@@ -301,7 +300,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         recyclerViewManager.updateProjects(projectQuery.find());
-
+                        for (int i = 0; i < 5; i++) {
+                            weekStatusLayout[i].getLayoutParams().height = (recyclerViewManager.getDailyNum(i)*18+20);
+                        }
                         swipeRefresh.setRefreshing(false);
                     }
                 });

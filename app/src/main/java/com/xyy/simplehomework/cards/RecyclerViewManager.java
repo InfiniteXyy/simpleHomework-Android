@@ -34,6 +34,6 @@ public class RecyclerViewManager {
     }
 
     public int getDailyNum(int day) {
-        return dailyCounts[day];
+        return recyclerViewFragments.get(day).adapter.getItemCount();
     }
 }

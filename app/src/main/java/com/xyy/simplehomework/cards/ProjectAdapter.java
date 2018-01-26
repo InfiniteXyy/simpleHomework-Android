@@ -86,8 +86,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         MyProject myProject = myProjects.get(position);
         MySubject mySubject = myProject.subject.getTarget();
-        holder.subjectName.setText(myProject.book);
-        Glide.with(mContext).load(mySubject.imgId).into(holder.subjectImg);
+        holder.subjectName.setText(mySubject.name);
+        holder.cardView.setCardBackgroundColor(mContext.getResources().getColor(mySubject.colorId));
+//        Glide.with(mContext).load(mySubject.imgId).into(holder.subjectImg);
     }
 
     @Override
@@ -97,14 +98,14 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
-        ImageView subjectImg;
+//        ImageView subjectImg;
         TextView subjectName;
         Button deleteBtn;
 
         public ViewHolder(View view) {
             super(view);
             cardView = (CardView) view;
-            subjectImg = view.findViewById(R.id.subject_image);
+//            subjectImg = view.findViewById(R.id.subject_image);
             subjectName = view.findViewById(R.id.subject_name);
             deleteBtn = view.findViewById(R.id.card_btn_delete);
         }

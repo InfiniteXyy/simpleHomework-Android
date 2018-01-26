@@ -19,11 +19,13 @@ public class MySubject {
     public ToMany<MyProject> projects;
     public String name;
     public int imgId;
+    public int colorId;
 
 
-    public MySubject(String name, int imgId) {
+    public MySubject(String name, int imgId, int colorId) {
         this.name = name;
         this.imgId = imgId;
+        this.colorId = colorId;
     }
 
     public MySubject() {

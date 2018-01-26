@@ -1,6 +1,8 @@
 package com.xyy.simplehomework.cards;
 
 
+import android.util.Log;
+
 import com.xyy.simplehomework.entity.MyProject;
 
 import java.util.ArrayList;
@@ -36,6 +38,6 @@ public class RecyclerViewManager {
     }
 
     public int getDailyNum(int day) {
-        return recyclerViewFragments.get(day).adapter.getItemCount();
+        return dailyCounts[day];
     }
 }

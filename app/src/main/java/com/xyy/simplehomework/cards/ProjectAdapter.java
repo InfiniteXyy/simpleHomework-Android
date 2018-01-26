@@ -12,8 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.xyy.simplehomework.App;
-import com.xyy.simplehomework.ProjectActivity;
+import com.xyy.simplehomework.MainActivity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.MySubject;
@@ -21,15 +20,10 @@ import com.xyy.simplehomework.entity.MySubject;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.objectbox.Box;
-import io.objectbox.BoxStore;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHolder>{
     private Context mContext;
     private List<MyProject> myProjects;
-
-    private Box<MyProject> projectBox;
-    private Box<MySubject> subjectBox;
 
     public ProjectAdapter() {
         this.myProjects = new ArrayList<>();
@@ -40,9 +34,6 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
         if (mContext == null) {
             mContext = parent.getContext();
         }
-        BoxStore box = ((App) ((Activity) mContext).getApplication()).getBoxStore();
-        projectBox = box.boxFor(MyProject.class);
-        subjectBox = box.boxFor(MySubject.class);
 
         View view;
         final ViewHolder holder;
@@ -56,13 +47,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                MyProject myProject = myProjects.get(position);
-                MySubject thisSubject = subjectBox.get(myProject.subject.getTargetId());
-
-                Intent intent = new Intent(mContext, ProjectActivity.class);
-                intent.putExtra(ProjectActivity.PROJECT_ID, projectBox.getId(myProject));
-                intent.putExtra(ProjectActivity.SUBJECT_ID, subjectBox.getId(thisSubject));
-                mContext.startActivity(intent);
+                ((MainActivity) mContext).projectsDetail(myProjects.get(position));
             }
         });
 
@@ -70,8 +55,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "删除了！", Toast.LENGTH_SHORT).show();
-                projectBox.remove(myProjects.get(holder.getAdapterPosition()));
-
+                ((MainActivity) mContext).finishProject(myProjects.get(holder.getAdapterPosition()));
             }
         });
         return holder;

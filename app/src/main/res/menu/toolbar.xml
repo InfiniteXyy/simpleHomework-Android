@@ -11,7 +11,6 @@
         app:showAsAction="withText"
         tools:ignore="MenuTitle">
     </item>
-
     <item
         android:id="@+id/add_subjects"
         android:title="@string/set_subjects"

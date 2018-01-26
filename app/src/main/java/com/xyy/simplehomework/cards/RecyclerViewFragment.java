@@ -20,7 +20,7 @@ import java.util.List;
  * Created by xyy on 2018/1/24.
  */
 
-public class RecyclerViewFragment extends Fragment{
+public class RecyclerViewFragment extends Fragment {
     RecyclerView recyclerView;
     public ProjectAdapter adapter;
     private TextView empty_layout;
@@ -40,6 +40,9 @@ public class RecyclerViewFragment extends Fragment{
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener(){
+
+        });
         empty_layout = view.findViewById(R.id.empty_view);
     }
 

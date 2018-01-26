@@ -59,7 +59,7 @@
             android:layout_toEndOf="@+id/project_img"
             android:layout_toRightOf="@+id/project_img"
             android:layout_marginLeft="@dimen/card_detail_margin_left"
-
+            android:layout_marginTop="-2dp"
             android:text="课本 P15 题号 1, 5, 7"
             android:textColor="#EEEEEE"
             android:textSize="@dimen/card_detail_font_size"
@@ -82,6 +82,7 @@
             android:layout_toEndOf="@+id/time_img"
             android:layout_toRightOf="@id/time_img"
             android:layout_marginLeft="@dimen/card_detail_margin_left"
+            android:layout_marginTop="-2dp"
             android:text="2017.6.5 周三"
             android:textColor="#EEEEEE"
             android:textSize="@dimen/card_detail_font_size" />

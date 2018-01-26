@@ -17,13 +17,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.xyy.simplehomework.cards.ProjectAdapter;
 import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.cards.RecyclerViewManager;
@@ -48,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private DrawerLayout drawerLayout;
-    private SwipeRefreshLayout swipeRefresh;
 
     private MaterialDialog chooseDialog;
 
@@ -83,12 +85,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onData(List<MyProject> projects) {
                         recyclerViewManager.updateProjects(projects);
-                        for (int i = 0; i < 5; i++) {
-                            weekStatusLayout[i].getLayoutParams().height = (recyclerViewManager.getDailyNum(i)*18+20);
-                        }
                     }
                 });
+
         setUpViews();
+
     }
 
     @Override
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.month:break;
                     case R.id.year:
                         Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
-                        getApplicationContext().startActivity(intent);
+                        startActivity(intent);
                         break;
                 }
                 return true;
@@ -155,39 +156,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 设置下拉刷新
-        swipeRefresh = findViewById(R.id.swipe_refresh);
-        swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshItems();
-            }
-        });
-
         // 设置增加框监听
 
         // 语数英demo
         subjectQuery = subjectBox.query().build();
-        subjectBox.removeAll();
-        projectBox.removeAll();
-        MySubject chinese = new MySubject("计算机系统", R.drawable.chinese_pic, R.color.japanBrown);
-        MySubject english = new MySubject("高等数学", R.drawable.english_pic, R.color.japanBlue);
-        MySubject math = new MySubject("线性代数", R.drawable.math_pic, R.color.japanPink);
-        subjectBox.put(chinese);
-        subjectBox.put(english);
-        subjectBox.put(math);
-        MyProject myProject = new MyProject("当代学生");
-        MyProject myProject1 = new MyProject("春风");
-        MyProject myProject2 = new MyProject("新课标");
-        MyProject myProject3 = new MyProject("sbbook");
-
-        myProject.subject.setTarget(chinese);
-        myProject1.subject.setTarget(english);
-        myProject2.subject.setTarget(math);
-        projectBox.put(myProject);
-        projectBox.put(myProject1);
-        projectBox.put(myProject2);
+        addSubjectsAndProjectsForDemo();
 
         List<MySubject> subjects = subjectQuery.find();
         final ArrayList<String> subjectNames = new ArrayList<>();
@@ -196,21 +169,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         chooseDialog = new MaterialDialog.Builder(this)
-                .title("Choose A Subject")
+                .title(R.string.choose_subject)
                 .items(subjectNames)
                 .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         final MySubject selectedSubject = subjectBox.query().equal(MySubject_.name, subjectNames.get(which)).build().findFirst();
                         new MaterialDialog.Builder(MainActivity.this)
-                                .title("选择日期")
+                                .title(R.string.choose_date)
                                 .items(weeks)
                                 .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
                                     @Override
                                     public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                                         final int selectedDate = which;
                                         new MaterialDialog.Builder(MainActivity.this)
-                                                .title("Decide the name")
+                                                .title(R.string.decide_name)
                                                 .input("Homework name", "",false, new MaterialDialog.InputCallback() {
                                                     @Override
                                                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
@@ -218,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
                                                         myProject.testDate = selectedDate;
                                                         myProject.subject.setTarget(selectedSubject);
                                                         projectBox.put(myProject);
+                                                        updateStatus();
                                                     }
                                                 })
                                                 .build()
@@ -285,29 +259,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // 设置刷新监听
-    private void refreshItems() {
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerViewManager.updateProjects(projectQuery.find());
-                        for (int i = 0; i < 5; i++) {
-                            weekStatusLayout[i].getLayoutParams().height = (recyclerViewManager.getDailyNum(i)*18+20);
-                        }
-                        swipeRefresh.setRefreshing(false);
-                    }
-                });
-            }
-        }).start();
+    public void updateStatus() {
+        for (int i = 0; i < 5; i++) {
+            weekStatusLayout[i].getLayoutParams().height = recyclerViewManager.getDailyNum(i)*28+15;
+        }
     }
 
     // 设置 toolbar 样式
@@ -332,6 +287,38 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void finishProject(MyProject myProject) {
+        projectBox.remove(myProject);
+    }
+
+    public void projectsDetail(MyProject project) {
+        Intent intent = new Intent(this, ProjectActivity.class);
+        intent.putExtra(ProjectActivity.PROJECT_ID, projectBox.getId(project));
+        intent.putExtra(ProjectActivity.SUBJECT_ID, project.subject.getTargetId());
+        startActivity(intent);
+    }
+
+    private void addSubjectsAndProjectsForDemo() {
+        subjectBox.removeAll();
+        projectBox.removeAll();
+        MySubject chinese = new MySubject("计算机系统", R.drawable.chinese_pic, R.color.japanBrown);
+        MySubject english = new MySubject("高等数学", R.drawable.english_pic, R.color.japanBlue);
+        MySubject math = new MySubject("线性代数", R.drawable.math_pic, R.color.japanPink);
+        subjectBox.put(chinese);
+        subjectBox.put(english);
+        subjectBox.put(math);
+        MyProject myProject = new MyProject("当代学生");
+        MyProject myProject1 = new MyProject("春风");
+        MyProject myProject2 = new MyProject("新课标");
+
+        myProject.subject.setTarget(chinese);
+        myProject1.subject.setTarget(english);
+        myProject2.subject.setTarget(math);
+        projectBox.put(myProject);
+        projectBox.put(myProject1);
+        projectBox.put(myProject2);
+        updateStatus();
+    }
     public static int px2dip(int pxValue)
     {
         final float scale = Resources.getSystem().getDisplayMetrics().density;

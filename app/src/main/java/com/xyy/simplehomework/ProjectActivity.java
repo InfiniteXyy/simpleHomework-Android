@@ -14,8 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.xyy.simplehomework.cards.MyProject;
-import com.xyy.simplehomework.cards.MySubject;
+import com.xyy.simplehomework.entity.MyProject;
+import com.xyy.simplehomework.entity.MySubject;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;

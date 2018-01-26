@@ -24,10 +24,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.xyy.simplehomework.cards.MyProject;
-import com.xyy.simplehomework.cards.MySubject;
-import com.xyy.simplehomework.cards.MySubject_;
+import com.xyy.simplehomework.entity.MyProject;
+import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.cards.RecyclerViewManager;
+import com.xyy.simplehomework.entity.MySubject_;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

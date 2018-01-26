@@ -9,14 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.xyy.simplehomework.App;
 import com.xyy.simplehomework.ProjectActivity;
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.MyProject;
+import com.xyy.simplehomework.entity.MySubject;
 
 import java.util.ArrayList;
 import java.util.List;

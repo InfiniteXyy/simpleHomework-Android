@@ -3,7 +3,7 @@ package com.xyy.simplehomework;
 import android.app.Application;
 import android.util.Log;
 
-import com.xyy.simplehomework.cards.MyObjectBox;
+import com.xyy.simplehomework.entity.MyObjectBox;
 
 import io.objectbox.BoxStore;
 import io.objectbox.android.AndroidObjectBrowser;

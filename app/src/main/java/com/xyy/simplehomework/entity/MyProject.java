@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.cards;
+package com.xyy.simplehomework.entity;
 
 import java.util.Date;
 
@@ -20,7 +20,7 @@ public class MyProject {
     public Date deadline;
     public Date initDate;
     public ToOne<MySubject> subject;
-    int score;
+    public int score;
 
     public MyProject(String book) {
         this.book = book;

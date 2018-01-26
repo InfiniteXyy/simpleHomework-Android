@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#44617b</color>
+    <color name="colorPrimaryDark">#393f4c</color>
+    <color name="colorAccent">#7a4171</color>
     <color name="japanBrown">#b28c6e</color>
     <color name="japanBlue">#738a93</color>
-    <color name="japanPink">#f5b7c5</color>
+    <color name="japanPink">#e198b4</color>
 </resources>

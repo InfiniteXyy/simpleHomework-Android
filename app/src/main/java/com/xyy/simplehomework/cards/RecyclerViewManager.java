@@ -1,6 +1,8 @@
 package com.xyy.simplehomework.cards;
 
 
+import com.xyy.simplehomework.entity.MyProject;
+
 import java.util.ArrayList;
 import java.util.List;
 

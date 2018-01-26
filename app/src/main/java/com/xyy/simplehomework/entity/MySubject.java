@@ -1,4 +1,6 @@
-package com.xyy.simplehomework.cards;
+package com.xyy.simplehomework.entity;
+
+import com.xyy.simplehomework.entity.MyProject;
 
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;

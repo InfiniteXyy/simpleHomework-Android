@@ -14,13 +14,13 @@
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="210dp"
             android:background="@android:color/transparent"
             app:elevation="0dp">
             <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
                 app:expandedTitleTextAppearance="@style/expandedTitle"
                 app:expandedTitleMarginStart="@dimen/margin_horizontal">
 
@@ -31,16 +31,13 @@
                     app:layout_collapseMode="pin"
                     app:navigationIcon="@drawable/ic_dehaze_24px" />
 
-                <TextView
+                <TextSwitcher
                     android:id="@+id/day_name"
                     android:layout_width="match_parent"
-                    android:maxLines="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_horizontal"
+                    android:maxLines="1"
+                    android:paddingLeft="@dimen/margin_horizontal"
                     android:paddingTop="60dp"
-                    android:text="MONDAY"
-                    android:textColor="@android:color/black"
-                    android:textSize="65dp"
                     app:layout_collapseMode="parallax" />
 
                 <LinearLayout

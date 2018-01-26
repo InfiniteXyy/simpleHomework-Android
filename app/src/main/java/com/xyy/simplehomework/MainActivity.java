@@ -2,7 +2,6 @@ package com.xyy.simplehomework;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -12,21 +11,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.xyy.simplehomework.cards.ProjectAdapter;
 import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.cards.RecyclerViewManager;
@@ -34,7 +28,6 @@ import com.xyy.simplehomework.entity.MySubject_;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +40,7 @@ import io.objectbox.reactive.DataSubscriptionList;
 
 public class MainActivity extends AppCompatActivity {
 
-    String[] weeks = {"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
+    static String[] weeks = {"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
 
 
     private DrawerLayout drawerLayout;
@@ -105,11 +98,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpViews() {
-        // 导入字体
-        Typeface typeFace =Typeface.createFromAsset(getAssets(),"fonts/Lato-Regular.ttf");
+
 
         // 设置工具栏和侧边框
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -131,20 +123,15 @@ public class MainActivity extends AppCompatActivity {
         });
         ActionBar actionBar = getSupportActionBar();
         Date date = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int week_index = cal.get(Calendar.DAY_OF_WEEK) - 1;
         if (actionBar != null) {
             actionBar.setTitle(new SimpleDateFormat("M.d").format(date));
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-
         // 设置 AppBar
-        final TextView dayName = findViewById(R.id.day_name);
         final LinearLayout status = findViewById(R.id.status);
-        dayName.setText(weeks[week_index].toUpperCase());
-        dayName.setTypeface(typeFace, Typeface.BOLD);
+        final DayNameSwitcher dayName = new DayNameSwitcher(this);
+
         AppBarLayout appBarLayout = findViewById(R.id.app_bar);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -155,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                 status.setAlpha((float) newAlpha/255);
             }
         });
-
         // 设置增加框监听
 
         // 语数英demo
@@ -192,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
                                                         myProject.subject.setTarget(selectedSubject);
                                                         projectBox.put(myProject);
                                                         updateStatus();
+
                                                     }
                                                 })
                                                 .build()
@@ -231,7 +218,8 @@ public class MainActivity extends AppCompatActivity {
             weekStatusLayout[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    viewPager.setCurrentItem(finalI, false);
+                    viewPager.setCurrentItem(finalI, true);
+
                     for (CardView card : weekStatusLayout) {
                         if (card != weekStatusLayout[finalI]) {
                             card.setAlpha(0.5f);
@@ -250,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onPageSelected(int position) {
+                dayName.setText(position);
                 recyclerViewManager.updateProjects(projectQuery.find());
             }
             @Override
@@ -263,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < 5; i++) {
             weekStatusLayout[i].getLayoutParams().height = recyclerViewManager.getDailyNum(i)*28+15;
         }
+
     }
 
     // 设置 toolbar 样式

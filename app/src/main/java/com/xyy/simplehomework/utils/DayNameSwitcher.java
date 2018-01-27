@@ -1,4 +1,4 @@
-package com.xyy.simplehomework;
+package com.xyy.simplehomework.utils;
 
 import android.app.Activity;
 import android.app.Application;

@@ -2,8 +2,8 @@
     <string name="app_name">SimpleHomework</string>
     <string name="day">日程</string>
     <string name="week">周记</string>
-    <string name="month">月影</string>
-    <string name="year">年代记</string>
+    <string name="month">学期</string>
+    <string name="year">总览</string>
     <string name="setting">设置</string>
     <string name="add_projects">添加作业</string>
     <string name="set_subjects">设置课程</string>

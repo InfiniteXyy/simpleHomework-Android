@@ -25,6 +25,7 @@ import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.cards.RecyclerViewManager;
 import com.xyy.simplehomework.entity.MySubject_;
+import com.xyy.simplehomework.utils.DayNameSwitcher;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ import io.objectbox.reactive.DataSubscriptionList;
 
 public class MainActivity extends AppCompatActivity {
 
-    static String[] weeks = {"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
+    public static String[] weeks = {"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
 
 
     private DrawerLayout drawerLayout;
@@ -116,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.year:
                         Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
                         startActivity(intent);
+                        break;
+                    case R.id.setting:
+                        startActivity(new Intent(getApplicationContext(), SettingActivity.class));
                         break;
                 }
                 return true;

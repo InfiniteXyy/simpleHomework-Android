@@ -24,9 +24,11 @@ public class RecyclerViewFragment extends Fragment {
     RecyclerView recyclerView;
     public ProjectAdapter adapter;
     private TextView empty_layout;
-    public RecyclerViewFragment(){
+
+    public RecyclerViewFragment() {
         adapter = new ProjectAdapter();
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class RecyclerViewFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener(){
+        recyclerView.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {
 
         });
         empty_layout = view.findViewById(R.id.empty_view);

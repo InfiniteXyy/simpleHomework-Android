@@ -1,7 +1,6 @@
 package com.xyy.simplehomework.utils;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.View;
@@ -21,19 +20,20 @@ import java.util.Date;
  */
 
 public class DayNameSwitcher {
-    Context context;
+    private Context context;
     private TextSwitcher dayName;
-    int old_position;
+    private int old_position;
 
     public DayNameSwitcher(Context mContext) {
         this.context = mContext;
         initSwitcher();
     }
+
     private void initSwitcher() {
         // 导入字体
-        final Typeface typeFace =Typeface.createFromAsset(context.getAssets(),"fonts/Lato-Regular.ttf");
+        final Typeface typeFace = Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Regular.ttf");
 
-        dayName = ((Activity)context).findViewById(R.id.day_name);
+        dayName = ((Activity) context).findViewById(R.id.day_name);
         dayName.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {

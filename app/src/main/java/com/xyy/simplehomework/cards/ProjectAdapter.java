@@ -1,8 +1,6 @@
 package com.xyy.simplehomework.cards;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHolder>{
+public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHolder> {
     private Context mContext;
     private List<MyProject> myProjects;
 
@@ -47,7 +45,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                ((MainActivity) mContext).projectsDetail(myProjects.get(position));
+                ((MainActivity) mContext).showProjectsDetail(myProjects.get(position));
             }
         });
 
@@ -82,7 +80,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
-//        ImageView subjectImg;
+        //        ImageView subjectImg;
         TextView subjectName;
         Button deleteBtn;
 

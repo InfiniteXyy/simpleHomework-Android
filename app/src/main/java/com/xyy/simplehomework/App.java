@@ -8,7 +8,7 @@ import com.xyy.simplehomework.entity.MyObjectBox;
 import io.objectbox.BoxStore;
 import io.objectbox.android.AndroidObjectBrowser;
 
-public class App extends Application{
+public class App extends Application {
 
     private BoxStore boxStore;
 
@@ -22,5 +22,7 @@ public class App extends Application{
         Log.d("App", "Using ObjectBox " + BoxStore.getVersion() + " (" + BoxStore.getVersionNative() + ")");
     }
 
-    public BoxStore getBoxStore() { return boxStore; }
+    public BoxStore getBoxStore() {
+        return boxStore;
+    }
 }

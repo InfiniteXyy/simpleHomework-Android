@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private Query<MyProject> projectQuery;
 
     private DataSubscriptionList subscriptions = new DataSubscriptionList();
-    private FragmentTransaction transaction;
 
     private DayNameSwitcher dayName;
 
@@ -97,20 +96,22 @@ public class MainActivity extends AppCompatActivity {
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 // 开启事务
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 switch (item.getItemId()) {
                     case R.id.day:
                         if (!item.isChecked()) {
-                            transaction.show(dayFragment).hide(weekFragment);
+                            transaction.show(dayFragment).hide(weekFragment).commit();
                         }
                         break;
                     case R.id.week:
                         if (!item.isChecked()) {
-                            transaction.show(weekFragment).hide(dayFragment);
+                            transaction.show(weekFragment).hide(dayFragment).commit();
                         }
                         break;
                     case R.id.month:
@@ -202,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setDefaultFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        transaction = fm.beginTransaction();
+        FragmentTransaction transaction = fm.beginTransaction();
         dayFragment = new DayFragment();
         transaction.add(R.id.mainFragment, dayFragment);
         weekFragment = new WeekFragment();

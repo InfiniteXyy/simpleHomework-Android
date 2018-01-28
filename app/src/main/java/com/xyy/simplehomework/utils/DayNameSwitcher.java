@@ -23,6 +23,8 @@ public class DayNameSwitcher {
     private Context context;
     private TextSwitcher dayName;
     private int old_position;
+    public final static int WEEK = 0;
+    public final static int DAY = 1;
 
     public DayNameSwitcher(Context mContext) {
         this.context = mContext;
@@ -65,5 +67,19 @@ public class DayNameSwitcher {
         }
         old_position = weekIndex;
         dayName.setText(MainActivity.weeks[weekIndex].toUpperCase());
+    }
+
+    public void changeFragmentTitle(int type) {
+        switch (type) {
+            case WEEK:
+                dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_top));
+                dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_bottom));
+                dayName.setText("WEEK 3");
+                break;
+            case DAY:
+                dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_bottom));
+                dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_top));
+                dayName.setText("SUNDAY");
+        }
     }
 }

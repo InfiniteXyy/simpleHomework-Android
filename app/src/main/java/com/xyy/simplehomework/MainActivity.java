@@ -1,5 +1,7 @@
 package com.xyy.simplehomework;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private WeekFragment weekFragment;
     private DayFragment dayFragment;
+    private LinearLayout status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,12 +110,24 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.day:
                         if (!item.isChecked()) {
                             transaction.show(dayFragment).hide(weekFragment).commit();
+                            status.setVisibility(View.VISIBLE);
+                            dayName.changeFragmentTitle(DayNameSwitcher.DAY);
                         }
+                        drawerLayout.closeDrawer(navigationView);
                         break;
                     case R.id.week:
                         if (!item.isChecked()) {
                             transaction.show(weekFragment).hide(dayFragment).commit();
+                            status.animate().alpha(0.0f).setDuration(200)
+                                    .setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            status.setVisibility(View.GONE);
+                                        }
+                                    });
+                            dayName.changeFragmentTitle(DayNameSwitcher.WEEK);
                         }
+                        drawerLayout.closeDrawer(navigationView);
                         break;
                     case R.id.month:
                         break;
@@ -137,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 设置 AppBar
         dayName = new DayNameSwitcher(this);
-        final LinearLayout status = findViewById(R.id.status);
+        status = findViewById(R.id.status);
         AppBarLayout appBarLayout = findViewById(R.id.app_bar);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override

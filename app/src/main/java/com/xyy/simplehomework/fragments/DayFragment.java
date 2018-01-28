@@ -38,12 +38,12 @@ public class DayFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        weekStatusLayout[0] = view.findViewById(R.id.monday_status);
-        weekStatusLayout[1] = view.findViewById(R.id.tuesday_status);
-        weekStatusLayout[2] = view.findViewById(R.id.wednesday_status);
-        weekStatusLayout[3] = view.findViewById(R.id.thursday_status);
-        weekStatusLayout[4] = view.findViewById(R.id.friday_status);
-        Log.d("123", "onViewCreated: " + weekStatusLayout[0]);
+        weekStatusLayout[0] = getActivity().findViewById(R.id.monday_status);
+        weekStatusLayout[1] = getActivity().findViewById(R.id.tuesday_status);
+        weekStatusLayout[2] = getActivity().findViewById(R.id.wednesday_status);
+        weekStatusLayout[3] = getActivity().findViewById(R.id.thursday_status);
+        weekStatusLayout[4] = getActivity().findViewById(R.id.friday_status);
+
         viewPager = view.findViewById(R.id.MyViewPager);
         recyclerViewManager = new RecyclerViewManager();
         setDailyViewPage();
@@ -68,28 +68,28 @@ public class DayFragment extends Fragment {
             }
         });
 
-//        for (int i = 0; i < 5; i++) {
-//            final int finalI = i;
-//            weekStatusLayout[i].setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    viewPager.setCurrentItem(finalI, true);
-//
-//                    for (CardView card : weekStatusLayout) {
-//                        if (card != weekStatusLayout[finalI]) {
-//                            card.setAlpha(0.5f);
-//                        }
-//                    }
-//                }
-//            });
-//        }
+        for (int i = 0; i < 5; i++) {
+            final int finalI = i;
+            weekStatusLayout[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    viewPager.setCurrentItem(finalI, true);
+
+                    for (CardView card : weekStatusLayout) {
+                        if (card != weekStatusLayout[finalI]) {
+                            card.setAlpha(0.5f);
+                        }
+                    }
+                }
+            });
+        }
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                weekStatusLayout[position].setAlpha(1 - positionOffset / 2);
-//                if (position < 4)
-//                    weekStatusLayout[position + 1].setAlpha(positionOffset / 2 + 0.5f);
+                weekStatusLayout[position].setAlpha(1 - positionOffset / 2);
+                if (position < 4)
+                    weekStatusLayout[position + 1].setAlpha(positionOffset / 2 + 0.5f);
             }
 
             @Override

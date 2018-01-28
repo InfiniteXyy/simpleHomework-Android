@@ -39,13 +39,12 @@ public class RecyclerViewFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recycler_view);
+        empty_layout = view.findViewById(R.id.empty_view);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {
 
-        });
-        empty_layout = view.findViewById(R.id.empty_view);
     }
 
     public void updateDailyProjects(List<MyProject> projectList) {

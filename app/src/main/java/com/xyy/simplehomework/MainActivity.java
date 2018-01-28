@@ -61,11 +61,21 @@ public class MainActivity extends AppCompatActivity {
     private DayFragment dayFragment;
     private LinearLayout status;
 
+    public static int px2dip(int pxValue) {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+
+    public static float dip2px(float dipValue) {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
+        return (dipValue * scale + 0.5f);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        setDefaultFragment();
         BoxStore boxStore = ((App) getApplication()).getBoxStore();
         subjectBox = boxStore.boxFor(MySubject.class);
         projectBox = boxStore.boxFor(MyProject.class);
@@ -74,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 .observer(new DataObserver<List<MyProject>>() {
                     @Override
                     public void onData(List<MyProject> projects) {
-                        DayFragment.updateProjects(projects);
+                        dayFragment.updateProjects(projects);
                     }
                 });
 
@@ -90,9 +100,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        DayFragment.updateProjects(projectQuery.find());
+        dayFragment.updateProjects(projectQuery.find());
         super.onResume();
     }
+
+
+//    public void updateStatus() {
+//        for (int i = 0; i < 5; i++) {
+//            weekStatusLayout[i].getLayoutParams().height = recyclerViewManager.getDailyNum(i) * 28 + 15;
+//        }
+//
+//    }
 
     private void setUpViews() {
         // 设置工具栏和侧边框
@@ -213,7 +231,6 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .positiveText("choose")
                 .build();
-        setDefaultFragment();
     }
 
     private void setDefaultFragment() {
@@ -226,14 +243,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.show(dayFragment).hide(weekFragment);
         transaction.commitAllowingStateLoss();
     }
-
-
-//    public void updateStatus() {
-//        for (int i = 0; i < 5; i++) {
-//            weekStatusLayout[i].getLayoutParams().height = recyclerViewManager.getDailyNum(i) * 28 + 15;
-//        }
-//
-//    }
 
     // 设置 toolbar 样式
     @Override
@@ -291,17 +300,6 @@ public class MainActivity extends AppCompatActivity {
         projectBox.put(myProject);
         projectBox.put(myProject1);
         projectBox.put(myProject2);
-    }
-
-    public static int px2dip(int pxValue) {
-        final float scale = Resources.getSystem().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
-    }
-
-
-    public static float dip2px(float dipValue) {
-        final float scale = Resources.getSystem().getDisplayMetrics().density;
-        return (dipValue * scale + 0.5f);
     }
 }
 

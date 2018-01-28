@@ -32,13 +32,16 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
         if (mContext == null) {
             mContext = parent.getContext();
         }
+        if (myProjects.isEmpty())
+            return new ViewHolder(LayoutInflater.from(mContext).
+                inflate(R.layout.empty_view, parent, false), true);
 
         View view;
         final ViewHolder holder;
 
         view = LayoutInflater.from(mContext).inflate(R.layout.project_item,
                 parent, false);
-        holder = new ViewHolder(view);
+        holder = new ViewHolder(view, false);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             // 用 intent 传入下一个 activity
@@ -66,6 +69,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        if (myProjects.isEmpty()) return;// 显示空白页
         MyProject myProject = myProjects.get(position);
         MySubject mySubject = myProject.subject.getTarget();
         holder.subjectName.setText(mySubject.name);
@@ -75,6 +79,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
 
     @Override
     public int getItemCount() {
+        if (myProjects.isEmpty()) return 1;
         return myProjects.size();
     }
 
@@ -84,8 +89,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
         TextView subjectName;
         Button deleteBtn;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view, boolean isEmpty) {
             super(view);
+            if (isEmpty) return;
             cardView = (CardView) view;
 //            subjectImg = view.findViewById(R.id.subject_image);
             subjectName = view.findViewById(R.id.subject_name);

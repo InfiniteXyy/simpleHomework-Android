@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,14 +24,22 @@ import java.util.List;
  */
 
 public class DayFragment extends Fragment {
+    private RecyclerViewManager recyclerViewManager;
+    private final CardView[] weekStatusLayout;
     ViewPager viewPager;
-    private final CardView[] weekStatusLayout = new CardView[5];
-    private static RecyclerViewManager recyclerViewManager = new RecyclerViewManager();
 
+    public void updateProjects(List<MyProject> projects) {
+        recyclerViewManager.updateProjects(projects);
+    }
+
+    public DayFragment() {
+        recyclerViewManager = new RecyclerViewManager();
+        weekStatusLayout = new CardView[5];
+
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.daily_viewpager, container, false);
     }
 
@@ -43,7 +50,6 @@ public class DayFragment extends Fragment {
         weekStatusLayout[2] = getActivity().findViewById(R.id.wednesday_status);
         weekStatusLayout[3] = getActivity().findViewById(R.id.thursday_status);
         weekStatusLayout[4] = getActivity().findViewById(R.id.friday_status);
-
         viewPager = view.findViewById(R.id.MyViewPager);
         recyclerViewManager = new RecyclerViewManager();
         setDailyViewPage();
@@ -56,12 +62,10 @@ public class DayFragment extends Fragment {
             public int getCount() {
                 return 5;
             }
-
             @Override
             public Fragment getItem(int position) {
-                return recyclerViewManager.recyclerViewFragments.get(position);
+                return recyclerViewManager.recyclerViewFragments[position];
             }
-
             @Override
             public CharSequence getPageTitle(int position) {
                 return MainActivity.weeks[position];
@@ -101,9 +105,5 @@ public class DayFragment extends Fragment {
             public void onPageScrollStateChanged(int state) {
             }
         });
-    }
-
-    public static void updateProjects(List<MyProject> projects) {
-        recyclerViewManager.updateProjects(projects);
     }
 }

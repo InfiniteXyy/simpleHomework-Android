@@ -1,6 +1,8 @@
 package com.xyy.simplehomework.cards;
 
 
+import android.util.Log;
+
 import com.xyy.simplehomework.entity.MyProject;
 
 import java.util.ArrayList;
@@ -12,31 +14,24 @@ import java.util.List;
  */
 
 public class RecyclerViewManager {
-    final private static int weekRange = 5;
-    public List<RecyclerViewFragment> recyclerViewFragments;
-    private int[] dailyCounts;
+    final private static int WEEK_RANGE = 5;
+    public RecyclerViewFragment[] recyclerViewFragments;
 
     public RecyclerViewManager() {
-        recyclerViewFragments = new ArrayList<>();
-        for (int i = 0; i < weekRange; i++) {
-            recyclerViewFragments.add(new RecyclerViewFragment());
+        recyclerViewFragments = new RecyclerViewFragment[WEEK_RANGE];
+        for (int i = 0; i < WEEK_RANGE; i++) {
+            recyclerViewFragments[i] = new RecyclerViewFragment();
         }
-        dailyCounts = new int[weekRange];
     }
 
     public void updateProjects(List<MyProject> projects) {
-        for (int i = 0; i < weekRange; i++) {
+        for (int i = 0; i < WEEK_RANGE; i++) {
             List<MyProject> temp = new ArrayList<>();
             for (MyProject myProject : projects) {
                 if (myProject.testDate == i)
                     temp.add(myProject);
             }
-            recyclerViewFragments.get(i).updateDailyProjects(temp);
-            dailyCounts[i] = temp.size();
+            recyclerViewFragments[i].updateDailyProjects(temp);
         }
-    }
-
-    public int getDailyNum(int day) {
-        return dailyCounts[day];
     }
 }

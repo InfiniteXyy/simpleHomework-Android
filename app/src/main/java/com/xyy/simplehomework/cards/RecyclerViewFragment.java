@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +22,8 @@ import java.util.List;
  */
 
 public class RecyclerViewFragment extends Fragment {
-    RecyclerView recyclerView;
     public ProjectAdapter adapter;
-    private TextView empty_layout;
+    RecyclerView recyclerView;
 
     public RecyclerViewFragment() {
         adapter = new ProjectAdapter();
@@ -36,26 +36,15 @@ public class RecyclerViewFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recycler_view);
-        empty_layout = view.findViewById(R.id.empty_view);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-
+        super.onViewCreated(view, savedInstanceState);
     }
 
     public void updateDailyProjects(List<MyProject> projectList) {
         adapter.setMyProjects(projectList);
-        if (recyclerView == null) return;
-        if (projectList.isEmpty()) {
-            empty_layout.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-        } else {
-            empty_layout.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-        }
     }
 }

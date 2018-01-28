@@ -20,11 +20,11 @@ import java.util.Date;
  */
 
 public class DayNameSwitcher {
+    public final static int WEEK = 0;
+    public final static int DAY = 1;
     private Context context;
     private TextSwitcher dayName;
     private int old_position;
-    public final static int WEEK = 0;
-    public final static int DAY = 1;
 
     public DayNameSwitcher(Context mContext) {
         this.context = mContext;

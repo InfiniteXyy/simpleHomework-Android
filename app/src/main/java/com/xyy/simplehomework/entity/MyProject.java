@@ -12,15 +12,14 @@ import io.objectbox.relation.ToOne;
 
 @Entity
 public class MyProject {
-    @Id
-    long id;
-
     public int testDate;
     public String book;
     public Date deadline;
     public Date initDate;
     public ToOne<MySubject> subject;
     public int score;
+    @Id
+    long id;
 
     public MyProject(String book) {
         this.book = book;

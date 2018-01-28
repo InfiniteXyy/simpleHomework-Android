@@ -8,12 +8,4 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent">
     </android.support.v7.widget.RecyclerView>
-    <TextView
-        android:id="@+id/empty_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="100dp"
-        android:visibility="gone"
-        android:text="没有任务" />
 </FrameLayout>

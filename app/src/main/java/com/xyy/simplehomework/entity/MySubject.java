@@ -12,14 +12,13 @@ import io.objectbox.relation.ToMany;
 @Entity
 public class MySubject {
 
-    @Id
-    long id;
-
     @Backlink
     public ToMany<MyProject> projects;
     public String name;
     public int imgId;
     public int colorId;
+    @Id
+    long id;
 
 
     public MySubject(String name, int imgId, int colorId) {

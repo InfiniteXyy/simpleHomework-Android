@@ -23,8 +23,18 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
     private Context mContext;
     private List<MyProject> myProjects;
 
+    private static final int VIEW_EMPTY = 1;
+    private static final int VIEW_CARD = 2;
+
     public ProjectAdapter() {
         this.myProjects = new ArrayList<>();
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        if (myProjects.isEmpty()) return VIEW_EMPTY;
+        else return VIEW_CARD;
     }
 
     @Override
@@ -32,34 +42,20 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
         if (mContext == null) {
             mContext = parent.getContext();
         }
-        if (myProjects.isEmpty())
-            return new ViewHolder(LayoutInflater.from(mContext).
-                inflate(R.layout.empty_view, parent, false), true);
-
         View view;
-        final ViewHolder holder;
-
-        view = LayoutInflater.from(mContext).inflate(R.layout.project_item,
-                parent, false);
-        holder = new ViewHolder(view, false);
-
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            // 用 intent 传入下一个 activity
-            @Override
-            public void onClick(View v) {
-                int position = holder.getAdapterPosition();
-                ((MainActivity) mContext).showProjectsDetail(myProjects.get(position));
-            }
-        });
-
-        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "删除了！", Toast.LENGTH_SHORT).show();
-                ((MainActivity) mContext).finishProject(myProjects.get(holder.getAdapterPosition()));
-            }
-        });
-        return holder;
+        ViewHolder viewHolder;
+        switch (viewType) {
+            case VIEW_EMPTY:
+                view = LayoutInflater.from(mContext).inflate(R.layout.empty_view, parent, false);
+                viewHolder = new ViewHolderEmpty(view);
+                break;
+            default:
+                view = LayoutInflater.from(mContext).inflate(R.layout.project_item,
+                        parent, false);
+                viewHolder = new ViewHolderCard(view);
+                break;
+        }
+        return viewHolder;
     }
 
     void setMyProjects(List<MyProject> projects) {
@@ -69,12 +65,30 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (myProjects.isEmpty()) return;// 显示空白页
-        MyProject myProject = myProjects.get(position);
-        MySubject mySubject = myProject.subject.getTarget();
-        holder.subjectName.setText(mySubject.name);
-        holder.cardView.setCardBackgroundColor(mContext.getResources().getColor(mySubject.colorId));
-//        Glide.with(mContext).load(mySubject.imgId).into(holder.subjectImg);
+        if (getItemViewType(position) != VIEW_EMPTY) {
+            final ViewHolderCard cardHolder = (ViewHolderCard) holder;
+            MyProject myProject = myProjects.get(position);
+            MySubject mySubject = myProject.subject.getTarget();
+            cardHolder.subjectName.setText(mySubject.name);
+            cardHolder.cardView.setCardBackgroundColor(mContext.getResources().getColor(mySubject.colorId));
+
+            cardHolder.cardView.setOnClickListener(new View.OnClickListener() {
+                // 用 intent 传入下一个 activity
+                @Override
+                public void onClick(View v) {
+                    int position = cardHolder.getAdapterPosition();
+                    ((MainActivity) mContext).showProjectsDetail(myProjects.get(position));
+                }
+            });
+
+            cardHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "删除了！", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) mContext).finishProject(myProjects.get(cardHolder.getAdapterPosition()));
+                }
+            });
+        }
     }
 
     @Override
@@ -84,18 +98,28 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        ViewHolder(View view) {
+            super(view);
+        }
+    }
+
+    static class ViewHolderCard extends ViewHolder {
         CardView cardView;
-        //        ImageView subjectImg;
         TextView subjectName;
         Button deleteBtn;
 
-        public ViewHolder(View view, boolean isEmpty) {
+        ViewHolderCard(View view) {
             super(view);
-            if (isEmpty) return;
             cardView = (CardView) view;
-//            subjectImg = view.findViewById(R.id.subject_image);
             subjectName = view.findViewById(R.id.subject_name);
             deleteBtn = view.findViewById(R.id.card_btn_delete);
+        }
+    }
+
+    static class ViewHolderEmpty extends ViewHolder {
+
+        ViewHolderEmpty(View view) {
+            super(view);
         }
     }
 }

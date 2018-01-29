@@ -22,7 +22,6 @@ import java.util.List;
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHolder> {
     private Context mContext;
     private List<MyProject> myProjects;
-
     private static final int VIEW_EMPTY = 1;
     private static final int VIEW_CARD = 2;
 

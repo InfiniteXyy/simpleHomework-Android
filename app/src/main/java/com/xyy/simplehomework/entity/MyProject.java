@@ -17,13 +17,14 @@ public class MyProject {
     public Date deadline;
     public Date initDate;
     public ToOne<MySubject> subject;
+//    public ToOne<Week> week;
     public int score;
     @Id
     long id;
 
     public MyProject(String book) {
         this.book = book;
-        testDate = 0;// 测试用例，默认为0
+        this.testDate = 0;
     }
 
     public MyProject() {

@@ -15,17 +15,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.entity.MySubject_;
 import com.xyy.simplehomework.fragments.DayFragment;
 import com.xyy.simplehomework.fragments.WeekFragment;
+import com.xyy.simplehomework.utils.AddProjectDialog;
 import com.xyy.simplehomework.utils.DayNameSwitcher;
 
 import java.text.SimpleDateFormat;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
 
-    private MaterialDialog chooseDialog;
+    private AddProjectDialog addDialog;
 
     private Box<MySubject> subjectBox;
     private Query<MySubject> subjectQuery;
@@ -186,53 +186,17 @@ public class MainActivity extends AppCompatActivity {
         // 语数英demo
         subjectQuery = subjectBox.query().build();
         addSubjectsAndProjectsForDemo();
+        addDialog = new AddProjectDialog(this);
+    }
 
+    public List<String> getSubjectNames() {
         List<MySubject> subjects = subjectQuery.find();
         final ArrayList<String> subjectNames = new ArrayList<>();
         for (MySubject subject : subjects) {
             subjectNames.add(subject.name);
         }
-
-        chooseDialog = new MaterialDialog.Builder(this)
-                .title(R.string.choose_subject)
-                .items(subjectNames)
-                .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        final MySubject selectedSubject = subjectBox.query().equal(MySubject_.name, subjectNames.get(which)).build().findFirst();
-                        new MaterialDialog.Builder(MainActivity.this)
-                                .title(R.string.choose_date)
-                                .items(weeks)
-                                .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
-                                    @Override
-                                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                                        final int selectedDate = which;
-                                        new MaterialDialog.Builder(MainActivity.this)
-                                                .title(R.string.decide_name)
-                                                .input("Homework name", "", false, new MaterialDialog.InputCallback() {
-                                                    @Override
-                                                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                                        MyProject myProject = new MyProject(input.toString());
-                                                        myProject.testDate = selectedDate;
-                                                        myProject.subject.setTarget(selectedSubject);
-                                                        projectBox.put(myProject);
-                                                    }
-                                                })
-                                                .build()
-                                                .show();
-                                        return false;
-                                    }
-                                })
-                                .positiveText("choose")
-                                .build()
-                                .show();
-                        return false;
-                    }
-                })
-                .positiveText("choose")
-                .build();
+        return subjectNames;
     }
-
     private void setDefaultFragment() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -256,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_projects:
-                chooseDialog.show();
+                addDialog.show();
                 break;
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -297,9 +261,12 @@ public class MainActivity extends AppCompatActivity {
         myProject.subject.setTarget(chinese);
         myProject1.subject.setTarget(english);
         myProject2.subject.setTarget(math);
+
         projectBox.put(myProject);
         projectBox.put(myProject1);
         projectBox.put(myProject2);
+
+        Log.d("123", "addSubjectsAndProjectsForDemo: "+chinese.projects.get(0).book);
     }
 }
 

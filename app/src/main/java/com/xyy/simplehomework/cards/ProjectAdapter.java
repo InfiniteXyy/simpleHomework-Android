@@ -26,7 +26,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
     private static final int VIEW_EMPTY = 1;
     private static final int VIEW_CARD = 2;
 
-    public ProjectAdapter() {
+    ProjectAdapter() {
         this.myProjects = new ArrayList<>();
     }
 

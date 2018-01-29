@@ -18,9 +18,10 @@ import java.util.List;
  */
 
 public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final int HEADER_FINISH = 0;
-    private final int HEADER_TOBE = 2;
-    private final int HEADER_RECORD = 3;
+    private static final int HEADER_FINISH = 0;
+    private static final int HEADER_TOBE = 2;
+    private static final int HEADER_RECORD = 3;
+    private static final int CARD = 4;
     private Context mContext;
 
     private List<MySubject> hasFinished;
@@ -38,7 +39,7 @@ public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (position == 0) return HEADER_FINISH;
         else if (position == hasFinished.size() + 1) return HEADER_TOBE;
         else if (position == hasFinished.size() + toBeFinished.size() + 2) return HEADER_RECORD;
-        else return position;
+        else return CARD;
     }
 
     @Override
@@ -58,9 +59,10 @@ public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 view = LayoutInflater.from(mContext).inflate(R.layout.small_project_title, parent, false);
                 ((TextView) view.findViewById(R.id.smallProjectTitle)).setText("待记录(3)");
                 break;
-            default:
+            case CARD:
                 view = LayoutInflater.from(mContext).inflate(R.layout.small_project_item, parent, false);
                 break;
+            default: return null;
         }
         return new RecyclerView.ViewHolder(view) {
         };

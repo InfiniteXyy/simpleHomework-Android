@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
 
         // 语数英demo
         addSubjectsAndProjectsForDemo();
-
         projectQuery.subscribe(subscriptions).on(AndroidScheduler.mainThread())
                 .observer(new DataObserver<List<MyProject>>() {
                     @Override
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         setUpViews();
-
+        weekFragment.updateWeekList(subjectQuery.find());
     }
 
     @Override
@@ -141,6 +140,11 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "getThisWeek: set new week");
         Week week = new Week();
         week.weekIndex = weekIndex;
+        for (MySubject subject : thisSemester.allSubjects) {
+            if (weekIndex == subject.weeks) {
+                week.subjects.add(subject);
+            }
+        }
         week.semester.setTarget(thisSemester);
         return week;
     }
@@ -310,13 +314,17 @@ public class MainActivity extends AppCompatActivity {
         english.semester.setTarget(thisSemester);
         math.semester.setTarget(thisSemester);
 
+        chinese.weeks = 4;
+        english.weeks = 4;
+        math.weeks = 4;
+
         subjectBox.put(chinese);
         subjectBox.put(english);
         subjectBox.put(math);
 
         MyProject myProject = new MyProject("当代学生");
         MyProject myProject1 = new MyProject("春风");
-        MyProject myProject2 = new MyProject("新课标");
+        MyProject myProject2 = new MyProject();
 
         myProject.subject.setTarget(chinese);
         myProject1.subject.setTarget(english);

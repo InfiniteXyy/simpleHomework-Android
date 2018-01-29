@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:3845338741355842143",
-      "lastPropertyId": "5:6028364199698686391",
+      "lastPropertyId": "7:2351533157916940020",
       "name": "MySubject",
       "properties": [
         {
@@ -28,6 +28,14 @@
           "id": "5:6028364199698686391",
           "indexId": "5:5369575951524822969",
           "name": "semesterId"
+        },
+        {
+          "id": "6:6053855120052840391",
+          "name": "weeks"
+        },
+        {
+          "id": "7:2351533157916940020",
+          "name": "status"
         }
       ],
       "relations": []
@@ -93,7 +101,12 @@
           "name": "semesterId"
         }
       ],
-      "relations": []
+      "relations": [
+        {
+          "id": "2:6591866952041310847",
+          "name": "subjects"
+        }
+      ]
     },
     {
       "id": "4:590095682250591924",
@@ -126,7 +139,7 @@
   ],
   "lastEntityId": "4:590095682250591924",
   "lastIndexId": "5:5369575951524822969",
-  "lastRelationId": "1:5943780519245560466",
+  "lastRelationId": "2:6591866952041310847",
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,

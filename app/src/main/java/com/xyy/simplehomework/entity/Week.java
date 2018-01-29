@@ -14,10 +14,10 @@ import io.objectbox.relation.ToOne;
 public class Week {
     public int weekIndex;
     public ToOne<Semester> semester;
-//    // 本周会上的课
-//    public ToMany<MySubject> subjects;
     @Backlink
     public ToMany<MyProject> projects;
+
+    public ToMany<MySubject> subjects;
     @Id
     long id;
 }

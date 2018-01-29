@@ -24,12 +24,7 @@ public class RecyclerViewManager {
 
     public void updateProjects(List<MyProject> projects) {
         for (int i = 0; i < WEEK_RANGE; i++) {
-            List<MyProject> temp = new ArrayList<>();
-            for (MyProject myProject : projects) {
-                temp.add(myProject);
-            }
-            recyclerViewFragments[i].updateDailyProjects(temp);
-
+            recyclerViewFragments[i].updateDailyProjects(projects);
         }
     }
 }

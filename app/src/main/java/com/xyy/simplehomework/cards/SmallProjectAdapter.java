@@ -19,9 +19,9 @@ import java.util.List;
 
 public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int HEADER_FINISH = 0;
-    private static final int HEADER_TOBE = 2;
-    private static final int HEADER_RECORD = 3;
-    private static final int CARD = 4;
+    private static final int HEADER_TOBE = 1;
+    private static final int HEADER_RECORD = 2;
+    private static final int CARD = 3;
     private Context mContext;
 
     private List<MySubject> hasFinished;
@@ -76,6 +76,22 @@ public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return hasFinished.size() + toBeRecorded.size() + toBeRecorded.size() + 3;
+        return hasFinished.size() + toBeRecorded.size() + toBeFinished.size() + 3;
+
+    }
+
+    public void setHasFinished(List<MySubject> hasFinished) {
+        this.hasFinished = hasFinished;
+        notifyDataSetChanged();
+    }
+
+    public void setToBeFinished(List<MySubject> toBeFinished) {
+        this.toBeFinished = toBeFinished;
+        notifyDataSetChanged();
+    }
+
+    public void setToBeRecorded(List<MySubject> toBeRecorded) {
+        this.toBeRecorded = toBeRecorded;
+        notifyDataSetChanged();
     }
 }

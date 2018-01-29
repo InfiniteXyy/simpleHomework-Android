@@ -12,10 +12,6 @@ import io.objectbox.relation.ToOne;
 
 @Entity
 public class MyProject {
-    public static int HAS_FINISHED = 0;
-    public static int TOBE_DONE = 1;
-    public static int TOBE_CHECK = 2;
-
     public String book;
     public Date deadline;
     public Date initDate;
@@ -28,7 +24,6 @@ public class MyProject {
 
     public MyProject(String book) {
         this.book = book;
-        status = TOBE_DONE;
     }
 
     public MyProject() {

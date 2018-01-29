@@ -82,7 +82,7 @@ public class DayNameSwitcher {
                 dayName.setText("WEEK " + dateHelper.getWeekIndex());
                 break;
             case DAY:
-                dayName.setText(dateHelper.getDayName().toUpperCase());
+                dayName.setText(DateHelper.weeks[old_position].toUpperCase());
                 break;
             case SEMESTER:
                 dayName.setText(dateHelper.getSemesterName());

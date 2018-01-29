@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:3845338741355842143",
-      "lastPropertyId": "4:4109019459841398292",
+      "lastPropertyId": "5:6028364199698686391",
       "name": "MySubject",
       "properties": [
         {
@@ -23,19 +23,20 @@
         {
           "id": "4:4109019459841398292",
           "name": "colorId"
+        },
+        {
+          "id": "5:6028364199698686391",
+          "indexId": "5:5369575951524822969",
+          "name": "semesterId"
         }
       ],
       "relations": []
     },
     {
       "id": "2:5117643084828053962",
-      "lastPropertyId": "7:5911894345550077787",
+      "lastPropertyId": "9:7909398941521751828",
       "name": "MyProject",
       "properties": [
-        {
-          "id": "1:295190886471207253",
-          "name": "testDate"
-        },
         {
           "id": "2:1131400573790448399",
           "name": "book"
@@ -60,20 +61,85 @@
           "id": "7:5911894345550077787",
           "indexId": "1:6987887438059804985",
           "name": "subjectId"
+        },
+        {
+          "id": "8:6650527471127632113",
+          "indexId": "2:2785689202725749247",
+          "name": "weekId"
+        },
+        {
+          "id": "9:7909398941521751828",
+          "name": "status"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:6851135980747566003",
+      "lastPropertyId": "4:2523399538986442468",
+      "name": "Week",
+      "properties": [
+        {
+          "id": "1:6913679606723935828",
+          "name": "id"
+        },
+        {
+          "id": "2:2214448381300452171",
+          "name": "weekIndex"
+        },
+        {
+          "id": "4:2523399538986442468",
+          "indexId": "4:1079296366327967689",
+          "name": "semesterId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:590095682250591924",
+      "lastPropertyId": "5:8165062278456625635",
+      "name": "Semester",
+      "properties": [
+        {
+          "id": "1:2923552204627789752",
+          "name": "id"
+        },
+        {
+          "id": "2:9082701160840198109",
+          "name": "startDate"
+        },
+        {
+          "id": "3:4654068550148699561",
+          "name": "endDate"
+        },
+        {
+          "id": "4:8280121288938468981",
+          "name": "grade"
+        },
+        {
+          "id": "5:8165062278456625635",
+          "name": "term"
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "2:5117643084828053962",
-  "lastIndexId": "1:6987887438059804985",
-  "lastRelationId": "0:0",
+  "lastEntityId": "4:590095682250591924",
+  "lastIndexId": "5:5369575951524822969",
+  "lastRelationId": "1:5943780519245560466",
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,
   "retiredEntityUids": [],
-  "retiredIndexUids": [],
-  "retiredPropertyUids": [],
-  "retiredRelationUids": [],
+  "retiredIndexUids": [
+    6364259755939115574
+  ],
+  "retiredPropertyUids": [
+    3521918195087781597,
+    295190886471207253
+  ],
+  "retiredRelationUids": [
+    5943780519245560466
+  ],
   "version": 1
 }

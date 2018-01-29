@@ -12,19 +12,19 @@ import android.widget.ViewSwitcher;
 import com.xyy.simplehomework.MainActivity;
 import com.xyy.simplehomework.R;
 
-import java.util.Calendar;
-import java.util.Date;
-
 /**
  * Created by xyy on 2018/1/26.
  */
 
 public class DayNameSwitcher {
-    public final static int WEEK = 0;
-    public final static int DAY = 1;
+    public final static int WEEK = 1;
+    public final static int DAY = 0;
+    public final static int SEMESTER = 2;
     private Context context;
     private TextSwitcher dayName;
     private int old_position;
+    private int old_position_title;
+    private DateHelper dateHelper;
 
     public DayNameSwitcher(Context mContext) {
         this.context = mContext;
@@ -45,41 +45,50 @@ public class DayNameSwitcher {
                 return tv;
             }
         });
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        int week_index = cal.get(Calendar.DAY_OF_WEEK) - 1;
-        dayName.setCurrentText(MainActivity.weeks[week_index].toUpperCase());
+        dateHelper = ((MainActivity) context).dateHelper;
+        dayName.setCurrentText(dateHelper.getDayName().toUpperCase());
         old_position = 0;
+        old_position_title = 0;
     }
 
     public void setAlpha(float alpha) {
         dayName.setAlpha(alpha);
     }
 
-    public void setText(int weekIndex) {
-        if (old_position < weekIndex) {
+    public void setText(int dayIndex) {
+        if (old_position < dayIndex) {
             dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_right));
             dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_left));
         } else {
             dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_left));
             dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_right));
         }
-        old_position = weekIndex;
-        dayName.setText(MainActivity.weeks[weekIndex].toUpperCase());
+        old_position = dayIndex;
+        dayName.setText(DateHelper.weeks[dayIndex].toUpperCase());
+
     }
 
-    public void changeFragmentTitle(int type) {
-        switch (type) {
+    public void changeFragmentTitle(int position) {
+        if (old_position_title < position) {
+            dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_top));
+            dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_bottom));
+        } else {
+            dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_bottom));
+            dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_top));
+        }
+        old_position_title = position;
+        switch (position) {
             case WEEK:
-                dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_top));
-                dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_bottom));
-                dayName.setText("WEEK 3");
+                dayName.setText("WEEK " + dateHelper.getWeekIndex());
                 break;
             case DAY:
-                dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_bottom));
-                dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_top));
-                dayName.setText("SUNDAY");
+                dayName.setText(dateHelper.getDayName().toUpperCase());
+                break;
+            case SEMESTER:
+                dayName.setText(dateHelper.getSemesterName());
+                break;
+            default:
+                break;
         }
     }
 }

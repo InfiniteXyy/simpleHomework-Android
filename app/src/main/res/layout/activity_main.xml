@@ -50,11 +50,13 @@
                     android:layout_marginBottom="25dp"
                     app:layout_collapseMode="parallax"
                     android:layout_marginEnd="@dimen/margin_horizontal">
+                    <include android:id="@+id/sunday_status"    layout="@layout/status_card" />
                     <include android:id="@+id/monday_status"    layout="@layout/status_card" />
                     <include android:id="@+id/tuesday_status"   layout="@layout/status_card" />
                     <include android:id="@+id/wednesday_status" layout="@layout/status_card" />
                     <include android:id="@+id/thursday_status"  layout="@layout/status_card" />
                     <include android:id="@+id/friday_status"    layout="@layout/status_card" />
+                    <include android:id="@+id/saturday_status"    layout="@layout/status_card" />
                 </LinearLayout>
 
 

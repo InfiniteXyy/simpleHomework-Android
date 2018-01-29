@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public class RecyclerViewManager {
-    final private static int WEEK_RANGE = 5;
+    final public static int WEEK_RANGE = 7;
     public RecyclerViewFragment[] recyclerViewFragments;
 
     public RecyclerViewManager() {

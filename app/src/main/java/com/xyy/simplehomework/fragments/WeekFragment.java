@@ -22,7 +22,7 @@ public class WeekFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.weekly_recyclerview, container, false);
+        return inflater.inflate(R.layout.fragment_week, container, false);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class AddProjectDialog extends MaterialDialog {
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         new MaterialDialog.Builder(context)
                                 .title(R.string.choose_date)
-                                .items(MainActivity.weeks)
+                                .items(DateHelper.weeks)
                                 .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
                                     @Override
                                     public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {

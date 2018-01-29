@@ -62,7 +62,8 @@ public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case CARD:
                 view = LayoutInflater.from(mContext).inflate(R.layout.small_project_item, parent, false);
                 break;
-            default: return null;
+            default:
+                return null;
         }
         return new RecyclerView.ViewHolder(view) {
         };

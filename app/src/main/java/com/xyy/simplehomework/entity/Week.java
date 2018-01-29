@@ -4,19 +4,20 @@ import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 import io.objectbox.relation.ToMany;
+import io.objectbox.relation.ToOne;
 
 /**
  * Created by xyy on 2018/1/29.
  */
 
-//@Entity
+@Entity
 public class Week {
-//    @Id
-//    long id;
-//
+    public int weekIndex;
+    public ToOne<Semester> semester;
 //    // 本周会上的课
 //    public ToMany<MySubject> subjects;
-//
-//    @Backlink
-//    public ToMany<MyProject> projects;
+    @Backlink
+    public ToMany<MyProject> projects;
+    @Id
+    long id;
 }

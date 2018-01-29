@@ -23,9 +23,14 @@ import android.widget.LinearLayout;
 
 import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.entity.Semester;
+import com.xyy.simplehomework.entity.Semester_;
+import com.xyy.simplehomework.entity.Week;
 import com.xyy.simplehomework.fragments.DayFragment;
+import com.xyy.simplehomework.fragments.SemesterFragment;
 import com.xyy.simplehomework.fragments.WeekFragment;
 import com.xyy.simplehomework.utils.AddProjectDialog;
+import com.xyy.simplehomework.utils.DateHelper;
 import com.xyy.simplehomework.utils.DayNameSwitcher;
 
 import java.text.SimpleDateFormat;
@@ -42,23 +47,23 @@ import io.objectbox.reactive.DataSubscriptionList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String[] weeks = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-
+    static String TAG = "simpleHomework";
+    public DateHelper dateHelper;
     private DrawerLayout drawerLayout;
-
     private AddProjectDialog addDialog;
-
     private Box<MySubject> subjectBox;
     private Query<MySubject> subjectQuery;
     private Box<MyProject> projectBox;
     private Query<MyProject> projectQuery;
-
+    private Box<Semester> semesterBox;
+    private Box<Week> weekBox;
+    private Week thisWeek;
+    private Semester thisSemester;
     private DataSubscriptionList subscriptions = new DataSubscriptionList();
-
     private DayNameSwitcher dayName;
-
     private WeekFragment weekFragment;
     private DayFragment dayFragment;
+    private SemesterFragment semesterFragment;
     private LinearLayout status;
 
     public static int px2dip(int pxValue) {
@@ -75,11 +80,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setDefaultFragment();
         BoxStore boxStore = ((App) getApplication()).getBoxStore();
+        setDefaultFragment();
+
         subjectBox = boxStore.boxFor(MySubject.class);
         projectBox = boxStore.boxFor(MyProject.class);
+        semesterBox = boxStore.boxFor(Semester.class);
+        weekBox = boxStore.boxFor(Week.class);
+
+        weekBox.removeAll();
+        semesterBox.removeAll();
+
         projectQuery = projectBox.query().build();
+        subjectQuery = subjectBox.query().build();
+
+        dateHelper = new DateHelper();
+        thisWeek = getThisWeek();
+
+
+        // 语数英demo
+        addSubjectsAndProjectsForDemo();
+
         projectQuery.subscribe(subscriptions).on(AndroidScheduler.mainThread())
                 .observer(new DataObserver<List<MyProject>>() {
                     @Override
@@ -104,13 +125,40 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    private Week getThisWeek() {
+        thisSemester = getThisSemester(dateHelper.date);
+        dateHelper.setSemester(thisSemester);
+        int weekIndex = dateHelper.getWeeksAfter(thisSemester.startDate);
 
-//    public void updateStatus() {
-//        for (int i = 0; i < 5; i++) {
-//            weekStatusLayout[i].getLayoutParams().height = recyclerViewManager.getDailyNum(i) * 28 + 15;
-//        }
-//
-//    }
+        Log.d(TAG, "getThisWeek: " + weekIndex);
+        // 有跨年bug
+        for (Week week : thisSemester.weeks) {
+            if (week.weekIndex == weekIndex) {
+                return week;
+            }
+        }
+        // 若没有设置过，则创建
+        Log.d(TAG, "getThisWeek: set new week");
+        Week week = new Week();
+        week.weekIndex = weekIndex;
+        week.semester.setTarget(thisSemester);
+        return week;
+    }
+
+    private Semester getThisSemester(Date date) {
+        Semester semester = semesterBox.query()
+                .greater(Semester_.endDate, date)
+                .less(Semester_.startDate, date)
+                .build().findFirst();
+        if (semester == null) {
+            Log.d(TAG, "getThisSemester: semester is null");
+            semester = new Semester(12, Semester.FIRST_TERM);
+            semester.startDate = new Date(118, 0, 1);
+            semester.endDate = new Date(118, 10, 2);
+            semesterBox.put(semester);
+        }
+        return semester;
+    }
 
     private void setUpViews() {
         // 设置工具栏和侧边框
@@ -121,33 +169,40 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                drawerLayout.closeDrawer(navigationView);
+                if (item.isChecked()) return true;
                 // 开启事务
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction transaction = fm.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 switch (item.getItemId()) {
                     case R.id.day:
-                        if (!item.isChecked()) {
-                            transaction.show(dayFragment).hide(weekFragment).commit();
-                            status.setVisibility(View.VISIBLE);
-                            dayName.changeFragmentTitle(DayNameSwitcher.DAY);
-                        }
-                        drawerLayout.closeDrawer(navigationView);
+                        transaction.show(dayFragment).hide(weekFragment).hide(semesterFragment).commit();
+                        status.setVisibility(View.VISIBLE);
+                        dayName.changeFragmentTitle(DayNameSwitcher.DAY);
                         break;
                     case R.id.week:
-                        if (!item.isChecked()) {
-                            transaction.show(weekFragment).hide(dayFragment).commit();
-                            status.animate().alpha(0.0f).setDuration(200)
-                                    .setListener(new AnimatorListenerAdapter() {
-                                        @Override
-                                        public void onAnimationEnd(Animator animation) {
-                                            status.setVisibility(View.GONE);
-                                        }
-                                    });
-                            dayName.changeFragmentTitle(DayNameSwitcher.WEEK);
-                        }
-                        drawerLayout.closeDrawer(navigationView);
+                        transaction.show(weekFragment).hide(dayFragment).hide(semesterFragment).commit();
+                        status.animate().alpha(0.0f).setDuration(200)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        status.setVisibility(View.GONE);
+                                    }
+                                });
+                        dayName.changeFragmentTitle(DayNameSwitcher.WEEK);
+
                         break;
                     case R.id.month:
+                        transaction.show(semesterFragment).hide(weekFragment).hide(dayFragment).commit();
+                        status.animate().alpha(0.0f).setDuration(200)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        status.setVisibility(View.GONE);
+                                    }
+                                });
+                        dayName.changeFragmentTitle(DayNameSwitcher.SEMESTER);
+
                         break;
                     case R.id.year:
                         Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
@@ -182,10 +237,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // 设置增加框监听
-
-        // 语数英demo
-        subjectQuery = subjectBox.query().build();
-        addSubjectsAndProjectsForDemo();
         addDialog = new AddProjectDialog(this);
     }
 
@@ -197,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return subjectNames;
     }
+
     private void setDefaultFragment() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -204,7 +256,9 @@ public class MainActivity extends AppCompatActivity {
         transaction.add(R.id.mainFragment, dayFragment);
         weekFragment = new WeekFragment();
         transaction.add(R.id.mainFragment, weekFragment);
-        transaction.show(dayFragment).hide(weekFragment);
+        semesterFragment = new SemesterFragment();
+
+        transaction.show(dayFragment).hide(weekFragment).hide(semesterFragment);
         transaction.commitAllowingStateLoss();
     }
 
@@ -251,9 +305,15 @@ public class MainActivity extends AppCompatActivity {
         MySubject chinese = new MySubject("计算机系统", R.drawable.chinese_pic, R.color.japanBrown);
         MySubject english = new MySubject("高等数学", R.drawable.english_pic, R.color.japanBlue);
         MySubject math = new MySubject("线性代数", R.drawable.math_pic, R.color.japanPink);
+
+        chinese.semester.setTarget(thisSemester);
+        english.semester.setTarget(thisSemester);
+        math.semester.setTarget(thisSemester);
+
         subjectBox.put(chinese);
         subjectBox.put(english);
         subjectBox.put(math);
+
         MyProject myProject = new MyProject("当代学生");
         MyProject myProject1 = new MyProject("春风");
         MyProject myProject2 = new MyProject("新课标");
@@ -262,11 +322,14 @@ public class MainActivity extends AppCompatActivity {
         myProject1.subject.setTarget(english);
         myProject2.subject.setTarget(math);
 
+        myProject.week.setTarget(thisWeek);
+        myProject1.week.setTarget(thisWeek);
+        myProject2.week.setTarget(thisWeek);
+
+
         projectBox.put(myProject);
         projectBox.put(myProject1);
         projectBox.put(myProject2);
-
-        Log.d("123", "addSubjectsAndProjectsForDemo: "+chinese.projects.get(0).book);
     }
 }
 

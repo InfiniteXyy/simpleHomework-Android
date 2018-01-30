@@ -1,7 +1,5 @@
 package com.xyy.simplehomework.entity;
 
-import java.util.List;
-
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
@@ -32,6 +30,10 @@ public class MySubject {
     }
 
     public MySubject() {
+    }
+
+    public int getType() {
+        return 0;
     }
 }
 

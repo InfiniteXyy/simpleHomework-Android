@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     public Box<MyProject> projectBox;
     private Query<MyProject> projectQuery;
     private Box<Semester> semesterBox;
-    private Box<Week> weekBox;
     private Week thisWeek;
     private Semester thisSemester;
     private DataSubscriptionList subscriptions = new DataSubscriptionList();
@@ -86,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
         subjectBox = boxStore.boxFor(MySubject.class);
         projectBox = boxStore.boxFor(MyProject.class);
         semesterBox = boxStore.boxFor(Semester.class);
-        weekBox = boxStore.boxFor(Week.class);
+//        boxStore.boxFor(Week.class).removeAll();
+//        semesterBox.removeAll();
 
 
         projectQuery = projectBox.query().build();
@@ -95,18 +95,18 @@ public class MainActivity extends AppCompatActivity {
         dateHelper = new DateHelper();
         thisWeek = getThisWeek();
 
+        addSubjectsAndProjectsForDemo();
         for (MySubject subject : thisSemester.allSubjects) {
+            Log.d(TAG, "onCreate: thisweek.weekIndex = " + thisWeek.weekIndex);
             for (byte aWeek : subject.availableWeeks)
                 if (thisWeek.weekIndex == aWeek) {
+                    Log.d(TAG, "onCreate: " + subject.name + "，" + aWeek);
                     thisWeek.subjects.add(subject);
                     break;
                 }
         }
-        weekFragment.updateWeekList(thisWeek.subjects);
 
-        Log.d(TAG, "onCreate: "+thisWeek.subjects.size());
-        // 语数英demo
-       // addSubjectsAndProjectsForDemo();
+        weekFragment.updateWeekList(thisWeek.subjects, thisWeek.weekIndex);
         projectQuery.subscribe(subscriptions).on(AndroidScheduler.mainThread())
                 .observer(new DataObserver<List<MyProject>>() {
                     @Override
@@ -308,38 +308,51 @@ public class MainActivity extends AppCompatActivity {
     private void addSubjectsAndProjectsForDemo() {
         subjectBox.removeAll();
         projectBox.removeAll();
+
         MySubject chinese = new MySubject("计算机系统", R.drawable.chinese_pic, R.color.japanBrown);
         MySubject english = new MySubject("高等数学", R.drawable.english_pic, R.color.japanBlue);
         MySubject math = new MySubject("线性代数", R.drawable.math_pic, R.color.japanPink);
+        MySubject math2 = new MySubject("离散数学", R.drawable.math_pic, R.color.japanOrange);
+        MySubject math3 = new MySubject("概率论", R.drawable.math_pic, R.color.japanTea);
 
         chinese.semester.setTarget(thisSemester);
         english.semester.setTarget(thisSemester);
         math.semester.setTarget(thisSemester);
+        math2.semester.setTarget(thisSemester);
+        math3.semester.setTarget(thisSemester);
 
-        chinese.availableWeeks = new byte[]{4,5,6};
-        english.availableWeeks = new byte[]{4,5,6};
-        math.availableWeeks = new byte[]{4,5,6};
+        chinese.availableWeeks = new byte[]{4, 5, 6};
+        english.availableWeeks = new byte[]{4, 5, 6};
+        math.availableWeeks = new byte[]{4, 5, 6};
+        math2.availableWeeks = new byte[]{4, 5};
+        math3.availableWeeks = new byte[]{4};
 
         subjectBox.put(chinese);
         subjectBox.put(english);
         subjectBox.put(math);
+        subjectBox.put(math2);
+        subjectBox.put(math3);
 
         MyProject myProject = new MyProject("当代学生");
         MyProject myProject1 = new MyProject("春风");
         MyProject myProject2 = new MyProject("123");
+        MyProject myProject3 = new MyProject("12");
+
 
         myProject.subject.setTarget(chinese);
         myProject1.subject.setTarget(english);
         myProject2.subject.setTarget(math);
+        myProject3.subject.setTarget(math2);
 
         myProject.week.setTarget(thisWeek);
         myProject1.week.setTarget(thisWeek);
         myProject2.week.setTarget(thisWeek);
-
+        myProject3.week.setTarget(thisWeek);
 
         projectBox.put(myProject);
         projectBox.put(myProject1);
         projectBox.put(myProject2);
+        projectBox.put(myProject3);
     }
 }
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SimpleHomework</string>
+    <string name="app_name">简记作业</string>
     <string name="day">日程</string>
     <string name="week">周记</string>
     <string name="month">学期</string>

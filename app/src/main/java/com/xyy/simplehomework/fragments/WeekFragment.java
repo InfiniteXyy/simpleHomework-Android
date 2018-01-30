@@ -10,17 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.xyy.simplehomework.MainActivity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.cards.SmallProjectAdapter;
 import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.entity.MyProject_;
 import com.xyy.simplehomework.entity.MySubject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.objectbox.Box;
 
 /**
  * Created by xyy on 2018/1/27.
@@ -48,27 +44,29 @@ public class WeekFragment extends Fragment {
         weekRecyclerView.setAdapter(adapter);
     }
 
-    public void updateWeekList(List<MySubject> subjects) {
+    public void updateWeekList(List<MySubject> subjects, int index) {
         List<MySubject> fin = new ArrayList<>();
         List<MySubject> tobe = new ArrayList<>();
         List<MySubject> notRecord = new ArrayList<>();
 
         for (MySubject subject : subjects) {
+            boolean hasProject = false;
             for (MyProject project : subject.projects) {
-                if (project.week != null) {
+                if (project.week.getTarget().weekIndex == index) {
+                    hasProject = true;
                     if (project.status == MyProject.TOBE_DONE) {
                         tobe.add(subject);
                     } else {
                         fin.add(subject);
                     }
-                } else {
-                    notRecord.add(subject);
                 }
             }
+            if (!hasProject) notRecord.add(subject);
         }
 
         adapter.setHasFinished(fin);
         adapter.setToBeFinished(tobe);
         adapter.setToBeRecorded(notRecord);
     }
+
 }

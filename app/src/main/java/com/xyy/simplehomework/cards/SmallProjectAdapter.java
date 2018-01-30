@@ -1,6 +1,8 @@
 package com.xyy.simplehomework.cards;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -56,18 +58,18 @@ public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         switch (viewType) {
             case HEADER_TOBE:
                 view = LayoutInflater.from(mContext).inflate(R.layout.small_project_title, parent, false);
-                ((TextView) view.findViewById(R.id.smallProjectTitle)).setText("待完成(0)");
-                vh = new RecyclerView.ViewHolder(view){};
+                vh = new RecyclerView.ViewHolder(view) {
+                };
                 break;
             case HEADER_FINISH:
                 view = LayoutInflater.from(mContext).inflate(R.layout.small_project_title, parent, false);
-                ((TextView) view.findViewById(R.id.smallProjectTitle)).setText("已完成(0)");
-                vh = new RecyclerView.ViewHolder(view){};
+                vh = new RecyclerView.ViewHolder(view) {
+                };
                 break;
             case HEADER_RECORD:
                 view = LayoutInflater.from(mContext).inflate(R.layout.small_project_title, parent, false);
-                ((TextView) view.findViewById(R.id.smallProjectTitle)).setText("待记录(3)");
-                vh = new RecyclerView.ViewHolder(view){};
+                vh = new RecyclerView.ViewHolder(view) {
+                };
                 break;
             default:
                 view = LayoutInflater.from(mContext).inflate(R.layout.small_project_item, parent, false);
@@ -77,6 +79,7 @@ public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return vh;
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
@@ -92,7 +95,19 @@ public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 break;
             case CARD_RECORD:
                 vh = (SmallViewHolderCard) holder;
-                vh.subjectName.setText(toBeFinished.get(position - hasFinished.size() - toBeFinished.size() - 3).name);
+                vh.subjectName.setTextColor(Color.BLACK);
+                subject = toBeRecorded.get(position - hasFinished.size() - toBeFinished.size() - 3);
+                vh.subjectName.setText(subject.name);
+                vh.cardView.setAlpha(0.5f);
+                break;
+            case HEADER_FINISH:
+                ((TextView) holder.itemView.findViewById(R.id.smallProjectTitle)).setText(String.format("已完成(%d)", hasFinished.size()));
+                break;
+            case HEADER_RECORD:
+                ((TextView) holder.itemView.findViewById(R.id.smallProjectTitle)).setText(String.format("待记录(%d)", toBeRecorded.size()));
+                break;
+            case HEADER_TOBE:
+                ((TextView) holder.itemView.findViewById(R.id.smallProjectTitle)).setText(String.format("未完成(%d)", toBeFinished.size()));
                 break;
         }
     }
@@ -121,10 +136,11 @@ public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static class SmallViewHolderCard extends RecyclerView.ViewHolder {
         TextView subjectName;
         CardView cardView;
+
         public SmallViewHolderCard(View itemView) {
             super(itemView);
             cardView = (CardView) itemView;
-            subjectName =itemView.findViewById(R.id.smallSubjectTitle);
+            subjectName = itemView.findViewById(R.id.smallSubjectTitle);
         }
     }
 }

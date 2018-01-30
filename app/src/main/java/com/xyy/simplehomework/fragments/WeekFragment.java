@@ -10,13 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.xyy.simplehomework.MainActivity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.cards.SmallProjectAdapter;
 import com.xyy.simplehomework.entity.MyProject;
+import com.xyy.simplehomework.entity.MyProject_;
 import com.xyy.simplehomework.entity.MySubject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.objectbox.Box;
 
 /**
  * Created by xyy on 2018/1/27.
@@ -50,10 +54,16 @@ public class WeekFragment extends Fragment {
         List<MySubject> notRecord = new ArrayList<>();
 
         for (MySubject subject : subjects) {
-            switch (subject.status) {
-                case MySubject.HAS_FINISHED: fin.add(subject); break;
-                case MySubject.TOBE_DONE: tobe.add(subject); break;
-                case MySubject.TOBE_RECORD: notRecord.add(subject);break;
+            for (MyProject project : subject.projects) {
+                if (project.week != null) {
+                    if (project.status == MyProject.TOBE_DONE) {
+                        tobe.add(subject);
+                    } else {
+                        fin.add(subject);
+                    }
+                } else {
+                    notRecord.add(subject);
+                }
             }
         }
 

@@ -1,5 +1,7 @@
 package com.xyy.simplehomework.entity;
 
+import java.util.List;
+
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
@@ -17,7 +19,8 @@ public class Week {
     @Backlink
     public ToMany<MyProject> projects;
 
-    public ToMany<MySubject> subjects;
     @Id
     long id;
+
+    public List<MySubject> subjects;
 }

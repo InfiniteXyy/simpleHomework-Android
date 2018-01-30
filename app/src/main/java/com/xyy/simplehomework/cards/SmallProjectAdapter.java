@@ -1,6 +1,7 @@
 package com.xyy.simplehomework.cards;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,10 @@ public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int HEADER_FINISH = 0;
     private static final int HEADER_TOBE = 1;
     private static final int HEADER_RECORD = 2;
-    private static final int CARD = 3;
+    private static final int CARD_FINISH = 3;
+    private static final int CARD_TOBE = 4;
+    private static final int CARD_RECORD = 5;
+
     private Context mContext;
 
     private List<MySubject> hasFinished;
@@ -37,41 +41,60 @@ public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public int getItemViewType(int position) {
         if (position == 0) return HEADER_FINISH;
+        else if (position < hasFinished.size() + 1) return CARD_FINISH;
         else if (position == hasFinished.size() + 1) return HEADER_TOBE;
+        else if (position < hasFinished.size() + toBeFinished.size() + 2) return CARD_TOBE;
         else if (position == hasFinished.size() + toBeFinished.size() + 2) return HEADER_RECORD;
-        else return CARD;
+        else return CARD_RECORD;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (mContext == null) mContext = parent.getContext();
         View view;
+        RecyclerView.ViewHolder vh;
         switch (viewType) {
             case HEADER_TOBE:
                 view = LayoutInflater.from(mContext).inflate(R.layout.small_project_title, parent, false);
                 ((TextView) view.findViewById(R.id.smallProjectTitle)).setText("待完成(0)");
+                vh = new RecyclerView.ViewHolder(view){};
                 break;
             case HEADER_FINISH:
                 view = LayoutInflater.from(mContext).inflate(R.layout.small_project_title, parent, false);
                 ((TextView) view.findViewById(R.id.smallProjectTitle)).setText("已完成(0)");
+                vh = new RecyclerView.ViewHolder(view){};
                 break;
             case HEADER_RECORD:
                 view = LayoutInflater.from(mContext).inflate(R.layout.small_project_title, parent, false);
                 ((TextView) view.findViewById(R.id.smallProjectTitle)).setText("待记录(3)");
-                break;
-            case CARD:
-                view = LayoutInflater.from(mContext).inflate(R.layout.small_project_item, parent, false);
+                vh = new RecyclerView.ViewHolder(view){};
                 break;
             default:
-                return null;
+                view = LayoutInflater.from(mContext).inflate(R.layout.small_project_item, parent, false);
+                vh = new SmallViewHolderCard(view);
+                break;
         }
-        return new RecyclerView.ViewHolder(view) {
-        };
+        return vh;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        switch (getItemViewType(position)) {
+            case CARD_FINISH:
+                SmallViewHolderCard vh = (SmallViewHolderCard) holder;
+                vh.subjectName.setText(hasFinished.get(position - 1).name);
+                break;
+            case CARD_TOBE:
+                vh = (SmallViewHolderCard) holder;
+                MySubject subject = toBeFinished.get(position - hasFinished.size() - 2);
+                vh.subjectName.setText(subject.name);
+                vh.cardView.setCardBackgroundColor(mContext.getResources().getColor(subject.colorId));
+                break;
+            case CARD_RECORD:
+                vh = (SmallViewHolderCard) holder;
+                vh.subjectName.setText(toBeFinished.get(position - hasFinished.size() - toBeFinished.size() - 3).name);
+                break;
+        }
     }
 
     @Override
@@ -93,5 +116,15 @@ public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void setToBeRecorded(List<MySubject> toBeRecorded) {
         this.toBeRecorded = toBeRecorded;
         notifyDataSetChanged();
+    }
+
+    private static class SmallViewHolderCard extends RecyclerView.ViewHolder {
+        TextView subjectName;
+        CardView cardView;
+        public SmallViewHolderCard(View itemView) {
+            super(itemView);
+            cardView = (CardView) itemView;
+            subjectName =itemView.findViewById(R.id.smallSubjectTitle);
+        }
     }
 }

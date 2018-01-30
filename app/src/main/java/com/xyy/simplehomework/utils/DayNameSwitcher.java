@@ -17,9 +17,10 @@ import com.xyy.simplehomework.R;
  */
 
 public class DayNameSwitcher {
-    public final static int WEEK = 1;
     public final static int DAY = 0;
+    public final static int WEEK = 1;
     public final static int SEMESTER = 2;
+
     private Context context;
     private TextSwitcher dayName;
     private int old_position;

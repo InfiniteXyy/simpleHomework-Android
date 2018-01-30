@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private AddProjectDialog addDialog;
     private Box<MySubject> subjectBox;
     private Query<MySubject> subjectQuery;
-    private Box<MyProject> projectBox;
+    public Box<MyProject> projectBox;
     private Query<MyProject> projectQuery;
     private Box<Semester> semesterBox;
     private Box<Week> weekBox;
@@ -88,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
         semesterBox = boxStore.boxFor(Semester.class);
         weekBox = boxStore.boxFor(Week.class);
 
-        weekBox.removeAll();
-        semesterBox.removeAll();
 
         projectQuery = projectBox.query().build();
         subjectQuery = subjectBox.query().build();
@@ -97,9 +95,18 @@ public class MainActivity extends AppCompatActivity {
         dateHelper = new DateHelper();
         thisWeek = getThisWeek();
 
+        for (MySubject subject : thisSemester.allSubjects) {
+            for (byte aWeek : subject.availableWeeks)
+                if (thisWeek.weekIndex == aWeek) {
+                    thisWeek.subjects.add(subject);
+                    break;
+                }
+        }
+        weekFragment.updateWeekList(thisWeek.subjects);
 
+        Log.d(TAG, "onCreate: "+thisWeek.subjects.size());
         // 语数英demo
-        addSubjectsAndProjectsForDemo();
+       // addSubjectsAndProjectsForDemo();
         projectQuery.subscribe(subscriptions).on(AndroidScheduler.mainThread())
                 .observer(new DataObserver<List<MyProject>>() {
                     @Override
@@ -109,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         setUpViews();
-        weekFragment.updateWeekList(subjectQuery.find());
+
     }
 
     @Override
@@ -140,11 +147,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "getThisWeek: set new week");
         Week week = new Week();
         week.weekIndex = weekIndex;
-        for (MySubject subject : thisSemester.allSubjects) {
-            if (weekIndex == subject.weeks) {
-                week.subjects.add(subject);
-            }
-        }
         week.semester.setTarget(thisSemester);
         return week;
     }
@@ -314,9 +316,9 @@ public class MainActivity extends AppCompatActivity {
         english.semester.setTarget(thisSemester);
         math.semester.setTarget(thisSemester);
 
-        chinese.weeks = 4;
-        english.weeks = 4;
-        math.weeks = 4;
+        chinese.availableWeeks = new byte[]{4,5,6};
+        english.availableWeeks = new byte[]{4,5,6};
+        math.availableWeeks = new byte[]{4,5,6};
 
         subjectBox.put(chinese);
         subjectBox.put(english);
@@ -324,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
 
         MyProject myProject = new MyProject("当代学生");
         MyProject myProject1 = new MyProject("春风");
-        MyProject myProject2 = new MyProject();
+        MyProject myProject2 = new MyProject("123");
 
         myProject.subject.setTarget(chinese);
         myProject1.subject.setTarget(english);

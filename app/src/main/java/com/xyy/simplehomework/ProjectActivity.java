@@ -9,11 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.MySubject;
 
@@ -73,7 +71,7 @@ public class ProjectActivity extends AppCompatActivity {
         MySubject mySubject = subjectBox.get(subject_id);
         MyProject myProject = projectBox.get(project_id);
 
-        collapsingToolbarLayout.setTitle(mySubject.name + " : " + myProject.book);
+        collapsingToolbarLayout.setTitle(mySubject.name + " : " + myProject.detail);
         collapsingToolbarLayout.setBackgroundResource(mySubject.colorId);
         collapsingToolbarLayout.setContentScrimResource(mySubject.colorId);
         collapsingToolbarLayout.setStatusBarScrimResource(mySubject.colorId);

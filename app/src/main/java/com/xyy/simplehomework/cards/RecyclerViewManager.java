@@ -2,7 +2,9 @@ package com.xyy.simplehomework.cards;
 
 
 import com.xyy.simplehomework.entity.MyProject;
+import com.xyy.simplehomework.utils.DateHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,15 +15,27 @@ import java.util.List;
 public class RecyclerViewManager {
     final public static int WEEK_RANGE = 7;
     public RecyclerViewFragment[] recyclerViewFragments;
+    private DateHelper dateHelper;
 
-    public RecyclerViewManager() {
+    public RecyclerViewManager(DateHelper dateHelper) {
         recyclerViewFragments = new RecyclerViewFragment[WEEK_RANGE];
+        this.dateHelper = dateHelper;
+
         for (int i = 0; i < WEEK_RANGE; i++) {
             recyclerViewFragments[i] = new RecyclerViewFragment();
         }
     }
 
     public void updateProjects(List<MyProject> projects) {
-        recyclerViewFragments[0].updateDailyProjects(projects);
+        for (int i = 0; i < WEEK_RANGE; i++) {
+            List<MyProject> temp = new ArrayList<>();
+            for (MyProject project : projects) {
+                if (dateHelper.getDayIndexOfWeek(project.deadline) == i) {
+                    temp.add(project);
+                }
+            }
+            recyclerViewFragments[i].updateDailyProjects(temp);
+        }
+
     }
 }

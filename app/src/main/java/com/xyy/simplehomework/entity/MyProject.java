@@ -16,22 +16,32 @@ public class MyProject {
     public final static int HAS_FINISHED = 1;
     public final static int TOBE_RECORD = 2;
 
-    public String book;
+    public String detail;
     public Date deadline;
     public Date initDate;
+    public Date myDate;
     public ToOne<MySubject> subject;
     public ToOne<Week> week;
     public int score;
     public int status;
+    public boolean hasSetDate = false;
     @Id
     long id;
 
-    public MyProject(String book) {
-        this.book = book;
+    public MyProject() {
+        status = TOBE_RECORD;
+        this.deadline = new Date();
+    }
+
+    public void recordHomework(String detail, Date deadline) {
+        this.detail = detail;
+        this.initDate = new Date();
+        this.deadline = deadline;
         status = TOBE_DONE;
     }
 
-    public MyProject() {
-        status = TOBE_RECORD;
+    public void setMyOwnDate(Date date) {
+        myDate = date;
+        hasSetDate = true;
     }
 }

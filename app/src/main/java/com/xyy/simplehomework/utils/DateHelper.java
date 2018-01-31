@@ -22,13 +22,13 @@ public class DateHelper {
     private int weekIndex = 0;
     private int dayIndex = 0;
     private Semester semester;
+    private Calendar calendar = Calendar.getInstance();
 
     public DateHelper() {
         this.date = new Date();
     }
 
     public int getWeeksAfter(Date when) {
-        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int endWeek = calendar.get(Calendar.WEEK_OF_YEAR);
         calendar.setTime(when);
@@ -37,8 +37,18 @@ public class DateHelper {
         return weekIndex;
     }
 
+    public int getDayIndexOfWeek(Date when) {
+        // 需要判断截止日期是否在本周的问题
+        calendar.setTime(when);
+        return calendar.get(Calendar.DAY_OF_WEEK) - 1;
+    }
+    public Date afterDays(int days) {
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, days);
+        return calendar.getTime();
+    }
+
     public String getDayName() {
-        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         dayIndex = calendar.get(Calendar.DAY_OF_WEEK) - 1;
         return weeks[dayIndex];

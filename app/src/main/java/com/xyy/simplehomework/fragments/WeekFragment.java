@@ -12,12 +12,7 @@ import android.view.ViewGroup;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.cards.SmallProjectAdapter;
-import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.entity.Week;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by xyy on 2018/1/27.

@@ -28,6 +28,7 @@ public class DayFragment extends Fragment {
     ViewPager viewPager;
     private RecyclerViewManager recyclerViewManager;
     MainActivity activity;
+
     public DayFragment() {
         weekStatusLayout = new CardView[RecyclerViewManager.WEEK_RANGE];
     }
@@ -45,13 +46,13 @@ public class DayFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         activity = (MainActivity) getActivity();
-        weekStatusLayout[0] =activity.findViewById(R.id.sunday_status);
-        weekStatusLayout[1] =activity.findViewById(R.id.monday_status);
-        weekStatusLayout[2] =activity.findViewById(R.id.tuesday_status);
-        weekStatusLayout[3] =activity.findViewById(R.id.wednesday_status);
-        weekStatusLayout[4] =activity.findViewById(R.id.thursday_status);
-        weekStatusLayout[5] =activity.findViewById(R.id.friday_status);
-        weekStatusLayout[6] =activity.findViewById(R.id.saturday_status);
+        weekStatusLayout[0] = activity.findViewById(R.id.sunday_status);
+        weekStatusLayout[1] = activity.findViewById(R.id.monday_status);
+        weekStatusLayout[2] = activity.findViewById(R.id.tuesday_status);
+        weekStatusLayout[3] = activity.findViewById(R.id.wednesday_status);
+        weekStatusLayout[4] = activity.findViewById(R.id.thursday_status);
+        weekStatusLayout[5] = activity.findViewById(R.id.friday_status);
+        weekStatusLayout[6] = activity.findViewById(R.id.saturday_status);
         viewPager = view.findViewById(R.id.MyViewPager);
         recyclerViewManager = new RecyclerViewManager(activity.dateHelper);
         setDailyViewPage();

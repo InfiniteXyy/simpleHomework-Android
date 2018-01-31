@@ -42,6 +42,7 @@ public class DateHelper {
         calendar.setTime(when);
         return calendar.get(Calendar.DAY_OF_WEEK) - 1;
     }
+
     public Date afterDays(int days) {
         calendar.setTime(date);
         calendar.add(Calendar.DATE, days);

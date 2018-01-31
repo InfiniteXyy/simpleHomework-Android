@@ -19,8 +19,9 @@ public class ProjectAdapter extends BaseQuickAdapter<MyProject, BaseViewHolder> 
     @Override
     protected void convert(BaseViewHolder helper, MyProject item) {
         MySubject subject = item.subject.getTarget();
-        helper.setText(R.id.subject_name, subject.name);
-        ((CardView)helper.getView(R.id.project_card_view))
+        helper.setText(R.id.subject_name, subject.name)
+                .addOnClickListener(R.id.card_btn_delete);
+        ((CardView) helper.getView(R.id.project_card_view))
                 .setCardBackgroundColor(mContext.getResources().getColor(subject.colorId));
     }
 

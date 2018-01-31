@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private AddProjectDialog addDialog;
     private Box<MySubject> subjectBox;
     private Query<MySubject> subjectQuery;
-    public Box<MyProject> projectBox;
+    private Box<MyProject> projectBox;
     private Query<MyProject> projectQuery;
     private Box<Semester> semesterBox;
     private Box<Week> weekBox;
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
             for (byte aWeek : subject.availableWeeks)
                 if (weekIndex == aWeek) {
-                    Log.d(TAG, "put new subject: "+subject.name);
+                    Log.d(TAG, "put new subject: " + subject.name);
                     MyProject project = new MyProject();
                     project.subject.setTarget(subject);
                     week.projects.add(project);
@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (MySubject subject : subjects) {
             subject.semester.setTarget(thisSemester);
-            subject.availableWeeks = new byte[]{4,5,6};
+            subject.availableWeeks = new byte[]{4, 5, 6};
             subjectBox.put(subject);
         }
 
@@ -337,7 +337,7 @@ public class MainActivity extends AppCompatActivity {
         int i = 0;
         for (MyProject project : thisWeek.projects) {
             if (i <= 2) {
-                project.recordHomework("完成"+i+"页", dateHelper.afterDays(0));
+                project.recordHomework("完成" + i + "页", dateHelper.afterDays(0));
                 projectBox.put(project);
             }
             project.subject.setTarget(subjects[i]);

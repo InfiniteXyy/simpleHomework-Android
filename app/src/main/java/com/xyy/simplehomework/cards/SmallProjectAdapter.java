@@ -129,9 +129,15 @@ public class SmallProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         notRecordItems = 0;
         for (MyProject myProject : list) {
             switch (myProject.status) {
-                case MyProject.HAS_FINISHED:finishItems++;break;
-                case MyProject.TOBE_DONE:tobeDoneItems++;break;
-                case MyProject.TOBE_RECORD:notRecordItems++;break;
+                case MyProject.HAS_FINISHED:
+                    finishItems++;
+                    break;
+                case MyProject.TOBE_DONE:
+                    tobeDoneItems++;
+                    break;
+                case MyProject.TOBE_RECORD:
+                    notRecordItems++;
+                    break;
             }
         }
         notifyDataSetChanged();

@@ -10,7 +10,8 @@
     android:layout_marginRight="@dimen/margin_horizontal"
     app:cardElevation="9dp"
     app:cardCornerRadius="9dp"
-    app:cardBackgroundColor="@color/japanBlue">
+    app:cardBackgroundColor="@color/japanBlue"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -35,7 +35,6 @@ import com.xyy.simplehomework.utils.DayNameSwitcher;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -338,7 +337,7 @@ public class MainActivity extends AppCompatActivity {
         int i = 0;
         for (MyProject project : thisWeek.projects) {
             if (i <= 2) {
-                project.recordHomework("完成"+i+"页", dateHelper.afterDays(i));
+                project.recordHomework("完成"+i+"页", dateHelper.afterDays(0));
                 projectBox.put(project);
             }
             project.subject.setTarget(subjects[i]);

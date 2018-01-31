@@ -9,10 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MyProject;
 
+import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
 
 /**
@@ -20,11 +23,12 @@ import java.util.List;
  */
 
 public class RecyclerViewFragment extends Fragment {
-    public ProjectAdapter adapter;
+    private ProjectAdapter adapter;
     RecyclerView recyclerView;
 
     public RecyclerViewFragment() {
-        adapter = new ProjectAdapter();
+        List<MyProject> projectList = new ArrayList<>();
+        adapter = new ProjectAdapter(R.layout.project_item, projectList);
     }
 
     @Nullable
@@ -39,10 +43,18 @@ public class RecyclerViewFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        // 解除view父子关系（存在bug）
+        View emptyView = adapter.getEmptyView();
+        if (emptyView != null)
+            if (emptyView.getParent() != null)
+                ((ViewGroup) emptyView.getParent()).removeView(adapter.getEmptyView());
+
+        adapter.setEmptyView(R.layout.empty_view, (ViewGroup) view);
+
         super.onViewCreated(view, savedInstanceState);
     }
 
     public void updateDailyProjects(List<MyProject> projectList) {
-        adapter.setMyProjects(projectList);
+        adapter.replaceData(projectList);
     }
 }

@@ -16,7 +16,6 @@ import com.xyy.simplehomework.MainActivity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.cards.RecyclerViewManager;
 import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.utils.DateHelper;
 
 import java.util.List;
 

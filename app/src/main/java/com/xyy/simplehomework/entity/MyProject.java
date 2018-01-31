@@ -14,6 +14,7 @@ import io.objectbox.relation.ToOne;
 public class MyProject {
     public final static int TOBE_DONE = 0;
     public final static int HAS_FINISHED = 1;
+    public final static int TOBE_RECORD = 2;
 
     public String book;
     public Date deadline;
@@ -31,5 +32,6 @@ public class MyProject {
     }
 
     public MyProject() {
+        status = TOBE_RECORD;
     }
 }

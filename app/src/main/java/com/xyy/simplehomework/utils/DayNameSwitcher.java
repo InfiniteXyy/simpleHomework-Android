@@ -3,6 +3,7 @@ package com.xyy.simplehomework.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.TextSwitcher;
@@ -47,9 +48,10 @@ public class DayNameSwitcher {
             }
         });
         dateHelper = ((MainActivity) context).dateHelper;
+
         dayName.setCurrentText(dateHelper.getDayName().toUpperCase());
-        old_position = 0;
-        old_position_title = 0;
+        old_position = dateHelper.getDayIndex();
+        old_position_title = DAY;
     }
 
     public void setAlpha(float alpha) {

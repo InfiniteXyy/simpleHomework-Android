@@ -62,7 +62,6 @@ public class ProjectActivity extends AppCompatActivity {
                         }).show();
             }
         });
-        ImageView subjectImageView = findViewById(R.id.subject_image_view);
         TextView subjectContentView = findViewById(R.id.subject_content_text);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -75,7 +74,9 @@ public class ProjectActivity extends AppCompatActivity {
         MyProject myProject = projectBox.get(project_id);
 
         collapsingToolbarLayout.setTitle(mySubject.name + " : " + myProject.book);
-        Glide.with(this).load(mySubject.imgId).into(subjectImageView);
+        collapsingToolbarLayout.setBackgroundResource(mySubject.colorId);
+        collapsingToolbarLayout.setContentScrimResource(mySubject.colorId);
+        collapsingToolbarLayout.setStatusBarScrimResource(mySubject.colorId);
         subjectContentView.setText(genDemoTxt(mySubject.name));
     }
 

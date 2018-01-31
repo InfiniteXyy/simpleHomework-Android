@@ -31,7 +31,6 @@ public class DayFragment extends Fragment {
     public DayFragment() {
         recyclerViewManager = new RecyclerViewManager();
         weekStatusLayout = new CardView[RecyclerViewManager.WEEK_RANGE];
-
     }
 
     public void updateProjects(List<MyProject> projects) {
@@ -105,5 +104,9 @@ public class DayFragment extends Fragment {
             public void onPageScrollStateChanged(int state) {
             }
         });
+    }
+
+    public void modifyViewPager(int position) {
+        viewPager.setCurrentItem(position, true);
     }
 }

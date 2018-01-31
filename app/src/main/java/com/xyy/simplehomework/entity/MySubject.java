@@ -17,23 +17,18 @@ public class MySubject {
     public ToOne<Semester> semester;
 
     public String name;
-    public int imgId;
     public int colorId;
     public byte[] availableWeeks;
     @Id
     long id;
 
-    public MySubject(String name, int imgId, int colorId) {
+    public MySubject(String name, int colorId) {
         this.name = name;
-        this.imgId = imgId;
         this.colorId = colorId;
     }
 
     public MySubject() {
     }
 
-    public int getType() {
-        return 0;
-    }
 }
 

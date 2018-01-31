@@ -21,6 +21,4 @@ public class Week {
 
     @Id
     long id;
-
-    public List<MySubject> subjects;
 }

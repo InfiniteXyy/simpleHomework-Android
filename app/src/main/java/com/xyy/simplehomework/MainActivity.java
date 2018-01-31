@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     public Box<MyProject> projectBox;
     private Query<MyProject> projectQuery;
     private Box<Semester> semesterBox;
+    private Box<Week> weekBox;
     private Week thisWeek;
     private Semester thisSemester;
     private DataSubscriptionList subscriptions = new DataSubscriptionList();
@@ -80,43 +81,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BoxStore boxStore = ((App) getApplication()).getBoxStore();
-        setDefaultFragment();
 
         subjectBox = boxStore.boxFor(MySubject.class);
         projectBox = boxStore.boxFor(MyProject.class);
         semesterBox = boxStore.boxFor(Semester.class);
-//        boxStore.boxFor(Week.class).removeAll();
-//        semesterBox.removeAll();
-
-
+        weekBox = boxStore.boxFor(Week.class);
         projectQuery = projectBox.query().build();
         subjectQuery = subjectBox.query().build();
+        weekBox.removeAll();
+        semesterBox.removeAll();
 
         dateHelper = new DateHelper();
+
+        thisSemester = getThisSemester(dateHelper.date);
+        MySubject[] subjects = addSubjectsForDemo();
+
         thisWeek = getThisWeek();
+        addProjectsForDemo(subjects);
 
-        addSubjectsAndProjectsForDemo();
-        for (MySubject subject : thisSemester.allSubjects) {
-            Log.d(TAG, "onCreate: thisweek.weekIndex = " + thisWeek.weekIndex);
-            for (byte aWeek : subject.availableWeeks)
-                if (thisWeek.weekIndex == aWeek) {
-                    Log.d(TAG, "onCreate: " + subject.name + "，" + aWeek);
-                    thisWeek.subjects.add(subject);
-                    break;
-                }
-        }
-
-        weekFragment.updateWeekList(thisWeek.subjects, thisWeek.weekIndex);
         projectQuery.subscribe(subscriptions).on(AndroidScheduler.mainThread())
                 .observer(new DataObserver<List<MyProject>>() {
                     @Override
                     public void onData(List<MyProject> projects) {
                         dayFragment.updateProjects(projects);
+                        weekFragment.updateWeekList(thisWeek);
                     }
                 });
-
+        setDefaultFragment();
         setUpViews();
-
     }
 
     @Override
@@ -132,10 +124,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Week getThisWeek() {
-        thisSemester = getThisSemester(dateHelper.date);
-        dateHelper.setSemester(thisSemester);
         int weekIndex = dateHelper.getWeeksAfter(thisSemester.startDate);
-
         Log.d(TAG, "getThisWeek: " + weekIndex);
         // 有跨年bug
         for (Week week : thisSemester.weeks) {
@@ -148,6 +137,19 @@ public class MainActivity extends AppCompatActivity {
         Week week = new Week();
         week.weekIndex = weekIndex;
         week.semester.setTarget(thisSemester);
+        week.projects.reset();
+        for (MySubject subject : thisSemester.allSubjects) {
+
+            for (byte aWeek : subject.availableWeeks)
+                if (weekIndex == aWeek) {
+                    Log.d(TAG, "put new subject: "+subject.name);
+                    MyProject project = new MyProject();
+                    project.subject.setTarget(subject);
+                    week.projects.add(project);
+                    break;
+                }
+        }
+        weekBox.put(week);
         return week;
     }
 
@@ -163,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
             semester.endDate = new Date(118, 10, 2);
             semesterBox.put(semester);
         }
+        dateHelper.setSemester(semester);
         return semester;
     }
 
@@ -294,6 +297,10 @@ public class MainActivity extends AppCompatActivity {
         dayName.setText(position);
     }
 
+    public void modifyDayViewPager(int position) {
+        dayFragment.modifyViewPager(position);
+    }
+
     public void finishProject(MyProject myProject) {
         projectBox.remove(myProject);
     }
@@ -305,54 +312,38 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void addSubjectsAndProjectsForDemo() {
+
+    private MySubject[] addSubjectsForDemo() {
         subjectBox.removeAll();
         projectBox.removeAll();
+        MySubject[] subjects = {
+                new MySubject("计算机系统", R.color.japanBrown),
+                new MySubject("高等数学", R.color.japanBlue),
+                new MySubject("线性代数", R.color.japanPink),
+                new MySubject("离散数学", R.color.japanTea),
+                new MySubject("概率论", R.color.japanOrange),
+        };
 
-        MySubject chinese = new MySubject("计算机系统", R.drawable.chinese_pic, R.color.japanBrown);
-        MySubject english = new MySubject("高等数学", R.drawable.english_pic, R.color.japanBlue);
-        MySubject math = new MySubject("线性代数", R.drawable.math_pic, R.color.japanPink);
-        MySubject math2 = new MySubject("离散数学", R.drawable.math_pic, R.color.japanOrange);
-        MySubject math3 = new MySubject("概率论", R.drawable.math_pic, R.color.japanTea);
+        for (MySubject subject : subjects) {
+            subject.semester.setTarget(thisSemester);
+            subject.availableWeeks = new byte[]{4,5,6};
+            subjectBox.put(subject);
+        }
 
-        chinese.semester.setTarget(thisSemester);
-        english.semester.setTarget(thisSemester);
-        math.semester.setTarget(thisSemester);
-        math2.semester.setTarget(thisSemester);
-        math3.semester.setTarget(thisSemester);
+        return subjects;
+    }
 
-        chinese.availableWeeks = new byte[]{4, 5, 6};
-        english.availableWeeks = new byte[]{4, 5, 6};
-        math.availableWeeks = new byte[]{4, 5, 6};
-        math2.availableWeeks = new byte[]{4, 5};
-        math3.availableWeeks = new byte[]{4};
-
-        subjectBox.put(chinese);
-        subjectBox.put(english);
-        subjectBox.put(math);
-        subjectBox.put(math2);
-        subjectBox.put(math3);
-
-        MyProject myProject = new MyProject("当代学生");
-        MyProject myProject1 = new MyProject("春风");
-        MyProject myProject2 = new MyProject("123");
-        MyProject myProject3 = new MyProject("12");
-
-
-        myProject.subject.setTarget(chinese);
-        myProject1.subject.setTarget(english);
-        myProject2.subject.setTarget(math);
-        myProject3.subject.setTarget(math2);
-
-        myProject.week.setTarget(thisWeek);
-        myProject1.week.setTarget(thisWeek);
-        myProject2.week.setTarget(thisWeek);
-        myProject3.week.setTarget(thisWeek);
-
-        projectBox.put(myProject);
-        projectBox.put(myProject1);
-        projectBox.put(myProject2);
-        projectBox.put(myProject3);
+    private void addProjectsForDemo(MySubject[] subjects) {
+        int i = 0;
+        for (MyProject project : thisWeek.projects) {
+            if (i <= 2) {
+                project.book = "test";
+                project.status = MyProject.TOBE_DONE;
+                projectBox.put(project);
+            }
+            project.subject.setTarget(subjects[i]);
+            i++;
+        }
     }
 }
 

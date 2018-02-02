@@ -23,12 +23,11 @@ import java.util.List;
  */
 
 public class RecyclerViewFragment extends Fragment {
-    private ProjectAdapter adapter;
     RecyclerView recyclerView;
-    private List<MyProject> projectList;
-
+    ProjectAdapter adapter;
+    private List<MyProject> data;
     public RecyclerViewFragment() {
-        projectList = new ArrayList<>();
+        data = new ArrayList<>();
     }
 
     @Nullable
@@ -39,15 +38,15 @@ public class RecyclerViewFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        adapter = new ProjectAdapter(R.layout.project_item, projectList);
         recyclerView = view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-//        // 解除view父子关系（存在优化点，为什么呢）
-//        View emptyView = adapter.getEmptyView();
-//        if (emptyView != null && emptyView.getParent() != null)
-//            ((ViewGroup) emptyView.getParent()).removeView(emptyView);
+        recyclerView.setAdapter(getAdapter(view));
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    private ProjectAdapter getAdapter(View view) {
+        ProjectAdapter adapter = new ProjectAdapter(R.layout.project_item, data);
         adapter.setEmptyView(R.layout.empty_view, (ViewGroup) view);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         adapter.isFirstOnly(false); // 每次移动都会显示动画
@@ -63,10 +62,11 @@ public class RecyclerViewFragment extends Fragment {
                 ((MainActivity) getActivity()).finishProject((MyProject) adapter.getData().get(position));
             }
         });
-        super.onViewCreated(view, savedInstanceState);
+        this.adapter = adapter;
+        return adapter;
     }
-
     public void updateDailyProjects(List<MyProject> projectList) {
-        this.projectList = projectList;
+        this.data = projectList;
+        if (adapter != null) adapter.replaceData(data);
     }
 }

@@ -19,10 +19,10 @@ public class Semester {
     public ToMany<MySubject> allSubjects;
     @Backlink
     public ToMany<Week> weeks;
-    // 设置学期起始时间
+
     public Date startDate;
     public Date endDate;
-    public int grade; // 大一是13年级
+    public int grade; // 大一是12年级
     public int term;
     @Id
     long id;

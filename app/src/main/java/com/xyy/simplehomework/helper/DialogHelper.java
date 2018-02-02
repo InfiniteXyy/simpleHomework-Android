@@ -1,23 +1,21 @@
-package com.xyy.simplehomework.utils;
+package com.xyy.simplehomework.helper;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.xyy.simplehomework.MainActivity;
 import com.xyy.simplehomework.R;
 
 /**
  * Created by xyy on 2018/1/29.
  */
 
-public class AddProjectDialog extends MaterialDialog {
-    public AddProjectDialog(final Context context) {
+public class DialogHelper extends MaterialDialog {
+    public DialogHelper(final Context context) {
 
         super(new MaterialDialog.Builder(context)
                 .title(R.string.choose_subject)
-                .items(((MainActivity) context).getSubjectNames())
                 .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {

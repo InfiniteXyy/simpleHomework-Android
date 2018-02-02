@@ -1,13 +1,12 @@
-package com.xyy.simplehomework.cards;
+package com.xyy.simplehomework.entity;
 
 import com.chad.library.adapter.base.entity.SectionEntity;
-import com.xyy.simplehomework.entity.MyProject;
 
 /**
  * Created by xyy on 2018/2/2.
  */
 
-public class SectionProject extends SectionEntity<MyProject>{
+public class SectionProject extends SectionEntity<MyProject> {
 
     public SectionProject(boolean isHeader, String header) {
         super(isHeader, header);

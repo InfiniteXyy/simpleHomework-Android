@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.utils;
+package com.xyy.simplehomework.helper;
 
 import com.xyy.simplehomework.entity.Semester;
 
@@ -18,15 +18,11 @@ public class DateHelper {
             "大一", "大二", "大三", "大四",
             "研一", "研二", "研三"
     };
-    public Date date;
+    public static Date date = new Date();
     private int weekIndex = 0;
     private int dayIndex = 0;
     private Semester semester;
     private Calendar calendar = Calendar.getInstance();
-
-    public DateHelper() {
-        this.date = new Date();
-    }
 
     public int getWeeksAfter(Date when) {
         calendar.setTime(date);

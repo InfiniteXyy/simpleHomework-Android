@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.cards;
+package com.xyy.simplehomework.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.xyy.simplehomework.MainActivity;
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.adapter.ProjectAdapter;
 import com.xyy.simplehomework.entity.MyProject;
 
 import java.util.ArrayList;
@@ -26,6 +26,7 @@ public class RecyclerViewFragment extends Fragment {
     RecyclerView recyclerView;
     ProjectAdapter adapter;
     private List<MyProject> data;
+
     public RecyclerViewFragment() {
         data = new ArrayList<>();
     }
@@ -46,25 +47,25 @@ public class RecyclerViewFragment extends Fragment {
     }
 
     private ProjectAdapter getAdapter(View view) {
-        ProjectAdapter adapter = new ProjectAdapter(R.layout.project_item, data);
+        ProjectAdapter adapter = new ProjectAdapter(R.layout.item_project, data);
         adapter.setEmptyView(R.layout.empty_view, (ViewGroup) view);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
-        adapter.isFirstOnly(false); // 每次移动都会显示动画
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ((MainActivity) getActivity()).showProjectsDetail((MyProject) adapter.getData().get(position));
+                //       ((MainActivity) getActivity()).showProjectsDetail((MyProject) adapter.getData().get(position));
             }
         });
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                ((MainActivity) getActivity()).finishProject((MyProject) adapter.getData().get(position));
+                //      ((MainActivity) getActivity()).finishProject((MyProject) adapter.getData().get(position));
             }
         });
         this.adapter = adapter;
         return adapter;
     }
+
     public void updateDailyProjects(List<MyProject> projectList) {
         this.data = projectList;
         if (adapter != null) adapter.replaceData(data);

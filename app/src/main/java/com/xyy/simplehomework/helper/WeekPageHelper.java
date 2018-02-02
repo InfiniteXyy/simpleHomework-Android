@@ -1,8 +1,8 @@
-package com.xyy.simplehomework.cards;
+package com.xyy.simplehomework.helper;
 
 
 import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.utils.DateHelper;
+import com.xyy.simplehomework.fragments.RecyclerViewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +12,12 @@ import java.util.List;
  * Created by xyy on 2018/1/24.
  */
 
-public class RecyclerViewManager {
+public class WeekPageHelper {
     final public static int WEEK_RANGE = 7;
     public RecyclerViewFragment[] recyclerViewFragments;
     private DateHelper dateHelper;
 
-    public RecyclerViewManager(DateHelper dateHelper) {
+    public WeekPageHelper(DateHelper dateHelper) {
         recyclerViewFragments = new RecyclerViewFragment[WEEK_RANGE];
         this.dateHelper = dateHelper;
 
@@ -36,6 +36,5 @@ public class RecyclerViewManager {
             }
             recyclerViewFragments[i].updateDailyProjects(temp);
         }
-
     }
 }

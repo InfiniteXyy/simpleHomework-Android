@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.utils;
+package com.xyy.simplehomework.helper;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,22 +16,18 @@ import com.xyy.simplehomework.R;
  * Created by xyy on 2018/1/26.
  */
 
-public class DayNameSwitcher {
+public class TitleSwitcher {
     public final static int DAY = 0;
     public final static int WEEK = 1;
     public final static int SEMESTER = 2;
 
-    private int animInTop = R.anim.slide_in_top;
-    private int animOutBottom = R.anim.slide_out_bottom;
-    private int animInBottom = R.anim.slide_in_bottom;
-    private int animOutTop = R.anim.slide_out_top;
     private Context context;
     private TextSwitcher dayName;
     private int old_position;
     private int old_position_title;
     private DateHelper dateHelper;
 
-    public DayNameSwitcher(Context mContext) {
+    public TitleSwitcher(Context mContext) {
         this.context = mContext;
         initSwitcher();
     }
@@ -76,11 +72,11 @@ public class DayNameSwitcher {
 
     public void changeFragmentTitle(int position) {
         if (old_position_title < position) {
-            dayName.setInAnimation(AnimationUtils.loadAnimation(context, animInTop));
-            dayName.setOutAnimation(AnimationUtils.loadAnimation(context, animOutBottom));
+            dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_top));
+            dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_bottom));
         } else {
-            dayName.setInAnimation(AnimationUtils.loadAnimation(context, animInBottom));
-            dayName.setOutAnimation(AnimationUtils.loadAnimation(context, animOutTop));
+            dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_bottom));
+            dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_top));
         }
         old_position_title = position;
         switch (position) {

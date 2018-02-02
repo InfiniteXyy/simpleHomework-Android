@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.cards;
+package com.xyy.simplehomework.adapter;
 
 import android.support.v7.widget.CardView;
 
@@ -12,7 +12,8 @@ import java.util.List;
 
 
 public class ProjectAdapter extends BaseQuickAdapter<MyProject, BaseViewHolder> {
-    ProjectAdapter(int layoutResId, List<MyProject> data) {
+
+    public ProjectAdapter(int layoutResId, List<MyProject> data) {
         super(layoutResId, data);
     }
 

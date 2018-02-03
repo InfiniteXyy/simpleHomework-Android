@@ -1,6 +1,7 @@
 package com.xyy.simplehomework.helper;
 
 import com.xyy.simplehomework.entity.Semester;
+import com.xyy.simplehomework.entity.Week;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -10,8 +11,8 @@ import java.util.Date;
  */
 
 public class DateHelper {
-    public static String[] weeks = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-    public static String[] semesters = {
+    public final static String[] weeks = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    public final static String[] semesters = {
             "一年级", "两年级", "三年级", "四年级", "五年级", "六年级",
             "初一", "初二", "初三",
             "高一", "高二", "高三",
@@ -19,55 +20,44 @@ public class DateHelper {
             "研一", "研二", "研三"
     };
     public static Date date = new Date();
-    private int weekIndex = 0;
-    private int dayIndex = 0;
-    private Semester semester;
-    private Calendar calendar = Calendar.getInstance();
+    private static Calendar calendar = Calendar.getInstance();
 
-    public int getWeeksAfter(Date when) {
-        calendar.setTime(date);
-        int endWeek = calendar.get(Calendar.WEEK_OF_YEAR);
-        calendar.setTime(when);
-        int startWeek = calendar.get(Calendar.WEEK_OF_YEAR);
-        weekIndex = endWeek - startWeek;
-        return weekIndex;
+    private static int weekIndex = -1;
+    private static int semesterIndex = -1;
+    private static int termIndex = -1;
+
+    public static void setUp(Week week, Semester semester) {
+        weekIndex = week.weekIndex;
+        semesterIndex = semester.grade;
+        termIndex = semester.term;
     }
 
-    public int getDayIndexOfWeek(Date when) {
-        // 需要判断截止日期是否在本周的问题
+    public static int getWeeksBetween(Date start, Date fin) {
+        long a = start.getTime();
+        long b = fin.getTime();
+        return (int) ((b - a) / 1000 / 60 / 60 / 24 / 7);
+    }
+
+    public static int getDayIndexOfWeek(Date when) {
         calendar.setTime(when);
         return calendar.get(Calendar.DAY_OF_WEEK) - 1;
     }
 
-    public Date afterDays(int days) {
-        calendar.setTime(date);
-        calendar.add(Calendar.DATE, days);
-        return calendar.getTime();
+    public static String getDayName() {
+        return weeks[getDayIndex()];
     }
 
-    public String getDayName() {
-        calendar.setTime(date);
-        dayIndex = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-        return weeks[dayIndex];
-    }
-
-    public int getWeekIndex() {
+    public static int getWeekIndex() {
         return weekIndex;
     }
 
-    public int getDayIndex() {
-        return dayIndex;
+    public static int getDayIndex() {
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_WEEK) - 1;
     }
 
-    public int getSemesterIndex() {
-        return semester.grade;
+    public static String getSemesterName() {
+        return semesters[semesterIndex] + (termIndex == 0 ? "：上" : "：下");
     }
 
-    public String getSemesterName() {
-        return semesters[semester.grade] + (semester.term == 0 ? "：上" : "：下");
-    }
-
-    public void setSemester(Semester semester) {
-        this.semester = semester;
-    }
 }

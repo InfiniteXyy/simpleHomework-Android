@@ -12,6 +12,7 @@ import com.xyy.simplehomework.fragments.DayFragment;
 import com.xyy.simplehomework.fragments.SemesterFragment;
 import com.xyy.simplehomework.fragments.WeekFragment;
 import com.xyy.simplehomework.helper.DateHelper;
+import com.xyy.simplehomework.helper.TitleSwitcher;
 
 import java.util.Date;
 
@@ -24,7 +25,6 @@ import io.objectbox.BoxStore;
 
 public class DataServer {
     private String TAG = "DataServer";
-    private DateHelper dateHelper;
     private Box<MySubject> subjectBox;
     private Box<MyProject> projectBox;
     private Box<Semester> semesterBox;
@@ -32,17 +32,19 @@ public class DataServer {
 
     private Week thisWeek;
 
-    public DataServer(BoxStore boxStore, DateHelper dateHelper) {
+    public DataServer(BoxStore boxStore) {
         subjectBox = boxStore.boxFor(MySubject.class);
         projectBox = boxStore.boxFor(MyProject.class);
         semesterBox = boxStore.boxFor(Semester.class);
         weekBox = boxStore.boxFor(Week.class);
-        this.dateHelper = dateHelper;
     }
 
-    public void bindToViews(DayFragment dayFragment, WeekFragment weekFragment, SemesterFragment semesterFragment) {
+    public void bindToViews(DayFragment dayFragment, WeekFragment weekFragment, SemesterFragment semesterFragment, TitleSwitcher switcher) {
         dayFragment.updateProjects(projectBox.getAll());
+        Log.d(TAG, "bindToViews: " + projectBox.getAll().size());
+        dayFragment.setUpDayViewPage();
         weekFragment.updateWeekList(thisWeek);
+        switcher.setUpSwitcher();
     }
 
     private void refreshWeekProjects(Week week, Semester semester) {
@@ -60,7 +62,7 @@ public class DataServer {
     }
 
     private Week getThisWeek(Semester semester) {
-        int weekIndex = dateHelper.getWeeksAfter(semester.startDate);
+        int weekIndex = DateHelper.getWeeksBetween(semester.startDate, new Date());
         for (Week week : semester.weeks) {
             if (week.weekIndex == weekIndex) {
                 return week;
@@ -88,8 +90,12 @@ public class DataServer {
             semester.endDate = new Date(118, 10, 2);
             semesterBox.put(semester);
         }
-        dateHelper.setSemester(semester);
         return semester;
+    }
+
+
+    public void bindToDateHelper() {
+        DateHelper.setUp(thisWeek, getThisSemester());
     }
 
     public void useDemo() {
@@ -115,14 +121,12 @@ public class DataServer {
         }
         thisSemester.allSubjects.applyChangesToDb();
 
-        Log.d(TAG, "subjects size: " + thisSemester.allSubjects.size());
-
         refreshWeekProjects(thisWeek, thisSemester);
 
         int i = 0;
         for (MyProject project : thisWeek.projects) {
             if (i <= 2) {
-                project.recordHomework("完成" + i + "页", dateHelper.afterDays(0));
+                project.recordHomework("完成" + i + "页", new Date());
             }
             project.subject.setTarget(subjects[i]);
             projectBox.put(project);

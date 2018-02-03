@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class DayFragment extends Fragment {
 
     public DayFragment() {
         weekStatusLayout = new CardView[WeekPageHelper.WEEK_RANGE];
-        weekPageHelper = new WeekPageHelper(new DateHelper());
+        weekPageHelper = new WeekPageHelper();
     }
 
     public void updateProjects(List<MyProject> projects) {
@@ -57,10 +58,10 @@ public class DayFragment extends Fragment {
         weekStatusLayout[6] = activity.findViewById(R.id.saturday_status);
         viewPager = view.findViewById(R.id.MyViewPager);
 
-        setDailyViewPage();
+        initDayViewPage();
     }
 
-    private void setDailyViewPage() {
+    private void initDayViewPage() {
         // 设置 ViewPager
         viewPager.setAdapter(new FragmentPagerAdapter(activity.getSupportFragmentManager()) {
             @Override
@@ -73,7 +74,6 @@ public class DayFragment extends Fragment {
                 return weekPageHelper.recyclerViewFragments[position];
             }
         });
-        viewPager.setCurrentItem(activity.dateHelper.getDayIndex());
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -94,7 +94,8 @@ public class DayFragment extends Fragment {
         });
     }
 
-    public void modifyViewPager(int position) {
-        viewPager.setCurrentItem(position, true);
+    public void setUpDayViewPage() {
+        Log.d("DataServer", "setUpDayViewPage: " + DateHelper.getDayIndex());
+        viewPager.setCurrentItem(DateHelper.getDayIndex());
     }
 }

@@ -9,7 +9,6 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.xyy.simplehomework.MainActivity;
 import com.xyy.simplehomework.R;
 
 /**
@@ -25,7 +24,6 @@ public class TitleSwitcher {
     private TextSwitcher dayName;
     private int old_position;
     private int old_position_title;
-    private DateHelper dateHelper;
 
     public TitleSwitcher(Context mContext) {
         this.context = mContext;
@@ -33,7 +31,6 @@ public class TitleSwitcher {
     }
 
     private void initSwitcher() {
-        // 导入字体
         final Typeface typeFace = Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Regular.ttf");
 
         dayName = ((Activity) context).findViewById(R.id.day_name);
@@ -46,10 +43,11 @@ public class TitleSwitcher {
                 return tv;
             }
         });
-        dateHelper = ((MainActivity) context).dateHelper;
+    }
 
-        dayName.setCurrentText(dateHelper.getDayName().toUpperCase());
-        old_position = dateHelper.getDayIndex();
+    public void setUpSwitcher() {
+        dayName.setCurrentText(DateHelper.getDayName().toUpperCase());
+        old_position = DateHelper.getDayIndex();
         old_position_title = DAY;
     }
 
@@ -81,13 +79,13 @@ public class TitleSwitcher {
         old_position_title = position;
         switch (position) {
             case WEEK:
-                dayName.setText("WEEK " + dateHelper.getWeekIndex());
+                dayName.setText("WEEK " + DateHelper.getWeekIndex());
                 break;
             case DAY:
                 dayName.setText(DateHelper.weeks[old_position].toUpperCase());
                 break;
             case SEMESTER:
-                dayName.setText(dateHelper.getSemesterName());
+                dayName.setText(DateHelper.getSemesterName());
                 break;
             default:
                 break;

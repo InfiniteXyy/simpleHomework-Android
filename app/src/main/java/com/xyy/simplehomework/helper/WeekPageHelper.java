@@ -15,12 +15,9 @@ import java.util.List;
 public class WeekPageHelper {
     final public static int WEEK_RANGE = 7;
     public RecyclerViewFragment[] recyclerViewFragments;
-    private DateHelper dateHelper;
 
-    public WeekPageHelper(DateHelper dateHelper) {
+    public WeekPageHelper() {
         recyclerViewFragments = new RecyclerViewFragment[WEEK_RANGE];
-        this.dateHelper = dateHelper;
-
         for (int i = 0; i < WEEK_RANGE; i++) {
             recyclerViewFragments[i] = new RecyclerViewFragment();
         }
@@ -30,7 +27,7 @@ public class WeekPageHelper {
         for (int i = 0; i < WEEK_RANGE; i++) {
             List<MyProject> temp = new ArrayList<>();
             for (MyProject project : projects) {
-                if (dateHelper.getDayIndexOfWeek(project.deadline) == i) {
+                if (DateHelper.getDayIndexOfWeek(project.deadline) == i) {
                     temp.add(project);
                 }
             }

@@ -23,7 +23,6 @@ import com.xyy.simplehomework.data.DataServer;
 import com.xyy.simplehomework.fragments.DayFragment;
 import com.xyy.simplehomework.fragments.SemesterFragment;
 import com.xyy.simplehomework.fragments.WeekFragment;
-import com.xyy.simplehomework.helper.DateHelper;
 import com.xyy.simplehomework.helper.DialogHelper;
 import com.xyy.simplehomework.helper.TitleSwitcher;
 
@@ -34,7 +33,6 @@ import io.objectbox.BoxStore;
 
 public class MainActivity extends AppCompatActivity {
     public DataServer dataServer;
-    public DateHelper dateHelper = new DateHelper();
 
     private DrawerLayout drawerLayout;
     private DialogHelper addDialog;
@@ -57,11 +55,16 @@ public class MainActivity extends AppCompatActivity {
 
         // set up dataServer
         BoxStore boxStore = ((App) getApplication()).getBoxStore();
-        dataServer = new DataServer(boxStore, dateHelper);
+        dataServer = new DataServer(boxStore);
         dataServer.useDemo();
+        dataServer.bindToDateHelper();
+    }
 
+    @Override
+    protected void onResume() {
         // bind views with data;
-        dataServer.bindToViews(dayFragment, weekFragment, semesterFragment);
+        dataServer.bindToViews(dayFragment, weekFragment, semesterFragment, dayName);
+        super.onResume();
     }
 
     private void setDefaultFragment() {
@@ -77,9 +80,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpTools() {
-        // 设置工具栏和侧边框
+        // init toolbar
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(new SimpleDateFormat("M.d").format(new Date()));
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        // init AppBar
+        dayName = new TitleSwitcher(this);
+        status = findViewById(R.id.status);
+        AppBarLayout appBarLayout = findViewById(R.id.app_bar);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                int newAlpha = 255 + verticalOffset;
+                newAlpha = newAlpha < 0 ? 0 : newAlpha;
+                dayName.setAlpha((float) newAlpha / 255);
+                status.setAlpha((float) newAlpha / 255);
+            }
+        });
+
+        // init drawer
         drawerLayout = findViewById(R.id.drawer_layout);
         final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -87,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 drawerLayout.closeDrawer(navigationView);
                 if (item.isChecked()) return true;
-                // 开启事务
+                // get transaction helper
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction transaction = fm.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 switch (item.getItemId()) {
@@ -106,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 });
                         dayName.changeFragmentTitle(TitleSwitcher.WEEK);
-
                         break;
                     case R.id.month:
                         transaction.show(semesterFragment).hide(weekFragment).hide(dayFragment).commit();
@@ -131,28 +154,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        navigationView.setCheckedItem(R.id.day);
-        ActionBar actionBar = getSupportActionBar();
-        Date date = new Date();
-        if (actionBar != null) {
-            actionBar.setTitle(new SimpleDateFormat("M.d").format(date));
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        navigationView.setCheckedItem(R.id.day); // default choose
 
-        // 设置 AppBar
-        dayName = new TitleSwitcher(this);
-        status = findViewById(R.id.status);
-        AppBarLayout appBarLayout = findViewById(R.id.app_bar);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                int newAlpha = 255 + verticalOffset;
-                newAlpha = newAlpha < 0 ? 0 : newAlpha;
-                dayName.setAlpha((float) newAlpha / 255);
-                status.setAlpha((float) newAlpha / 255);
-            }
-        });
-        // 设置增加框监听
+        // init dialog view
         addDialog = new DialogHelper(this);
     }
 

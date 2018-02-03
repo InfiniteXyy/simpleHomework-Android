@@ -4,18 +4,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-<group>
-    <item
-        android:id="@+id/add_projects"
-        android:title="@string/add_projects"
-        app:showAsAction="withText"
-        tools:ignore="MenuTitle">
-    </item>
-    <item
-        android:id="@+id/add_subjects"
-        android:title="@string/set_subjects"
-        app:showAsAction="withText"
-        tools:ignore="MenuTitle">
-    </item>
-</group>
+    <group>
+        <item
+            android:id="@+id/add_projects"
+            android:title="@string/add_projects"
+            app:showAsAction="withText"
+            tools:ignore="MenuTitle"></item>
+        <item
+            android:id="@+id/add_subjects"
+            android:title="@string/set_subjects"
+            app:showAsAction="withText"
+            tools:ignore="MenuTitle"></item>
+    </group>
 </menu>

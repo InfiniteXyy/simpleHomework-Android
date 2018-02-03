@@ -4,13 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.xyy.simplehomework.data.DataServer;
 import com.xyy.simplehomework.fragments.DayFragment;
 import com.xyy.simplehomework.fragments.SemesterFragment;
@@ -34,7 +36,7 @@ import io.objectbox.BoxStore;
 public class MainActivity extends AppCompatActivity {
     public DataServer dataServer;
 
-    private DrawerLayout drawerLayout;
+    private Drawer drawer;
     private DialogHelper addDialog;
     private LinearLayout status;
 
@@ -104,57 +106,67 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // init drawer
-        drawerLayout = findViewById(R.id.drawer_layout);
-        final NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                drawerLayout.closeDrawer(navigationView);
-                if (item.isChecked()) return true;
-                // get transaction helper
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction transaction = fm.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-                switch (item.getItemId()) {
-                    case R.id.day:
-                        transaction.show(dayFragment).hide(weekFragment).hide(semesterFragment).commit();
-                        status.setVisibility(View.VISIBLE);
-                        dayName.changeFragmentTitle(TitleSwitcher.DAY);
-                        break;
-                    case R.id.week:
-                        transaction.show(weekFragment).hide(dayFragment).hide(semesterFragment).commit();
-                        status.animate().alpha(0.0f).setDuration(200)
-                                .setListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-                                        status.setVisibility(View.GONE);
-                                    }
-                                });
-                        dayName.changeFragmentTitle(TitleSwitcher.WEEK);
-                        break;
-                    case R.id.month:
-                        transaction.show(semesterFragment).hide(weekFragment).hide(dayFragment).commit();
-                        status.animate().alpha(0.0f).setDuration(200)
-                                .setListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-                                        status.setVisibility(View.GONE);
-                                    }
-                                });
-                        dayName.changeFragmentTitle(TitleSwitcher.SEMESTER);
+        drawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withHeader(R.layout.nav_header)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName(R.string.day).withIcon(R.drawable.ic_today_black_24px),
+                        new PrimaryDrawerItem().withName(R.string.week).withIcon(R.drawable.ic_view_week_black_24px),
+                        new PrimaryDrawerItem().withName(R.string.month).withIcon(R.drawable.ic_assignment_black_24px),
+                        new SectionDrawerItem().withName("详情"),
+                        new SecondaryDrawerItem().withName(R.string.setting).withIcon(R.drawable.ic_settings_black_24px),
+                        new SecondaryDrawerItem().withName(R.string.year).withIcon(R.drawable.ic_account_circle_black_24px).withEnabled(false)
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        // get transaction helper
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction transaction = fm.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                        switch (position) {
+                            case 1:
+                                transaction.show(dayFragment).hide(weekFragment).hide(semesterFragment).commit();
+                                status.setVisibility(View.VISIBLE);
+                                dayName.changeFragmentTitle(TitleSwitcher.DAY);
+                                break;
+                            case 2:
+                                transaction.show(weekFragment).hide(dayFragment).hide(semesterFragment).commit();
+                                status.animate().alpha(0.0f).setDuration(200)
+                                        .setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                status.setVisibility(View.GONE);
+                                            }
+                                        });
+                                dayName.changeFragmentTitle(TitleSwitcher.WEEK);
+                                break;
+                            case 3:
+                                transaction.show(semesterFragment).hide(weekFragment).hide(dayFragment).commit();
+                                status.animate().alpha(0.0f).setDuration(200)
+                                        .setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                status.setVisibility(View.GONE);
+                                            }
+                                        });
+                                dayName.changeFragmentTitle(TitleSwitcher.SEMESTER);
 
-                        break;
-                    case R.id.year:
-                        Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.setting:
-                        startActivity(new Intent(getApplicationContext(), SettingActivity.class));
-                        break;
-                }
-                return true;
-            }
-        });
-        navigationView.setCheckedItem(R.id.day); // default choose
+                                break;
+                            case 4:
+                                Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
+                                startActivity(intent);
+                                break;
+                            case 5:
+                                startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+                                break;
+                        }
+                        return false;
+                    }
+                })
+                .build();
+        drawer.setSelection(0);
+
 
         // init dialog view
         addDialog = new DialogHelper(this);
@@ -171,9 +183,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_projects:
                 addDialog.show();
-                break;
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
                 break;
             default:
         }

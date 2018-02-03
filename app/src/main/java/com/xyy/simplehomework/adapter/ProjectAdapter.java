@@ -2,7 +2,7 @@ package com.xyy.simplehomework.adapter;
 
 import android.support.v7.widget.CardView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MyProject;
@@ -11,7 +11,7 @@ import com.xyy.simplehomework.entity.MySubject;
 import java.util.List;
 
 
-public class ProjectAdapter extends BaseQuickAdapter<MyProject, BaseViewHolder> {
+public class ProjectAdapter extends BaseItemDraggableAdapter<MyProject, BaseViewHolder> {
 
     public ProjectAdapter(int layoutResId, List<MyProject> data) {
         super(layoutResId, data);

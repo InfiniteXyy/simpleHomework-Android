@@ -1,5 +1,8 @@
 package com.xyy.simplehomework.entity;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.xyy.simplehomework.adapter.SmallProjectAdapter;
+
 import java.util.Date;
 
 import io.objectbox.annotation.Entity;
@@ -11,11 +14,7 @@ import io.objectbox.relation.ToOne;
  */
 
 @Entity
-public class MyProject {
-    public final static int TOBE_DONE = 0;
-    public final static int HAS_FINISHED = 1;
-    public final static int TOBE_RECORD = 2;
-
+public class MyProject implements MultiItemEntity {
     public String detail;
     public Date deadline;
     public Date initDate;
@@ -29,7 +28,7 @@ public class MyProject {
     long id;
 
     public MyProject() {
-        status = TOBE_RECORD;
+        status = SmallProjectAdapter.TYPE_PROJECT_RECORD;
         this.deadline = new Date();
     }
 
@@ -37,11 +36,16 @@ public class MyProject {
         this.detail = detail;
         this.initDate = new Date();
         this.deadline = deadline;
-        status = TOBE_DONE;
+        status = SmallProjectAdapter.TYPE_PROJECT_TOBE;
     }
 
     public void setMyOwnDate(Date date) {
         myDate = date;
         hasSetDate = true;
+    }
+
+    @Override
+    public int getItemType() {
+        return status;
     }
 }

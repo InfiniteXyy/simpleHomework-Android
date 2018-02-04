@@ -10,13 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.adapter.SmallProjectAdapter;
 import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.entity.SectionProject;
+import com.xyy.simplehomework.entity.SmallProjectTitle;
 import com.xyy.simplehomework.entity.Week;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,7 +26,7 @@ import java.util.List;
  */
 
 public class WeekFragment extends Fragment {
-    private List<SectionProject> data;
+    private List<MultiItemEntity> data;
     private SmallProjectAdapter adapter;
 
     public WeekFragment() {
@@ -40,45 +42,34 @@ public class WeekFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
+        weekRecyclerView.setAdapter(getAdapter());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         weekRecyclerView.setLayoutManager(layoutManager);
-        weekRecyclerView.setAdapter(getAdapter());
+        adapter.expandAll();
         super.onViewCreated(view, savedInstanceState);
     }
 
     private SmallProjectAdapter getAdapter() {
-        adapter = new SmallProjectAdapter(R.layout.item_project_small, R.layout.item_project_small_title, data);
+        adapter = new SmallProjectAdapter(data);
         return adapter;
     }
 
     public void updateWeekList(Week week) {
         data = new ArrayList<>();
-        int fin = 0;
-        int tobe = 0;
-        int record = 0;
-        int size = week.projects.size();
-        int i;
-        for (i = 0; i < size; i++) {
-            if (week.projects.get(i).status == MyProject.HAS_FINISHED) {
-                data.add(new SectionProject(week.projects.get(i)));
-                fin++;
-            }
+
+        List<SmallProjectTitle> title = (Arrays.asList(
+                new SmallProjectTitle("已完成"),
+                new SmallProjectTitle("未完成"),
+                new SmallProjectTitle("待记录")
+        ));
+
+        for (MyProject project : week.projects) {
+            title.get(project.status).addSubItem(project);
         }
-        for (i = 0; i < size; i++) {
-            if (week.projects.get(i).status == MyProject.TOBE_DONE) {
-                data.add(new SectionProject(week.projects.get(i)));
-                tobe++;
-            }
+        data.addAll(title);
+        if (adapter != null) {
+            adapter.replaceData(data);
+            adapter.expandAll();
         }
-        for (i = 0; i < size; i++) {
-            if (week.projects.get(i).status == MyProject.TOBE_RECORD) {
-                data.add(new SectionProject(week.projects.get(i)));
-                record++;
-            }
-        }
-        data.add(fin + tobe, new SectionProject(true, "待记录(" + record + ")"));
-        data.add(fin, new SectionProject(true, "未完成(" + tobe + ")"));
-        data.add(0, new SectionProject(true, "已完成(" + fin + ")"));
-        if (adapter != null) adapter.replaceData(data);
     }
 }

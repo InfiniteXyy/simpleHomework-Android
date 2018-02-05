@@ -16,7 +16,7 @@ import io.objectbox.relation.ToOne;
  */
 
 @Entity
-public class MySubject extends BaseObservable{
+public class MySubject extends BaseObservable {
     @Backlink
     public ToMany<MyProject> projects;
     public ToOne<Semester> semester;

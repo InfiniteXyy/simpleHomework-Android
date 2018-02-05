@@ -1,7 +1,6 @@
 package com.xyy.simplehomework.handler;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 
 import com.xyy.simplehomework.SettingActivity;
@@ -18,6 +17,7 @@ public class ProjectClickHandler {
 //        intent.putExtra(ProjectActivity.PROJECT_ID, projectId);
         view.getContext().startActivity(intent);
     }
+
     public void finishProject(View view, MyProject project) {
         project.setStatus(MyProject.TYPE_PROJECT_FIN);
     }

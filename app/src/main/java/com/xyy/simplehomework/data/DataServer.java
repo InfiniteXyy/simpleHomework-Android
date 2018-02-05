@@ -40,9 +40,7 @@ public class DataServer {
     }
 
     public void bindToViews(DayFragment dayFragment, WeekFragment weekFragment, SemesterFragment semesterFragment, TitleSwitcher switcher) {
-        dayFragment.updateProjects(projectBox.getAll());
-        Log.d(TAG, "bindToViews: " + projectBox.getAll().size());
-        dayFragment.setUpDayViewPage();
+        dayFragment.updateDailyProjects(projectBox.getAll());
         weekFragment.updateWeekList(thisWeek);
         switcher.setUpSwitcher();
     }

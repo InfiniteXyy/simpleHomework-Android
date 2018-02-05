@@ -21,7 +21,7 @@ public class ProjectViewModel {
     public ProjectViewModel(Context context) {
         mContext = context;
         // getData
-        BoxStore boxStore = ((App) context).getBoxStore();
+        BoxStore boxStore = ((App) context.getApplicationContext()).getBoxStore();
         dataServer = new DataServer(boxStore);
         dataServer.useDemo();
         dataServer.bindToDateHelper();

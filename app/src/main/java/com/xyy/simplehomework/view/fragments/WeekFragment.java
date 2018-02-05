@@ -14,8 +14,9 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.SmallProjectTitle;
+import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.adapter.SmallProjectAdapter;
-import com.xyy.simplehomework.viewmodel.SmallProjectViewModel;
+import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +36,8 @@ public class WeekFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
-        SmallProjectViewModel viewModel = new SmallProjectViewModel(this.getActivity());
+
+        ProjectViewModel viewModel = ((MainActivity) getActivity()).viewModel;
         List<MultiItemEntity> data = classifyList(viewModel.getAllProjects());
         SmallProjectAdapter adapter = new SmallProjectAdapter(data);
         weekRecyclerView.setAdapter(adapter);

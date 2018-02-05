@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MyProject;
+import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.adapter.ProjectAdapter;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
@@ -27,7 +28,6 @@ public class DayFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_day, container, false);
     }
 
@@ -37,7 +37,7 @@ public class DayFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        ProjectViewModel viewModel = new ProjectViewModel(this.getActivity());
+        ProjectViewModel viewModel = ((MainActivity) getActivity()).viewModel;
         List<MyProject> data = viewModel.getAllProjects();
         ProjectAdapter adapter = new ProjectAdapter(R.layout.item_project, data);
         adapter.setEmptyView(R.layout.empty_view, (ViewGroup) view);

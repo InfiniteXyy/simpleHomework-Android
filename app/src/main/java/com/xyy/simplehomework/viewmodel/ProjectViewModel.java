@@ -15,21 +15,19 @@ import io.objectbox.BoxStore;
  */
 
 public class ProjectViewModel {
-    DataServer dataServer;
+    private DataServer dataServer;
     private Context mContext;
-    private List<MyProject> projectList;
 
     public ProjectViewModel(Context context) {
         mContext = context;
         // getData
-        BoxStore boxStore = ((App) context.getApplicationContext()).getBoxStore();
+        BoxStore boxStore = ((App) context).getBoxStore();
         dataServer = new DataServer(boxStore);
         dataServer.useDemo();
         dataServer.bindToDateHelper();
     }
 
     public List<MyProject> getAllProjects() {
-        projectList = dataServer.getAllProjects();
-        return projectList;
+        return dataServer.getAllProjects();
     }
 }

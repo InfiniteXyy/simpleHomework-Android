@@ -24,6 +24,7 @@ import com.xyy.simplehomework.view.fragments.SemesterFragment;
 import com.xyy.simplehomework.view.fragments.WeekFragment;
 import com.xyy.simplehomework.view.helper.DialogHelper;
 import com.xyy.simplehomework.view.helper.TitleSwitcher;
+import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private DayFragment dayFragment;
     private SemesterFragment semesterFragment;
 
+    public ProjectViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         // set up view
         setDefaultFragment();
         setUpTools();
+
+        // set up view model
+        viewModel = new ProjectViewModel(this);
     }
 
     private void setDefaultFragment() {

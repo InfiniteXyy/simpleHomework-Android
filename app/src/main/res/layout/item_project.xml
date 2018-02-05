@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="project"
@@ -19,6 +20,7 @@
         app:cardElevation="9dp"
         app:cardCornerRadius="9dp"
         android:foreground="?android:attr/selectableItemBackground"
+        bind:cardBackgroundColor="@{project}"
         android:onClick="@{projectClick::showDetail}">
 
         <RelativeLayout

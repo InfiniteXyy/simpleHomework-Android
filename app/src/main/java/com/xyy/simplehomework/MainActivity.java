@@ -32,7 +32,7 @@ import io.objectbox.BoxStore;
 
 public class MainActivity extends AppCompatActivity {
     public DataServer dataServer;
-    public TitleSwitcher dayName;
+    public TitleSwitcher titleSwitcher;
     private Drawer drawer;
     private WeekFragment weekFragment;
     private DayFragment dayFragment;
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         // bind views with data;
-        dataServer.bindToViews(dayFragment, weekFragment, semesterFragment, dayName);
+        dataServer.bindToViews(dayFragment, weekFragment, semesterFragment, titleSwitcher);
         super.onResume();
     }
 
@@ -85,14 +85,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // init AppBar
-        dayName = new TitleSwitcher(this);
+        titleSwitcher = new TitleSwitcher(this);
         AppBarLayout appBarLayout = findViewById(R.id.app_bar);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 int newAlpha = 255 + verticalOffset;
                 newAlpha = newAlpha < 0 ? 0 : newAlpha;
-                dayName.setAlpha((float) newAlpha / 255);
+                titleSwitcher.setAlpha((float) newAlpha / 255);
             }
         });
 
@@ -118,16 +118,15 @@ public class MainActivity extends AppCompatActivity {
                         switch (position) {
                             case 1:
                                 transaction.show(dayFragment).hide(weekFragment).hide(semesterFragment).commit();
-                                dayName.changeFragmentTitle(TitleSwitcher.DAY);
+                                titleSwitcher.changeFragmentTitle(TitleSwitcher.DAY);
                                 break;
                             case 2:
                                 transaction.show(weekFragment).hide(dayFragment).hide(semesterFragment).commit();
-                                dayName.changeFragmentTitle(TitleSwitcher.WEEK);
+                                titleSwitcher.changeFragmentTitle(TitleSwitcher.WEEK);
                                 break;
                             case 3:
                                 transaction.show(semesterFragment).hide(weekFragment).hide(dayFragment).commit();
-                                dayName.changeFragmentTitle(TitleSwitcher.SEMESTER);
-
+                                titleSwitcher.changeFragmentTitle(TitleSwitcher.SEMESTER);
                                 break;
                             case 5:
                                 startActivity(new Intent(getApplicationContext(), SettingActivity.class));

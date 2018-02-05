@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="com.xyy.simplehomework.entity.MyProject" />
+        <import type="android.graphics.Color" />
+        <variable
+            name="smallProject"
+            type="com.xyy.simplehomework.entity.MyProject" />
+    </data>
+    <android.support.v7.widget.CardView
+        android:id="@+id/small_project_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="@dimen/margin_horizontal"
+        android:layout_marginRight="@dimen/margin_horizontal"
+        bind:cardElevation='@{smallProject.status}'
+        bind:cardBackgroundColor='@{smallProject}'
+        app:cardCornerRadius="9dp"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <TextView
+            android:id="@+id/smallSubjectTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{smallProject.subjectName}"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@{smallProject.status == MyProject.TYPE_PROJECT_RECORD ? Color.GRAY : Color.WHITE}"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_gravity="center_vertical" />
+    </android.support.v7.widget.CardView>
+</layout>

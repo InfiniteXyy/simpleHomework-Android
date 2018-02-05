@@ -4,4 +4,5 @@
     <dimen name="card_word_padding">28dp</dimen>
     <dimen name="card_detail_font_size">16sp</dimen>
     <dimen name="card_detail_margin_left">9dp</dimen>
+
 </resources>

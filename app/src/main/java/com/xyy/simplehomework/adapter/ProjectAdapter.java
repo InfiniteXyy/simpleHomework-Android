@@ -30,8 +30,6 @@ public class ProjectAdapter extends BaseQuickAdapter<MyProject, ProjectAdapter.P
         ViewDataBinding binding = helper.getBinding();
         binding.setVariable(BR.project, item);
         binding.setVariable(BR.projectClick, handler);
-        ((CardView) helper.itemView)
-                .setCardBackgroundColor(mContext.getResources().getColor(item.subject.getTarget().colorId));
     }
 
     @Override

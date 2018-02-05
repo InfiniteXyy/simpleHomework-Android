@@ -2,7 +2,6 @@ package com.xyy.simplehomework.adapter;
 
 import android.support.v7.widget.CardView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;

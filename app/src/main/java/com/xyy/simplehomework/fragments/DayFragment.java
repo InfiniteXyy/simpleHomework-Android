@@ -5,19 +5,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.CardView;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.xyy.simplehomework.MainActivity;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.adapter.ProjectAdapter;
 import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.helper.DateHelper;
-import com.xyy.simplehomework.helper.WeekPageHelper;
 
 import java.util.List;
 
@@ -26,76 +23,35 @@ import java.util.List;
  */
 
 public class DayFragment extends Fragment {
-    private final CardView[] weekStatusLayout;
-    private ViewPager viewPager;
-    private WeekPageHelper weekPageHelper;
-    MainActivity activity;
-
-    public DayFragment() {
-        weekStatusLayout = new CardView[WeekPageHelper.WEEK_RANGE];
-        weekPageHelper = new WeekPageHelper();
-    }
-
-    public void updateProjects(List<MyProject> projects) {
-        weekPageHelper.updateProjects(projects);
-    }
+    RecyclerView recyclerView;
+    ProjectAdapter adapter;
+    private List<MyProject> data;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.viewpager_day, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_day, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        activity = (MainActivity) getActivity();
-        weekStatusLayout[0] = activity.findViewById(R.id.sunday_status);
-        weekStatusLayout[1] = activity.findViewById(R.id.monday_status);
-        weekStatusLayout[2] = activity.findViewById(R.id.tuesday_status);
-        weekStatusLayout[3] = activity.findViewById(R.id.wednesday_status);
-        weekStatusLayout[4] = activity.findViewById(R.id.thursday_status);
-        weekStatusLayout[5] = activity.findViewById(R.id.friday_status);
-        weekStatusLayout[6] = activity.findViewById(R.id.saturday_status);
-        viewPager = view.findViewById(R.id.MyViewPager);
-
-        initDayViewPage();
+        recyclerView = view.findViewById(R.id.recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(getAdapter(view));
+        super.onViewCreated(view, savedInstanceState);
     }
 
-    private void initDayViewPage() {
-        // 设置 ViewPager
-        viewPager.setAdapter(new FragmentPagerAdapter(activity.getSupportFragmentManager()) {
-            @Override
-            public int getCount() {
-                return WeekPageHelper.WEEK_RANGE;
-            }
-
-            @Override
-            public Fragment getItem(int position) {
-                return weekPageHelper.recyclerViewFragments[position];
-            }
-        });
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                weekStatusLayout[position].setAlpha(1 - positionOffset / 2);
-                if (position < WeekPageHelper.WEEK_RANGE - 1)
-                    weekStatusLayout[position + 1].setAlpha(positionOffset / 2 + 0.5f);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                activity.dayName.setText(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
+    private ProjectAdapter getAdapter(View view) {
+        ProjectAdapter adapter = new ProjectAdapter(R.layout.item_project, data);
+        adapter.setEmptyView(R.layout.empty_view, (ViewGroup) view);
+        adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
+        this.adapter = adapter;
+        return adapter;
     }
 
-    public void setUpDayViewPage() {
-        Log.d("DataServer", "setUpDayViewPage: " + DateHelper.getDayIndex());
-        viewPager.setCurrentItem(DateHelper.getDayIndex());
+    public void updateDailyProjects(List<MyProject> projectList) {
+        this.data = projectList;
+        if (adapter != null) adapter.replaceData(data);
     }
 }

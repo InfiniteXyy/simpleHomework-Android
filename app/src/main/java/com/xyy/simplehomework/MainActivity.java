@@ -1,7 +1,5 @@
 package com.xyy.simplehomework;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -13,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -35,12 +32,8 @@ import io.objectbox.BoxStore;
 
 public class MainActivity extends AppCompatActivity {
     public DataServer dataServer;
-
-    private Drawer drawer;
-    private DialogHelper addDialog;
-    private LinearLayout status;
-
     public TitleSwitcher dayName;
+    private Drawer drawer;
     private WeekFragment weekFragment;
     private DayFragment dayFragment;
     private SemesterFragment semesterFragment;
@@ -93,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
         // init AppBar
         dayName = new TitleSwitcher(this);
-        status = findViewById(R.id.status);
         AppBarLayout appBarLayout = findViewById(R.id.app_bar);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -101,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
                 int newAlpha = 255 + verticalOffset;
                 newAlpha = newAlpha < 0 ? 0 : newAlpha;
                 dayName.setAlpha((float) newAlpha / 255);
-                status.setAlpha((float) newAlpha / 255);
             }
         });
 
@@ -127,29 +118,14 @@ public class MainActivity extends AppCompatActivity {
                         switch (position) {
                             case 1:
                                 transaction.show(dayFragment).hide(weekFragment).hide(semesterFragment).commit();
-                                status.setVisibility(View.VISIBLE);
                                 dayName.changeFragmentTitle(TitleSwitcher.DAY);
                                 break;
                             case 2:
                                 transaction.show(weekFragment).hide(dayFragment).hide(semesterFragment).commit();
-                                status.animate().alpha(0.0f).setDuration(200)
-                                        .setListener(new AnimatorListenerAdapter() {
-                                            @Override
-                                            public void onAnimationEnd(Animator animation) {
-                                                status.setVisibility(View.GONE);
-                                            }
-                                        });
                                 dayName.changeFragmentTitle(TitleSwitcher.WEEK);
                                 break;
                             case 3:
                                 transaction.show(semesterFragment).hide(weekFragment).hide(dayFragment).commit();
-                                status.animate().alpha(0.0f).setDuration(200)
-                                        .setListener(new AnimatorListenerAdapter() {
-                                            @Override
-                                            public void onAnimationEnd(Animator animation) {
-                                                status.setVisibility(View.GONE);
-                                            }
-                                        });
                                 dayName.changeFragmentTitle(TitleSwitcher.SEMESTER);
 
                                 break;

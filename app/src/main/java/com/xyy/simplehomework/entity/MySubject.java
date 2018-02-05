@@ -1,5 +1,10 @@
 package com.xyy.simplehomework.entity;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
+import com.xyy.simplehomework.BR;
+
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
@@ -11,7 +16,7 @@ import io.objectbox.relation.ToOne;
  */
 
 @Entity
-public class MySubject {
+public class MySubject extends BaseObservable{
     @Backlink
     public ToMany<MyProject> projects;
     public ToOne<Semester> semester;
@@ -30,5 +35,14 @@ public class MySubject {
     public MySubject() {
     }
 
+    @Bindable
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        notifyPropertyChanged(BR.name);
+    }
 }
 

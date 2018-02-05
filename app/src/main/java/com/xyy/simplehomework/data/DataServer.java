@@ -128,7 +128,7 @@ public class DataServer {
             if (i <= 2) {
                 project.recordHomework("完成" + i + "页", new Date());
             }
-            project.subject.setTarget(subjects[i]);
+            project.setSubject(subjects[i]);
             projectBox.put(project);
             i++;
         }

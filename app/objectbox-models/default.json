@@ -34,7 +34,7 @@
     },
     {
       "id": "2:5117643084828053962",
-      "lastPropertyId": "12:498099307036935956",
+      "lastPropertyId": "14:241275606581724253",
       "name": "MyProject",
       "properties": [
         {
@@ -78,6 +78,14 @@
         {
           "id": "12:498099307036935956",
           "name": "hasSetDate"
+        },
+        {
+          "id": "13:3184207794471584626",
+          "name": "subjectName"
+        },
+        {
+          "id": "14:241275606581724253",
+          "name": "colorId"
         }
       ],
       "relations": []

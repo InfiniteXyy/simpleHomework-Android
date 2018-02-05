@@ -85,7 +85,7 @@ public class DayFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                activity.updateDayName(position);
+                activity.dayName.setText(position);
             }
 
             @Override

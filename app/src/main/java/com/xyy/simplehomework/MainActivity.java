@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private DialogHelper addDialog;
     private LinearLayout status;
 
-    private TitleSwitcher dayName;
+    public TitleSwitcher dayName;
     private WeekFragment weekFragment;
     private DayFragment dayFragment;
     private SemesterFragment semesterFragment;
@@ -153,23 +153,20 @@ public class MainActivity extends AppCompatActivity {
                                 dayName.changeFragmentTitle(TitleSwitcher.SEMESTER);
 
                                 break;
-                            case 4:
-                                Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
-                                startActivity(intent);
-                                break;
                             case 5:
                                 startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+                                break;
+                            case 6:
+                                Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
+                                startActivity(intent);
                                 break;
                         }
                         return false;
                     }
                 })
                 .build();
-        drawer.setSelection(0);
+        drawer.setSelection(1);
 
-
-        // init dialog view
-        addDialog = new DialogHelper(this);
     }
 
     @Override
@@ -182,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_projects:
-                addDialog.show();
+                new DialogHelper(this).show();
                 break;
             default:
         }
@@ -190,8 +187,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void updateDayName(int position) {
-        dayName.setText(position);
+    @Override
+    public void onBackPressed() {
+        //handle the back press :D close the drawer first and if the drawer is closed close the activity
+        if (drawer != null && drawer.isDrawerOpen()) {
+            drawer.closeDrawer();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
 

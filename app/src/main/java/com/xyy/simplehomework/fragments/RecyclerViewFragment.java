@@ -50,18 +50,6 @@ public class RecyclerViewFragment extends Fragment {
         ProjectAdapter adapter = new ProjectAdapter(R.layout.item_project, data);
         adapter.setEmptyView(R.layout.empty_view, (ViewGroup) view);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                //       ((MainActivity) getActivity()).showProjectsDetail((MyProject) adapter.getData().get(position));
-            }
-        });
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                //      ((MainActivity) getActivity()).finishProject((MyProject) adapter.getData().get(position));
-            }
-        });
         this.adapter = adapter;
         return adapter;
     }

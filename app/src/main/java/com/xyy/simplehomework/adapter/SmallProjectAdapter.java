@@ -2,6 +2,7 @@ package com.xyy.simplehomework.adapter;
 
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -20,16 +21,14 @@ import java.util.List;
 public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
 
     public static final int TYPE_HEADER = 3;
-    public static final int TYPE_PROJECT_RECORD = 2;
-    public static final int TYPE_PROJECT_TOBE = 1;
-    public static final int TYPE_PROJECT_FIN = 0;
+
 
     public SmallProjectAdapter(List<MultiItemEntity> data) {
         super(data);
         addItemType(TYPE_HEADER, R.layout.item_project_small_title);
-        addItemType(TYPE_PROJECT_RECORD, R.layout.item_project_small_record);
-        addItemType(TYPE_PROJECT_FIN, R.layout.item_project_small_tobe);
-        addItemType(TYPE_PROJECT_TOBE, R.layout.item_project_small_tobe);
+        addItemType(MyProject.TYPE_PROJECT_RECORD, R.layout.item_project_small_record);
+        addItemType(MyProject.TYPE_PROJECT_FIN, R.layout.item_project_small_tobe);
+        addItemType(MyProject.TYPE_PROJECT_TOBE, R.layout.item_project_small_tobe);
     }
 
     @Override
@@ -49,16 +48,16 @@ public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
                     }
                 });
                 break;
-            case TYPE_PROJECT_FIN:
+            case MyProject.TYPE_PROJECT_FIN:
                 break;
-            case TYPE_PROJECT_TOBE:
+            case MyProject.TYPE_PROJECT_TOBE:
                 MyProject project = (MyProject) item;
                 MySubject subject = project.subject.getTarget();
                 helper.setText(R.id.smallSubjectTitle, subject.name);
                 ((CardView) helper.itemView)
                         .setCardBackgroundColor(mContext.getResources().getColor(subject.colorId));
                 break;
-            case TYPE_PROJECT_RECORD:
+            case MyProject.TYPE_PROJECT_RECORD:
                 subject = ((MyProject) item).subject.getTarget();
                 helper.setText(R.id.smallSubjectTitle, subject.name);
                 break;

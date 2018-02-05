@@ -9,7 +9,8 @@
     android:layout_marginLeft="@dimen/margin_horizontal"
     android:layout_marginRight="@dimen/margin_horizontal"
     app:cardElevation="4dp"
-    app:cardCornerRadius="9dp">
+    app:cardCornerRadius="9dp"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/smallSubjectTitle"

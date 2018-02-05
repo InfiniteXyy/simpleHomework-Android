@@ -1,5 +1,6 @@
 package com.xyy.simplehomework.view.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,7 +28,13 @@ import java.util.List;
  */
 
 public class WeekFragment extends Fragment {
-    @Nullable
+    Context mContext;
+    @Override
+    public void onAttach(Context context) {
+        mContext = context;
+        super.onAttach(context);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_week, container, false);
@@ -37,11 +44,11 @@ public class WeekFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
 
-        ProjectViewModel viewModel = ((MainActivity) getActivity()).viewModel;
+        ProjectViewModel viewModel = ((MainActivity) mContext).viewModel;
         List<MultiItemEntity> data = classifyList(viewModel.getAllProjects());
         SmallProjectAdapter adapter = new SmallProjectAdapter(data);
         weekRecyclerView.setAdapter(adapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         weekRecyclerView.setLayoutManager(layoutManager);
         adapter.expandAll();
         super.onViewCreated(view, savedInstanceState);

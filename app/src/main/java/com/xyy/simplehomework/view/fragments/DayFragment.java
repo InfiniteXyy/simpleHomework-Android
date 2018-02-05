@@ -1,6 +1,7 @@
 package com.xyy.simplehomework.view.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,7 +26,13 @@ import java.util.List;
  */
 
 public class DayFragment extends Fragment {
-    @Nullable
+    Context mContext;
+    @Override
+    public void onAttach(Context context) {
+        mContext = context;
+        super.onAttach(context);
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_day, container, false);
@@ -34,10 +41,10 @@ public class DayFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
 
-        ProjectViewModel viewModel = ((MainActivity) getActivity()).viewModel;
+        ProjectViewModel viewModel = ((MainActivity) mContext).viewModel;
         List<MyProject> data = viewModel.getAllProjects();
         ProjectAdapter adapter = new ProjectAdapter(R.layout.item_project, data);
         adapter.setEmptyView(R.layout.empty_view, (ViewGroup) view);
@@ -46,4 +53,5 @@ public class DayFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         super.onViewCreated(view, savedInstanceState);
     }
+
 }

@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.helper;
+package com.xyy.simplehomework.view.helper;
 
 import android.app.Activity;
 import android.content.Context;
@@ -43,9 +43,7 @@ public class TitleSwitcher {
                 return tv;
             }
         });
-    }
 
-    public void setUpSwitcher() {
         dayName.setCurrentText(DateHelper.getDayName().toUpperCase());
         old_position = DateHelper.getDayIndex();
         old_position_title = DAY;

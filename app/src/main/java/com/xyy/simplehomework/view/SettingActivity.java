@@ -1,15 +1,13 @@
-package com.xyy.simplehomework;
+package com.xyy.simplehomework.view;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.EditText;
 
+import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.databinding.ActivitySettingBinding;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.handler.TestHandler;
+import com.xyy.simplehomework.view.handler.TestHandler;
 
 public class SettingActivity extends AppCompatActivity {
 

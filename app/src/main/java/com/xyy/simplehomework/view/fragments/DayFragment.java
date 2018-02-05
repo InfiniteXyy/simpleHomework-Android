@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.fragments;
+package com.xyy.simplehomework.view.fragments;
 
 
 import android.os.Bundle;
@@ -13,8 +13,9 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.adapter.ProjectAdapter;
 import com.xyy.simplehomework.entity.MyProject;
+import com.xyy.simplehomework.view.adapter.ProjectAdapter;
+import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 import java.util.List;
 
@@ -23,35 +24,26 @@ import java.util.List;
  */
 
 public class DayFragment extends Fragment {
-    RecyclerView recyclerView;
-    ProjectAdapter adapter;
-    private List<MyProject> data;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_day, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recyclerView = view.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(getAdapter(view));
-        super.onViewCreated(view, savedInstanceState);
-    }
 
-    private ProjectAdapter getAdapter(View view) {
+        ProjectViewModel viewModel = new ProjectViewModel(this.getActivity());
+        List<MyProject> data = viewModel.getAllProjects();
         ProjectAdapter adapter = new ProjectAdapter(R.layout.item_project, data);
         adapter.setEmptyView(R.layout.empty_view, (ViewGroup) view);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
-        this.adapter = adapter;
-        return adapter;
-    }
 
-    public void updateDailyProjects(List<MyProject> projectList) {
-        this.data = projectList;
-        if (adapter != null) adapter.replaceData(data);
+        recyclerView.setAdapter(adapter);
+        super.onViewCreated(view, savedInstanceState);
     }
 }

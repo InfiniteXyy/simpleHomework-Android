@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.handler;
+package com.xyy.simplehomework.view.handler;
 
 import android.content.Context;
 import android.view.View;

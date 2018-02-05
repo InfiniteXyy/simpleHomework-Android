@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.helper;
+package com.xyy.simplehomework.view.helper;
 
 import com.xyy.simplehomework.entity.Semester;
 import com.xyy.simplehomework.entity.Week;

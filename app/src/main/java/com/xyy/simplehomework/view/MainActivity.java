@@ -1,4 +1,4 @@
-package com.xyy.simplehomework;
+package com.xyy.simplehomework.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,20 +18,17 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.xyy.simplehomework.data.DataServer;
-import com.xyy.simplehomework.fragments.DayFragment;
-import com.xyy.simplehomework.fragments.SemesterFragment;
-import com.xyy.simplehomework.fragments.WeekFragment;
-import com.xyy.simplehomework.helper.DialogHelper;
-import com.xyy.simplehomework.helper.TitleSwitcher;
+import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.view.fragments.DayFragment;
+import com.xyy.simplehomework.view.fragments.SemesterFragment;
+import com.xyy.simplehomework.view.fragments.WeekFragment;
+import com.xyy.simplehomework.view.helper.DialogHelper;
+import com.xyy.simplehomework.view.helper.TitleSwitcher;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import io.objectbox.BoxStore;
-
 public class MainActivity extends AppCompatActivity {
-    public DataServer dataServer;
     public TitleSwitcher titleSwitcher;
     private Drawer drawer;
     private WeekFragment weekFragment;
@@ -44,22 +41,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // set up views
+        // set up view
         setDefaultFragment();
         setUpTools();
-
-        // set up dataServer
-        BoxStore boxStore = ((App) getApplication()).getBoxStore();
-        dataServer = new DataServer(boxStore);
-        dataServer.useDemo();
-        dataServer.bindToDateHelper();
-    }
-
-    @Override
-    protected void onResume() {
-        // bind views with data;
-        dataServer.bindToViews(dayFragment, weekFragment, semesterFragment, titleSwitcher);
-        super.onResume();
     }
 
     private void setDefaultFragment() {

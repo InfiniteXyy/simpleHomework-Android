@@ -1,38 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="project"
             type="com.xyy.simplehomework.entity.MyProject" />
+
         <variable
             name="projectClick"
-            type="com.xyy.simplehomework.handler.ProjectClickHandler" />
+            type="com.xyy.simplehomework.view.handler.ProjectClickHandler" />
     </data>
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_marginBottom="24dp"
         android:layout_marginLeft="@dimen/margin_horizontal"
         android:layout_marginRight="@dimen/margin_horizontal"
-        app:cardElevation="9dp"
-        app:cardCornerRadius="9dp"
         android:foreground="?android:attr/selectableItemBackground"
-        bind:cardBackgroundColor="@{project}"
-        android:onClick="@{projectClick::showDetail}">
+        android:onClick="@{projectClick::showDetail}"
+        app:cardCornerRadius="9dp"
+        app:cardElevation="9dp"
+        bind:cardBackgroundColor="@{project}">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
+                android:id="@+id/subject_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/subject_detail"
-                android:maxLines="1"
-                android:layout_marginTop="17dp"
                 android:layout_marginLeft="@dimen/card_word_padding"
+                android:layout_marginTop="17dp"
+                android:maxLines="1"
                 android:text="周三下午 5-6 节"
                 android:textColor="#cfc8c8"
                 android:textSize="14sp" />
@@ -44,13 +48,13 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/subject_detail"
-                android:maxLines="1"
                 android:layout_marginLeft="@dimen/card_word_padding"
-                android:text="@{project.subjectName}"
+                android:layout_marginStart="@dimen/card_word_padding"
                 android:layout_marginTop="-2dp"
+                android:maxLines="1"
+                android:text="@{project.subjectName}"
                 android:textColor="@android:color/white"
-                android:textSize="30sp"
-                android:layout_marginStart="@dimen/card_word_padding" />
+                android:textSize="30sp" />
 
             <ImageView
                 android:id="@+id/project_img"
@@ -66,14 +70,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/project_img"
+                android:layout_marginLeft="@dimen/card_detail_margin_left"
+                android:layout_marginStart="@dimen/card_detail_margin_left"
+                android:layout_marginTop="-2dp"
                 android:layout_toEndOf="@+id/project_img"
                 android:layout_toRightOf="@+id/project_img"
-                android:layout_marginLeft="@dimen/card_detail_margin_left"
-                android:layout_marginTop="-2dp"
                 android:text="课本 P15 题号 1, 5, 7"
                 android:textColor="#EEEEEE"
-                android:textSize="@dimen/card_detail_font_size"
-                android:layout_marginStart="@dimen/card_detail_margin_left" />
+                android:textSize="@dimen/card_detail_font_size" />
 
             <ImageView
                 android:id="@+id/time_img"
@@ -89,10 +93,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/time_img"
-                android:layout_toEndOf="@+id/time_img"
-                android:layout_toRightOf="@id/time_img"
                 android:layout_marginLeft="@dimen/card_detail_margin_left"
                 android:layout_marginTop="-2dp"
+                android:layout_toEndOf="@+id/time_img"
+                android:layout_toRightOf="@id/time_img"
                 android:text='@{"状态" + project.status}'
                 android:textColor="#EEEEEE"
                 android:textSize="@dimen/card_detail_font_size" />
@@ -105,9 +109,9 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:background="#00000000"
+                android:onClick="@{(theView)->projectClick.finishProject(theView, project)}"
                 android:padding="8dp"
                 android:text="Delete"
-                android:onClick="@{(theView)->projectClick.finishProject(theView, project)}"
                 android:textColor="@android:color/white" />
 
 

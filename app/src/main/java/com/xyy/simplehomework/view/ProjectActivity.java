@@ -1,4 +1,4 @@
-package com.xyy.simplehomework;
+package com.xyy.simplehomework.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.MySubject;
 

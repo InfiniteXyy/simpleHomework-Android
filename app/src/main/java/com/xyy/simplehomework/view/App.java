@@ -1,8 +1,9 @@
-package com.xyy.simplehomework;
+package com.xyy.simplehomework.view;
 
 import android.app.Application;
 import android.util.Log;
 
+import com.xyy.simplehomework.BuildConfig;
 import com.xyy.simplehomework.entity.MyObjectBox;
 
 import io.objectbox.BoxStore;

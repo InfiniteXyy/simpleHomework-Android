@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.data;
+package com.xyy.simplehomework.model;
 
 import android.util.Log;
 
@@ -8,13 +8,10 @@ import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.entity.Semester;
 import com.xyy.simplehomework.entity.Semester_;
 import com.xyy.simplehomework.entity.Week;
-import com.xyy.simplehomework.fragments.DayFragment;
-import com.xyy.simplehomework.fragments.SemesterFragment;
-import com.xyy.simplehomework.fragments.WeekFragment;
-import com.xyy.simplehomework.helper.DateHelper;
-import com.xyy.simplehomework.helper.TitleSwitcher;
+import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.Date;
+import java.util.List;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
@@ -29,7 +26,6 @@ public class DataServer {
     private Box<MyProject> projectBox;
     private Box<Semester> semesterBox;
     private Box<Week> weekBox;
-
     private Week thisWeek;
 
     public DataServer(BoxStore boxStore) {
@@ -39,10 +35,8 @@ public class DataServer {
         weekBox = boxStore.boxFor(Week.class);
     }
 
-    public void bindToViews(DayFragment dayFragment, WeekFragment weekFragment, SemesterFragment semesterFragment, TitleSwitcher switcher) {
-        dayFragment.updateDailyProjects(projectBox.getAll());
-        weekFragment.updateWeekList(thisWeek);
-        switcher.setUpSwitcher();
+    public List<MyProject> getAllProjects() {
+        return projectBox.getAll();
     }
 
     private void refreshWeekProjects(Week week, Semester semester) {

@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.helper;
+package com.xyy.simplehomework.view.helper;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

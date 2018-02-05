@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
+
         <variable
             name="testSubject"
             type="com.xyy.simplehomework.entity.MySubject" />
+
         <variable
             name="clickHandler"
-            type="com.xyy.simplehomework.handler.TestHandler" />
+            type="com.xyy.simplehomework.view.handler.TestHandler" />
 
     </data>
-    <RelativeLayout android:layout_height="match_parent"
+
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@drawable/bg">
 
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginTop="50dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
             android:src="@drawable/ic_setting" />
 
         <EditText
+            android:id="@+id/editTextTest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@{testSubject.name}"
-            android:textSize="60sp"
-            android:id="@+id/editTextTest" />
+            android:text="@={testSubject.name}"
+            android:textSize="60sp" />
 
         <TextView
             android:layout_width="wrap_content"

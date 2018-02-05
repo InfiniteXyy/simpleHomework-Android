@@ -1,10 +1,10 @@
-package com.xyy.simplehomework.handler;
+package com.xyy.simplehomework.view.handler;
 
 import android.content.Intent;
 import android.view.View;
 
-import com.xyy.simplehomework.SettingActivity;
 import com.xyy.simplehomework.entity.MyProject;
+import com.xyy.simplehomework.view.SettingActivity;
 
 /**
  * Created by xyy on 2018/2/5.

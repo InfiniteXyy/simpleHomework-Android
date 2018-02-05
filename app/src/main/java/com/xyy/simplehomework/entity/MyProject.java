@@ -9,7 +9,7 @@ import android.view.View;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.adapter.SmallProjectAdapter;
+import com.xyy.simplehomework.view.adapter.SmallProjectAdapter;
 
 import java.util.Date;
 
@@ -44,6 +44,22 @@ public class MyProject extends BaseObservable implements MultiItemEntity {
         this.deadline = new Date();
     }
 
+    @BindingAdapter("cardElevation")
+    public static void setCardElevation(View view, int status) {
+        CardView cv = (CardView) view;
+        cv.setCardElevation(status == TYPE_PROJECT_TOBE ? 8.0f : 0.0f);
+    }
+
+    @BindingAdapter("cardBackgroundColor")
+    public static void setCardBackgroundColor(View view, MyProject project) {
+        CardView cv = (CardView) view;
+        if (project.status == TYPE_PROJECT_TOBE) {
+            cv.setCardBackgroundColor(view.getResources().getColor(project.colorId));
+        } else {
+            cv.setCardBackgroundColor(view.getResources().getColor(R.color.japanWhite));
+        }
+    }
+
     public void recordHomework(String detail, Date deadline) {
         this.detail = detail;
         this.deadline = deadline;
@@ -65,21 +81,7 @@ public class MyProject extends BaseObservable implements MultiItemEntity {
         this.status = status;
         notifyPropertyChanged(BR.status);
     }
-    @BindingAdapter("cardElevation")
-    public static void setCardElevation(View view, int status) {
-        CardView cv = (CardView) view;
-        cv.setCardElevation(status == TYPE_PROJECT_TOBE ? 8.0f : 0.0f);
-    }
 
-    @BindingAdapter("cardBackgroundColor")
-    public static void setCardBackgroundColor(View view, MyProject project) {
-        CardView cv = (CardView) view;
-        if (project.status == TYPE_PROJECT_TOBE) {
-            cv.setCardBackgroundColor(view.getResources().getColor(project.colorId));
-        } else {
-            cv.setCardBackgroundColor(view.getResources().getColor(R.color.japanWhite));
-        }
-    }
     @Override
     public int getItemType() {
         return SmallProjectAdapter.TYPE_PROJECT;

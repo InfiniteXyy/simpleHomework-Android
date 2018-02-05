@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.fragments;
+package com.xyy.simplehomework.view.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.adapter.SmallProjectAdapter;
 import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.SmallProjectTitle;
-import com.xyy.simplehomework.entity.Week;
+import com.xyy.simplehomework.view.adapter.SmallProjectAdapter;
+import com.xyy.simplehomework.viewmodel.SmallProjectViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,13 +26,6 @@ import java.util.List;
  */
 
 public class WeekFragment extends Fragment {
-    private List<MultiItemEntity> data;
-    private SmallProjectAdapter adapter;
-
-    public WeekFragment() {
-        data = new ArrayList<>();
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -42,34 +35,28 @@ public class WeekFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
-        weekRecyclerView.setAdapter(getAdapter());
+        SmallProjectViewModel viewModel = new SmallProjectViewModel(this.getActivity());
+        List<MultiItemEntity> data = classifyList(viewModel.getAllProjects());
+        SmallProjectAdapter adapter = new SmallProjectAdapter(data);
+        weekRecyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         weekRecyclerView.setLayoutManager(layoutManager);
         adapter.expandAll();
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private SmallProjectAdapter getAdapter() {
-        adapter = new SmallProjectAdapter(data);
-        return adapter;
-    }
 
-    public void updateWeekList(Week week) {
-        data = new ArrayList<>();
-
+    public List<MultiItemEntity> classifyList(List<MyProject> projects) {
+        List<MultiItemEntity> data = new ArrayList<>();
         List<SmallProjectTitle> title = (Arrays.asList(
                 new SmallProjectTitle("已完成"),
                 new SmallProjectTitle("未完成"),
                 new SmallProjectTitle("待记录")
         ));
-
-        for (MyProject project : week.projects) {
+        for (MyProject project : projects) {
             title.get(project.status).addSubItem(project);
         }
         data.addAll(title);
-        if (adapter != null) {
-            adapter.replaceData(data);
-            adapter.expandAll();
-        }
+        return data;
     }
 }

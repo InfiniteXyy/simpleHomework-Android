@@ -1,8 +1,7 @@
-package com.xyy.simplehomework.adapter;
+package com.xyy.simplehomework.view.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,8 +9,6 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.entity.SmallProjectTitle;
 
 import java.util.List;

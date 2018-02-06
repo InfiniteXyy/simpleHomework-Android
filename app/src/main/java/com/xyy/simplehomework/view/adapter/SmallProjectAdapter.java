@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.SmallProjectTitle;
+import com.xyy.simplehomework.viewmodel.ProjectClickHandler;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ import java.util.List;
 
 public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, ProjectAdapter.ProjectHolder> {
 
+    private ProjectClickHandler handler;
+
     public static final int TYPE_HEADER = 3;
     public static final int TYPE_PROJECT = 4;
 
@@ -26,6 +29,7 @@ public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
         super(data);
         addItemType(TYPE_HEADER, R.layout.item_project_small_title);
         addItemType(TYPE_PROJECT, R.layout.item_project_small);
+        handler = new ProjectClickHandler();
     }
 
     @Override
@@ -47,6 +51,7 @@ public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
             default:
                 ViewDataBinding binding = helper.getBinding();
                 binding.setVariable(BR.smallProject, item);
+                binding.setVariable(BR.projectClick, handler);
                 break;
         }
     }

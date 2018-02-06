@@ -9,9 +9,6 @@
             name="project"
             type="com.xyy.simplehomework.entity.MyProject" />
 
-        <variable
-            name="projectClick"
-            type="com.xyy.simplehomework.viewmodel.ProjectClickHandler" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -21,7 +18,6 @@
         android:layout_marginLeft="@dimen/margin_horizontal"
         android:layout_marginRight="@dimen/margin_horizontal"
         android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="@{projectClick::showDetail}"
         app:cardCornerRadius="9dp"
         app:cardElevation="9dp"
         bind:cardBackgroundColor="@{project}">
@@ -109,7 +105,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:background="#00000000"
-                android:onClick="@{(theView)->projectClick.finishProject(theView, project)}"
                 android:padding="8dp"
                 android:text="Delete"
                 android:textColor="@android:color/white" />

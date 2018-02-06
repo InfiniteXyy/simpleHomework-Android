@@ -6,12 +6,14 @@
     <data>
 
         <import type="com.xyy.simplehomework.entity.MyProject" />
-
         <import type="android.graphics.Color" />
 
         <variable
             name="smallProject"
             type="com.xyy.simplehomework.entity.MyProject" />
+        <variable
+            name="projectClick"
+            type="com.xyy.simplehomework.viewmodel.ProjectClickHandler" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -24,7 +26,8 @@
         android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="9dp"
         bind:cardBackgroundColor='@{smallProject}'
-        bind:cardElevation='@{smallProject.status}'>
+        bind:cardElevation='@{smallProject.status}'
+        android:onClick="@{projectClick::showDetail}">
 
         <TextView
             android:id="@+id/smallSubjectTitle"
@@ -36,6 +39,7 @@
             android:text="@{smallProject.subjectName}"
             android:textColor="@{smallProject.status == MyProject.TYPE_PROJECT_RECORD ? Color.GRAY : Color.WHITE}"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:transitionName="shareTitle"/>
     </android.support.v7.widget.CardView>
 </layout>

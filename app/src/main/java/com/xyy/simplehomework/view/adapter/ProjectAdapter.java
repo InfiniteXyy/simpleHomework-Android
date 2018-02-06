@@ -17,18 +17,14 @@ import java.util.List;
 
 public class ProjectAdapter extends BaseQuickAdapter<MyProject, ProjectAdapter.ProjectHolder> {
 
-    private ProjectClickHandler handler;
-
     public ProjectAdapter(int layoutResId, List<MyProject> data) {
         super(layoutResId, data);
-        handler = new ProjectClickHandler();
     }
 
     @Override
     protected void convert(ProjectHolder helper, MyProject item) {
         ViewDataBinding binding = helper.getBinding();
         binding.setVariable(BR.project, item);
-        binding.setVariable(BR.projectClick, handler);
     }
 
     @Override

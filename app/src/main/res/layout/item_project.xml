@@ -11,7 +11,7 @@
 
         <variable
             name="projectClick"
-            type="com.xyy.simplehomework.view.handler.ProjectClickHandler" />
+            type="com.xyy.simplehomework.viewmodel.ProjectClickHandler" />
     </data>
 
     <android.support.v7.widget.CardView

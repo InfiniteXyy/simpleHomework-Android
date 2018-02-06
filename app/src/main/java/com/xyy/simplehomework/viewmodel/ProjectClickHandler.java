@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.view.handler;
+package com.xyy.simplehomework.viewmodel;
 
 import android.content.Intent;
 import android.view.View;

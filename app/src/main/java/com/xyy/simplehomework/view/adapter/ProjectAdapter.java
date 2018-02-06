@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.view.handler.ProjectClickHandler;
+import com.xyy.simplehomework.viewmodel.ProjectClickHandler;
 
 import java.util.List;
 

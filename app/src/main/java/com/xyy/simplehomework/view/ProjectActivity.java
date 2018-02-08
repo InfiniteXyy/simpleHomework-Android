@@ -4,11 +4,14 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.databinding.ActivityProjectBinding;
+import com.xyy.simplehomework.view.adapter.HomeworkAdapter;
 import com.xyy.simplehomework.viewmodel.ProjectDetailViewModel;
 
 
@@ -31,6 +34,15 @@ public class ProjectActivity extends AppCompatActivity {
         long id = getIntent().getLongExtra(PROJECT_ID, 0);
         ProjectDetailViewModel viewModel = new ProjectDetailViewModel(this, id);
         binding.setProject(viewModel.getProject());
+
+        RecyclerView recyclerView = findViewById(R.id.project_detail_recycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        HomeworkAdapter adapter = new HomeworkAdapter(R.layout.item_homework_in_project_detail, viewModel.getProject().homework);
+        //  adapter.setEmptyView(R.layout.empty_view, (ViewGroup) view);
+
+        recyclerView.setAdapter(adapter);
     }
 
 

@@ -4,13 +4,17 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="com.xyy.simplehomework.entity.MyProject" />
+
         <import type="com.xyy.simplehomework.entity.MySubject" />
+
         <import type="android.graphics.Color" />
 
         <variable
             name="smallProject"
             type="com.xyy.simplehomework.entity.MyProject" />
+
         <variable
             name="projectClick"
             type="com.xyy.simplehomework.view.handler.ProjectClickHandler" />
@@ -19,27 +23,40 @@
     <android.support.v7.widget.CardView
         android:id="@+id/small_project_card_view"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:layout_marginLeft="@dimen/margin_horizontal"
         android:layout_marginRight="@dimen/margin_horizontal"
         android:foreground="?android:attr/selectableItemBackground"
+        android:transitionName="sharedCard"
         app:cardCornerRadius="9dp"
         bind:cardColor="@{smallProject}"
-        bind:cardElevation="@{smallProject}"
-        android:onClick="@{(view)->projectClick.showDetail(view, smallProject.id)}"
-        android:transitionName="sharedCard">
+        bind:cardElevation="@{smallProject}">
 
         <TextView
             android:id="@+id/smallSubjectTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
             android:text="@{smallProject.subject.getTarget().name}"
             android:textColor="@{smallProject.homework.size() == 0 ? Color.GRAY : Color.WHITE}"
             android:textSize="16sp"
             android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/showAllHomework"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:onClick="@{(view)->projectClick.showDetail(view, smallProject.id)}"
+            app:srcCompat="@drawable/ic_chevron_right_white_24px" />
+
+
     </android.support.v7.widget.CardView>
 </layout>

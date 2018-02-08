@@ -32,12 +32,12 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     public TitleSwitcher titleSwitcher;
+    public ProjectViewModel viewModel;
     private Drawer drawer;
     private WeekFragment weekFragment;
     private DayFragment dayFragment;
     private SemesterFragment semesterFragment;
-
-    public ProjectViewModel viewModel;
+    private long exitTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,8 +151,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
-    private long exitTime = 0;
     @Override
     public void onBackPressed() {
         //handle the back press :D close the drawer first and if the drawer is closed close the activity

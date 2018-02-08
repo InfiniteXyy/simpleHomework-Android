@@ -82,9 +82,11 @@ public class ProjectViewModel {
 
         int i = 0;
         for (MyProject project : week.projects) {
-            if (i <= 2) {
-                Homework homework = new Homework();
-                project.homework.add(homework);
+            if (i <= 3) {
+                for (int j = 0; j < i + 1; j++) {
+                    Homework homework = new Homework(project.subject.getTarget().getName() + "的作业" + j);
+                    project.homework.add(homework);
+                }
             }
             dataServer.put(project);
             i++;

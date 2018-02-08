@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/ic_dehaze_24px" />
+                app:navigationIcon="@drawable/ic_menu_black_24px" />
 
             <TextSwitcher
                 android:id="@+id/day_name"

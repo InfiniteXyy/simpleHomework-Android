@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.view.View;
 
-import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.ProjectActivity;
 
 /**
@@ -19,10 +19,10 @@ public class ProjectClickHandler {
         Intent intent = new Intent(view.getContext(), ProjectActivity.class);
         intent.putExtra(ProjectActivity.PROJECT_ID, id);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            Pair<View, String> shareCard = Pair.create((View) view.getParent(), "sharedCard");
             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     (Activity) view.getContext(),
-                    view.findViewById(R.id.small_project_card_view),
-                    "sharedCard"
+                    shareCard
             );
             view.getContext().startActivity(intent, options.toBundle());
         } else {

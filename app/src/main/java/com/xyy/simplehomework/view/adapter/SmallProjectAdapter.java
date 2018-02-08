@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.SmallProjectTitle;
 import com.xyy.simplehomework.view.handler.ProjectClickHandler;
 
@@ -20,15 +21,16 @@ import java.util.List;
 
 public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, HomeworkAdapter.HomeworkHolder> {
 
-    private ProjectClickHandler handler;
-
     public static final int TYPE_HEADER = 0;
     public static final int TYPE_PROJECT = 1;
+    public static final int TYPE_HOMEWORK = 2;
+    private ProjectClickHandler handler;
 
     public SmallProjectAdapter(List<MultiItemEntity> data) {
         super(data);
         addItemType(TYPE_HEADER, R.layout.item_project_small_title);
         addItemType(TYPE_PROJECT, R.layout.item_project_small);
+        addItemType(TYPE_HOMEWORK, R.layout.item_homework_in_project_detail);
         handler = new ProjectClickHandler();
     }
 
@@ -48,11 +50,23 @@ public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
                     }
                 });
                 break;
-            default:
+            case TYPE_PROJECT:
+                final MyProject project = (MyProject) item;
                 ViewDataBinding binding = helper.getBinding();
                 binding.setVariable(BR.smallProject, item);
                 binding.setVariable(BR.projectClick, handler);
+                helper.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int pos = helper.getAdapterPosition();
+                        if (project.isExpanded()) collapse(pos);
+                        else expand(pos);
+                    }
+                });
                 break;
+            case TYPE_HOMEWORK:
+                binding = helper.getBinding();
+                binding.setVariable(BR.homework, item);
         }
     }
 

@@ -11,7 +11,12 @@ import io.objectbox.android.AndroidObjectBrowser;
 
 public class App extends Application {
 
+    public static App instance;
     private BoxStore boxStore;
+
+    public static App getInstance() {
+        return instance;
+    }
 
     @Override
     public void onCreate() {
@@ -26,12 +31,6 @@ public class App extends Application {
 
     public BoxStore getBoxStore() {
         return boxStore;
-    }
-
-    public static App instance;
-
-    public static App getInstance() {
-        return instance;
     }
 
 }

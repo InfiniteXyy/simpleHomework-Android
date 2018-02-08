@@ -34,6 +34,15 @@ public class TitleSwitcher {
         initSwitcher();
     }
 
+    @BindingConversion
+    public static Typeface convertStringToFace(String s) {
+        try {
+            return Typeface.createFromAsset(App.getInstance().getAssets(), s);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
     private void initSwitcher() {
         dayName = ((Activity) context).findViewById(R.id.day_name);
         dayName.setFactory(new ViewSwitcher.ViewFactory() {
@@ -89,15 +98,6 @@ public class TitleSwitcher {
                 break;
             default:
                 break;
-        }
-    }
-
-    @BindingConversion
-    public static Typeface convertStringToFace(String s){
-        try {
-            return Typeface.createFromAsset(App.getInstance().getAssets(), s);
-        } catch (Exception e) {
-            throw e;
         }
     }
 }

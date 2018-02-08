@@ -1,10 +1,10 @@
 package com.xyy.simplehomework.entity;
 
-import android.databinding.BaseObservable;
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.CardView;
 import android.view.View;
 
+import com.chad.library.adapter.base.entity.AbstractExpandableItem;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.adapter.SmallProjectAdapter;
@@ -20,7 +20,7 @@ import io.objectbox.relation.ToOne;
  */
 
 @Entity
-public class MyProject extends BaseObservable implements MultiItemEntity {
+public class MyProject extends AbstractExpandableItem<Homework> implements MultiItemEntity {
     @Id
     public long id;
 
@@ -31,11 +31,6 @@ public class MyProject extends BaseObservable implements MultiItemEntity {
 
     public MyProject() {
 
-    }
-
-    @Override
-    public int getItemType() {
-        return SmallProjectAdapter.TYPE_PROJECT;
     }
 
     @BindingAdapter("cardColor")
@@ -56,5 +51,15 @@ public class MyProject extends BaseObservable implements MultiItemEntity {
         } else {
             cv.setCardElevation(8.0f);
         }
+    }
+
+    @Override
+    public int getItemType() {
+        return SmallProjectAdapter.TYPE_PROJECT;
+    }
+
+    @Override
+    public int getLevel() {
+        return 1;
     }
 }

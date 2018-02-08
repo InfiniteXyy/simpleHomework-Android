@@ -15,6 +15,7 @@ public class ProjectDetailViewModel {
     private Context mContext;
     private MyProject project;
     private BoxStore boxStore;
+
     public ProjectDetailViewModel(Context context, long id) {
         mContext = context;
         boxStore = App.getInstance().getBoxStore();

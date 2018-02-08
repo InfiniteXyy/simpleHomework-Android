@@ -27,6 +27,7 @@ import java.util.List;
 
 public class DayFragment extends Fragment {
     Context mContext;
+
     @Override
     public void onAttach(Context context) {
         mContext = context;

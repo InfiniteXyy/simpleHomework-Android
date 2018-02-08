@@ -29,6 +29,7 @@ import java.util.List;
 
 public class WeekFragment extends Fragment {
     Context mContext;
+
     @Override
     public void onAttach(Context context) {
         mContext = context;
@@ -49,7 +50,6 @@ public class WeekFragment extends Fragment {
         weekRecyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         weekRecyclerView.setLayoutManager(layoutManager);
-        adapter.expandAll();
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -62,12 +62,14 @@ public class WeekFragment extends Fragment {
                 new SmallProjectTitle("待记录")
         ));
         for (MyProject project : projects) {
+            project.setSubItems(project.homework);
             if (project.homework.isEmpty()) {
                 title.get(2).addSubItem(project);
             } else {
                 title.get(1).addSubItem(project);
             }
         }
+
         data.addAll(title);
         return data;
     }

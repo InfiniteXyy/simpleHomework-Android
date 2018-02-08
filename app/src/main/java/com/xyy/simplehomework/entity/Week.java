@@ -12,11 +12,10 @@ import io.objectbox.relation.ToOne;
 
 @Entity
 public class Week {
-    @Id
-    long id;
-
     public int weekIndex;
     public ToOne<Semester> semester;
     @Backlink
     public ToMany<MyProject> projects;
+    @Id
+    long id;
 }

@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.adapter.HomeworkAdapter;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;

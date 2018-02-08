@@ -2,7 +2,6 @@ package com.xyy.simplehomework.view.helper;
 
 import android.app.Activity;
 import android.content.Context;
-import android.databinding.BindingAdapter;
 import android.databinding.BindingConversion;
 import android.graphics.Typeface;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.ViewSwitcher;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.App;
-import com.xyy.simplehomework.view.MainActivity;
 
 /**
  * Created by xyy on 2018/1/26.

@@ -2,14 +2,9 @@ package com.xyy.simplehomework.viewmodel;
 
 import android.content.Context;
 
-import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.model.DataServer;
 import com.xyy.simplehomework.view.App;
 
-import java.util.List;
-
-import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
 /**

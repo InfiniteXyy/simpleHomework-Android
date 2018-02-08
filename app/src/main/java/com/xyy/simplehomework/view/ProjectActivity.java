@@ -1,23 +1,15 @@
 package com.xyy.simplehomework.view;
 
 import android.databinding.DataBindingUtil;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.databinding.ActivityProjectBinding;
-import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.entity.Week;
-import com.xyy.simplehomework.view.helper.TitleSwitcher;
 import com.xyy.simplehomework.viewmodel.ProjectDetailViewModel;
-
-import org.w3c.dom.Text;
 
 
 public class ProjectActivity extends AppCompatActivity {
@@ -27,6 +19,14 @@ public class ProjectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityProjectBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_project);
+
+        // init toolbar
+        final Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         long id = getIntent().getLongExtra(PROJECT_ID, 0);
         ProjectDetailViewModel viewModel = new ProjectDetailViewModel(this, id);

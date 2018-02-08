@@ -7,7 +7,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.view.ProjectActivity;
 
 /**

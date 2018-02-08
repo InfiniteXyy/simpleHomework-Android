@@ -6,25 +6,48 @@
         <import type="com.xyy.simplehomework.view.helper.DateHelper" />
         <import type="com.xyy.simplehomework.entity.MyProject" />
         <variable
-            name="date"
-            type="com.xyy.simplehomework.view.helper.TitleSwitcher" />
-        <variable
             name="project"
             type="MyProject" />
     </data>
-    <FrameLayout
+
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/bg">
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:elevation="0dp">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title='@{"WEEK" + DateHelper.weekIndex}'>
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="450dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="70dp"
             android:transitionName="sharedCard"
             app:cardBackgroundColor="@color/japanBrown"
             app:cardCornerRadius="9dp"
             app:cardElevation="9dp"
-            bind:cardColor="@{project}"></android.support.v7.widget.CardView>
-    </FrameLayout>
+            bind:cardColor="@{project}">
+
+        </android.support.v7.widget.CardView>
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/choose_project_recycler"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+
+        <!--</android.support.v7.widget.RecyclerView>-->
+
+    </android.support.design.widget.CoordinatorLayout>
 </layout>

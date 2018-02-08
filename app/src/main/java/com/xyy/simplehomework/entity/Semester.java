@@ -16,7 +16,7 @@ public class Semester {
     public static final int FIRST_TERM = 0;
     public static final int SECOND_TERM = 1;
     @Id
-    long id;
+    public long id;
     @Backlink
     public ToMany<MySubject> allSubjects;
     @Backlink

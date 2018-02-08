@@ -2,6 +2,8 @@ package com.xyy.simplehomework.view.helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.databinding.BindingAdapter;
+import android.databinding.BindingConversion;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -10,6 +12,8 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.view.App;
+import com.xyy.simplehomework.view.MainActivity;
 
 /**
  * Created by xyy on 2018/1/26.
@@ -20,6 +24,7 @@ public class TitleSwitcher {
     public final static int WEEK = 1;
     public final static int SEMESTER = 2;
 
+    private Typeface typeface;
     private Context context;
     private TextSwitcher dayName;
     private int old_position;
@@ -27,19 +32,18 @@ public class TitleSwitcher {
 
     public TitleSwitcher(Context mContext) {
         this.context = mContext;
+        typeface = Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Regular.ttf");
         initSwitcher();
     }
 
     private void initSwitcher() {
-        final Typeface typeFace = Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Regular.ttf");
-
         dayName = ((Activity) context).findViewById(R.id.day_name);
         dayName.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
                 TextView tv = new TextView(context);
                 tv.setTextAppearance(context, R.style.dayNameSwitcher);
-                tv.setTypeface(typeFace, Typeface.BOLD);
+                tv.setTypeface(typeface, Typeface.BOLD);
                 return tv;
             }
         });
@@ -87,6 +91,15 @@ public class TitleSwitcher {
                 break;
             default:
                 break;
+        }
+    }
+
+    @BindingConversion
+    public static Typeface convertStringToFace(String s){
+        try {
+            return Typeface.createFromAsset(App.getInstance().getAssets(), s);
+        } catch (Exception e) {
+            throw e;
         }
     }
 }

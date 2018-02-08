@@ -12,7 +12,7 @@ import io.objectbox.relation.ToOne;
 @Entity
 public class Homework {
     @Id
-    long id;
+    public long id;
 
     public ToOne<MyProject> project;
     public String detail;

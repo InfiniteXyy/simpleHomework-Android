@@ -17,6 +17,9 @@ import io.objectbox.relation.ToOne;
 
 @Entity
 public class MySubject extends BaseObservable {
+    @Id
+    public long id;
+
     @Backlink
     public ToMany<MyProject> projects;
     public ToOne<Semester> semester;
@@ -24,8 +27,7 @@ public class MySubject extends BaseObservable {
     public String name;
     public int colorId;
     public byte[] availableWeeks;
-    @Id
-    long id;
+
 
     public MySubject(String name, int colorId) {
         this.name = name;

@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.view.ProjectActivity;
 
 /**
@@ -15,15 +16,15 @@ import com.xyy.simplehomework.view.ProjectActivity;
 
 public class ProjectClickHandler {
 
-    public void showDetail(View view) {
+    public void showDetail(View view, long id) {
         Intent intent = new Intent(view.getContext(), ProjectActivity.class);
-        intent.putExtra("123", "计算机网络");
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                (Activity) view.getContext(),
-                view.findViewById(R.id.smallSubjectTitle),
-                "shareTitle"
-        );
+        intent.putExtra(ProjectActivity.PROJECT_ID, id);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    (Activity) view.getContext(),
+                    view.findViewById(R.id.small_project_card_view),
+                    "sharedCard"
+            );
             view.getContext().startActivity(intent, options.toBundle());
         } else {
             view.getContext().startActivity(intent);

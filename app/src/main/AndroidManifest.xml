@@ -22,9 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.ProjectActivity" />
-        <activity android:name=".view.CalendarActivity" />
-        <activity android:name=".view.SettingActivity" />
+        <activity android:name=".view.ProjectActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.CalendarActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.SettingActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

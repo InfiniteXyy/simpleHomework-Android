@@ -22,7 +22,7 @@ import io.objectbox.relation.ToOne;
 @Entity
 public class MyProject extends BaseObservable implements MultiItemEntity {
     @Id
-    long id;
+    public long id;
 
     public ToOne<MySubject> subject;
     public ToOne<Week> week;
@@ -38,15 +38,23 @@ public class MyProject extends BaseObservable implements MultiItemEntity {
         return SmallProjectAdapter.TYPE_PROJECT;
     }
 
-    @BindingAdapter("cardStyle")
-    public static void setCardStyle(View view, MyProject project) {
+    @BindingAdapter("cardColor")
+    public static void setCardColor(View view, MyProject project) {
+        CardView cv = (CardView) view;
+        if (project.homework.isEmpty()) {
+            cv.setCardBackgroundColor(view.getResources().getColor(R.color.japanWhite));
+        } else {
+            cv.setCardBackgroundColor(view.getResources().getColor(project.subject.getTarget().colorId));
+        }
+    }
+
+    @BindingAdapter("cardElevation")
+    public static void setCardElevation(View view, MyProject project) {
         CardView cv = (CardView) view;
         if (project.homework.isEmpty()) {
             cv.setCardElevation(0.0f);
-            cv.setCardBackgroundColor(view.getResources().getColor(R.color.japanWhite));
         } else {
             cv.setCardElevation(8.0f);
-            cv.setCardBackgroundColor(view.getResources().getColor(project.subject.getTarget().colorId));
         }
     }
 }

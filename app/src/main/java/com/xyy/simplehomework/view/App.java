@@ -16,6 +16,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         boxStore = MyObjectBox.builder().androidContext(this).build();
         if (BuildConfig.DEBUG) {
             new AndroidObjectBrowser(boxStore).start(this);
@@ -26,4 +27,11 @@ public class App extends Application {
     public BoxStore getBoxStore() {
         return boxStore;
     }
+
+    public static App instance;
+
+    public static App getInstance() {
+        return instance;
+    }
+
 }

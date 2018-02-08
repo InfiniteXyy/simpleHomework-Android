@@ -1,23 +1,13 @@
 package com.xyy.simplehomework.view;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.entity.MySubject;
-
-import io.objectbox.Box;
-import io.objectbox.BoxStore;
 
 
 public class ProjectActivity extends AppCompatActivity {

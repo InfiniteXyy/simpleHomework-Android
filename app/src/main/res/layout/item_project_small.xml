@@ -6,6 +6,7 @@
     <data>
 
         <import type="com.xyy.simplehomework.entity.MyProject" />
+        <import type="com.xyy.simplehomework.entity.MySubject" />
         <import type="android.graphics.Color" />
 
         <variable
@@ -13,7 +14,7 @@
             type="com.xyy.simplehomework.entity.MyProject" />
         <variable
             name="projectClick"
-            type="com.xyy.simplehomework.viewmodel.ProjectClickHandler" />
+            type="com.xyy.simplehomework.view.handler.ProjectClickHandler" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -25,8 +26,7 @@
         android:layout_marginRight="@dimen/margin_horizontal"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="9dp"
-        bind:cardBackgroundColor='@{smallProject}'
-        bind:cardElevation='@{smallProject.status}'
+        bind:cardStyle="@{smallProject}"
         android:onClick="@{projectClick::showDetail}">
 
         <TextView
@@ -36,8 +36,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
-            android:text="@{smallProject.subjectName}"
-            android:textColor="@{smallProject.status == MyProject.TYPE_PROJECT_RECORD ? Color.GRAY : Color.WHITE}"
+            android:text="@{smallProject.subject.getTarget().name}"
+            android:textColor="@{smallProject.homework.size() == 0 ? Color.GRAY : Color.WHITE}"
             android:textSize="16sp"
             android:textStyle="bold"
             android:transitionName="shareTitle"/>

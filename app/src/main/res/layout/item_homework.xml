@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="com.xyy.simplehomework.entity.MyProject" />
+        <import type="com.xyy.simplehomework.entity.MySubject" />
         <variable
-            name="project"
-            type="com.xyy.simplehomework.entity.MyProject" />
+            name="homework"
+            type="com.xyy.simplehomework.entity.Homework" />
 
     </data>
 
@@ -18,9 +18,9 @@
         android:layout_marginLeft="@dimen/margin_horizontal"
         android:layout_marginRight="@dimen/margin_horizontal"
         android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/japanBlue"
         app:cardCornerRadius="9dp"
-        app:cardElevation="9dp"
-        bind:cardBackgroundColor="@{project}">
+        app:cardElevation="9dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -48,12 +48,12 @@
                 android:layout_marginStart="@dimen/card_word_padding"
                 android:layout_marginTop="-2dp"
                 android:maxLines="1"
-                android:text="@{project.subjectName}"
+                android:text="@{homework.project.getTarget().subject.getTarget().name}"
                 android:textColor="@android:color/white"
                 android:textSize="30sp" />
 
             <ImageView
-                android:id="@+id/project_img"
+                android:id="@+id/up_img"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_alignLeft="@+id/subject_name"
@@ -65,12 +65,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/project_img"
+                android:layout_alignTop="@+id/up_img"
                 android:layout_marginLeft="@dimen/card_detail_margin_left"
                 android:layout_marginStart="@dimen/card_detail_margin_left"
                 android:layout_marginTop="-2dp"
-                android:layout_toEndOf="@+id/project_img"
-                android:layout_toRightOf="@+id/project_img"
+                android:layout_toEndOf="@+id/up_img"
+                android:layout_toRightOf="@+id/up_img"
                 android:text="课本 P15 题号 1, 5, 7"
                 android:textColor="#EEEEEE"
                 android:textSize="@dimen/card_detail_font_size" />
@@ -81,7 +81,7 @@
                 android:layout_height="16dp"
                 android:layout_alignLeft="@+id/subject_name"
                 android:layout_alignStart="@+id/subject_name"
-                android:layout_below="@+id/project_img"
+                android:layout_below="@+id/up_img"
                 android:layout_marginTop="8dp"
                 app:srcCompat="@drawable/ic_access_alarms_24px" />
 
@@ -93,7 +93,7 @@
                 android:layout_marginTop="-2dp"
                 android:layout_toEndOf="@+id/time_img"
                 android:layout_toRightOf="@id/time_img"
-                android:text='@{"状态" + project.status}'
+                android:text='test'
                 android:textColor="#EEEEEE"
                 android:textSize="@dimen/card_detail_font_size" />
 

@@ -3,6 +3,7 @@ package com.xyy.simplehomework.viewmodel;
 import android.content.Context;
 
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.entity.Semester;
@@ -44,6 +45,10 @@ public class ProjectViewModel {
         return dataServer.getAllProjects();
     }
 
+    public List<Homework> getAllHomework() {
+        return dataServer.getAllHomework();
+    }
+
     private void useDemo(Week week, Semester semester) {
 
         Semester thisSemester = getThisSemester();
@@ -55,6 +60,7 @@ public class ProjectViewModel {
                 new MySubject("离散数学", R.color.japanTea),
                 new MySubject("概率论", R.color.japanOrange),
         };
+
         for (MySubject subject : subjects) {
             subject.semester.setTarget(thisSemester);
             subject.availableWeeks = new byte[]{4, 5, 6};
@@ -77,14 +83,13 @@ public class ProjectViewModel {
         int i = 0;
         for (MyProject project : week.projects) {
             if (i <= 2) {
-                project.recordHomework("完成" + i + "页", new Date());
+                Homework homework = new Homework();
+                project.homework.add(homework);
             }
-            project.setSubject(subjects[i]);
             dataServer.put(project);
             i++;
         }
     }
-
 
     private Week getThisWeek(Semester semester) {
         int weekIndex = DateHelper.getWeeksBetween(semester.startDate, new Date());

@@ -9,22 +9,22 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.viewmodel.ProjectClickHandler;
 
 import java.util.List;
 
 
-public class ProjectAdapter extends BaseQuickAdapter<MyProject, ProjectAdapter.ProjectHolder> {
+public class HomeworkAdapter extends BaseQuickAdapter<Homework, HomeworkAdapter.HomeworkHolder> {
 
-    public ProjectAdapter(int layoutResId, List<MyProject> data) {
+    public HomeworkAdapter(int layoutResId, List<Homework> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(ProjectHolder helper, MyProject item) {
+    protected void convert(HomeworkHolder helper, Homework item) {
         ViewDataBinding binding = helper.getBinding();
-        binding.setVariable(BR.project, item);
+        binding.setVariable(BR.homework, item);
     }
 
     @Override
@@ -38,9 +38,9 @@ public class ProjectAdapter extends BaseQuickAdapter<MyProject, ProjectAdapter.P
         return view;
     }
 
-    public static class ProjectHolder extends BaseViewHolder {
+    public static class HomeworkHolder extends BaseViewHolder {
 
-        public ProjectHolder(View view) {
+        public HomeworkHolder(View view) {
             super(view);
         }
 

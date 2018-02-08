@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.SmallProjectTitle;
-import com.xyy.simplehomework.viewmodel.ProjectClickHandler;
+import com.xyy.simplehomework.view.handler.ProjectClickHandler;
 
 import java.util.List;
 
@@ -18,12 +18,12 @@ import java.util.List;
  * Created by xyy on 2018/1/28.
  */
 
-public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, ProjectAdapter.ProjectHolder> {
+public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, HomeworkAdapter.HomeworkHolder> {
 
     private ProjectClickHandler handler;
 
-    public static final int TYPE_HEADER = 3;
-    public static final int TYPE_PROJECT = 4;
+    public static final int TYPE_HEADER = 0;
+    public static final int TYPE_PROJECT = 1;
 
     public SmallProjectAdapter(List<MultiItemEntity> data) {
         super(data);
@@ -33,7 +33,7 @@ public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
     }
 
     @Override
-    protected void convert(final ProjectAdapter.ProjectHolder helper, MultiItemEntity item) {
+    protected void convert(final HomeworkAdapter.HomeworkHolder helper, MultiItemEntity item) {
         switch (helper.getItemViewType()) {
             case TYPE_HEADER:
                 final SmallProjectTitle title = (SmallProjectTitle) item;

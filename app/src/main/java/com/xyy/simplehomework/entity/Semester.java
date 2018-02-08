@@ -15,6 +15,8 @@ import io.objectbox.relation.ToMany;
 public class Semester {
     public static final int FIRST_TERM = 0;
     public static final int SECOND_TERM = 1;
+    @Id
+    long id;
     @Backlink
     public ToMany<MySubject> allSubjects;
     @Backlink
@@ -24,8 +26,6 @@ public class Semester {
     public Date endDate;
     public int grade; // 大一是12年级
     public int term;
-    @Id
-    long id;
 
     public Semester() {
     }

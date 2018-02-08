@@ -36,14 +36,13 @@ public class WeekFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_week, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
-
         ProjectViewModel viewModel = ((MainActivity) mContext).viewModel;
         List<MultiItemEntity> data = classifyList(viewModel.getAllProjects());
         SmallProjectAdapter adapter = new SmallProjectAdapter(data);
@@ -63,7 +62,11 @@ public class WeekFragment extends Fragment {
                 new SmallProjectTitle("待记录")
         ));
         for (MyProject project : projects) {
-            title.get(project.status).addSubItem(project);
+            if (project.homework.isEmpty()) {
+                title.get(2).addSubItem(project);
+            } else {
+                title.get(1).addSubItem(project);
+            }
         }
         data.addAll(title);
         return data;

@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.viewmodel;
+package com.xyy.simplehomework.view.handler;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,9 +7,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.view.ProjectActivity;
-import com.xyy.simplehomework.view.SettingActivity;
 
 /**
  * Created by xyy on 2018/2/5.
@@ -30,9 +28,5 @@ public class ProjectClickHandler {
         } else {
             view.getContext().startActivity(intent);
         }
-    }
-
-    public void finishProject(View view, MyProject project) {
-        project.setStatus(MyProject.TYPE_PROJECT_FIN);
     }
 }

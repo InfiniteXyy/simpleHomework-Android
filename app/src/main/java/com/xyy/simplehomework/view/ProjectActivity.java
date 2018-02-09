@@ -56,7 +56,7 @@ public class ProjectActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        SmallHomeworkAdapter adapter = new SmallHomeworkAdapter(R.layout.item_homework_in_project_detail, project.homework);
+        SmallHomeworkAdapter adapter = new SmallHomeworkAdapter(R.layout.item_homework_in_project_detail, viewModel.getHomeworkList());
 
         // set drag feature
         ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);

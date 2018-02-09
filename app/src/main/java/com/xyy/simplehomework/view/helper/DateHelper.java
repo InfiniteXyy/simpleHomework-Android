@@ -60,4 +60,11 @@ public class DateHelper {
         return semesters[semesterIndex] + (termIndex == 0 ? "：上" : "：下");
     }
 
+    public static Date afterDays(int a) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, a);
+        return calendar.getTime();
+    }
+
 }

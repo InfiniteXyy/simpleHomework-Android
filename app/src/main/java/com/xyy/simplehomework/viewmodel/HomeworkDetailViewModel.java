@@ -15,10 +15,13 @@ public class HomeworkDetailViewModel {
     private Context mContext;
     private Homework homework;
     private BoxStore boxStore;
+    private static HomeworkDetailViewModel viewModel;
     public HomeworkDetailViewModel(Context context, long id) {
         mContext = context;
         boxStore = App.getInstance().getBoxStore();
         homework = boxStore.boxFor(Homework.class).get(id);
+        viewModel = this;
     }
     public Homework getHomework() { return homework; }
+
 }

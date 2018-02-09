@@ -10,20 +10,23 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
+import com.xyy.simplehomework.view.handler.HomeworkClickHandler;
 
 import java.util.List;
 
 
 public class HomeworkAdapter extends BaseQuickAdapter<Homework, HomeworkAdapter.HomeworkHolder> {
-
+    private HomeworkClickHandler handler;
     public HomeworkAdapter(int layoutResId, List<Homework> data) {
         super(layoutResId, data);
+        handler = new HomeworkClickHandler();
     }
 
     @Override
     protected void convert(HomeworkHolder helper, Homework item) {
         ViewDataBinding binding = helper.getBinding();
         binding.setVariable(BR.homework, item);
+        binding.setVariable(BR.clickHandler, handler);
     }
 
     @Override

@@ -7,9 +7,6 @@
             name="testSubject"
             type="com.xyy.simplehomework.entity.MySubject" />
 
-        <variable
-            name="clickHandler"
-            type="com.xyy.simplehomework.view.handler.TestHandler" />
 
     </data>
 
@@ -44,12 +41,6 @@
             android:text="@{testSubject.name}"
             android:textSize="30sp" />
 
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="23dp"
-            android:onClick="@{clickHandler::onClickDemo}" />
 
     </RelativeLayout>
 </layout>

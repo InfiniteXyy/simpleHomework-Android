@@ -80,4 +80,6 @@ public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
         view.setTag(R.id.BaseQuickAdapter_databinding_support, binding);
         return view;
     }
+
+
 }

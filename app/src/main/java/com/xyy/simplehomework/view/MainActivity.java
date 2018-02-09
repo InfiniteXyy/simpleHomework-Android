@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 .withToolbar(toolbar)
                 .withHeader(R.layout.nav_header)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.day).withIcon(R.drawable.ic_today_black_24px),
+                        new PrimaryDrawerItem().withName(R.string.day).withIcon(R.drawable.ic_today_black_24px).withSetSelected(true),
                         new PrimaryDrawerItem().withName(R.string.week).withIcon(R.drawable.ic_view_week_black_24px),
                         new PrimaryDrawerItem().withName(R.string.month).withIcon(R.drawable.ic_assignment_black_24px),
                         new SectionDrawerItem().withName("详情"),
@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+
                         // get transaction helper
                         FragmentManager fm = getSupportFragmentManager();
                         FragmentTransaction transaction = fm.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
@@ -130,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
-        drawer.setSelection(1);
-
     }
 
     @Override

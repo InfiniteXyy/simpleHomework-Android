@@ -50,6 +50,13 @@ public class WeekFragment extends Fragment {
         weekRecyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         weekRecyclerView.setLayoutManager(layoutManager);
+
+        // open all the level0 menu at the first time
+        for (int i = 0; i < adapter.getItemCount(); i++) {
+            if (SmallProjectAdapter.TYPE_HEADER == adapter.getItem(i).getItemType()) {
+                adapter.expand(i);
+            }
+        }
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -69,7 +76,6 @@ public class WeekFragment extends Fragment {
                 title.get(1).addSubItem(project);
             }
         }
-
         data.addAll(title);
         return data;
     }

@@ -5,12 +5,14 @@
     <data>
 
         <import type="com.xyy.simplehomework.entity.MyProject" />
-
         <import type="com.xyy.simplehomework.entity.MySubject" />
 
         <variable
             name="homework"
             type="com.xyy.simplehomework.entity.Homework" />
+        <variable
+            name="clickHandler"
+            type="com.xyy.simplehomework.view.handler.HomeworkClickHandler" />
 
     </data>
 
@@ -21,9 +23,11 @@
         android:layout_marginLeft="@dimen/margin_horizontal"
         android:layout_marginRight="@dimen/margin_horizontal"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="@color/japanBlue"
+        cardColor="@{homework.project.getTarget()}"
         app:cardCornerRadius="9dp"
-        app:cardElevation="9dp">
+        app:cardElevation="9dp"
+        android:transitionName="sharedCard"
+        android:onClick="@{(view)->clickHandler.showDetail(view, homework.id)}">
 
         <RelativeLayout
             android:layout_width="match_parent"

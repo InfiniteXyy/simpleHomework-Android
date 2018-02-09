@@ -10,6 +10,9 @@
         <variable
             name="project"
             type="MyProject" />
+        <variable
+            name="homework"
+            type="com.xyy.simplehomework.entity.Homework" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -20,32 +23,31 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:elevation="0dp">
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:title='@{project.subject.getTarget().name}'
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-            </android.support.v7.widget.Toolbar>
+                app:title='@{project.subject.getTarget().name}' />
         </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="420dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="60dp"
+            android:transitionName="sharedCard"
+            app:cardBackgroundColor="@color/japanBrown"
+            app:cardCornerRadius="9dp"
+            app:cardElevation="9dp"
+            bind:cardColor="@{project}">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="@{project.subject.getTarget().name}"
-                    android:textColor="@android:color/white"
-                    android:textSize="42sp"
-                    android:textStyle="bold"
-                    android:transitionName="sharedTitle" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/project_detail_recycler"
@@ -53,9 +55,18 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/textView2">
-
+                    android:layout_marginTop="16dp">
                 </android.support.v7.widget.RecyclerView>
             </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/choose_project_recycler"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <!--</android.support.v7.widget.RecyclerView>-->
+
     </android.support.design.widget.CoordinatorLayout>
 </layout>

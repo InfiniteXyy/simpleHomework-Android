@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.databinding.ActivitySettingBinding;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.view.handler.TestHandler;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -16,9 +15,7 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivitySettingBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_setting);
         final MySubject subject = new MySubject("测试科目", R.color.japanTea);
-        TestHandler testHandler = new TestHandler(this);
         binding.setTestSubject(subject);
-        binding.setClickHandler(testHandler);
         subject.name = "变了";
     }
 }

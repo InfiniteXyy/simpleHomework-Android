@@ -6,7 +6,9 @@ import android.os.Build;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
+import android.widget.PopupMenu;
 
+import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.HomeworkActivity;
 
 /**
@@ -27,5 +29,10 @@ public class HomeworkClickHandler {
         } else {
             view.getContext().startActivity(intent);
         }
+    }
+    public void showMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+        popupMenu.getMenuInflater().inflate(R.menu.project_menu, popupMenu.getMenu());
+        popupMenu.show();
     }
 }

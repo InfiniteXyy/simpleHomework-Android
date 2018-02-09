@@ -17,9 +17,13 @@ public class Homework implements MultiItemEntity {
     @Id
     public long id;
 
+    public static final int HAS_FINISHED = 0;
+    public static final int TOBE_DONE = 1;
+
     public ToOne<MyProject> project;
     public String detail;
     public Date deadline;
+    public int status;
 
     public Homework(String detail) {
         this.detail = detail;

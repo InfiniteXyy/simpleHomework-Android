@@ -15,47 +15,34 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/japanWhite">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:title='@{project.subject.getTarget().name}'
+                android:layout_height="210dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:title='@{project.subject.getTarget().name}'
+                    app:layout_collapseMode="pin">
 
-            </android.support.v7.widget.Toolbar>
+                </android.support.v7.widget.Toolbar>
+            </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="@{project.subject.getTarget().name}"
-                    android:textColor="@android:color/white"
-                    android:textSize="42sp"
-                    android:textStyle="bold"
-                    android:transitionName="sharedTitle" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/project_detail_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/textView2">
-
-                </android.support.v7.widget.RecyclerView>
-            </RelativeLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/project_detail_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

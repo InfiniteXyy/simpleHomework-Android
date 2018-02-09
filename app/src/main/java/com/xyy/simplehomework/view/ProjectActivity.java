@@ -3,17 +3,21 @@ package com.xyy.simplehomework.view;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MenuItem;
 
+import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
+import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.databinding.ActivityProjectBinding;
 import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.view.adapter.HomeworkAdapter;
+import com.xyy.simplehomework.view.adapter.SmallHomeworkAdapter;
 import com.xyy.simplehomework.viewmodel.ProjectDetailViewModel;
 
 
@@ -27,6 +31,7 @@ public class ProjectActivity extends AppCompatActivity {
 
         // init toolbar
         final Toolbar toolbar = findViewById(R.id.toolbar);
+        final CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
 
@@ -36,10 +41,12 @@ public class ProjectActivity extends AppCompatActivity {
         long id = getIntent().getLongExtra(PROJECT_ID, 0);
         ProjectDetailViewModel viewModel = new ProjectDetailViewModel(this, id);
 
-        // get project
+        // get project & set color
         MyProject project = viewModel.getProject();
         int color = getResources().getColor(project.subject.getTarget().colorId);
         toolbar.setBackgroundColor(color);
+        collapsingToolbarLayout.setBackgroundColor(color);
+        collapsingToolbarLayout.setContentScrimColor(color);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(color);
         }
@@ -49,7 +56,27 @@ public class ProjectActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        HomeworkAdapter adapter = new HomeworkAdapter(R.layout.item_homework_in_project_detail, project.homework);
+        SmallHomeworkAdapter adapter = new SmallHomeworkAdapter(R.layout.item_homework_in_project_detail, project.homework);
+
+        // set drag feature
+        ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView); // very important, decide which item to drag
+        adapter.enableDragItem(itemTouchHelper);
+        adapter.setOnItemDragListener(new OnItemDragListener() {
+            @Override
+            public void onItemDragStart(RecyclerView.ViewHolder viewHolder, int pos) {
+            }
+
+            @Override
+            public void onItemDragMoving(RecyclerView.ViewHolder source, int from, RecyclerView.ViewHolder target, int to) {
+            }
+
+            @Override
+            public void onItemDragEnd(RecyclerView.ViewHolder viewHolder, int pos) {
+            }
+        });
+
         recyclerView.setAdapter(adapter);
     }
 

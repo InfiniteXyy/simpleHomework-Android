@@ -14,9 +14,9 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MyProject;
-import com.xyy.simplehomework.entity.SmallProjectTitle;
 import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.adapter.SmallProjectAdapter;
+import com.xyy.simplehomework.view.adapter.SmallProjectTitle;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 import java.util.ArrayList;

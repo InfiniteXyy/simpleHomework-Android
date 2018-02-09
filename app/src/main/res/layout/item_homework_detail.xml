@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="homework"
+            type="com.xyy.simplehomework.entity.Homework" />
+    </data>
 
-</RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="36dp"
+        android:text="@{homework.detail}"
+        android:textColor="@color/japanDark"
+        android:textSize="16sp" />
+</layout>

@@ -65,6 +65,7 @@ public class TitleSwitcher {
     }
 
     public void setText(int dayIndex) {
+        if (old_position == dayIndex) return;
         if (old_position < dayIndex) {
             dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_right));
             dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_left));
@@ -78,6 +79,7 @@ public class TitleSwitcher {
     }
 
     public void changeFragmentTitle(int position) {
+        if (old_position_title == position) return;
         if (old_position_title < position) {
             dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_top));
             dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_bottom));

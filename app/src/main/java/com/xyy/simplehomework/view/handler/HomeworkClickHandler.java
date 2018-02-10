@@ -35,6 +35,7 @@ public class HomeworkClickHandler {
             view.getContext().startActivity(intent);
         }
     }
+
     public void showMenu(final View view) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.project_menu, popupMenu.getMenu());
@@ -45,7 +46,7 @@ public class HomeworkClickHandler {
                 switch (item.getItemId()) {
                     case R.id.set_plan:
                         Calendar now = Calendar.getInstance();
-                        ProjectDetailViewModel viewModel =  ProjectDetailViewModel.getInstance();
+                        ProjectDetailViewModel viewModel = ProjectDetailViewModel.getInstance();
                         DatePickerDialog dialog = DatePickerDialog.newInstance(
                                 viewModel,
                                 now.get(Calendar.YEAR),

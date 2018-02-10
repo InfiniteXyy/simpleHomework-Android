@@ -46,7 +46,9 @@ public class ProjectViewModel {
     }
 
     public List<Homework> getAllHomework() {
-        return dataServer.getAllHomework();
+        List<Homework> temp = dataServer.getAllHomework();
+        temp.get(0).project.getTarget().subject.getTarget().name = "test";
+        return temp;
     }
 
     private void useDemo(Week week, Semester semester) {
@@ -80,6 +82,7 @@ public class ProjectViewModel {
                 }
         }
 
+        // homework demo
         int i = 0;
         for (MyProject project : week.projects) {
             if (i <= 3) {

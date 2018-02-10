@@ -4,6 +4,9 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -16,7 +19,9 @@ import java.util.List;
 
 
 public class SmallHomeworkAdapter extends BaseItemDraggableAdapter<Homework, SmallHomeworkAdapter.SmallHomeworkHolder> {
+    private static Animation fadeIn;
     private HomeworkClickHandler handler;
+
     public SmallHomeworkAdapter(int layoutResId, List<Homework> data) {
         super(layoutResId, data);
         handler = new HomeworkClickHandler();
@@ -27,11 +32,24 @@ public class SmallHomeworkAdapter extends BaseItemDraggableAdapter<Homework, Sma
         ViewDataBinding binding = helper.getBinding();
         binding.setVariable(BR.homework, item);
         binding.setVariable(BR.clickHandler, handler);
+        // set button for showing detail
         helper.getView(R.id.expand_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                helper.setGone(R.id.details, !helper.isShowDetail);
-                helper.isShowDetail = !helper.isShowDetail;
+                // load anim only once
+                if (fadeIn == null) {
+                    fadeIn = AnimationUtils.loadAnimation(mContext, R.anim.fade_in);
+                }
+                View detail = helper.getView(R.id.details);
+                if (detail.getVisibility() == View.GONE) {
+                    // maybe button should rotate here instead of changing resource
+                    ((ImageView) v).setImageResource(R.drawable.ic_expand_less_black_24px);
+                    detail.setVisibility(View.VISIBLE);
+                    detail.startAnimation(fadeIn);
+                } else {
+                    ((ImageView) v).setImageResource(R.drawable.ic_expand_more_black_24px);
+                    detail.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -48,11 +66,10 @@ public class SmallHomeworkAdapter extends BaseItemDraggableAdapter<Homework, Sma
     }
 
     public static class SmallHomeworkHolder extends BaseViewHolder {
-        public boolean isShowDetail;
         public SmallHomeworkHolder(View view) {
             super(view);
-            isShowDetail = false;
         }
+
         public ViewDataBinding getBinding() {
             return (ViewDataBinding) itemView.getTag(R.id.BaseQuickAdapter_databinding_support);
         }

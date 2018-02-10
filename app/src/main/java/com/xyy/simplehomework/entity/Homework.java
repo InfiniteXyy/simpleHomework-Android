@@ -17,13 +17,11 @@ import io.objectbox.relation.ToOne;
  * Created by xyy on 2018/2/8.
  */
 @Entity
-public class Homework extends BaseObservable implements MultiItemEntity{
-    @Id
-    public long id;
-
+public class Homework extends BaseObservable implements MultiItemEntity {
     public static final int HAS_FINISHED = 0;
     public static final int TOBE_DONE = 1;
-
+    @Id
+    public long id;
     public ToOne<MyProject> project;
     public String detail;
     public Date deadline;
@@ -41,13 +39,15 @@ public class Homework extends BaseObservable implements MultiItemEntity{
     public void setPlanDate(Date date) {
         planDate = date;
     }
+
     public String getDeadlineFormat() {
         if (planDate.compareTo(DateHelper.date) == 0) {
-            return new SimpleDateFormat("截止时间 M.d 状态："+status).format(DateHelper.date);
+            return new SimpleDateFormat("截止时间 M.d 状态：" + status).format(DateHelper.date);
         } else {
-            return new SimpleDateFormat("计划时间 M.d 状态："+status).format(planDate);
+            return new SimpleDateFormat("计划时间 M.d 状态：" + status).format(planDate);
         }
     }
+
 
     @Override
     public int getItemType() {

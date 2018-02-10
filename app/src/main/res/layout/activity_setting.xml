@@ -41,6 +41,15 @@
             android:text="@{testSubject.name}"
             android:textSize="30sp" />
 
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="46dp"
+            android:text="Button" />
+
 
     </RelativeLayout>
 </layout>

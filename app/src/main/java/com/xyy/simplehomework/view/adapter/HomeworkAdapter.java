@@ -17,6 +17,7 @@ import java.util.List;
 
 public class HomeworkAdapter extends BaseQuickAdapter<Homework, HomeworkAdapter.HomeworkHolder> {
     private HomeworkClickHandler handler;
+
     public HomeworkAdapter(int layoutResId, List<Homework> data) {
         super(layoutResId, data);
         handler = new HomeworkClickHandler();

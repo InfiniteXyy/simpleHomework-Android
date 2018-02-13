@@ -2,9 +2,13 @@ package com.xyy.simplehomework.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,16 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.fragments.DayFragment;
 import com.xyy.simplehomework.view.fragments.SemesterFragment;
@@ -37,11 +31,11 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
     public TitleSwitcher titleSwitcher;
     public ProjectViewModel viewModel;
-    private Drawer result;
-    private AccountHeader header;
     private WeekFragment weekFragment;
     private DayFragment dayFragment;
     private SemesterFragment semesterFragment;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
     private long exitTime = 0;
 
     @Override
@@ -51,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         // set up view
         setDefaultFragment();
-        setUpTools(savedInstanceState);
+        setUpTools();
 
         // set up view model
         viewModel = new ProjectViewModel(this);
@@ -69,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.commitAllowingStateLoss();
     }
 
-    private void setUpTools(Bundle state) {
+    private void setUpTools() {
         // init toolbar
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,62 +85,41 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // init result
+        // init drawer layout
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.day);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                drawerLayout.closeDrawers();
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                switch (item.getItemId()) {
+                    case R.id.day:
+                        transaction.show(dayFragment).hide(weekFragment).hide(semesterFragment).commit();
+                        titleSwitcher.changeFragmentTitle(TitleSwitcher.DAY);
+                        break;
+                    case R.id.week:
+                        transaction.show(weekFragment).hide(dayFragment).hide(semesterFragment).commit();
+                        titleSwitcher.changeFragmentTitle(TitleSwitcher.WEEK);
+                        break;
+                    case R.id.month:
+                        transaction.show(semesterFragment).hide(weekFragment).hide(dayFragment).commit();
+                        titleSwitcher.changeFragmentTitle(TitleSwitcher.SEMESTER);
+                        break;
+                    case R.id.set:
+                        startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+                        break;
+                    case R.id.profile:
+                        Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
+                        startActivity(intent);
+                        break;
+                }
+                return true;
+            }
+        });
 
-        final IProfile profile = new ProfileDrawerItem().withName("ハクメイ").withEmail("hakumei@gmail.com").withIcon(R.drawable.avatar1);
-        final IProfile profile2 = new ProfileDrawerItem().withName("ミコチ").withEmail("mikochi@gmail.com").withIcon(R.drawable.avatar2);
-        header = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.drawable.headerbg)
-                .withSavedInstance(state)
-                .addProfiles(
-                        profile, profile2
-                ).build();
-
-        result = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .withAccountHeader(header)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.day).withIcon(R.drawable.ic_today_black_24px).withSetSelected(true).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.week).withIcon(R.drawable.ic_view_week_black_24px).withIdentifier(2),
-                        new PrimaryDrawerItem().withName(R.string.month).withIcon(R.drawable.ic_assignment_black_24px).withIdentifier(3),
-                        new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(R.string.setting).withIcon(R.drawable.ic_settings_black_24px).withIdentifier(4),
-                        new SecondaryDrawerItem().withName(R.string.year).withIcon(R.drawable.ic_account_circle_black_24px).withEnabled(false).withIdentifier(5)
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        // get transaction helper
-                        FragmentManager fm = getSupportFragmentManager();
-                        FragmentTransaction transaction = fm.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-                        switch (position) {
-                            case 1:
-                                transaction.show(dayFragment).hide(weekFragment).hide(semesterFragment).commit();
-                                titleSwitcher.changeFragmentTitle(TitleSwitcher.DAY);
-                                break;
-                            case 2:
-                                transaction.show(weekFragment).hide(dayFragment).hide(semesterFragment).commit();
-                                titleSwitcher.changeFragmentTitle(TitleSwitcher.WEEK);
-                                break;
-                            case 3:
-                                transaction.show(semesterFragment).hide(weekFragment).hide(dayFragment).commit();
-                                titleSwitcher.changeFragmentTitle(TitleSwitcher.SEMESTER);
-                                break;
-                            case 5:
-                                startActivity(new Intent(getApplicationContext(), SettingActivity.class));
-                                break;
-                            case 6:
-                                Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
-                                startActivity(intent);
-                                break;
-                        }
-                        return false;
-                    }
-                })
-                .withSavedInstance(state)
-                .build();
     }
 
     @Override
@@ -158,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
             case R.id.add_projects:
                 new DialogHelper(this).show();
                 break;
@@ -168,25 +144,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //handle the back press :D close the result first and if the result is closed close the activity
-        if (result != null && result.isDrawerOpen()) {
-            result.closeDrawer();
+        if (System.currentTimeMillis() - exitTime > 2000) {
+            Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
         } else {
-            if (System.currentTimeMillis() - exitTime > 2000) {
-                Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
-                exitTime = System.currentTimeMillis();
-            } else {
-                super.onBackPressed();
-            }
+            super.onBackPressed();
         }
-    }
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        //add the values which need to be saved from the result to the bundle
-        outState = result.saveInstanceState(outState);
-        //add the values which need to be saved from the accountHeader to the bundle
-        outState = header.saveInstanceState(outState);
-        super.onSaveInstanceState(outState);
     }
 }
 

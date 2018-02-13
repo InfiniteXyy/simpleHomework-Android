@@ -33,7 +33,7 @@ public class SmallHomeworkAdapter extends BaseItemDraggableAdapter<Homework, Sma
         binding.setVariable(BR.homework, item);
         binding.setVariable(BR.clickHandler, handler);
         // set button for showing detail
-        helper.getView(R.id.expand_button).setOnClickListener(new View.OnClickListener() {
+  /*      helper.getView(R.id.expand_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // load anim only once
@@ -51,7 +51,7 @@ public class SmallHomeworkAdapter extends BaseItemDraggableAdapter<Homework, Sma
                     detail.setVisibility(View.GONE);
                 }
             }
-        });
+        });*/
     }
 
     @Override

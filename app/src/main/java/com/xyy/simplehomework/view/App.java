@@ -1,7 +1,6 @@
 package com.xyy.simplehomework.view;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.xyy.simplehomework.BuildConfig;
 import com.xyy.simplehomework.entity.MyObjectBox;
@@ -26,7 +25,7 @@ public class App extends Application {
         if (BuildConfig.DEBUG) {
             new AndroidObjectBrowser(boxStore).start(this);
         }
-        Log.d("App", "Using ObjectBox " + BoxStore.getVersion() + " (" + BoxStore.getVersionNative() + ")");
+
     }
 
     public BoxStore getBoxStore() {

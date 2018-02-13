@@ -2,6 +2,7 @@ package com.xyy.simplehomework.view.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -54,12 +55,14 @@ public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
                 ViewDataBinding binding = helper.getBinding();
                 binding.setVariable(BR.smallProject, item);
                 binding.setVariable(BR.projectClick, handler);
+                binding.setVariable(BR.subject, project.subject.getTarget());
                 helper.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int pos = helper.getAdapterPosition();
                         if (project.isExpanded()) collapse(pos);
                         else expand(pos);
+                        Log.d("123", "onClick: " + project.subject.getTarget().name);
                     }
                 });
                 break;

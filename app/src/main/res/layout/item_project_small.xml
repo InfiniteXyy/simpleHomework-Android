@@ -7,13 +7,19 @@
 
         <import type="com.xyy.simplehomework.entity.MyProject" />
 
+        <import type="com.xyy.simplehomework.entity.Homework" />
+
         <import type="com.xyy.simplehomework.entity.MySubject" />
 
         <import type="android.graphics.Color" />
 
         <variable
             name="smallProject"
-            type="com.xyy.simplehomework.entity.MyProject" />
+            type="MyProject" />
+
+        <variable
+            name="subject"
+            type="MySubject" />
 
         <variable
             name="projectClick"
@@ -25,9 +31,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
-        android:layout_marginTop="6dp"
         android:layout_marginLeft="@dimen/margin_horizontal"
         android:layout_marginRight="@dimen/margin_horizontal"
+        android:layout_marginTop="6dp"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="9dp"
         bind:cardColor="@{smallProject}"
@@ -42,7 +48,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
-            android:text="@{smallProject.subject.getTarget().name}"
+            android:text="@{subject.name}"
             android:textColor="@{smallProject.homework.size() == 0 ? Color.GRAY : Color.WHITE}"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -52,10 +58,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
-            android:padding="5dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:onClick="@{(view)->projectClick.showDetail(view, smallProject.id)}"
+            android:padding="5dp"
             app:srcCompat="@drawable/ic_chevron_right_white_24px" />
 
 

@@ -11,18 +11,25 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.databinding.ActivityProjectBinding;
+import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MyProject;
+import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.adapter.SmallHomeworkAdapter;
 import com.xyy.simplehomework.viewmodel.ProjectDetailViewModel;
+
+import java.util.List;
 
 
 public class ProjectActivity extends AppCompatActivity {
     public static final String PROJECT_ID = "PROJECT_ID";
+    private List<Homework> homeworkList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,24 +46,30 @@ public class ProjectActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         long id = getIntent().getLongExtra(PROJECT_ID, 0);
-        ProjectDetailViewModel viewModel = new ProjectDetailViewModel(this, id);
+        final ProjectDetailViewModel viewModel = new ProjectDetailViewModel(this, id);
 
-        // get project & set color
+        // get project & subject
         MyProject project = viewModel.getProject();
-        int color = getResources().getColor(project.subject.getTarget().colorId);
+        MySubject subject = viewModel.getSubject();
+
+        // set color
+        int color = viewModel.getColor();
         toolbar.setBackgroundColor(color);
         collapsingToolbarLayout.setBackgroundColor(color);
         collapsingToolbarLayout.setContentScrimColor(color);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(color);
         }
+        // bind data to view
         binding.setProject(project);
+        binding.setSubject(subject);
 
         RecyclerView recyclerView = findViewById(R.id.project_detail_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        SmallHomeworkAdapter adapter = new SmallHomeworkAdapter(R.layout.item_homework_in_project_detail, viewModel.getHomeworkList());
+        homeworkList = viewModel.getHomeworkList();
+        SmallHomeworkAdapter adapter = new SmallHomeworkAdapter(R.layout.item_homework_in_project_detail, homeworkList);
 
         // set drag feature
         ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
@@ -78,6 +91,16 @@ public class ProjectActivity extends AppCompatActivity {
         });
 
         recyclerView.setAdapter(adapter);
+
+        // demo used button
+        Button button = findViewById(R.id.button2);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.test();
+                homeworkList.get(0).setStatus(3010);
+            }
+        });
     }
 
 

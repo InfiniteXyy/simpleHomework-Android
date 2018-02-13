@@ -12,6 +12,7 @@ import com.xyy.simplehomework.model.DataServer;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,12 +25,14 @@ import io.objectbox.BoxStore;
 public class ProjectViewModel {
     private DataServer dataServer;
     private Context mContext;
+    private List<MyProject> projectList;
 
     public ProjectViewModel(Context context) {
         mContext = context;
 
         // set up data server
         BoxStore boxStore = ((App) context.getApplicationContext()).getBoxStore();
+
         dataServer = new DataServer(boxStore);
         dataServer.resetAll();
 
@@ -39,20 +42,19 @@ public class ProjectViewModel {
         DateHelper.setUp(week, semester);
 
         useDemo(week, semester);
+        projectList = new ArrayList<>();
     }
 
     public List<MyProject> getAllProjects() {
-        return dataServer.getAllProjects();
+        projectList = dataServer.getAllProjects();
+        return projectList;
     }
 
     public List<Homework> getAllHomework() {
-        List<Homework> temp = dataServer.getAllHomework();
-        temp.get(0).project.getTarget().subject.getTarget().name = "test";
-        return temp;
+        return dataServer.getAllHomework();
     }
 
     private void useDemo(Week week, Semester semester) {
-
         Semester thisSemester = getThisSemester();
 
         MySubject[] subjects = {
@@ -122,4 +124,5 @@ public class ProjectViewModel {
         }
         return semester;
     }
+
 }

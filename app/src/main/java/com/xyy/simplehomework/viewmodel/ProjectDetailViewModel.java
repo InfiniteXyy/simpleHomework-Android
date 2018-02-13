@@ -3,11 +3,11 @@ package com.xyy.simplehomework.viewmodel;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.util.Log;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MyProject;
+import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.App;
 
 import java.util.List;
@@ -22,6 +22,7 @@ public class ProjectDetailViewModel implements DatePickerDialog.OnDateSetListene
     private static ProjectDetailViewModel viewModel;
     private Context mContext;
     private MyProject project;
+    private MySubject subject;
     private BoxStore boxStore;
     private List<Homework> homeworkList;
 
@@ -29,6 +30,7 @@ public class ProjectDetailViewModel implements DatePickerDialog.OnDateSetListene
         mContext = context;
         boxStore = App.getInstance().getBoxStore();
         project = boxStore.boxFor(MyProject.class).get(id);
+        subject = project.subject.getTarget();
         viewModel = this;
     }
 
@@ -42,11 +44,15 @@ public class ProjectDetailViewModel implements DatePickerDialog.OnDateSetListene
     }
 
     public int getColor() {
-        return mContext.getResources().getColor(project.subject.getTarget().colorId);
+        return mContext.getResources().getColor(subject.colorId);
     }
 
     public MyProject getProject() {
         return project;
+    }
+
+    public MySubject getSubject() {
+        return subject;
     }
 
     public FragmentManager getFragmentManger() {
@@ -55,7 +61,11 @@ public class ProjectDetailViewModel implements DatePickerDialog.OnDateSetListene
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        Log.d("haha", "onDateSet: Year " + year + " Month " + monthOfYear + " Day " + dayOfMonth);
-        homeworkList.get(0).status = 10086; // for a test
+
+    }
+
+    public void test() {
+        subject.setName("sb");
+        boxStore.boxFor(MySubject.class).put(subject);
     }
 }

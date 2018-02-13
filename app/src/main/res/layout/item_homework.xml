@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <import type="com.xyy.simplehomework.entity.MyProject" />
+
         <import type="com.xyy.simplehomework.entity.MySubject" />
 
         <variable
             name="homework"
             type="com.xyy.simplehomework.entity.Homework" />
+
         <variable
             name="clickHandler"
             type="com.xyy.simplehomework.view.handler.HomeworkClickHandler" />
     </data>
 
     <android.support.v7.widget.CardView
+        cardColor="@{homework.project.getTarget()}"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_marginBottom="24dp"
         android:layout_marginLeft="@dimen/margin_horizontal"
         android:layout_marginRight="@dimen/margin_horizontal"
         android:foreground="?android:attr/selectableItemBackground"
-        cardColor="@{homework.project.getTarget()}"
-        app:cardCornerRadius="9dp"
-        app:cardElevation="9dp"
+        android:onClick="@{(view)->clickHandler.showDetail(view, homework.id)}"
         android:transitionName="sharedCard"
-        android:onClick="@{(view)->clickHandler.showDetail(view, homework.id)}">
+        app:cardCornerRadius="9dp"
+        app:cardElevation="9dp">
 
         <RelativeLayout
             android:layout_width="match_parent"

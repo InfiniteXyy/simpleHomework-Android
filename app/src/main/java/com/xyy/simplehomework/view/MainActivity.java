@@ -5,31 +5,24 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.mikepenz.crossfadedrawerlayout.view.CrossfadeDrawerLayout;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.MiniDrawer;
-import com.mikepenz.materialdrawer.interfaces.ICrossfader;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
-import com.mikepenz.materialdrawer.util.DrawerUIUtils;
-import com.mikepenz.materialize.util.UIUtils;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.fragments.DayFragment;
 import com.xyy.simplehomework.view.fragments.SemesterFragment;
@@ -100,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
         // init result
 
-        final IProfile profile = new ProfileDrawerItem().withName("ハクメイ").withEmail("Hakumei@gmail.com").withIcon(R.drawable.avatar1);
+        final IProfile profile = new ProfileDrawerItem().withName("ハクメイ").withEmail("hakumei@gmail.com").withIcon(R.drawable.avatar1);
         final IProfile profile2 = new ProfileDrawerItem().withName("ミコチ").withEmail("mikochi@gmail.com").withIcon(R.drawable.avatar2);
         header = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -113,10 +106,6 @@ public class MainActivity extends AppCompatActivity {
         result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
-                .withHasStableIds(true)
-                .withDrawerLayout(R.layout.drawer_crossfader)
-                .withDrawerWidthDp(72)
-                .withGenerateMiniDrawer(true)
                 .withAccountHeader(header)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName(R.string.day).withIcon(R.drawable.ic_today_black_24px).withSetSelected(true).withIdentifier(1),
@@ -156,34 +145,8 @@ public class MainActivity extends AppCompatActivity {
                         return false;
                     }
                 })
-                .withShowDrawerOnFirstLaunch(true)
                 .withSavedInstance(state)
                 .build();
-        final CrossfadeDrawerLayout crossfadeDrawerLayout = (CrossfadeDrawerLayout) result.getDrawerLayout();
-        crossfadeDrawerLayout.setMaxWidthPx(DrawerUIUtils.getOptimalDrawerWidth(this));
-
-        final MiniDrawer miniResult = result.getMiniDrawer();
-        View view = miniResult.build(this);
-        view.setBackgroundColor(UIUtils.getThemeColorFromAttrOrRes(this, com.mikepenz.materialdrawer.R.attr.material_drawer_background, com.mikepenz.materialdrawer.R.color.material_drawer_background));
-        crossfadeDrawerLayout.getSmallView().addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-        miniResult.withCrossFader(new ICrossfader() {
-            @Override
-            public void crossfade() {
-                boolean isFaded = isCrossfaded();
-                crossfadeDrawerLayout.crossfade(400);
-
-                if (isFaded) {
-                    result.getDrawerLayout().closeDrawer(GravityCompat.START);
-                }
-            }
-
-            @Override
-            public boolean isCrossfaded() {
-                return crossfadeDrawerLayout.isCrossfaded();
-            }
-        });
-
     }
 
     @Override

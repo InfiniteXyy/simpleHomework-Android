@@ -40,7 +40,7 @@ public class SmallHomeworkAdapter extends BaseItemDraggableAdapter<Homework, Sma
                 if (fadeIn == null) {
                     fadeIn = AnimationUtils.loadAnimation(mContext, R.anim.fade_in);
                 }
-                View detail = helper.getView(R.id.details);
+                View detail = helper.getView(R.id.text2);
                 if (detail.getVisibility() == View.GONE) {
                     // maybe button should rotate here instead of changing resource
                     ((ImageView) v).setImageResource(R.drawable.ic_expand_less_black_24px);

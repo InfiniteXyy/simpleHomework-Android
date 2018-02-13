@@ -11,8 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemDragListener;
@@ -91,16 +89,6 @@ public class ProjectActivity extends AppCompatActivity {
         });
 
         recyclerView.setAdapter(adapter);
-
-        // demo used button
-        Button button = findViewById(R.id.button2);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewModel.test();
-                homeworkList.get(0).setStatus(3010);
-            }
-        });
     }
 
 

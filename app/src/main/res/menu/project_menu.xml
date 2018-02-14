@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/set_plan"
-        android:title="@string/set_plan" />
+        android:id="@+id/set_color"
+        android:title="@string/set_color" />
     <item
-        android:id="@+id/finish_work"
-        android:title="@string/finish" />
+        android:id="@+id/view_subject"
+        android:title="@string/view_subject" />
 </menu>

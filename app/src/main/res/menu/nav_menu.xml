@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single"
-        android:id="@+id/group1">
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/day"
             android:icon="@drawable/ic_today_black_24px"
-            android:title="@string/day"/>
+            android:title="@string/day" />
         <item
             android:id="@+id/week"
             android:icon="@drawable/ic_view_week_black_24px"
@@ -15,16 +16,16 @@
             android:icon="@drawable/ic_assignment_black_24px"
             android:title="@string/month" />
     </group>
-    <group android:checkableBehavior="none"
-        android:id="@+id/group2">
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="none">
         <item
             android:id="@+id/profile"
             android:icon="@drawable/ic_account_circle_black_24px"
-            android:title="@string/year">
-        </item>
+            android:title="@string/year"></item>
         <item
             android:id="@+id/set"
             android:icon="@drawable/ic_settings_black_24px"
-            android:title="@string/setting"/>
+            android:title="@string/setting" />
     </group>
 </menu>

@@ -5,12 +5,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.HomeworkActivity;
 import com.xyy.simplehomework.viewmodel.ProjectDetailViewModel;
 
@@ -36,7 +33,7 @@ public class HomeworkClickHandler {
         }
     }
 
-    public void showMenu(final View view) {
+    /*public void showMenu(final View view) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.project_menu, popupMenu.getMenu());
         popupMenu.show();
@@ -66,5 +63,22 @@ public class HomeworkClickHandler {
                 return false;
             }
         });
+    }*/
+
+    public void setPlan(View view) {
+        Calendar now = Calendar.getInstance();
+        ProjectDetailViewModel viewModel = ProjectDetailViewModel.getInstance();
+        DatePickerDialog dialog = DatePickerDialog.newInstance(
+                viewModel,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+        );
+        dialog.setAccentColor(viewModel.getColor());
+        dialog.show(viewModel.getFragmentManger(), "选择日期");
+        dialog.vibrate(false);
+        dialog.setMinDate(now);
+        now.add(Calendar.DATE, 7);
+        dialog.setMaxDate(now);
     }
 }

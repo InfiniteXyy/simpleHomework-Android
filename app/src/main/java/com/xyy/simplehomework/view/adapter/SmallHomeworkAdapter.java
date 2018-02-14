@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -33,25 +32,22 @@ public class SmallHomeworkAdapter extends BaseItemDraggableAdapter<Homework, Sma
         binding.setVariable(BR.homework, item);
         binding.setVariable(BR.clickHandler, handler);
         // set button for showing detail
-  /*      helper.getView(R.id.expand_button).setOnClickListener(new View.OnClickListener() {
+        helper.getView(R.id.img).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // load anim only once
                 if (fadeIn == null) {
                     fadeIn = AnimationUtils.loadAnimation(mContext, R.anim.fade_in);
                 }
-                View detail = helper.getView(R.id.text2);
+                View detail = helper.getView(R.id.details);
                 if (detail.getVisibility() == View.GONE) {
-                    // maybe button should rotate here instead of changing resource
-                    ((ImageView) v).setImageResource(R.drawable.ic_expand_less_black_24px);
                     detail.setVisibility(View.VISIBLE);
                     detail.startAnimation(fadeIn);
                 } else {
-                    ((ImageView) v).setImageResource(R.drawable.ic_expand_more_black_24px);
                     detail.setVisibility(View.GONE);
                 }
             }
-        });*/
+        });
     }
 
     @Override

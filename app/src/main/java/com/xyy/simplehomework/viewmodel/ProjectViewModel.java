@@ -89,7 +89,7 @@ public class ProjectViewModel {
         for (MyProject project : week.projects) {
             if (i <= 3) {
                 for (int j = 0; j < i + 1; j++) {
-                    Homework homework = new Homework("Homework Info");
+                    Homework homework = new Homework(project.subject.getTarget().getName() + "练习" + (j + 1));
                     if (j % 2 == 0) homework.setPlanDate(DateHelper.afterDays(i));
                     project.homework.add(homework);
                     project.week.setTarget(week);

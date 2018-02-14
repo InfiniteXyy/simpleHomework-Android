@@ -20,7 +20,6 @@ import java.util.List;
  */
 
 public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, HomeworkAdapter.HomeworkHolder> {
-
     public static final int TYPE_HEADER = 0;
     public static final int TYPE_PROJECT = 1;
     public static final int TYPE_HOMEWORK = 2;
@@ -39,14 +38,40 @@ public class SmallProjectAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
         switch (helper.getItemViewType()) {
             case TYPE_HEADER:
                 final SmallProjectTitle title = (SmallProjectTitle) item;
-                helper.setText(R.id.smallProjectTitle, title.getTitle())
+                helper.setText(R.id.smallProjectTitle, title.getFormatTitle())
                         .setImageResource(R.id.arrowForList, title.isExpanded() ? R.drawable.ic_arrow_drop_up : R.drawable.ic_arrow_drop_down);
                 helper.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int pos = helper.getAdapterPosition();
-                        if (title.isExpanded()) collapse(pos);
-                        else expand(pos);
+                        if (title.isExpanded()) {
+                            collapse(pos);
+                            title.isExpandingAll = false;
+                        } else expand(pos);
+                    }
+                });
+                helper.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (title.getSubItems() == null) {
+                            return true;
+                        }
+                        if (title.isExpandingAll) {
+                            for (int i = helper.getAdapterPosition() + 1; i < getItemCount(); i++) {
+                                if (getItem(i).getItemType() == TYPE_PROJECT && title.contains((MyProject) getItem(i)))
+                                    collapse(i);
+                            }
+                        } else {
+                            if (!title.isExpanded()) expandAll(helper.getAdapterPosition(), false);
+                            else {
+                                for (int i = helper.getAdapterPosition(); i < getItemCount(); i++) {
+                                    if (getItem(i).getItemType() == TYPE_PROJECT && title.contains((MyProject) getItem(i)))
+                                        expand(i);
+                                }
+                            }
+                        }
+                        title.isExpandingAll = !title.isExpandingAll;
+                        return true;
                     }
                 });
                 break;

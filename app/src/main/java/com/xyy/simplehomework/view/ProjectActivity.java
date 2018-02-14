@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
@@ -98,7 +99,17 @@ public class ProjectActivity extends AppCompatActivity {
             case android.R.id.home:
                 supportFinishAfterTransition();
                 return true;
+            case R.id.view_subject:
+                break;
+            case R.id.set_color:
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.project_menu, menu);
+        return true;
     }
 }

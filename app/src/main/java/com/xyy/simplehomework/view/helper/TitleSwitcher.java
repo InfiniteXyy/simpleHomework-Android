@@ -2,7 +2,6 @@ package com.xyy.simplehomework.view.helper;
 
 import android.app.Activity;
 import android.content.Context;
-import android.databinding.BindingConversion;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.view.App;
 
 /**
  * Created by xyy on 2018/1/26.
@@ -26,21 +24,11 @@ public class TitleSwitcher {
     private Context context;
     private TextSwitcher dayName;
     private int old_position;
-    private int old_position_title;
 
     public TitleSwitcher(Context mContext) {
         this.context = mContext;
         typeface = Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Regular.ttf");
         initSwitcher();
-    }
-
-    @BindingConversion
-    public static Typeface convertStringToFace(String s) {
-        try {
-            return Typeface.createFromAsset(App.getInstance().getAssets(), s);
-        } catch (Exception e) {
-            throw e;
-        }
     }
 
     private void initSwitcher() {
@@ -50,14 +38,13 @@ public class TitleSwitcher {
             public View makeView() {
                 TextView tv = new TextView(context);
                 tv.setTextAppearance(context, R.style.dayNameSwitcher);
-                tv.setTypeface(typeface, Typeface.BOLD);
+                tv.setTypeface(typeface);
                 return tv;
             }
         });
 
         dayName.setCurrentText(DateHelper.getDayName().toUpperCase());
         old_position = DateHelper.getDayIndex();
-        old_position_title = DAY;
     }
 
     public void setAlpha(float alpha) {
@@ -78,16 +65,14 @@ public class TitleSwitcher {
 
     }
 
-    public void changeFragmentTitle(int position) {
-        if (old_position_title == position) return;
-        if (old_position_title < position) {
-            dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_top));
-            dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_bottom));
+    public void changeFragmentTitle(int position, boolean fromRight) {
+        if (fromRight) {
+            dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_right));
+            dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_left));
         } else {
-            dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_bottom));
-            dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_top));
+            dayName.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in_left));
+            dayName.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_out_right));
         }
-        old_position_title = position;
         switch (position) {
             case WEEK:
                 dayName.setText("WEEK " + DateHelper.getWeekIndex());

@@ -16,7 +16,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.MainActivity;
-import com.xyy.simplehomework.view.adapter.HomeworkAdapter;
+import com.xyy.simplehomework.view.adapter.DayAdapter;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 import java.util.List;
@@ -47,7 +47,7 @@ public class DayFragment extends Fragment {
 
         ProjectViewModel viewModel = ((MainActivity) mContext).viewModel;
         List<Homework> data = viewModel.getAllHomework();
-        HomeworkAdapter adapter = new HomeworkAdapter(R.layout.item_homework, data);
+        DayAdapter adapter = new DayAdapter(R.layout.item_homework, data);
         adapter.setEmptyView(R.layout.empty_view, (ViewGroup) view);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
 

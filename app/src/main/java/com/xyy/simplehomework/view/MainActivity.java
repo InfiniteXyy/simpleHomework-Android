@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,9 +25,6 @@ import com.xyy.simplehomework.view.helper.DialogHelper;
 import com.xyy.simplehomework.view.helper.TitleSwitcher;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class MainActivity extends AppCompatActivity {
     public TitleSwitcher titleSwitcher;
     public ProjectViewModel viewModel;
@@ -36,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private long exitTime = 0;
+    private int old_position = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         // init toolbar
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(new SimpleDateFormat("M.d").format(new Date()));
+            actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -78,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                int newAlpha = 255 + verticalOffset;
+                int newAlpha = 190 + verticalOffset;
                 newAlpha = newAlpha < 0 ? 0 : newAlpha;
-                titleSwitcher.setAlpha((float) newAlpha / 255);
+                titleSwitcher.setAlpha((float) newAlpha / 190);
             }
         });
 
@@ -92,21 +91,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 drawerLayout.closeDrawers();
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction transaction = fm.beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 switch (item.getItemId()) {
-                    case R.id.day:
-                        transaction.show(dayFragment).hide(weekFragment).hide(semesterFragment).commit();
-                        titleSwitcher.changeFragmentTitle(TitleSwitcher.DAY);
-                        break;
-                    case R.id.week:
-                        transaction.show(weekFragment).hide(dayFragment).hide(semesterFragment).commit();
-                        titleSwitcher.changeFragmentTitle(TitleSwitcher.WEEK);
-                        break;
-                    case R.id.month:
-                        transaction.show(semesterFragment).hide(weekFragment).hide(dayFragment).commit();
-                        titleSwitcher.changeFragmentTitle(TitleSwitcher.SEMESTER);
-                        break;
                     case R.id.set:
                         startActivity(new Intent(getApplicationContext(), SettingActivity.class));
                         break;
@@ -118,6 +103,26 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.day:
+                        changeFrag(0);
+                        return true;
+                    case R.id.week:
+                        changeFrag(1);
+                        return true;
+                    case R.id.month:
+                        changeFrag(2);
+                        return true;
+                }
+                return false;
+            }
+        });
+
 
     }
 
@@ -149,6 +154,27 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    public void changeFrag(int position) {
+        if (position == old_position) return;
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        boolean fromRight = position > old_position;
+        titleSwitcher.changeFragmentTitle(position, fromRight);
+        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        switch (position) {
+            case 0:
+                transaction.hide(weekFragment).hide(semesterFragment).show(dayFragment).commit();
+                break;
+            case 1:
+                transaction.hide(dayFragment).hide(semesterFragment).show(weekFragment).commit();
+                break;
+            case 2:
+                transaction.hide(dayFragment).hide(weekFragment).show(semesterFragment).commit();
+                break;
+        }
+        old_position = position;
     }
 }
 

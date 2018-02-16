@@ -23,9 +23,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.ProjectActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.CalendarActivity"
             android:screenOrientation="portrait" />
         <activity

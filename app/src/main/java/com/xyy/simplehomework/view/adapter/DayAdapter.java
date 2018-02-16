@@ -15,10 +15,10 @@ import com.xyy.simplehomework.view.handler.HomeworkClickHandler;
 import java.util.List;
 
 
-public class HomeworkAdapter extends BaseQuickAdapter<Homework, HomeworkAdapter.HomeworkHolder> {
+public class DayAdapter extends BaseQuickAdapter<Homework, DayAdapter.HomeworkHolder> {
     private HomeworkClickHandler handler;
 
-    public HomeworkAdapter(int layoutResId, List<Homework> data) {
+    public DayAdapter(int layoutResId, List<Homework> data) {
         super(layoutResId, data);
         handler = new HomeworkClickHandler();
     }

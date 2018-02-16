@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group
-        android:id="@+id/group1"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/day"
-            android:icon="@drawable/ic_today_black_24px"
-            android:title="@string/day" />
-        <item
-            android:id="@+id/week"
-            android:icon="@drawable/ic_view_week_black_24px"
-            android:title="@string/week" />
-        <item
-            android:id="@+id/month"
-            android:icon="@drawable/ic_assignment_black_24px"
-            android:title="@string/month" />
-    </group>
-    <group
         android:id="@+id/group2"
         android:checkableBehavior="none">
         <item

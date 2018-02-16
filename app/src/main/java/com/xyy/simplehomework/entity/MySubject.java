@@ -25,13 +25,13 @@ public class MySubject extends BaseObservable {
     public ToOne<Semester> semester;
 
     public String name;
-    public int colorId;
+    public int color;
     public byte[] availableWeeks;
 
 
-    public MySubject(String name, int colorId) {
+    public MySubject(String name, int color) {
         this.name = name;
-        this.colorId = colorId;
+        this.color = color;
     }
 
     public MySubject() {

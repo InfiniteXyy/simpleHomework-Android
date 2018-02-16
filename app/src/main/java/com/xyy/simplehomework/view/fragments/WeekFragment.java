@@ -5,22 +5,23 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.view.MainActivity;
-import com.xyy.simplehomework.view.adapter.SmallProjectAdapter;
-import com.xyy.simplehomework.view.adapter.SmallProjectTitle;
+import com.xyy.simplehomework.view.adapter.SmallTitle;
+import com.xyy.simplehomework.view.adapter.WeekAdapter;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,38 +46,31 @@ public class WeekFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
         ProjectViewModel viewModel = ((MainActivity) mContext).viewModel;
-        List<MultiItemEntity> data = classifyList(viewModel.getAllProjects());
-        SmallProjectAdapter adapter = new SmallProjectAdapter(data);
-        weekRecyclerView.setAdapter(adapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-        weekRecyclerView.setLayoutManager(layoutManager);
-
-        // open all the level0 menu at the first time
-        for (int i = 0; i < adapter.getItemCount(); i++) {
-            if (SmallProjectAdapter.TYPE_HEADER == adapter.getItem(i).getItemType()) {
-                adapter.expand(i);
+        final List<MultiItemEntity> data = classifyList(viewModel.getAllProjects());
+        WeekAdapter adapter = new WeekAdapter(data);
+        final GridLayoutManager layoutManager = new GridLayoutManager(mContext, 5);
+        adapter.setSpanSizeLookup(new BaseQuickAdapter.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(GridLayoutManager gridLayoutManager, int position) {
+                return data.get(position) instanceof MyProject ? 1 : 5;
             }
-        }
+        });
+        weekRecyclerView.setLayoutManager(layoutManager);
+        weekRecyclerView.setAdapter(adapter);
         super.onViewCreated(view, savedInstanceState);
     }
 
 
     public List<MultiItemEntity> classifyList(List<MyProject> projects) {
         List<MultiItemEntity> data = new ArrayList<>();
-        List<SmallProjectTitle> title = (Arrays.asList(
-                new SmallProjectTitle("已完成"),
-                new SmallProjectTitle("未完成"),
-                new SmallProjectTitle("待记录")
-        ));
+        data.add(new SmallTitle("未完成"));
         for (MyProject project : projects) {
-            project.setSubItems(project.homework);
-            if (project.homework.isEmpty()) {
-                title.get(2).addSubItem(project);
-            } else {
-                title.get(1).addSubItem(project);
-            }
+            data.addAll(project.homework);
+            Log.d("123", "useDemo: " + project.subject.getTarget().getName() + "~" + project.subject.getTarget());
         }
-        data.addAll(title);
+        data.add(new SmallTitle("待记录"));
+        data.addAll(projects);
+        data.add(new SmallTitle("已完成"));
         return data;
     }
 }

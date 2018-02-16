@@ -1,11 +1,9 @@
 package com.xyy.simplehomework.entity;
 
 import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.xyy.simplehomework.BR;
-import com.xyy.simplehomework.view.adapter.SmallProjectAdapter;
+import com.xyy.simplehomework.view.adapter.WeekAdapter;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.text.SimpleDateFormat;
@@ -41,30 +39,8 @@ public class Homework extends BaseObservable implements MultiItemEntity {
     public Homework() {
     }
 
-    public String getDeadline() {
-        if (initDateFormat == null) {
-            initDateFormat = new SimpleDateFormat("截止时间: yyyy年M月d日");
-        }
-        return initDateFormat.format(initDate);
-    }
-
-    @Bindable
-    public String getStatus() {
-        return Integer.toString(status);
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-        notifyPropertyChanged(BR.status);
-    }
-
-    public void setPlanDate(Date date) {
-        planDate = date;
-    }
-
-
     @Override
     public int getItemType() {
-        return SmallProjectAdapter.TYPE_HOMEWORK;
+        return WeekAdapter.TYPE_HOMEWORK;
     }
 }

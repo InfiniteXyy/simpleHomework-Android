@@ -1,6 +1,7 @@
 package com.xyy.simplehomework.viewmodel;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
@@ -58,11 +59,11 @@ public class ProjectViewModel {
         Semester thisSemester = getThisSemester();
 
         MySubject[] subjects = {
-                new MySubject("计算机系统", R.color.japanBrown),
-                new MySubject("高等数学", R.color.japanBlue),
-                new MySubject("线性代数", R.color.japanPink),
-                new MySubject("离散数学", R.color.japanTea),
-                new MySubject("概率论", R.color.japanOrange),
+                new MySubject("计算机系统", mContext.getResources().getColor(R.color.japanBrown)),
+                new MySubject("高等数学", mContext.getResources().getColor(R.color.japanBlue)),
+                new MySubject("线性代数", mContext.getResources().getColor(R.color.japanPink)),
+                new MySubject("离散数学", mContext.getResources().getColor(R.color.japanTea)),
+                new MySubject("概率论", mContext.getResources().getColor(R.color.japanOrange)),
         };
 
         for (MySubject subject : subjects) {
@@ -87,15 +88,13 @@ public class ProjectViewModel {
         // homework demo
         int i = 0;
         for (MyProject project : week.projects) {
-            if (i <= 3) {
-                for (int j = 0; j < i + 1; j++) {
-                    Homework homework = new Homework(project.subject.getTarget().getName() + "练习" + (j + 1));
-                    if (j % 2 == 0) homework.setPlanDate(DateHelper.afterDays(i));
-                    project.homework.add(homework);
-                    project.week.setTarget(week);
-                }
+            if (i < 3) {
+                Homework homework = new Homework(project.subject.getTarget().getName() + "练习" + (i + 1));
+                project.homework.add(homework);
+                project.week.setTarget(week);
             }
             dataServer.put(project);
+            Log.d("123", "useDemo: " + project.subject.getTarget().getName() + "~" + project.subject.getTarget());
             i++;
         }
     }
@@ -124,5 +123,4 @@ public class ProjectViewModel {
         }
         return semester;
     }
-
 }

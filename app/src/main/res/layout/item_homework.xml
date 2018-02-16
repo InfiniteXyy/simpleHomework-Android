@@ -3,11 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
-        <import type="com.xyy.simplehomework.entity.MyProject" />
-
-        <import type="com.xyy.simplehomework.entity.MySubject" />
-
         <variable
             name="homework"
             type="com.xyy.simplehomework.entity.Homework" />
@@ -18,105 +13,99 @@
     </data>
 
     <android.support.v7.widget.CardView
-        cardColor="@{homework.project.getTarget()}"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginBottom="24dp"
-        android:layout_marginLeft="@dimen/margin_horizontal"
-        android:layout_marginRight="@dimen/margin_horizontal"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="@{(view)->clickHandler.showDetail(view, homework.id)}"
-        android:transitionName="sharedCard"
-        app:cardCornerRadius="9dp"
-        app:cardElevation="9dp">
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="72dp"
+                android:padding="16dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/avatar2" />
+
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/img"
+                    android:layout_toEndOf="@id/img"
+                    android:maxLines="1"
+                    android:text="@string/homework_card"
+                    android:textColor="@color/textDarkPrimary"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text"
+                    android:layout_alignLeft="@id/text"
+                    android:layout_alignStart="@id/text"
+                    android:text="数据结构"
+                    android:textColor="@color/textDarkSecondary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/text"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:text="4 days"
+                    android:textColor="@color/textDarkSecondary"/>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="192dp"
+                android:background="#BDBDBD"/>
 
             <TextView
-                android:id="@+id/subject_detail"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/card_word_padding"
-                android:layout_marginTop="17dp"
-                android:maxLines="1"
-                android:text="周三下午 5-6 节"
-                android:textColor="#cfc8c8"
+                android:padding="16dp"
+                android:text="什么鬼！怎么要写个预览那么麻烦"
+                android:textColor="@color/textDarkPrimary"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/subject_name"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/subject_detail"
-                android:layout_marginLeft="@dimen/card_word_padding"
-                android:layout_marginStart="@dimen/card_word_padding"
-                android:layout_marginTop="-2dp"
-                android:maxLines="1"
-                android:text="@{homework.project.getTarget().subject.getTarget().name}"
-                android:textColor="@android:color/white"
-                android:textSize="30sp" />
-
-            <ImageView
-                android:id="@+id/up_img"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_alignLeft="@+id/subject_name"
-                android:layout_alignStart="@+id/subject_name"
-                android:layout_below="@+id/subject_name"
-                android:layout_marginTop="24dp"
-                app:srcCompat="@drawable/ic_filter_none_24px" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/up_img"
-                android:layout_marginLeft="@dimen/card_detail_margin_left"
-                android:layout_marginStart="@dimen/card_detail_margin_left"
-                android:layout_marginTop="-2dp"
-                android:layout_toEndOf="@+id/up_img"
-                android:layout_toRightOf="@+id/up_img"
-                android:text="课本 P15 题号 1, 5, 7"
-                android:textColor="#EEEEEE"
-                android:textSize="@dimen/card_detail_font_size" />
-
-            <ImageView
-                android:id="@+id/time_img"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_alignLeft="@+id/subject_name"
-                android:layout_alignStart="@+id/subject_name"
-                android:layout_below="@+id/up_img"
-                android:layout_marginTop="8dp"
-                app:srcCompat="@drawable/ic_access_alarms_24px" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/time_img"
-                android:layout_marginLeft="@dimen/card_detail_margin_left"
-                android:layout_marginTop="-2dp"
-                android:layout_toEndOf="@+id/time_img"
-                android:layout_toRightOf="@id/time_img"
-                android:text='test'
-                android:textColor="#EEEEEE"
-                android:textSize="@dimen/card_detail_font_size" />
-
-            <Button
-                android:id="@+id/card_btn_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:padding="8dp"
-                android:text="Delete"
-                android:theme="@style/Widget.AppCompat.Button.Borderless" />
+                android:orientation="horizontal">
 
+                <Button
+                    android:id="@+id/start_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="START"
+                    android:textColor="@color/colorPrimary"
+                    style="?android:attr/borderlessButtonStyle" />
 
-        </RelativeLayout>
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FINISH"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"/>
+            </LinearLayout>
+        </LinearLayout>
     </android.support.v7.widget.CardView>
+
 </layout>

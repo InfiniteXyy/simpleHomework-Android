@@ -7,11 +7,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.xyy.simplehomework.view.HomeworkActivity;
-import com.xyy.simplehomework.viewmodel.ProjectDetailViewModel;
-
-import java.util.Calendar;
 
 /**
  * Created by xyy on 2018/2/9.
@@ -64,7 +60,7 @@ public class HomeworkClickHandler {
             }
         });
     }*/
-
+/*
     public void setPlan(View view) {
         Calendar now = Calendar.getInstance();
         ProjectDetailViewModel viewModel = ProjectDetailViewModel.getInstance();
@@ -80,5 +76,5 @@ public class HomeworkClickHandler {
         dialog.setMinDate(now);
         now.add(Calendar.DATE, 7);
         dialog.setMaxDate(now);
-    }
+    }*/
 }

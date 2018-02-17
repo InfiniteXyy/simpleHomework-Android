@@ -5,6 +5,7 @@ import android.app.Application;
 import com.xyy.simplehomework.entity.MyObjectBox;
 
 import io.objectbox.BoxStore;
+import io.objectbox.android.AndroidObjectBrowser;
 
 public class App extends Application {
 
@@ -20,10 +21,8 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         boxStore = MyObjectBox.builder().androidContext(this).build();
-//        if (BuildConfig.DEBUG) {
-//            new AndroidObjectBrowser(boxStore).start(this);
-//        }
 
+        new AndroidObjectBrowser(boxStore).start(this);
     }
 
     public BoxStore getBoxStore() {

@@ -14,6 +14,7 @@ import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.view.handler.ProjectClickHandler;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ public class WeekAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, DayA
     public static final int TYPE_HEADER = 0;
     public static final int TYPE_PROJECT = 1;
     public static final int TYPE_HOMEWORK = 2;
+
+    private static ProjectClickHandler handler;
 
     public WeekAdapter(List<MultiItemEntity> data) {
         super(data);
@@ -42,15 +45,26 @@ public class WeekAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, DayA
                 break;
             case TYPE_HOMEWORK:
                 final Homework homework = (Homework) item;
-                helper.getBinding().setVariable(BR.homework, item);
+                if (handler == null) {
+                    handler = new ProjectClickHandler(mContext);
+                }
+                ViewDataBinding binding = helper.getBinding();
+                binding.setVariable(BR.homework, item);
+                binding.setVariable(BR.handler, handler);
                 GradientDrawable circle = (GradientDrawable) helper.getView(R.id.circle).getBackground();
                 circle.setColor(homework.project.getTarget().subject.getTarget().color);
+
                 break;
             case TYPE_PROJECT:
-                final MySubject subject = ((MyProject) item).subject.getTarget();
-                circle = (GradientDrawable) helper.getView(R.id.circle_word).getBackground();
-                circle.setColor(Color.parseColor("#d1d3d4"));
-                helper.setText(R.id.circle_word, subject.getName().substring(0, 1));
+                final MyProject project = (MyProject) item;
+                if (project.getStatus(false) == MyProject.NOT_ALL_FIN) {
+                    helper.itemView.setVisibility(View.GONE);
+                } else {
+                    final MySubject subject = project.subject.getTarget();
+                    circle = (GradientDrawable) helper.getView(R.id.circle_word).getBackground();
+                    circle.setColor(Color.parseColor("#d1d3d4"));
+                    helper.setText(R.id.circle_word, subject.getName().substring(0, 1));
+                }
                 break;
             default:
                 break;

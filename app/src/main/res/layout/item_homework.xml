@@ -7,9 +7,6 @@
             name="homework"
             type="com.xyy.simplehomework.entity.Homework" />
 
-        <variable
-            name="clickHandler"
-            type="com.xyy.simplehomework.view.handler.HomeworkClickHandler" />
     </data>
 
     <android.support.v7.widget.CardView

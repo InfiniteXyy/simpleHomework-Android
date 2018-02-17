@@ -1,19 +1,30 @@
 package com.xyy.simplehomework.view.handler;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
 
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.HomeworkActivity;
+import com.xyy.simplehomework.viewmodel.ProjectViewModel;
+
+import java.util.Calendar;
 
 /**
  * Created by xyy on 2018/2/9.
  */
 
 public class HomeworkClickHandler {
+    Context mContext;
+    public HomeworkClickHandler(Context context) {
+        mContext = context;
+    }
+
     public void showDetail(View view, long id) {
         Intent intent = new Intent(view.getContext(), HomeworkActivity.class);
         intent.putExtra(HomeworkActivity.HOMEWORK_ID, id);

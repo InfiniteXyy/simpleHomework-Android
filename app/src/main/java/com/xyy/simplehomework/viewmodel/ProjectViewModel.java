@@ -1,7 +1,6 @@
 package com.xyy.simplehomework.viewmodel;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
@@ -12,9 +11,12 @@ import com.xyy.simplehomework.entity.Week;
 import com.xyy.simplehomework.model.DataServer;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.helper.DateHelper;
-
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import io.objectbox.BoxStore;
@@ -23,14 +25,19 @@ import io.objectbox.BoxStore;
  * Created by xyy on 2018/2/5.
  */
 
-public class ProjectViewModel {
+public class ProjectViewModel implements OnDateSetListener{
     private DataServer dataServer;
     private Context mContext;
     private List<MyProject> projectList;
+    private static ProjectViewModel instance;
+    private Homework onChangingHomework;
 
+    public static ProjectViewModel getInstance() {
+        return instance;
+    }
     public ProjectViewModel(Context context) {
         mContext = context;
-
+        instance = this;
         // set up data server
         BoxStore boxStore = ((App) context.getApplicationContext()).getBoxStore();
 
@@ -46,7 +53,7 @@ public class ProjectViewModel {
         projectList = new ArrayList<>();
     }
 
-    public List<MyProject> getAllProjects() {
+    public List<MyProject> getProjectsThisWeek() {
         projectList = dataServer.getAllProjects();
         return projectList;
     }
@@ -89,18 +96,17 @@ public class ProjectViewModel {
         int i = 0;
         for (MyProject project : week.projects) {
             if (i < 3) {
-                Homework homework = new Homework(project.subject.getTarget().getName() + "练习" + (i + 1));
+                Homework homework = new Homework(project.subject.getTarget().getName() + "练习" + (i + 1), DateHelper.afterDays(i+2));
                 project.homework.add(homework);
                 project.week.setTarget(week);
             }
             dataServer.put(project);
-            Log.d("123", "useDemo: " + project.subject.getTarget().getName() + "~" + project.subject.getTarget());
             i++;
         }
     }
 
     private Week getThisWeek(Semester semester) {
-        int weekIndex = DateHelper.getWeeksBetween(semester.startDate, new Date());
+        int weekIndex = DateHelper.getTimeBetween(semester.startDate, new Date(), DateHelper.WEEK);
         for (Week week : semester.weeks) {
             if (week.weekIndex == weekIndex) {
                 return week;
@@ -122,5 +128,15 @@ public class ProjectViewModel {
             dataServer.put(semester);
         }
         return semester;
+    }
+
+
+    public void setCurrentHomework(Homework homework) {
+        onChangingHomework = homework;
+    }
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        onChangingHomework.setPlanDate(new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime());
+        dataServer.put(onChangingHomework);
     }
 }

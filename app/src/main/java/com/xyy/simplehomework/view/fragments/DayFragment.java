@@ -1,37 +1,38 @@
 package com.xyy.simplehomework.view.fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.view.MainActivity;
-import com.xyy.simplehomework.view.adapter.DayAdapter;
-import com.xyy.simplehomework.viewmodel.ProjectViewModel;
-
-import java.util.List;
+import com.xyy.simplehomework.view.helper.DateHelper;
 
 /**
  * Created by xyy on 2018/1/27.
  */
 
 public class DayFragment extends Fragment {
-    Context mContext;
+    private Context mContext;
+    private ViewPager viewPager;
 
     @Override
     public void onAttach(Context context) {
         mContext = context;
         super.onAttach(context);
+    }
+
+    public DayFragment() {
     }
 
     @Override
@@ -41,18 +42,31 @@ public class DayFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-        recyclerView.setLayoutManager(layoutManager);
-
-        ProjectViewModel viewModel = ((MainActivity) mContext).viewModel;
-        List<Homework> data = viewModel.getAllHomework();
-        DayAdapter adapter = new DayAdapter(R.layout.item_homework, data);
-        adapter.setEmptyView(R.layout.empty_view, (ViewGroup) view);
-        adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
-
-        recyclerView.setAdapter(adapter);
+        viewPager = view.findViewById(R.id.view_page);
+        viewPager.setAdapter(new DayPageAdapter(getFragmentManager()));
+        // init tabs
+        final TabLayout tabLayout = ((Activity) mContext).findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
         super.onViewCreated(view, savedInstanceState);
     }
 
+    private static class DayPageAdapter extends FragmentPagerAdapter {
+        public DayPageAdapter(FragmentManager fm) {
+            super(fm);
+        }
+        @Override
+        public Fragment getItem(int position) {
+            return PageFragment.newInstance(position);
+        }
+
+        @Override
+        public int getCount() {
+            return 7;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return DateHelper.weeks[position].toUpperCase();
+        }
+    }
 }

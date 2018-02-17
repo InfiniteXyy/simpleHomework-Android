@@ -1,8 +1,10 @@
 package com.xyy.simplehomework.entity;
 
 import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.view.adapter.WeekAdapter;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
@@ -18,9 +20,8 @@ import io.objectbox.relation.ToOne;
  */
 @Entity
 public class Homework extends BaseObservable implements MultiItemEntity {
-    public static final int HAS_FINISHED = 0;
-    public static final int TOBE_DONE = 1;
-    private static SimpleDateFormat initDateFormat;
+    public static final int FINISHED = 0;
+    public static final int NOT_FINISHED = 1;
     @Id
     public long id;
     public ToOne<MyProject> project;
@@ -31,12 +32,33 @@ public class Homework extends BaseObservable implements MultiItemEntity {
     public Date initDate;
     public int status;
 
-    public Homework(String title) {
+    public Homework(String title, Date deadline) {
         this.title = title;
+        this.deadline = deadline;
         initDate = DateHelper.date;
+        status = NOT_FINISHED;
     }
 
     public Homework() {
+    }
+
+    public void setFinished() { status = FINISHED; }
+
+    public boolean hasFinished() { return status == FINISHED; }
+
+    public void setPlanDate(Date date) {
+        planDate = date;
+        notifyPropertyChanged(BR.planDate);
+    }
+    @Bindable
+    public String getPlanDate() {
+        if (planDate == null) return null;
+        else return Integer.toString(DateHelper.getTimeBetween(DateHelper.date, planDate, DateHelper.DAY))
+                + "d after";
+    }
+
+    public String getDeadline() {
+        return new SimpleDateFormat("M.d").format(deadline);
     }
 
     @Override

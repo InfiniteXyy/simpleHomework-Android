@@ -3,9 +3,9 @@ package com.xyy.simplehomework.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -15,24 +15,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.fragments.DayFragment;
 import com.xyy.simplehomework.view.fragments.SemesterFragment;
 import com.xyy.simplehomework.view.fragments.WeekFragment;
-import com.xyy.simplehomework.view.helper.DialogHelper;
-import com.xyy.simplehomework.view.helper.TitleSwitcher;
+import com.xyy.simplehomework.view.helper.DateHelper;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 public class MainActivity extends AppCompatActivity {
-    public TitleSwitcher titleSwitcher;
     public ProjectViewModel viewModel;
     private WeekFragment weekFragment;
     private DayFragment dayFragment;
     private SemesterFragment semesterFragment;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private TabLayout tabLayout;
     private long exitTime = 0;
     private int old_position = 0;
 
@@ -41,17 +41,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // set up view model
+        viewModel = new ProjectViewModel(this);
+
         // set up view
         setDefaultFragment();
         setUpTools();
-
-        // set up view model
-        viewModel = new ProjectViewModel(this);
     }
 
     private void setDefaultFragment() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
+        tabLayout = findViewById(R.id.tabs);
         dayFragment = new DayFragment();
         transaction.add(R.id.mainFragment, dayFragment);
         weekFragment = new WeekFragment();
@@ -67,21 +68,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setTitle("WEEK "+DateHelper.getWeekIndex());
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        // init AppBar
-        titleSwitcher = new TitleSwitcher(this);
-        AppBarLayout appBarLayout = findViewById(R.id.app_bar);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                int newAlpha = 190 + verticalOffset;
-                newAlpha = newAlpha < 0 ? 0 : newAlpha;
-                titleSwitcher.setAlpha((float) newAlpha / 190);
-            }
-        });
 
         // init drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -139,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
             case R.id.add_projects:
-                new DialogHelper(this).show();
                 break;
             default:
         }
@@ -160,18 +149,22 @@ public class MainActivity extends AppCompatActivity {
         if (position == old_position) return;
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        boolean fromRight = position > old_position;
-        titleSwitcher.changeFragmentTitle(position, fromRight);
         transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         switch (position) {
             case 0:
-                transaction.hide(weekFragment).hide(semesterFragment).show(dayFragment).commit();
+                transaction.hide(weekFragment).hide(semesterFragment).show(dayFragment).commitAllowingStateLoss();
+                getSupportActionBar().setTitle("Week Plan");
+                tabLayout.setVisibility(View.VISIBLE);
                 break;
             case 1:
-                transaction.hide(dayFragment).hide(semesterFragment).show(weekFragment).commit();
+                transaction.hide(dayFragment).hide(semesterFragment).show(weekFragment).commitAllowingStateLoss();
+                getSupportActionBar().setTitle("WEEK "+DateHelper.getWeekIndex());
+                tabLayout.setVisibility(View.GONE);
                 break;
             case 2:
-                transaction.hide(dayFragment).hide(weekFragment).show(semesterFragment).commit();
+                transaction.hide(dayFragment).hide(weekFragment).show(semesterFragment).commitAllowingStateLoss();
+                getSupportActionBar().setTitle("大一上");
+                tabLayout.setVisibility(View.GONE);
                 break;
         }
         old_position = position;

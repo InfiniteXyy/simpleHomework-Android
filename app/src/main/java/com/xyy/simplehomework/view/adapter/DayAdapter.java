@@ -16,18 +16,15 @@ import java.util.List;
 
 
 public class DayAdapter extends BaseQuickAdapter<Homework, DayAdapter.HomeworkHolder> {
-    private HomeworkClickHandler handler;
 
     public DayAdapter(int layoutResId, List<Homework> data) {
         super(layoutResId, data);
-        handler = new HomeworkClickHandler();
     }
 
     @Override
     protected void convert(HomeworkHolder helper, Homework item) {
         ViewDataBinding binding = helper.getBinding();
         binding.setVariable(BR.homework, item);
-        binding.setVariable(BR.clickHandler, handler);
     }
 
     @Override

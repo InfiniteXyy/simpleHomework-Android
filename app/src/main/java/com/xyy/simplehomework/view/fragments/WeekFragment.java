@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,31 +45,49 @@ public class WeekFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
         ProjectViewModel viewModel = ((MainActivity) mContext).viewModel;
-        final List<MultiItemEntity> data = classifyList(viewModel.getAllProjects());
+        final List<MultiItemEntity> data = classifyList(viewModel.getProjectsThisWeek());
         WeekAdapter adapter = new WeekAdapter(data);
         final GridLayoutManager layoutManager = new GridLayoutManager(mContext, 5);
         adapter.setSpanSizeLookup(new BaseQuickAdapter.SpanSizeLookup() {
             @Override
             public int getSpanSize(GridLayoutManager gridLayoutManager, int position) {
-                return data.get(position) instanceof MyProject ? 1 : 5;
+                if (data.get(position) instanceof MyProject) {
+                    if (((MyProject) data.get(position)).getStatus(false) == MyProject.NOT_ALL_FIN)
+                        return 0;
+                    else return 1;
+                } else return 5;
             }
         });
         weekRecyclerView.setLayoutManager(layoutManager);
         weekRecyclerView.setAdapter(adapter);
+        adapter.expandAll();
         super.onViewCreated(view, savedInstanceState);
     }
 
 
     public List<MultiItemEntity> classifyList(List<MyProject> projects) {
         List<MultiItemEntity> data = new ArrayList<>();
-        data.add(new SmallTitle("未完成"));
+        SmallTitle allFin= new SmallTitle("已完成");
+        SmallTitle notAllFin = new SmallTitle("未完成");
+        SmallTitle notRecord= new SmallTitle("待记录");
+
         for (MyProject project : projects) {
-            data.addAll(project.homework);
-            Log.d("123", "useDemo: " + project.subject.getTarget().getName() + "~" + project.subject.getTarget());
+            switch (project.getStatus(true)) {
+                case MyProject.ALL_FIN:
+                    allFin.addSubItem(project);
+                    break;
+                case MyProject.NOT_ALL_FIN:
+                    notAllFin.addSubItem(project);
+                    break;
+                default:
+                    notRecord.addSubItem(project);
+                    break;
+            }
+            project.setSubItems(project.homework);
         }
-        data.add(new SmallTitle("待记录"));
-        data.addAll(projects);
-        data.add(new SmallTitle("已完成"));
+        data.add(notAllFin);
+        data.add(notRecord);
+        data.add(allFin);
         return data;
     }
 }

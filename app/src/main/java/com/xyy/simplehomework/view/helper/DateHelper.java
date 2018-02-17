@@ -11,6 +11,8 @@ import java.util.Date;
  */
 
 public class DateHelper {
+    public final static int WEEK = 1;
+    public final static int DAY = 2;
     public final static String[] weeks = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     public final static String[] semesters = {
             "一年级", "两年级", "三年级", "四年级", "五年级", "六年级",
@@ -20,7 +22,6 @@ public class DateHelper {
             "研一", "研二", "研三"
     };
     public static Date date = new Date();
-    private static Calendar calendar = Calendar.getInstance();
 
     private static int weekIndex = -1;
     private static int semesterIndex = -1;
@@ -32,39 +33,24 @@ public class DateHelper {
         termIndex = semester.term;
     }
 
-    public static int getWeeksBetween(Date start, Date fin) {
+    public static Date afterDays(int i) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, i);
+        return calendar.getTime();
+    }
+
+    public static int getTimeBetween(Date start, Date fin, int type) {
         long a = start.getTime();
         long b = fin.getTime();
-        return (int) ((b - a) / 1000 / 60 / 60 / 24 / 7);
-    }
-
-    public static int getDayIndexOfWeek(Date when) {
-        calendar.setTime(when);
-        return calendar.get(Calendar.DAY_OF_WEEK) - 1;
-    }
-
-    public static String getDayName() {
-        return weeks[getDayIndex()];
+        if (type == WEEK)
+            return (int) ((b - a) / 1000 / 60 / 60 / 24 / 7);
+        else if (type == DAY)
+            return (int) ((b - a) / 1000 / 60 / 60 / 24);
+        else return 0;
     }
 
     public static int getWeekIndex() {
         return weekIndex;
     }
-
-    public static int getDayIndex() {
-        calendar.setTime(date);
-        return calendar.get(Calendar.DAY_OF_WEEK) - 1;
-    }
-
-    public static String getSemesterName() {
-        return semesters[semesterIndex] + (termIndex == 0 ? "：上" : "：下");
-    }
-
-    public static Date afterDays(int a) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.DATE, a);
-        return calendar.getTime();
-    }
-
 }

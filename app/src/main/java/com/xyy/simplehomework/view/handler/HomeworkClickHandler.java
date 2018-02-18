@@ -8,12 +8,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.HomeworkActivity;
-import com.xyy.simplehomework.viewmodel.ProjectViewModel;
-
-import java.util.Calendar;
 
 /**
  * Created by xyy on 2018/2/9.
@@ -21,6 +16,7 @@ import java.util.Calendar;
 
 public class HomeworkClickHandler {
     Context mContext;
+
     public HomeworkClickHandler(Context context) {
         mContext = context;
     }

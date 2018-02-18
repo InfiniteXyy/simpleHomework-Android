@@ -68,13 +68,33 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("WEEK "+DateHelper.getWeekIndex());
+            actionBar.setTitle("Week Plan");
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
 
         // init drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
         navigationView = findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.day);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -127,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 break;
             case R.id.add_projects:
                 break;
@@ -158,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1:
                 transaction.hide(dayFragment).hide(semesterFragment).show(weekFragment).commitAllowingStateLoss();
-                getSupportActionBar().setTitle("WEEK "+DateHelper.getWeekIndex());
+                getSupportActionBar().setTitle("WEEK " + DateHelper.getWeekIndex());
                 tabLayout.setVisibility(View.GONE);
                 break;
             case 2:

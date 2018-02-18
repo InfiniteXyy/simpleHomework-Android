@@ -10,7 +10,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.view.handler.HomeworkClickHandler;
 
 import java.util.List;
 
@@ -25,6 +24,7 @@ public class DayAdapter extends BaseQuickAdapter<Homework, DayAdapter.HomeworkHo
     protected void convert(HomeworkHolder helper, Homework item) {
         ViewDataBinding binding = helper.getBinding();
         binding.setVariable(BR.homework, item);
+        binding.setVariable(BR.subject, item.project.getTarget().subject.getTarget());
     }
 
     @Override

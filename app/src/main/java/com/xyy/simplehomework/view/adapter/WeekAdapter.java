@@ -46,7 +46,7 @@ public class WeekAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, DayA
             case TYPE_HOMEWORK:
                 final Homework homework = (Homework) item;
                 if (handler == null) {
-                    handler = new ProjectClickHandler(mContext);
+                    handler = new ProjectClickHandler();
                 }
                 ViewDataBinding binding = helper.getBinding();
                 binding.setVariable(BR.homework, item);

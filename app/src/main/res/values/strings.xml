@@ -14,6 +14,8 @@
 
     <string name="view_subject">查看课程信息</string>
     <string name="set_color">设置颜色</string>
+    <string name="set_plan">设置计划</string>
+    <string name="finish_homework">完成作业</string>
 
     <string name="homework_card">作业卡片</string>
 

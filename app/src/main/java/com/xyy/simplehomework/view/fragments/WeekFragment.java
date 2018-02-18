@@ -67,9 +67,9 @@ public class WeekFragment extends Fragment {
 
     public List<MultiItemEntity> classifyList(List<MyProject> projects) {
         List<MultiItemEntity> data = new ArrayList<>();
-        SmallTitle allFin= new SmallTitle("已完成");
+        SmallTitle allFin = new SmallTitle("已完成");
         SmallTitle notAllFin = new SmallTitle("未完成");
-        SmallTitle notRecord= new SmallTitle("待记录");
+        SmallTitle notRecord = new SmallTitle("待记录");
 
         for (MyProject project : projects) {
             switch (project.getStatus(true)) {

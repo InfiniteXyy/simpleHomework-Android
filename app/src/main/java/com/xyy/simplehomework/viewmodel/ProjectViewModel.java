@@ -2,44 +2,48 @@ package com.xyy.simplehomework.viewmodel;
 
 import android.content.Context;
 
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
+import com.xyy.simplehomework.entity.Homework_;
 import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.entity.Semester;
 import com.xyy.simplehomework.entity.Week;
 import com.xyy.simplehomework.model.DataServer;
 import com.xyy.simplehomework.view.App;
+import com.xyy.simplehomework.view.fragments.PageFragment;
 import com.xyy.simplehomework.view.helper.DateHelper;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.objectbox.BoxStore;
+import io.objectbox.query.Query;
 
 /**
  * Created by xyy on 2018/2/5.
  */
 
-public class ProjectViewModel implements OnDateSetListener{
+public class ProjectViewModel implements OnDateSetListener {
+    private static ProjectViewModel instance;
     private DataServer dataServer;
     private Context mContext;
     private List<MyProject> projectList;
-    private static ProjectViewModel instance;
+    private BoxStore boxStore;
     private Homework onChangingHomework;
+    private Map<PageFragment, List<Homework>> dayMap;
 
-    public static ProjectViewModel getInstance() {
-        return instance;
-    }
     public ProjectViewModel(Context context) {
         mContext = context;
         instance = this;
         // set up data server
-        BoxStore boxStore = ((App) context.getApplicationContext()).getBoxStore();
+        boxStore = ((App) context.getApplicationContext()).getBoxStore();
 
         dataServer = new DataServer(boxStore);
         dataServer.resetAll();
@@ -49,8 +53,12 @@ public class ProjectViewModel implements OnDateSetListener{
         Week week = getThisWeek(semester);
         DateHelper.setUp(week, semester);
 
+        dayMap = new HashMap<>();
         useDemo(week, semester);
-        projectList = new ArrayList<>();
+    }
+
+    public static ProjectViewModel getInstance() {
+        return instance;
     }
 
     public List<MyProject> getProjectsThisWeek() {
@@ -58,8 +66,14 @@ public class ProjectViewModel implements OnDateSetListener{
         return projectList;
     }
 
-    public List<Homework> getAllHomework() {
-        return dataServer.getAllHomework();
+    public List<Homework> getHomework(PageFragment pf) {
+        if (dayMap.get(pf) == null) {
+            List<Homework> homeworkList = new ArrayList<>();
+            Query<Homework> query = boxStore.boxFor(Homework.class).query().equal(Homework_.planDate, pf.getDate()).build();
+            homeworkList.addAll(query.find());
+            dayMap.put(pf, homeworkList);
+        }
+        return dayMap.get(pf);
     }
 
     private void useDemo(Week week, Semester semester) {
@@ -96,7 +110,7 @@ public class ProjectViewModel implements OnDateSetListener{
         int i = 0;
         for (MyProject project : week.projects) {
             if (i < 3) {
-                Homework homework = new Homework(project.subject.getTarget().getName() + "练习" + (i + 1), DateHelper.afterDays(i+2));
+                Homework homework = new Homework(project.subject.getTarget().getName() + "练习" + (i + 1), DateHelper.afterDays(i + 2));
                 project.homework.add(homework);
                 project.week.setTarget(week);
             }
@@ -134,9 +148,22 @@ public class ProjectViewModel implements OnDateSetListener{
     public void setCurrentHomework(Homework homework) {
         onChangingHomework = homework;
     }
+
+    public void finishHomework() {
+        onChangingHomework.setFinished();
+    }
+
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         onChangingHomework.setPlanDate(new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime());
         dataServer.put(onChangingHomework);
+        updateDayView();
+    }
+
+    private void updateDayView() {
+        for (PageFragment fragment : dayMap.keySet()) {
+            List<Homework> temp = boxStore.boxFor(Homework.class).query().equal(Homework_.planDate, fragment.getDate()).build().find();
+            fragment.updateAdapter(temp);
+        }
     }
 }

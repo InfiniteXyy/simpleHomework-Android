@@ -13,9 +13,12 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.adapter.DayAdapter;
+import com.xyy.simplehomework.view.helper.DateHelper;
+import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,11 +60,15 @@ public class PageFragment extends Fragment {
         return view;
     }
 
-    public void updateData(List<Homework> data) {
-        adapter.replaceData(data);
+    private List<Homework> getData() {
+        return ProjectViewModel.getInstance().getHomework(this);
     }
 
-    private List<Homework> getData() {
-        return App.getInstance().getBoxStore().boxFor(Homework.class).getAll();
+    public Date getDate() {
+        return DateHelper.afterDays(date);
+    }
+
+    public void updateAdapter(List<Homework> data) {
+        adapter.replaceData(data);
     }
 }

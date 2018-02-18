@@ -3,6 +3,7 @@ package com.xyy.simplehomework.view.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.helper.DateHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by xyy on 2018/1/27.
@@ -26,13 +31,14 @@ public class DayFragment extends Fragment {
     private Context mContext;
     private ViewPager viewPager;
 
+
+    public DayFragment() {
+    }
+
     @Override
     public void onAttach(Context context) {
         mContext = context;
         super.onAttach(context);
-    }
-
-    public DayFragment() {
     }
 
     @Override
@@ -40,8 +46,10 @@ public class DayFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_day, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         viewPager = view.findViewById(R.id.view_page);
         viewPager.setAdapter(new DayPageAdapter(getFragmentManager()));
         // init tabs
@@ -54,6 +62,7 @@ public class DayFragment extends Fragment {
         public DayPageAdapter(FragmentManager fm) {
             super(fm);
         }
+
         @Override
         public Fragment getItem(int position) {
             return PageFragment.newInstance(position);
@@ -66,7 +75,7 @@ public class DayFragment extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return DateHelper.weeks[position].toUpperCase();
+            return DateHelper.weeks[position];
         }
     }
 }

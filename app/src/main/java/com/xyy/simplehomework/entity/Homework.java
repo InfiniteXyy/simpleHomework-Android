@@ -42,19 +42,25 @@ public class Homework extends BaseObservable implements MultiItemEntity {
     public Homework() {
     }
 
-    public void setFinished() { status = FINISHED; }
+    public void setFinished() {
+        status = FINISHED;
+    }
 
-    public boolean hasFinished() { return status == FINISHED; }
+    public boolean hasFinished() {
+        return status == FINISHED;
+    }
+
+    @Bindable
+    public String getPlanDate() {
+        if (planDate == null) return null;
+        else
+            return Integer.toString(DateHelper.getTimeBetween(DateHelper.date, planDate, DateHelper.DAY))
+                    + "d after";
+    }
 
     public void setPlanDate(Date date) {
         planDate = date;
         notifyPropertyChanged(BR.planDate);
-    }
-    @Bindable
-    public String getPlanDate() {
-        if (planDate == null) return null;
-        else return Integer.toString(DateHelper.getTimeBetween(DateHelper.date, planDate, DateHelper.DAY))
-                + "d after";
     }
 
     public String getDeadline() {

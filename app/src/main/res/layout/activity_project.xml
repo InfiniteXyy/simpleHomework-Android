@@ -4,15 +4,9 @@
 
     <data>
 
-        <import type="com.xyy.simplehomework.entity.MyProject" />
-
         <import type="com.xyy.simplehomework.view.helper.DateHelper" />
 
         <import type="com.xyy.simplehomework.entity.MySubject" />
-
-        <variable
-            name="project"
-            type="MyProject" />
 
         <variable
             name="subject"

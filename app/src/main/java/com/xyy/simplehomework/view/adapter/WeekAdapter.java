@@ -32,13 +32,14 @@ public class WeekAdapter extends BaseSectionQuickAdapter<WeekSection, DayAdapter
         ViewDataBinding binding = helper.getBinding();
         binding.setVariable(BR.homework, item.t);
         binding.setVariable(BR.handler, handler);
+        binding.executePendingBindings();
         GradientDrawable circle = (GradientDrawable) helper.getView(R.id.circle).getBackground();
-        circle.setColor(item.t.project.getTarget().subject.getTarget().color);
+        circle.setColor(item.t.subject.getTarget().color);
     }
 
     @Override
     protected void convertHead(DayAdapter.HomeworkHolder helper, WeekSection item) {
-
+        helper.setText(R.id.small_title, item.header);
     }
 
     @Override

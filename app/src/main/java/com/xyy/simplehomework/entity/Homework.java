@@ -3,9 +3,7 @@ package com.xyy.simplehomework.entity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
-import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.BR;
-import com.xyy.simplehomework.view.adapter.WeekAdapter;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.text.SimpleDateFormat;
@@ -25,6 +23,8 @@ public class Homework extends BaseObservable {
     @Id
     public long id;
     public ToOne<Week> week;
+    public ToOne<MySubject> subject;
+
     public String title;
     public String detail;
 

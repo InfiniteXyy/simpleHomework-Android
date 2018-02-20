@@ -21,7 +21,7 @@ public class MySubject extends BaseObservable {
     public long id;
 
     @Backlink
-    public ToMany<Homework> homeworks;
+    public ToMany<Homework> homework;
     public ToOne<Semester> semester;
 
     public String name;

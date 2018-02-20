@@ -31,6 +31,8 @@ import io.objectbox.query.Query;
 
 public class ProjectViewModel implements OnDateSetListener {
     private static ProjectViewModel instance;
+    Week week;
+    Semester semester;
     private DataServer dataServer;
     private Context mContext;
     private BoxStore boxStore;
@@ -47,8 +49,8 @@ public class ProjectViewModel implements OnDateSetListener {
         dataServer.resetAll();
 
         // get week and semester
-        Semester semester = getThisSemester();
-        Week week = getThisWeek(semester);
+        semester = getThisSemester();
+        week = getThisWeek(semester);
         DateHelper.setUp(week, semester);
 
         dayMap = new HashMap<>();
@@ -59,6 +61,23 @@ public class ProjectViewModel implements OnDateSetListener {
         return instance;
     }
 
+    public List<Homework> getHomeworkThisWeek() {
+        return week.homeworks;
+    }
+
+    public List<MySubject> getSubjectsThisWeek() {
+        int weekIndex = week.weekIndex;
+        List<MySubject> subjects = new ArrayList<>();
+        for (MySubject subject : semester.allSubjects) {
+            for (byte a : subject.availableWeeks) {
+                if (a == weekIndex) {
+                    subjects.add(subject);
+                    break;
+                }
+            }
+        }
+        return subjects;
+    }
 
     public List<Homework> getHomework(PageFragment pf) {
         if (dayMap.get(pf) == null) {
@@ -68,39 +87,6 @@ public class ProjectViewModel implements OnDateSetListener {
             dayMap.put(pf, homeworkList);
         }
         return dayMap.get(pf);
-    }
-
-    private void useDemo(Week week, Semester semester) {
-        Semester thisSemester = getThisSemester();
-
-        MySubject[] subjects = {
-                new MySubject("计算机系统", mContext.getResources().getColor(R.color.japanBrown)),
-                new MySubject("高等数学", mContext.getResources().getColor(R.color.japanBlue)),
-                new MySubject("线性代数", mContext.getResources().getColor(R.color.japanPink)),
-                new MySubject("离散数学", mContext.getResources().getColor(R.color.japanTea)),
-                new MySubject("概率论", mContext.getResources().getColor(R.color.japanOrange)),
-        };
-
-        for (MySubject subject : subjects) {
-            subject.semester.setTarget(thisSemester);
-            subject.availableWeeks = new byte[]{6,7,8,9};
-            thisSemester.allSubjects.add(subject);
-        }
-        thisSemester.allSubjects.applyChangesToDb();
-
-        // refresh this week projects
-        week.homeworks.reset();
-
-        // homework demo
-        int i = 0;
-        for (MySubject subject : subjects) {
-            if (i < 3) {
-                Homework homework = new Homework(subject.getName() + "练习" + (i + 1), DateHelper.afterDays(i + 2));
-                homework.week.setTarget(week);
-                dataServer.put(homework);
-            }
-            i++;
-        }
     }
 
     private Week getThisWeek(Semester semester) {
@@ -148,6 +134,40 @@ public class ProjectViewModel implements OnDateSetListener {
         for (PageFragment fragment : dayMap.keySet()) {
             List<Homework> temp = boxStore.boxFor(Homework.class).query().equal(Homework_.planDate, fragment.getDate()).build().find();
             fragment.updateAdapter(temp);
+        }
+    }
+
+    private void useDemo(Week week, Semester semester) {
+        Semester thisSemester = getThisSemester();
+
+        MySubject[] subjects = {
+                new MySubject("计算机系统", mContext.getResources().getColor(R.color.japanBrown)),
+                new MySubject("高等数学", mContext.getResources().getColor(R.color.japanBlue)),
+                new MySubject("线性代数", mContext.getResources().getColor(R.color.japanPink)),
+                new MySubject("离散数学", mContext.getResources().getColor(R.color.japanTea)),
+                new MySubject("概率论", mContext.getResources().getColor(R.color.japanOrange)),
+        };
+
+        for (MySubject subject : subjects) {
+            subject.semester.setTarget(thisSemester);
+            subject.availableWeeks = new byte[]{6, 7, 8, 9};
+            thisSemester.allSubjects.add(subject);
+        }
+        thisSemester.allSubjects.applyChangesToDb();
+
+        // refresh this week homeworks
+        week.homeworks.reset();
+
+        // homework demo
+        int i = 0;
+        for (MySubject subject : subjects) {
+            if (i < 3) {
+                Homework homework = new Homework(subject.getName() + "练习" + (i + 1), DateHelper.afterDays(i + 2));
+                homework.week.setTarget(week);
+                homework.subject.setTarget(subject);
+                dataServer.put(homework);
+            }
+            i++;
         }
     }
 }

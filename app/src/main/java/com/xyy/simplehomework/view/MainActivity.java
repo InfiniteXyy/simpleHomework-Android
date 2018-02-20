@@ -1,11 +1,13 @@
 package com.xyy.simplehomework.view;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,21 +24,26 @@ import android.widget.Toast;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.fragments.DayFragment;
 import com.xyy.simplehomework.view.fragments.SemesterFragment;
+import com.xyy.simplehomework.view.fragments.SubjectFragment;
 import com.xyy.simplehomework.view.fragments.WeekFragment;
 import com.xyy.simplehomework.view.helper.DateHelper;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
-public class MainActivity extends AppCompatActivity {
-    public ProjectViewModel viewModel;
-    private WeekFragment weekFragment;
-    private DayFragment dayFragment;
-    private SemesterFragment semesterFragment;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    private TabLayout tabLayout;
-    private long exitTime = 0;
-    private int old_position = 0;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
 
+public class MainActivity extends AppCompatActivity implements SubjectFragment.OnFragmentInteractionListener {
+    public ProjectViewModel viewModel;
+    private Fragment[] fragments;
+    private DrawerLayout drawerLayout;
+    private TabLayout tabLayout;
+    private BottomNavigationView bottomNavigationView;
+    private Stack<Integer> fragmentPos;
+    private List<Integer> pos2id = Arrays.asList(R.id.day,
+            R.id.week,
+            R.id.month);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,14 +60,16 @@ public class MainActivity extends AppCompatActivity {
     private void setDefaultFragment() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        tabLayout = findViewById(R.id.tabs);
-        dayFragment = new DayFragment();
-        transaction.add(R.id.mainFragment, dayFragment);
-        weekFragment = new WeekFragment();
-        transaction.add(R.id.mainFragment, weekFragment);
-        semesterFragment = new SemesterFragment();
-        transaction.show(dayFragment).hide(weekFragment).hide(semesterFragment);
-        transaction.commitAllowingStateLoss();
+        fragmentPos = new Stack<>();
+        fragments = new Fragment[]{
+                new DayFragment(),
+                new WeekFragment(),
+                new SemesterFragment()
+        };
+        for (Fragment fragment : fragments)
+            transaction.add(R.id.mainFragment, fragment);
+        transaction.show(fragments[0]).hide(fragments[1]).hide(fragments[2]).commit();
+        fragmentPos.push(0);
     }
 
     private void setUpTools() {
@@ -68,10 +78,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("计划");
+            actionBar.setTitle("ShWork");
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
 
         // init drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -95,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.day);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -114,22 +123,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.day:
-                        changeFrag(0);
-                        return true;
-                    case R.id.week:
-                        changeFrag(1);
-                        return true;
-                    case R.id.month:
-                        changeFrag(2);
-                        return true;
-                }
-                return false;
+                changeFrag(pos2id.indexOf(item.getItemId()));
+                return true;
             }
         });
 
@@ -156,39 +155,46 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        if (System.currentTimeMillis() - exitTime > 2000) {
-            Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
-            exitTime = System.currentTimeMillis();
-        } else {
-            super.onBackPressed();
-        }
+    public void changeFrag(int position) {
+        int old_position = fragmentPos.peek();
+        if (position == old_position) return;
+
+        if (tabLayout == null) tabLayout = findViewById(R.id.tabs);
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().hide(fragments[old_position]).show(fragments[position]).commit();
+
+//        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        if (position == 0) tabLayout.setVisibility(View.VISIBLE);
+        else tabLayout.setVisibility(View.GONE);
+
+        if (fragmentPos.contains(position)) fragmentPos.remove(position);
+        fragmentPos.push(position);
     }
 
-    public void changeFrag(int position) {
-        if (position == old_position) return;
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-//        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        switch (position) {
-            case 0:
-                transaction.hide(weekFragment).hide(semesterFragment).show(dayFragment).commitAllowingStateLoss();
-                getSupportActionBar().setTitle("计划");
-                tabLayout.setVisibility(View.VISIBLE);
-                break;
-            case 1:
-                transaction.hide(dayFragment).hide(semesterFragment).show(weekFragment).commitAllowingStateLoss();
-                getSupportActionBar().setTitle(DateHelper.getWeekTitle());
-                tabLayout.setVisibility(View.GONE);
-                break;
-            case 2:
-                transaction.hide(dayFragment).hide(weekFragment).show(semesterFragment).commitAllowingStateLoss();
-                getSupportActionBar().setTitle("大一上");
-                tabLayout.setVisibility(View.GONE);
-                break;
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+        } else {
+            if (fragmentPos.size() == 1)
+                super.onBackPressed();
+            else {
+                int old_pos = fragmentPos.pop();
+                int new_pos = fragmentPos.peek();
+                FragmentManager fm = getSupportFragmentManager();
+                fm.beginTransaction().hide(fragments[old_pos]).show(fragments[new_pos]).commit();
+                if (new_pos == 0) tabLayout.setVisibility(View.VISIBLE);
+                else tabLayout.setVisibility(View.GONE);
+
+                bottomNavigationView.setSelectedItemId(pos2id.get(new_pos));
+            }
         }
-        old_position = position;
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
 

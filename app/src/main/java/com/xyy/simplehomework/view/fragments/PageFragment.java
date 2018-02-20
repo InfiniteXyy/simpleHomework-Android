@@ -17,7 +17,6 @@ import com.xyy.simplehomework.view.adapter.DayAdapter;
 import com.xyy.simplehomework.view.helper.DateHelper;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 

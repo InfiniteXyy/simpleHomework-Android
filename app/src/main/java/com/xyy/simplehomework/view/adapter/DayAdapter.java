@@ -24,7 +24,7 @@ public class DayAdapter extends BaseQuickAdapter<Homework, DayAdapter.HomeworkHo
     protected void convert(HomeworkHolder helper, Homework item) {
         ViewDataBinding binding = helper.getBinding();
         binding.setVariable(BR.homework, item);
-        binding.setVariable(BR.subject, item.project.getTarget().subject.getTarget());
+        binding.setVariable(BR.subject, item.subject.getTarget());
     }
 
     @Override

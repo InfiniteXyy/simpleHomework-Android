@@ -3,7 +3,6 @@ package com.xyy.simplehomework.view.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,11 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.helper.DateHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by xyy on 2018/1/27.
@@ -54,7 +49,7 @@ public class DayFragment extends Fragment {
         viewPager.setAdapter(new DayPageAdapter(getFragmentManager()));
         // init tabs
         final TabLayout tabLayout = ((Activity) mContext).findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager, false);
+        tabLayout.setupWithViewPager(viewPager);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -63,6 +58,7 @@ public class DayFragment extends Fragment {
             super(fm);
         }
 
+        //TODO:自动找到当前的日期，并始终将其设置为第一个Page
         @Override
         public Fragment getItem(int position) {
             return PageFragment.newInstance(position);

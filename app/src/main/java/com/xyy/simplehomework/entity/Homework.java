@@ -19,14 +19,15 @@ import io.objectbox.relation.ToOne;
  * Created by xyy on 2018/2/8.
  */
 @Entity
-public class Homework extends BaseObservable implements MultiItemEntity {
+public class Homework extends BaseObservable {
     public static final int FINISHED = 0;
     public static final int NOT_FINISHED = 1;
     @Id
     public long id;
-    public ToOne<MyProject> project;
+    public ToOne<Week> week;
     public String title;
     public String detail;
+
     public Date deadline;
     public Date planDate;
     public Date initDate;
@@ -67,8 +68,4 @@ public class Homework extends BaseObservable implements MultiItemEntity {
         return new SimpleDateFormat("M.d").format(deadline);
     }
 
-    @Override
-    public int getItemType() {
-        return WeekAdapter.TYPE_HOMEWORK;
-    }
 }

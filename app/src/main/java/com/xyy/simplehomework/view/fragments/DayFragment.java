@@ -54,7 +54,7 @@ public class DayFragment extends Fragment {
         viewPager.setAdapter(new DayPageAdapter(getFragmentManager()));
         // init tabs
         final TabLayout tabLayout = ((Activity) mContext).findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager, false);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -75,7 +75,7 @@ public class DayFragment extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return DateHelper.weeks[position];
+            return DateHelper.weekInCn[position];
         }
     }
 }

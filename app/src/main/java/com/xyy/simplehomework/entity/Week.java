@@ -15,7 +15,7 @@ public class Week {
     public int weekIndex;
     public ToOne<Semester> semester;
     @Backlink
-    public ToMany<MyProject> projects;
+    public ToMany<Homework> homeworks;
     @Id
     long id;
 }

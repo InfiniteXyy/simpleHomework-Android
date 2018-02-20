@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("Week Plan");
+            actionBar.setTitle("计划");
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -170,16 +170,16 @@ public class MainActivity extends AppCompatActivity {
         if (position == old_position) return;
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+//        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         switch (position) {
             case 0:
                 transaction.hide(weekFragment).hide(semesterFragment).show(dayFragment).commitAllowingStateLoss();
-                getSupportActionBar().setTitle("Week Plan");
+                getSupportActionBar().setTitle("计划");
                 tabLayout.setVisibility(View.VISIBLE);
                 break;
             case 1:
                 transaction.hide(dayFragment).hide(semesterFragment).show(weekFragment).commitAllowingStateLoss();
-                getSupportActionBar().setTitle("WEEK " + DateHelper.getWeekIndex());
+                getSupportActionBar().setTitle(DateHelper.getWeekTitle());
                 tabLayout.setVisibility(View.GONE);
                 break;
             case 2:

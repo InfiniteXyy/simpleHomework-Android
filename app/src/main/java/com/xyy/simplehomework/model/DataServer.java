@@ -1,7 +1,6 @@
 package com.xyy.simplehomework.model;
 
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.entity.Semester;
 import com.xyy.simplehomework.entity.Semester_;
@@ -25,14 +24,9 @@ public class DataServer {
 
     public void resetAll() {
         boxStore.boxFor(MySubject.class).removeAll();
-        boxStore.boxFor(MyProject.class).removeAll();
         boxStore.boxFor(Semester.class).removeAll();
         boxStore.boxFor(Week.class).removeAll();
         boxStore.boxFor(Homework.class).removeAll();
-    }
-
-    public List<MyProject> getAllProjects() {
-        return boxStore.boxFor(MyProject.class).getAll();
     }
 
     public List<Homework> getAllHomework() {
@@ -44,8 +38,6 @@ public class DataServer {
             boxStore.boxFor(Week.class).put((Week) object);
         } else if (object instanceof Semester) {
             boxStore.boxFor(Semester.class).put((Semester) object);
-        } else if (object instanceof MyProject) {
-            boxStore.boxFor(MyProject.class).put((MyProject) object);
         } else if (object instanceof MySubject) {
             boxStore.boxFor(MySubject.class).put((MySubject) object);
         } else if (object instanceof Homework) {

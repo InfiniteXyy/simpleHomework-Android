@@ -7,7 +7,6 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListen
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.Homework_;
-import com.xyy.simplehomework.entity.MyProject;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.entity.Semester;
 import com.xyy.simplehomework.entity.Week;
@@ -34,7 +33,6 @@ public class ProjectViewModel implements OnDateSetListener {
     private static ProjectViewModel instance;
     private DataServer dataServer;
     private Context mContext;
-    private List<MyProject> projectList;
     private BoxStore boxStore;
     private Homework onChangingHomework;
     private Map<PageFragment, List<Homework>> dayMap;
@@ -61,10 +59,6 @@ public class ProjectViewModel implements OnDateSetListener {
         return instance;
     }
 
-    public List<MyProject> getProjectsThisWeek() {
-        projectList = dataServer.getAllProjects();
-        return projectList;
-    }
 
     public List<Homework> getHomework(PageFragment pf) {
         if (dayMap.get(pf) == null) {
@@ -89,32 +83,22 @@ public class ProjectViewModel implements OnDateSetListener {
 
         for (MySubject subject : subjects) {
             subject.semester.setTarget(thisSemester);
-            subject.availableWeeks = new byte[]{4, 5, 6};
+            subject.availableWeeks = new byte[]{6,7,8,9};
             thisSemester.allSubjects.add(subject);
         }
         thisSemester.allSubjects.applyChangesToDb();
 
         // refresh this week projects
-        week.projects.reset();
-        for (MySubject subject : semester.allSubjects) {
-            for (byte aWeek : subject.availableWeeks)
-                if (week.weekIndex == aWeek) {
-                    MyProject project = new MyProject();
-                    project.subject.setTarget(subject);
-                    week.projects.add(project);
-                    break;
-                }
-        }
+        week.homeworks.reset();
 
         // homework demo
         int i = 0;
-        for (MyProject project : week.projects) {
+        for (MySubject subject : subjects) {
             if (i < 3) {
-                Homework homework = new Homework(project.subject.getTarget().getName() + "练习" + (i + 1), DateHelper.afterDays(i + 2));
-                project.homework.add(homework);
-                project.week.setTarget(week);
+                Homework homework = new Homework(subject.getName() + "练习" + (i + 1), DateHelper.afterDays(i + 2));
+                homework.week.setTarget(week);
+                dataServer.put(homework);
             }
-            dataServer.put(project);
             i++;
         }
     }

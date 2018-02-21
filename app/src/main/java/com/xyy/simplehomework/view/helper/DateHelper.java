@@ -66,6 +66,12 @@ public class DateHelper {
         return weekIndex;
     }
 
+    public static int getDayOfWeek() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_WEEK) - 1;
+    }
+
     public static Date getToday() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);

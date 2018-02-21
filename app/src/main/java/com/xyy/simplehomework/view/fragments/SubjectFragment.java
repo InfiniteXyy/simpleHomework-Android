@@ -1,7 +1,9 @@
 package com.xyy.simplehomework.view.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,12 +11,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.view.App;
 
 public class SubjectFragment extends Fragment {
     private static final String SUBJECT_ID = "subject_id";
-
+    private MySubject subject;
     private long subject_id;
 
     private OnFragmentInteractionListener mListener;
@@ -36,14 +42,25 @@ public class SubjectFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             subject_id = getArguments().getLong(SUBJECT_ID);
+            subject = App.getInstance().getBoxStore().boxFor(MySubject.class).get(subject_id);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getActivity().getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(subject.color);
+        }
+        Activity activity = getActivity();
+        activity.findViewById(R.id.toolbar).setBackgroundColor(subject.color);
+        activity.setTitle(subject.getName());
+
         return inflater.inflate(R.layout.fragment_subject, container, false);
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -51,7 +68,6 @@ public class SubjectFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -78,4 +94,5 @@ public class SubjectFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
+
 }

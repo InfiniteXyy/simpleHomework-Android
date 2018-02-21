@@ -55,6 +55,7 @@ public class Homework extends BaseObservable {
     public String getPlanDate() {
         if (planDate == null) return null;
         else
+            // TODO: 用 "今天" "明天" 来代替英文的表达
             return Integer.toString(DateHelper.getTimeBetween(DateHelper.date, planDate, DateHelper.DAY))
                     + "d after";
     }

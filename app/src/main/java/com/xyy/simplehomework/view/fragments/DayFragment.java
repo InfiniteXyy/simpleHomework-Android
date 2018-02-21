@@ -25,14 +25,17 @@ import com.xyy.simplehomework.view.helper.DateHelper;
 public class DayFragment extends Fragment {
     private Context mContext;
     private ViewPager viewPager;
+    private TabLayout tabs;
 
 
     public DayFragment() {
+
     }
 
     @Override
     public void onAttach(Context context) {
         mContext = context;
+        tabs = ((Activity) context).findViewById(R.id.tabs);
         super.onAttach(context);
     }
 
@@ -44,26 +47,34 @@ public class DayFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         viewPager = view.findViewById(R.id.view_page);
         viewPager.setAdapter(new DayPageAdapter(getFragmentManager()));
         // init tabs
-        final TabLayout tabLayout = ((Activity) mContext).findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        tabs.setupWithViewPager(viewPager);
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        tabs.setVisibility(hidden ? View.GONE : View.VISIBLE);
+    }
+    // TODO:不占据完整个页面
     private static class DayPageAdapter extends FragmentPagerAdapter {
+        private int today;
+
         public DayPageAdapter(FragmentManager fm) {
             super(fm);
+            today = DateHelper.getDayOfWeek();
         }
 
         //TODO:自动找到当前的日期，并始终将其设置为第一个Page
         @Override
         public Fragment getItem(int position) {
-            return PageFragment.newInstance(position);
+            return PageFragment.newInstance((today + position) % 7);
         }
 
+        //TODO: 在不是今天的page设置floatingbutton
         @Override
         public int getCount() {
             return 7;
@@ -71,7 +82,7 @@ public class DayFragment extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return DateHelper.weekInCn[position];
+            return DateHelper.weekInCn[(today + position) % 7];
         }
     }
 }

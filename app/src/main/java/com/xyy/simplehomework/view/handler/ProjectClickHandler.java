@@ -51,6 +51,7 @@ public class ProjectClickHandler {
         } else {
             plan = now;
         }
+        // TODO: 不要用timepicker
 
         DatePickerDialog dialog = DatePickerDialog.newInstance(
                 viewModel,

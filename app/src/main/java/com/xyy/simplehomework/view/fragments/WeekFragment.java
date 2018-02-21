@@ -1,6 +1,7 @@
 package com.xyy.simplehomework.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.view.SubjectActivity;
 import com.xyy.simplehomework.view.adapter.WeekAdapter;
 import com.xyy.simplehomework.view.adapter.WeekHeaderAdapter;
 import com.xyy.simplehomework.view.adapter.WeekSection;
@@ -58,6 +60,7 @@ public class WeekFragment extends Fragment {
         weekRecyclerView.setLayoutManager(layoutManager);
         weekRecyclerView.setAdapter(adapter);
 
+        //TODO: 再研究一下这边的fragment调用
         WeekHeaderAdapter headerAdapter = new WeekHeaderAdapter(R.layout.item_project, viewModel.getSubjectsThisWeek());
         RecyclerView headerRecycler = headerView.findViewById(R.id.recycler_view);
         LinearLayoutManager headerManager = new LinearLayoutManager(mContext);
@@ -69,8 +72,17 @@ public class WeekFragment extends Fragment {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 MySubject subject = (MySubject) adapter.getItem(position);
-                transaction.replace(R.id.mainFragment, SubjectFragment.newInstance(subject.id)).addToBackStack(null);
-                transaction.commit();
+                SubjectFragment fragment = SubjectFragment.newInstance(subject.id);
+                transaction.add(R.id.mainFragment, fragment);
+                transaction.hide(WeekFragment.this).show(fragment).addToBackStack(null).commit();
+            }
+        });
+        // show all subjects
+        headerView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, SubjectActivity.class);
+                startActivity(intent);
             }
         });
 

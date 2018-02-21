@@ -45,13 +45,13 @@
 
         </FrameLayout>
 
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/bottom_navigation"
+        <com.roughike.bottombar.BottomBar
+            android:id="@+id/bottomBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="?android:attr/windowBackground"
-            app:menu="@menu/bottom_nav" />
+            android:layout_height="56dp"
+            app:bb_tabXmlResource="@xml/bottom_tab"
+            app:bb_activeTabColor="@color/japanGreen" />
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView

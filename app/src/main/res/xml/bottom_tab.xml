@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/day"
+        icon="@drawable/ic_today_black_24px"
+        title="@string/day" />
+    <tab
+        id="@+id/week"
+        icon="@drawable/ic_view_week_black_24px"
+        title="@string/week" />
+    <tab
+        id="@+id/month"
+        icon="@drawable/ic_assignment_black_24px"
+        title="@string/month" />
+</tabs>

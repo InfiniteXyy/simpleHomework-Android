@@ -26,7 +26,7 @@ public class DayFragment extends Fragment {
     private Context mContext;
     private ViewPager viewPager;
     private TabLayout tabs;
-
+    private String TAG = "123";
 
     public DayFragment() {
 
@@ -59,6 +59,8 @@ public class DayFragment extends Fragment {
         super.onHiddenChanged(hidden);
         tabs.setVisibility(hidden ? View.GONE : View.VISIBLE);
     }
+
+
     // TODO:不占据完整个页面
     private static class DayPageAdapter extends FragmentPagerAdapter {
         private int today;

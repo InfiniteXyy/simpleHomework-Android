@@ -28,7 +28,6 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabMinWidth="120dp"
                 app:tabMode="scrollable"
                 app:tabSelectedTextColor="@color/japanBlue"
                 app:tabIndicatorColor="@color/japanBlue">

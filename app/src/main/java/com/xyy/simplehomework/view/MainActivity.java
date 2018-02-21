@@ -152,5 +152,6 @@ public class MainActivity extends AppCompatActivity implements SubjectFragment.O
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 }
 

@@ -23,6 +23,7 @@ import java.util.Calendar;
 public class ProjectClickHandler {
     public void showDetail(View view, Homework homework) {
         Context mContext = view.getContext();
+        //final Dialog dialog = new Dialog(mContext, R.style.BottomDialog);
         final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
         ViewDataBinding binding = DataBindingUtil.inflate(((Activity) mContext).getLayoutInflater(),
                 R.layout.dialog_homework, (ViewGroup) view.findViewById(R.id.dialog), false);

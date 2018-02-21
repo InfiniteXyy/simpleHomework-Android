@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,6 +32,7 @@ import java.util.List;
  */
 
 public class WeekFragment extends Fragment {
+    private static SubjectFragment subjectFragment;
     ProjectViewModel viewModel;
     private Context mContext;
     private View headerView;
@@ -70,19 +70,18 @@ public class WeekFragment extends Fragment {
         headerAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                MySubject subject = (MySubject) adapter.getItem(position);
-                SubjectFragment fragment = SubjectFragment.newInstance(subject.id);
-                transaction.add(R.id.mainFragment, fragment);
-                transaction.hide(WeekFragment.this).show(fragment).addToBackStack(null).commit();
+                Intent intent = new Intent(mContext, SubjectActivity.class);
+                intent.putExtra(SubjectActivity.SUBJECT_ID, ((MySubject) adapter.getItem(position)).id);
+                startActivity(intent);
             }
         });
-        // show all subjects
+        // show all subjects(should put week id, use 0 for test)
+        subjectFragment = SubjectFragment.newInstance(0);
         headerView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, SubjectActivity.class);
-                startActivity(intent);
+                subjectFragment.show(getFragmentManager(), null);
+
             }
         });
 

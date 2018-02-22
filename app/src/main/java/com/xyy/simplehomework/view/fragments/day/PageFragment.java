@@ -1,11 +1,13 @@
-package com.xyy.simplehomework.view.fragments;
+package com.xyy.simplehomework.view.fragments.day;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,8 @@ public class PageFragment extends Fragment {
     public static final String DAY_ARGS = "day_arg";
     private int date;
     private DayAdapter adapter;
+    private PageInteraction mListener;
+    private List<Homework> data;
 
     public static PageFragment newInstance(int day) {
         Bundle args = new Bundle();
@@ -35,6 +39,18 @@ public class PageFragment extends Fragment {
         PageFragment fragment = new PageFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (getParentFragment() instanceof PageInteraction) {
+            mListener = (PageInteraction) getParentFragment();
+        } else {
+            throw new RuntimeException("The parent fragment must implement PageInteraction");
+        }
+
     }
 
     @Override
@@ -52,10 +68,28 @@ public class PageFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new DayAdapter(R.layout.item_homework, getData());
+        data = getData();
+        adapter = new DayAdapter(R.layout.item_homework, data);
         adapter.setEmptyView(R.layout.empty_view, container);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (data.isEmpty()) return;
+                if (dy < 0) {
+                    mListener.onScroll(false);
+                } else {
+                    mListener.onScroll(true);
+                }
+            }
+        });
         return view;
     }
 
@@ -69,5 +103,9 @@ public class PageFragment extends Fragment {
 
     public void updateAdapter(List<Homework> data) {
         adapter.replaceData(data);
+    }
+
+    public interface PageInteraction {
+        void onScroll(boolean isUp);
     }
 }

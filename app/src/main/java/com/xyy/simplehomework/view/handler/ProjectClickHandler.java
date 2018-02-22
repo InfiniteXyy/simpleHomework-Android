@@ -28,18 +28,12 @@ public class ProjectClickHandler {
         ViewDataBinding binding = DataBindingUtil.inflate(((Activity) mContext).getLayoutInflater(),
                 R.layout.dialog_homework, (ViewGroup) view.findViewById(R.id.dialog), false);
         dialog.setView(binding.getRoot());
-        binding.getRoot().findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
         binding.setVariable(BR.handler, this);
         binding.setVariable(BR.homework, homework);
         dialog.show();
-        dialog.setCanceledOnTouchOutside(false);
     }
 
+    // TODO: 将两个dialog结合
     public void setPlan(View view, Homework homework) {
         final Context mContext = view.getContext();
         final ProjectViewModel viewModel = ProjectViewModel.getInstance();
@@ -52,7 +46,6 @@ public class ProjectClickHandler {
         } else {
             plan = now;
         }
-        // TODO: 不要用timepicker
 
         DatePickerDialog dialog = DatePickerDialog.newInstance(
                 viewModel,

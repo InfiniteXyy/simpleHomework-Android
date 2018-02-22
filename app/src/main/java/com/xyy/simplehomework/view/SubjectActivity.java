@@ -2,6 +2,7 @@ package com.xyy.simplehomework.view;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -39,7 +40,9 @@ public class SubjectActivity extends AppCompatActivity {
             window.setStatusBarColor(subject.color);
         }
         toolbar.setBackgroundColor(subject.color);
-        setTitle(subject.getName());
+        toolbar.setTitle(subject.getName());
+        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout.setBackgroundColor(subject.color);
     }
 
     @Override

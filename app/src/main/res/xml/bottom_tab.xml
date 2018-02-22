@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
     <tab
+        id="@+id/home"
+        icon="@drawable/ic_home_black_24px"
+        title="@string/home" />
+    <tab
         id="@+id/day"
         icon="@drawable/ic_today_black_24px"
         title="@string/day" />

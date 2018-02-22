@@ -1,10 +1,10 @@
 package com.xyy.simplehomework.view;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -16,22 +16,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.view.fragments.DayFragment;
+import com.xyy.simplehomework.view.fragments.HomeFragment;
 import com.xyy.simplehomework.view.fragments.SemesterFragment;
-import com.xyy.simplehomework.view.fragments.SubjectFragment;
-import com.xyy.simplehomework.view.fragments.WeekFragment;
+import com.xyy.simplehomework.view.fragments.day.DayFragment;
+import com.xyy.simplehomework.view.fragments.week.WeekFragment;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
-public class MainActivity extends AppCompatActivity implements SubjectFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
     public ProjectViewModel viewModel;
+    MaterialMenuDrawable homeBtn;
+    Fragment lastFragment;
+    private HomeFragment homeFragment;
     private DayFragment dayFragment;
     private WeekFragment weekFragment;
     private SemesterFragment semesterFragment;
     private DrawerLayout drawerLayout;
     private BottomBar bottomBar;
+    private boolean homebtnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +57,13 @@ public class MainActivity extends AppCompatActivity implements SubjectFragment.O
         dayFragment = new DayFragment();
         weekFragment = new WeekFragment();
         semesterFragment = new SemesterFragment();
+        homeFragment = new HomeFragment();
         transaction.add(R.id.mainFragment, dayFragment);
         transaction.add(R.id.mainFragment, weekFragment);
         transaction.add(R.id.mainFragment, semesterFragment);
-        transaction.hide(weekFragment).hide(semesterFragment);
+        transaction.add(R.id.mainFragment, homeFragment);
+        transaction.hide(weekFragment).hide(semesterFragment).hide(dayFragment);
+        lastFragment = homeFragment;
         transaction.commitAllowingStateLoss();
     }
 
@@ -65,10 +73,11 @@ public class MainActivity extends AppCompatActivity implements SubjectFragment.O
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("ShWork");
+            actionBar.setTitle("简记作业");
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
+        homeBtn = new MaterialMenuDrawable(this, getResources().getColor(android.R.color.secondary_text_light), MaterialMenuDrawable.Stroke.THIN);
+        toolbar.setNavigationIcon(homeBtn);
         // init drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -109,19 +118,27 @@ public class MainActivity extends AppCompatActivity implements SubjectFragment.O
                 return true;
             }
         });
-
         bottomBar = findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(int tabId) {
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                if (tabId == R.id.day) {
-                    ft.hide(weekFragment).hide(semesterFragment).show(dayFragment).commit();
+                ft.hide(lastFragment);
+                // TODO:做一个首页
+                // TODO:做title的切换动画
+                if (tabId == R.id.home) {
+                    ft.show(homeFragment).commit();
+                    lastFragment = homeFragment;
+                } else if (tabId == R.id.day) {
+                    ft.show(dayFragment).commit();
+                    lastFragment = dayFragment;
                 } else if (tabId == R.id.week) {
-                    ft.hide(dayFragment).hide(semesterFragment).show(weekFragment).commit();
+                    ft.show(weekFragment).commit();
+                    lastFragment = weekFragment;
                 } else if (tabId == R.id.month) {
-                    ft.hide(dayFragment).hide(weekFragment).show(semesterFragment).commit();
+                    ft.show(semesterFragment).commit();
+                    lastFragment = semesterFragment;
                 }
             }
         });
@@ -138,8 +155,12 @@ public class MainActivity extends AppCompatActivity implements SubjectFragment.O
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                if (homebtnBack) {
+                    weekFragment.onChangeBack();
+                } else {
+                    drawerLayout.openDrawer(GravityCompat.START);
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                }
                 break;
             case R.id.add_projects:
                 break;
@@ -148,10 +169,9 @@ public class MainActivity extends AppCompatActivity implements SubjectFragment.O
         return true;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    public void setHomeButton(boolean needBack) {
+        homebtnBack = needBack;
+        homeBtn.animateIconState(needBack ? MaterialMenuDrawable.IconState.ARROW : MaterialMenuDrawable.IconState.BURGER);
     }
-
 }
 

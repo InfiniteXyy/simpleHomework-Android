@@ -12,7 +12,7 @@ import com.xyy.simplehomework.entity.Semester;
 import com.xyy.simplehomework.entity.Week;
 import com.xyy.simplehomework.model.DataServer;
 import com.xyy.simplehomework.view.App;
-import com.xyy.simplehomework.view.fragments.PageFragment;
+import com.xyy.simplehomework.view.fragments.day.PageFragment;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.ArrayList;
@@ -168,6 +168,11 @@ public class ProjectViewModel implements OnDateSetListener {
                 dataServer.put(homework);
             }
             i++;
+            Homework homework = new Homework(subject.getName() + "计划练习", DateHelper.afterDays(i + 2));
+            homework.subject.setTarget(subject);
+            homework.week.setTarget(week);
+            homework.setPlanDate(DateHelper.getToday());
+            dataServer.put(homework);
         }
     }
 }

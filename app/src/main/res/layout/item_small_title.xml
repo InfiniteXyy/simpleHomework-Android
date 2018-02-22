@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:text="添加"
         android:textSize="14sp"
-        android:textColor="#4A90E2"
+        android:textColor="@color/colorBtn"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

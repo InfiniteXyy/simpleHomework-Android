@@ -1,10 +1,10 @@
-package com.xyy.simplehomework.view.fragments;
+package com.xyy.simplehomework.view.fragments.week;
 
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,14 +21,13 @@ import com.xyy.simplehomework.view.App;
 
 import java.util.List;
 
-public class SubjectFragment extends DialogFragment {
+public class SubjectFragment extends Fragment {
     private static final String WEEK_ID = "week_id";
     private long week_id;
     private List<MySubject> subjectList;
-    private OnFragmentInteractionListener mListener;
+    private OnWeekFragmentChange mListener;
 
     public SubjectFragment() {
-        setStyle(STYLE_NORMAL, R.style.BottomDialog);
     }
 
     public static SubjectFragment newInstance(long id) {
@@ -42,6 +41,7 @@ public class SubjectFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             week_id = getArguments().getLong(WEEK_ID);
             subjectList = App.getInstance().getBoxStore().boxFor(MySubject.class).getAll();
@@ -55,7 +55,7 @@ public class SubjectFragment extends DialogFragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         SubjectAdapter adapter = new SubjectAdapter(R.layout.item_subject, subjectList);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return view;
     }
 
@@ -65,20 +65,15 @@ public class SubjectFragment extends DialogFragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        // check if parent Fragment implements listener
+        if (getParentFragment() instanceof OnWeekFragmentChange) {
+            mListener = (OnWeekFragmentChange) getParentFragment();
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException("The parent fragment must implement OnWeekFragmentChange");
         }
     }
 
@@ -86,10 +81,6 @@ public class SubjectFragment extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 
     private static class SubjectAdapter extends BaseQuickAdapter<MySubject, BaseViewHolder> {
@@ -101,6 +92,7 @@ public class SubjectFragment extends DialogFragment {
         @Override
         protected void convert(BaseViewHolder helper, MySubject item) {
             helper.setText(R.id.subject_name, item.getName());
+            ((GradientDrawable) helper.getView(R.id.circle).getBackground()).setColor(item.color);
         }
     }
 

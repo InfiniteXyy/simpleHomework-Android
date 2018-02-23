@@ -140,8 +140,7 @@
                 android:layout_height="wrap_content"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:textColor="@color/colorBtn"
-                android:text="立即完成"
-                android:layout_margin="8dp"/>
+                android:text="立即完成" />
 
         </LinearLayout>
 

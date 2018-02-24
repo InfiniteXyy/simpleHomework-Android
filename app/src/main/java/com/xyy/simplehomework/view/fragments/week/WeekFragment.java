@@ -20,6 +20,7 @@ import com.xyy.simplehomework.view.SubjectActivity;
  */
 
 public class WeekFragment extends Fragment implements OnWeekFragmentChange {
+    private static HomeworkAddDialog addFragment;
     private SubjectFragment subjectFragment;
     private DetailFragment detailFragment;
     private Context mContext;
@@ -69,5 +70,13 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange {
         Intent intent = new Intent(getContext(), SubjectActivity.class);
         intent.putExtra(SubjectActivity.SUBJECT_ID, subject_id);
         startActivity(intent);
+    }
+
+    @Override
+    public void openAddDialog() {
+        if (addFragment == null) {
+            addFragment = new HomeworkAddDialog();
+        }
+        addFragment.show(getChildFragmentManager(), null);
     }
 }

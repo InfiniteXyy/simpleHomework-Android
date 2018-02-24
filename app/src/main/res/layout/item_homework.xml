@@ -6,6 +6,7 @@
         <variable
             name="homework"
             type="com.xyy.simplehomework.entity.Homework" />
+
         <variable
             name="subject"
             type="com.xyy.simplehomework.entity.MySubject" />

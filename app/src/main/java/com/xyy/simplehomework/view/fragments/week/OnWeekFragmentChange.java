@@ -10,4 +10,6 @@ public interface OnWeekFragmentChange {
     void onChangeToSubject();
 
     void startSubjectActivity(long subject_id);
+
+    void openAddDialog();
 }

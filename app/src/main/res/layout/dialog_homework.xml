@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="handler"
             type="com.xyy.simplehomework.view.handler.ProjectClickHandler" />
@@ -27,6 +30,7 @@
                 android:layout_height="176dp"
                 android:background="@color/dividerColor"
                 android:scaleType="centerCrop" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,33 +39,36 @@
                 android:paddingRight="16dp">
 
                 <RelativeLayout
-                    android:paddingTop="24dp"
-                    android:paddingBottom="16dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="24dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="完成一张卷子"
                         android:textColor="@color/textDarkPrimary"
                         android:textSize="24sp" />
+
                     <TextView
                         android:id="@+id/deadline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/textDarkSecondary"
-                        android:textSize="14sp"
-                        android:text="周四"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="周四"
+                        android:textColor="@color/textDarkSecondary"
+                        android:textSize="14sp" />
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/deadline"
-                        app:srcCompat="@drawable/ic_location_on_black_24px"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="8dp"/>
+                        android:layout_marginRight="8dp"
+                        android:layout_toLeftOf="@id/deadline"
+                        app:srcCompat="@drawable/ic_location_on_black_24px" />
                 </RelativeLayout>
 
 
@@ -75,28 +82,30 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
                     android:background="@color/dividerColor" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="设置计划"
-                        android:textSize="14sp"
-                        android:textColor="@color/textDarkPrimary"/>
+                        android:textColor="@color/textDarkPrimary"
+                        android:textSize="14sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2018-7-12"
                         android:layout_marginLeft="8dp"
-                        android:textSize="14sp"
+                        android:layout_marginStart="8dp"
+                        android:text="2018-7-12"
                         android:textColor="@color/textDarkSecondary"
-                        android:layout_marginStart="8dp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -106,41 +115,50 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:orientation="horizontal">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/ic_access_time_black_24px" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></LinearLayout>
+
                 <Button
+                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:textColor="@color/textDarkSecondary"
-                    android:text="今天"/>
+                    android:text="今天"
+                    android:textColor="@color/textDarkSecondary" />
+
                 <Button
+                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:textColor="@color/textDarkSecondary"
-                    android:text="明天"/>
+                    android:text="明天"
+                    android:textColor="@color/textDarkSecondary" />
+
                 <Button
+                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:textColor="@color/textDarkSecondary"
-                    android:text="后天"/>
+                    android:text="后天"
+                    android:textColor="@color/textDarkSecondary" />
             </LinearLayout>
+
             <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:textColor="@color/colorBtn"
-                android:text="立即完成" />
+                android:text="立即完成"
+                android:textColor="@color/colorBtn" />
 
         </LinearLayout>
 

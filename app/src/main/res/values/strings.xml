@@ -27,4 +27,10 @@
         <item>明天</item>
         <item>后天</item>
     </string-array>
+
+    <string-array name="week_homework_show_type">
+        <item>按截止时间排序（从早到晚）</item>
+        <item>按添加时间排序（从早到晚）</item>
+        <item>仅显示未完成</item>
+    </string-array>
 </resources>

@@ -27,7 +27,6 @@ import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 public class DetailFragment extends Fragment {
     private ProjectViewModel viewModel;
     private OnWeekFragmentChange mListener;
-    private View subjectView;
     private View headerView;
 
     @Override
@@ -43,7 +42,6 @@ public class DetailFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        subjectView = inflater.inflate(R.layout.header_week, container, false);
         headerView = inflater.inflate(R.layout.item_small_title, container, false);
         return inflater.inflate(R.layout.fragment_week_recycler, container, false);
     }
@@ -65,9 +63,10 @@ public class DetailFragment extends Fragment {
                 mListener.openAddDialog();
             }
         });
-        // add header subject view
+        // set small subject view
         WeekHeaderAdapter subjectHeaderAdapter = new WeekHeaderAdapter(R.layout.item_project, viewModel.getSubjectsThisWeek());
-        RecyclerView headerRecycler = subjectView.findViewById(R.id.recycler_view);
+
+        final RecyclerView headerRecycler = view.findViewById(R.id.subject_recycler_view);
         LinearLayoutManager headerManager = new LinearLayoutManager(getContext());
         headerManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         headerRecycler.setLayoutManager(headerManager);
@@ -78,16 +77,14 @@ public class DetailFragment extends Fragment {
                 mListener.startSubjectActivity(((MySubject) adapter.getItem(position)).id);
             }
         });
-        subjectView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onChangeToSubject();
             }
         });
 
-        adapter.addHeaderView(subjectView);
-
-        // add title spinner
+        // add spinner
         AppCompatSpinner spinner = headerView.findViewById(R.id.spinner);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_item_text, getResources().getStringArray(R.array.week_homework_show_type));
         arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
@@ -99,7 +96,6 @@ public class DetailFragment extends Fragment {
             }
         });
         adapter.addHeaderView(headerView);
-
 
     }
 }

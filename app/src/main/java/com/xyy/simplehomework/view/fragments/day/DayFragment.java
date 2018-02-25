@@ -1,7 +1,6 @@
 package com.xyy.simplehomework.view.fragments.day;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,8 +47,9 @@ public class DayFragment extends Fragment implements PageFragment.PageInteractio
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+        //   Toolbar toolbar = view.findViewById(R.id.toolbar);
         viewPager = view.findViewById(R.id.view_page);
-        tabs = ((Activity) mContext).findViewById(R.id.tabs);
+        tabs = view.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
         viewPager.setAdapter(new DayPageAdapter(getChildFragmentManager()));
         dayOfWeek = (DateHelper.getDayOfWeek() + 6) % 7;
@@ -80,7 +80,6 @@ public class DayFragment extends Fragment implements PageFragment.PageInteractio
                     fab.setImageResource(R.drawable.ic_arrow_back_black_24px);
                     fab.show();
                 }
-
             }
 
             @Override
@@ -93,11 +92,6 @@ public class DayFragment extends Fragment implements PageFragment.PageInteractio
         super.onViewCreated(view, savedInstanceState);
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        tabs.setVisibility(hidden ? View.GONE : View.VISIBLE);
-    }
 
     @Override
     public void onScroll(boolean isUp) {
@@ -106,7 +100,7 @@ public class DayFragment extends Fragment implements PageFragment.PageInteractio
     }
 
 
-    private static class DayPageAdapter extends FragmentPagerAdapter {
+    private static class DayPageAdapter extends FragmentStatePagerAdapter {
 
         public DayPageAdapter(FragmentManager fm) {
             super(fm);

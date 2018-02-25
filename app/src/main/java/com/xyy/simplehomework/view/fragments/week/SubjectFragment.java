@@ -1,6 +1,5 @@
 package com.xyy.simplehomework.view.fragments.week;
 
-import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,12 +9,11 @@ import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -55,7 +53,7 @@ public class SubjectFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_subject, container, false);
+        View view = inflater.inflate(R.layout.fragment_week_subject, container, false);
         headerView = inflater.inflate(R.layout.item_small_title, container, false);
         return view;
     }
@@ -64,13 +62,15 @@ public class SubjectFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         SubjectAdapter adapter = new SubjectAdapter(R.layout.item_subject, subjectList);
+        // set spinner
         AppCompatSpinner spinner = headerView.findViewById(R.id.spinner);
         TextView btn = headerView.findViewById(R.id.button);
         btn.setText("管理");
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_item_text, getResources().getStringArray(R.array.week_subject_show_type));
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item_text, getResources().getStringArray(R.array.week_subject_show_type));
         arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
         adapter.addHeaderView(headerView);
+
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

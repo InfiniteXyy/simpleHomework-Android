@@ -51,7 +51,7 @@ public class DetailFragment extends Fragment {
 
         // set main recyclerView
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
-        WeekAdapter adapter = new WeekAdapter(R.layout.item_homework_detail, viewModel.getHomeworkThisWeek());
+        WeekAdapter adapter = new WeekAdapter(R.layout.item_homework_detail, viewModel.getHomeworkThisWeek(), viewModel);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         weekRecyclerView.setLayoutManager(layoutManager);
         weekRecyclerView.setAdapter(adapter);
@@ -65,9 +65,6 @@ public class DetailFragment extends Fragment {
         WeekHeaderAdapter subjectHeaderAdapter = new WeekHeaderAdapter(R.layout.item_project, viewModel.getSubjectsThisWeek());
 
         final RecyclerView headerRecycler = view.findViewById(R.id.subject_recycler_view);
-        LinearLayoutManager headerManager = new LinearLayoutManager(getContext());
-        headerManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        headerRecycler.setLayoutManager(headerManager);
         headerRecycler.setAdapter(subjectHeaderAdapter);
         subjectHeaderAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

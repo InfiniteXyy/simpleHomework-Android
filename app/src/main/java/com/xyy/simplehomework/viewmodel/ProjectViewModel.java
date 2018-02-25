@@ -1,9 +1,16 @@
 package com.xyy.simplehomework.viewmodel;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener;
+import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.Homework_;
@@ -13,6 +20,7 @@ import com.xyy.simplehomework.entity.Week;
 import com.xyy.simplehomework.model.DataServer;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.fragments.day.PageFragment;
+import com.xyy.simplehomework.view.fragments.week.WeekHomeworkClick;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.ArrayList;
@@ -29,7 +37,7 @@ import io.objectbox.query.Query;
  * Created by xyy on 2018/2/5.
  */
 
-public class ProjectViewModel implements OnDateSetListener {
+public class ProjectViewModel implements OnDateSetListener, WeekHomeworkClick {
     private static ProjectViewModel instance;
     Week week;
     Semester semester;
@@ -137,6 +145,7 @@ public class ProjectViewModel implements OnDateSetListener {
         }
     }
 
+
     private void useDemo(Week week, Semester semester) {
         Semester thisSemester = getThisSemester();
 
@@ -147,17 +156,14 @@ public class ProjectViewModel implements OnDateSetListener {
                 new MySubject("离散数学", mContext.getResources().getColor(R.color.japanTea)),
                 new MySubject("概率论", mContext.getResources().getColor(R.color.japanOrange)),
         };
-
         for (MySubject subject : subjects) {
             subject.semester.setTarget(thisSemester);
             subject.availableWeeks = new byte[]{6, 7, 8, 9};
             thisSemester.allSubjects.add(subject);
         }
         thisSemester.allSubjects.applyChangesToDb();
-
         // refresh this week homeworks
         week.homeworks.reset();
-
         // homework demo
         int i = 0;
         for (MySubject subject : subjects) {
@@ -174,5 +180,16 @@ public class ProjectViewModel implements OnDateSetListener {
             homework.setPlanDate(DateHelper.getToday());
             dataServer.put(homework);
         }
+    }
+
+    @Override
+    public void showDetail(View view, Homework homework) {
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        ViewDataBinding binding = DataBindingUtil.inflate(((Activity) mContext).getLayoutInflater(),
+                R.layout.dialog_homework, (ViewGroup) view.findViewById(R.id.dialog), false);
+        dialog.setView(binding.getRoot());
+        binding.setVariable(BR.handler, this);
+        binding.setVariable(BR.homework, homework);
+        dialog.show();
     }
 }

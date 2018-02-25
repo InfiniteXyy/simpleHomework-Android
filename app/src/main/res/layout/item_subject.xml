@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="48dp">
+    android:layout_height="48dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
 
     <View
         android:id="@+id/circle"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="16dp"
-        android:background="@drawable/shape_circle" />
+        android:background="@drawable/shape_circle"
+        android:layout_marginStart="16dp" />
 
     <TextView
         android:id="@+id/subject_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="32dp"
         android:layout_marginStart="32dp"
-        android:layout_toEndOf="@id/circle"
-        android:layout_toRightOf="@id/circle"
-        android:text="计算机网络"
+        tools:text="计算机网络"
         android:textColor="@color/textDarkPrimary"
         android:textSize="16sp" />
 
-</RelativeLayout>
+</LinearLayout>

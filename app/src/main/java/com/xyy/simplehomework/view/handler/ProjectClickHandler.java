@@ -21,17 +21,6 @@ import java.util.Calendar;
  */
 
 public class ProjectClickHandler {
-    public void showDetail(View view, Homework homework) {
-        Context mContext = view.getContext();
-        //final Dialog dialog = new Dialog(mContext, R.style.BottomDialog);
-        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
-        ViewDataBinding binding = DataBindingUtil.inflate(((Activity) mContext).getLayoutInflater(),
-                R.layout.dialog_homework, (ViewGroup) view.findViewById(R.id.dialog), false);
-        dialog.setView(binding.getRoot());
-        binding.setVariable(BR.handler, this);
-        binding.setVariable(BR.homework, homework);
-        dialog.show();
-    }
 
     // TODO: 将两个dialog结合
     public void setPlan(View view, Homework homework) {

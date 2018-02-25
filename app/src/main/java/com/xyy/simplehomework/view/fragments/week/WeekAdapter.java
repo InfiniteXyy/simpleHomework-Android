@@ -13,6 +13,7 @@ import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.handler.ProjectClickHandler;
 import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
+import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 import java.util.List;
 
@@ -21,17 +22,15 @@ import java.util.List;
  */
 
 public class WeekAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {
-    private static ProjectClickHandler handler;
+    private WeekHomeworkClick handler;
 
-    public WeekAdapter(int layoutResId, @Nullable List<Homework> data) {
+    public WeekAdapter(int layoutResId, @Nullable List<Homework> data, WeekHomeworkClick handler) {
         super(layoutResId, data);
+        this.handler = handler;
     }
 
     @Override
     protected void convert(BaseDataBindingHolder helper, Homework item) {
-        if (handler == null) {
-            handler = new ProjectClickHandler();
-        }
         ViewDataBinding binding = helper.getBinding();
         binding.setVariable(BR.homework, item);
         binding.setVariable(BR.handler, handler);

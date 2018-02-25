@@ -16,6 +16,7 @@ import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.SubjectActivity;
+import com.xyy.simplehomework.view.helper.DateHelper;
 
 /**
  * Created by xyy on 2018/1/27.
@@ -53,6 +54,7 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange, View
         }
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(menuDrawable);
+        toolbar.setTitle(DateHelper.getWeekTitle());
         toolbar.setNavigationOnClickListener(this);
 
         subjectFragment = SubjectFragment.newInstance(0);
@@ -70,7 +72,7 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange, View
                 .show(detailFragment)
                 .commit();
         pageStatus = WEEK_PAGE;
-        toolbar.setTitle("第三周");
+        toolbar.setTitle(DateHelper.getWeekTitle());
         menuDrawable.animateIconState(MaterialMenuDrawable.IconState.BURGER);
     }
 

@@ -1,6 +1,8 @@
 package com.xyy.simplehomework.view.fragments.day;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,10 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
+import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.view.adapter.DayAdapter;
 import com.xyy.simplehomework.view.helper.DateHelper;
+import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 import java.util.Date;
@@ -30,7 +34,6 @@ public class PageFragment extends Fragment {
     public static final String DAY_ARGS = "day_arg";
     private int date;
     private DayAdapter adapter;
-    private PageInteraction mListener;
     private List<Homework> data;
 
     public static PageFragment newInstance(int day) {
@@ -39,18 +42,6 @@ public class PageFragment extends Fragment {
         PageFragment fragment = new PageFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (getParentFragment() instanceof PageInteraction) {
-            mListener = (PageInteraction) getParentFragment();
-        } else {
-            throw new RuntimeException("The parent fragment must implement PageInteraction");
-        }
-
     }
 
     @Override
@@ -73,23 +64,6 @@ public class PageFragment extends Fragment {
         adapter.setEmptyView(R.layout.empty_view, container);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnScrollListener(new OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (data.isEmpty()) return;
-                if (dy < 0) {
-                    mListener.onScroll(false);
-                } else {
-                    mListener.onScroll(true);
-                }
-            }
-        });
         return view;
     }
 
@@ -105,7 +79,28 @@ public class PageFragment extends Fragment {
         adapter.replaceData(data);
     }
 
-    public interface PageInteraction {
-        void onScroll(boolean isUp);
+    public static class DayAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {
+
+        public DayAdapter(int layoutResId, List<Homework> data) {
+            super(layoutResId, data);
+        }
+
+        @Override
+        protected void convert(BaseDataBindingHolder helper, Homework item) {
+            ViewDataBinding binding = helper.getBinding();
+            binding.setVariable(BR.homework, item);
+            binding.setVariable(BR.subject, item.subject.getTarget());
+        }
+
+        @Override
+        protected View getItemView(int layoutResId, ViewGroup parent) {
+            ViewDataBinding binding = DataBindingUtil.inflate(mLayoutInflater, layoutResId, parent, false);
+            if (binding == null) {
+                return super.getItemView(layoutResId, parent);
+            }
+            View view = binding.getRoot();
+            view.setTag(R.id.BaseQuickAdapter_databinding_support, binding);
+            return view;
+        }
     }
 }

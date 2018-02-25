@@ -22,7 +22,7 @@ import com.xyy.simplehomework.view.fragments.week.WeekFragment;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    private Fragment lastFragment = new Fragment();
     public ProjectViewModel viewModel;
     private DrawerLayout drawerLayout;
 
@@ -57,12 +57,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(int tabId) {
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                for (TabFragment fragment : TabFragment.values()) {
-                    transaction.hide(fragment.getFragment());
-                }
-                transaction.show(TabFragment.from(tabId).getFragment())
+                Fragment thisFragment = TabFragment.from(tabId).getFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .hide(lastFragment)
+                        .show(thisFragment)
                         .commit();
+                lastFragment = thisFragment;
             }
         });
     }

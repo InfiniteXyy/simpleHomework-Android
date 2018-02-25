@@ -3,8 +3,10 @@ package com.xyy.simplehomework.view.fragments.week;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -25,7 +29,7 @@ public class SubjectFragment extends Fragment {
     private static final String WEEK_ID = "week_id";
     private long week_id;
     private List<MySubject> subjectList;
-    private OnWeekFragmentChange mListener;
+    private View headerView;
 
     public SubjectFragment() {
     }
@@ -52,36 +56,26 @@ public class SubjectFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_subject, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        SubjectAdapter adapter = new SubjectAdapter(R.layout.item_subject, subjectList);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        headerView = inflater.inflate(R.layout.item_small_title, container, false);
         return view;
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.toolbar, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        SubjectAdapter adapter = new SubjectAdapter(R.layout.item_subject, subjectList);
+        AppCompatSpinner spinner = headerView.findViewById(R.id.spinner);
+        TextView btn = headerView.findViewById(R.id.button);
+        btn.setText("管理");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_item_text, getResources().getStringArray(R.array.week_subject_show_type));
+        arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        spinner.setAdapter(arrayAdapter);
+        adapter.addHeaderView(headerView);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        // check if parent Fragment implements listener
-        if (getParentFragment() instanceof OnWeekFragmentChange) {
-            mListener = (OnWeekFragmentChange) getParentFragment();
-        } else {
-            throw new RuntimeException("The parent fragment must implement OnWeekFragmentChange");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
     private static class SubjectAdapter extends BaseQuickAdapter<MySubject, BaseViewHolder> {
 

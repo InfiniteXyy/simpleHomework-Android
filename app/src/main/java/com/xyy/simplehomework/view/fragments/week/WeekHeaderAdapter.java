@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.view.adapter;
+package com.xyy.simplehomework.view.fragments.week;
 
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.Nullable;

@@ -16,8 +16,6 @@ import android.widget.ArrayAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.view.adapter.WeekAdapter;
-import com.xyy.simplehomework.view.adapter.WeekHeaderAdapter;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 /**

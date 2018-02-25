@@ -9,28 +9,16 @@
     <string name="add_projects">添加作业</string>
     <string name="set_subjects">设置课程</string>
 
-    <string name="choose_subject">请选择目标课程</string>
-    <string name="choose_date">请设置截止日期</string>
-    <string name="decide_name">设置书本名字</string>
-
-    <string name="view_subject">查看课程信息</string>
-    <string name="set_color">设置颜色</string>
-    <string name="set_plan">设置计划</string>
-    <string name="finish_homework">完成作业</string>
-
     <string name="homework_card">作业卡片</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string-array name="plan">
-        <item>今天</item>
-        <item>明天</item>
-        <item>后天</item>
-    </string-array>
 
     <string-array name="week_homework_show_type">
         <item>按截止时间排序（从早到晚）</item>
         <item>按添加时间排序（从早到晚）</item>
         <item>仅显示未完成</item>
+    </string-array>
+
+    <string-array name="week_subject_show_type">
+        <item>仅显示本周</item>
+        <item>显示全部</item>
     </string-array>
 </resources>

@@ -1,30 +1,43 @@
-package com.xyy.simplehomework.view.adapter;
+package com.xyy.simplehomework.view.fragments.week;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
+import com.xyy.simplehomework.view.handler.ProjectClickHandler;
+import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 
 import java.util.List;
 
+/**
+ * Created by xyy on 2018/1/28.
+ */
 
-public class DayAdapter extends BaseQuickAdapter<Homework, DayAdapter.HomeworkHolder> {
+public class WeekAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {
+    private static ProjectClickHandler handler;
 
-    public DayAdapter(int layoutResId, List<Homework> data) {
+    public WeekAdapter(int layoutResId, @Nullable List<Homework> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(HomeworkHolder helper, Homework item) {
+    protected void convert(BaseDataBindingHolder helper, Homework item) {
+        if (handler == null) {
+            handler = new ProjectClickHandler();
+        }
         ViewDataBinding binding = helper.getBinding();
         binding.setVariable(BR.homework, item);
-        binding.setVariable(BR.subject, item.subject.getTarget());
+        binding.setVariable(BR.handler, handler);
+        binding.executePendingBindings();
+        GradientDrawable circle = (GradientDrawable) helper.getView(R.id.circle).getBackground();
+        circle.setColor(item.subject.getTarget().color);
     }
 
     @Override
@@ -36,16 +49,5 @@ public class DayAdapter extends BaseQuickAdapter<Homework, DayAdapter.HomeworkHo
         View view = binding.getRoot();
         view.setTag(R.id.BaseQuickAdapter_databinding_support, binding);
         return view;
-    }
-
-    public static class HomeworkHolder extends BaseViewHolder {
-
-        public HomeworkHolder(View view) {
-            super(view);
-        }
-
-        public ViewDataBinding getBinding() {
-            return (ViewDataBinding) itemView.getTag(R.id.BaseQuickAdapter_databinding_support);
-        }
     }
 }

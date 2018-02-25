@@ -22,7 +22,7 @@ import com.xyy.simplehomework.view.helper.DateHelper;
  * Created by xyy on 2018/1/27.
  */
 
-public class DayFragment extends Fragment implements PageFragment.PageInteraction {
+public class DayFragment extends Fragment {
     private Context mContext;
     private ViewPager viewPager;
     private int dayOfWeek;
@@ -92,12 +92,6 @@ public class DayFragment extends Fragment implements PageFragment.PageInteractio
         super.onViewCreated(view, savedInstanceState);
     }
 
-
-    @Override
-    public void onScroll(boolean isUp) {
-        if (!isUp) fab.show();
-        else fab.hide();
-    }
 
 
     private static class DayPageAdapter extends FragmentStatePagerAdapter {

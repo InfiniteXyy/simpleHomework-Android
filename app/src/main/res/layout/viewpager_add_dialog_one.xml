@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textColor="@color/textDarkPrimary"
+            tools:text="计算机系统" />
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/textDarkSecondary"
+            android:layout_marginBottom="8dp"
+            tools:text="第三周"/>
+    </LinearLayout>
+
+    <android.support.design.widget.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="标题"
+        android:maxLines="1" />
+
+    <android.support.design.widget.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="内容"
+        android:maxLines="2" />
+
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/dateSetter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="截止时间"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+</LinearLayout>

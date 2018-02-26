@@ -8,8 +8,7 @@ import android.databinding.ViewDataBinding;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener;
+
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
@@ -20,6 +19,7 @@ import com.xyy.simplehomework.entity.Week;
 import com.xyy.simplehomework.model.DataServer;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.fragments.day.PageFragment;
+import com.xyy.simplehomework.view.fragments.week.AddDialog.HomeworkAddDialog;
 import com.xyy.simplehomework.view.fragments.week.WeekHomeworkClick;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
@@ -37,7 +37,7 @@ import io.objectbox.query.Query;
  * Created by xyy on 2018/2/5.
  */
 
-public class ProjectViewModel implements OnDateSetListener, WeekHomeworkClick {
+public class ProjectViewModel implements WeekHomeworkClick, HomeworkAddDialog.AddDialogInteraction {
     private static ProjectViewModel instance;
     Week week;
     Semester semester;
@@ -131,12 +131,12 @@ public class ProjectViewModel implements OnDateSetListener, WeekHomeworkClick {
         onChangingHomework.setFinished();
     }
 
-    @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        onChangingHomework.setPlanDate(new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime());
-        dataServer.put(onChangingHomework);
-        updateDayView();
-    }
+//    @Override
+//    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+//        onChangingHomework.setPlanDate(new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime());
+//        dataServer.put(onChangingHomework);
+//        updateDayView();
+//    }
 
     private void updateDayView() {
         for (PageFragment fragment : dayMap.keySet()) {
@@ -162,7 +162,7 @@ public class ProjectViewModel implements OnDateSetListener, WeekHomeworkClick {
             thisSemester.allSubjects.add(subject);
         }
         thisSemester.allSubjects.applyChangesToDb();
-        // refresh this week homeworks
+        // refresh this week homework
         week.homeworks.reset();
         // homework demo
         int i = 0;
@@ -191,5 +191,11 @@ public class ProjectViewModel implements OnDateSetListener, WeekHomeworkClick {
         binding.setVariable(BR.handler, this);
         binding.setVariable(BR.homework, homework);
         dialog.show();
+    }
+
+    @Override
+    public void addHomework(Homework homework) {
+        dataServer.put(homework);
+        week.homeworks.add(homework);
     }
 }

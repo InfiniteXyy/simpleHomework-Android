@@ -14,8 +14,10 @@ import android.view.ViewGroup;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.SubjectActivity;
+import com.xyy.simplehomework.view.fragments.week.AddDialog.HomeworkAddDialog;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 /**
@@ -28,9 +30,9 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange, View
     private static MaterialMenuDrawable menuDrawable;
     private int pageStatus;
     private Toolbar toolbar;
-    private HomeworkAddDialog addFragment;
     private SubjectFragment subjectFragment;
     private DetailFragment detailFragment;
+    private boolean isWaitingForAdd = false;
     private Context mContext;
 
     @Override
@@ -89,22 +91,22 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange, View
         pageStatus = SUBJECT_PAGE;
         toolbar.setTitle("科目列表");
         menuDrawable.animateIconState(MaterialMenuDrawable.IconState.ARROW);
-
     }
 
     @Override
-    public void startSubjectActivity(long subject_id) {
-        Intent intent = new Intent(getContext(), SubjectActivity.class);
-        intent.putExtra(SubjectActivity.SUBJECT_ID, subject_id);
-        startActivity(intent);
-    }
-
-    @Override
-    public void openAddDialog() {
-        if (addFragment == null) {
-            addFragment = new HomeworkAddDialog();
+    public void onClickSubject(MySubject subject) {
+        if (isWaitingForAdd) {
+            HomeworkAddDialog.newInstance(subject).show(getChildFragmentManager(), null);
+        } else {
+            Intent intent = new Intent(getContext(), SubjectActivity.class);
+            intent.putExtra(SubjectActivity.SUBJECT_ID, subject.id);
+            startActivity(intent);
         }
-        addFragment.show(getChildFragmentManager(), null);
+    }
+
+    @Override
+    public void setWaitingForAdd(boolean waitingForAdd) {
+        this.isWaitingForAdd = waitingForAdd;
     }
 
     @Override
@@ -120,7 +122,6 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange, View
     @Override
     public void onDestroy() {
         super.onDestroy();
-        addFragment = null;
         subjectFragment = null;
         detailFragment = null;
     }

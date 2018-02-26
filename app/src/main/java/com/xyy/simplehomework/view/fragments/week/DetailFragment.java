@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xyy.simplehomework.R;
@@ -55,12 +56,7 @@ public class DetailFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         weekRecyclerView.setLayoutManager(layoutManager);
         weekRecyclerView.setAdapter(adapter);
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                mListener.openAddDialog();
-            }
-        });
+
         // set small subject view
         WeekHeaderAdapter subjectHeaderAdapter = new WeekHeaderAdapter(R.layout.item_project, viewModel.getSubjectsThisWeek());
 
@@ -69,7 +65,7 @@ public class DetailFragment extends Fragment {
         subjectHeaderAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                mListener.startSubjectActivity(((MySubject) adapter.getItem(position)).id);
+                mListener.onClickSubject((MySubject) adapter.getItem(position));
             }
         });
         view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
@@ -87,10 +83,10 @@ public class DetailFragment extends Fragment {
         headerView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.openAddDialog();
+                mListener.setWaitingForAdd(true);
+                Toast.makeText(getContext(), "请在上方的科目列表里选择一个科目", Toast.LENGTH_LONG).show();
             }
         });
         adapter.addHeaderView(headerView);
-
     }
 }

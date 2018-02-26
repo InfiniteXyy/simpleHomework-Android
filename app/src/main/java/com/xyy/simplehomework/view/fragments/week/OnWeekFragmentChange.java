@@ -1,5 +1,7 @@
 package com.xyy.simplehomework.view.fragments.week;
 
+import com.xyy.simplehomework.entity.MySubject;
+
 /**
  * Created by xyy on 2018/2/22.
  */
@@ -9,7 +11,7 @@ public interface OnWeekFragmentChange {
 
     void onChangeToSubject();
 
-    void startSubjectActivity(long subject_id);
+    void onClickSubject(MySubject subject);
 
-    void openAddDialog();
+    void setWaitingForAdd(boolean waitingForAdd);
 }

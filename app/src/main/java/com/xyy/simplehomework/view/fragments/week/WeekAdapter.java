@@ -11,9 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.view.handler.ProjectClickHandler;
 import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
-import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 import java.util.List;
 

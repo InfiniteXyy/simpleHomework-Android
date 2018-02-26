@@ -32,7 +32,6 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange, View
     private Toolbar toolbar;
     private SubjectFragment subjectFragment;
     private DetailFragment detailFragment;
-    private boolean isWaitingForAdd = false;
     private Context mContext;
 
     @Override
@@ -95,18 +94,14 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange, View
 
     @Override
     public void onClickSubject(MySubject subject) {
-        if (isWaitingForAdd) {
-            HomeworkAddDialog.newInstance(subject).show(getChildFragmentManager(), null);
-        } else {
-            Intent intent = new Intent(getContext(), SubjectActivity.class);
-            intent.putExtra(SubjectActivity.SUBJECT_ID, subject.id);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(getContext(), SubjectActivity.class);
+        intent.putExtra(SubjectActivity.SUBJECT_ID, subject.id);
+        startActivity(intent);
     }
 
     @Override
-    public void setWaitingForAdd(boolean waitingForAdd) {
-        this.isWaitingForAdd = waitingForAdd;
+    public void showAddDialog() {
+        new HomeworkAddDialog().show(getChildFragmentManager(), null);
     }
 
     @Override

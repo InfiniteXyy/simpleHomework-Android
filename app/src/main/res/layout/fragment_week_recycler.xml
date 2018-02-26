@@ -43,8 +43,9 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srlEnablePreviewInEditMode="true">
-        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+        app:srlEnablePreviewInEditMode="true"
+        android:layout_marginTop="8dp">
+        <com.scwang.smartrefresh.layout.header.FalsifyHeader
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <android.support.v7.widget.RecyclerView

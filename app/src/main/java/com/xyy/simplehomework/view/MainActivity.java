@@ -16,14 +16,14 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.fragments.HomeFragment;
-import com.xyy.simplehomework.view.fragments.SemesterFragment;
 import com.xyy.simplehomework.view.fragments.day.DayFragment;
+import com.xyy.simplehomework.view.fragments.semester.SemesterFragment;
 import com.xyy.simplehomework.view.fragments.week.WeekFragment;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private Fragment lastFragment = new Fragment();
     public ProjectViewModel viewModel;
+    private Fragment lastFragment = new Fragment();
     private DrawerLayout drawerLayout;
 
     @Override

@@ -35,6 +35,7 @@ public class MySubject extends BaseObservable {
     }
 
     public MySubject() {
+
     }
 
     @Bindable

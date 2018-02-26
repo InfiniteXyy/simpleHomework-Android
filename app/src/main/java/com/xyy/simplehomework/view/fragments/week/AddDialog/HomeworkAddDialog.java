@@ -13,61 +13,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.view.MainActivity;
-import com.xyy.simplehomework.view.fragments.week.WeekFragment;
-import com.xyy.simplehomework.view.helper.DateHelper;
 import com.xyy.simplehomework.viewmodel.ProjectViewModel;
 
 import me.relex.circleindicator.CircleIndicator;
 
 
 public class HomeworkAddDialog extends DialogFragment {
-
-    private enum AddFragments {
-        main(AddMainFragment.class),
-        second(AddSecondFragment.class);
-        private final Class<? extends Fragment> clazz;
-        private Fragment fragment;
-        AddFragments(Class<? extends Fragment> clazz) {
-            this.clazz = clazz;
-        }
-        public static void onDestroy() {
-            for (AddFragments fragment : values()) {
-                fragment.fragment = null;
-            }
-        }
-
-        @NonNull
-        public Fragment getFragment() {
-            if (fragment == null) {
-                try {
-                    fragment = clazz.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    fragment = new Fragment();
-                }
-            }
-            return fragment;
-        }
-    }
     private static final String TAG = "HomeworkAddDialog";
     private AddDialogInteraction mListener;
-    private MySubject subject;
     public HomeworkAddDialog() {
         // Required empty public constructor
-    }
-
-    private void setSubject(MySubject subject) {
-        this.subject = subject;
+        setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle);
     }
 
     public String getTitle() {
-        return subject.getName();
+        return "测试";
     }
 
     @Override
@@ -85,6 +48,7 @@ public class HomeworkAddDialog extends DialogFragment {
             public Fragment getItem(int position) {
                 return AddFragments.values()[position].getFragment();
             }
+
             @Override
             public int getCount() {
                 return 2;
@@ -96,13 +60,6 @@ public class HomeworkAddDialog extends DialogFragment {
 
         super.onViewCreated(view, savedInstanceState);
     }
-
-    public static HomeworkAddDialog newInstance(MySubject subject) {
-        HomeworkAddDialog temp = new HomeworkAddDialog();
-        temp.setSubject(subject);
-        return temp;
-    }
-
 
     @Override
     public void onAttach(Context context) {
@@ -123,7 +80,6 @@ public class HomeworkAddDialog extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         Log.d(TAG, "dialog onDismiss: ");
-        ((WeekFragment) getParentFragment()).setWaitingForAdd(false);
         super.onDismiss(dialog);
     }
 
@@ -132,6 +88,36 @@ public class HomeworkAddDialog extends DialogFragment {
         Log.d(TAG, "onDestroyView: ");
         super.onDestroyView();
         AddFragments.onDestroy();
+    }
+
+    private enum AddFragments {
+        main(AddMainFragment.class),
+        second(AddSecondFragment.class);
+        private final Class<? extends Fragment> clazz;
+        private Fragment fragment;
+
+        AddFragments(Class<? extends Fragment> clazz) {
+            this.clazz = clazz;
+        }
+
+        public static void onDestroy() {
+            for (AddFragments fragment : values()) {
+                fragment.fragment = null;
+            }
+        }
+
+        @NonNull
+        public Fragment getFragment() {
+            if (fragment == null) {
+                try {
+                    fragment = clazz.newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    fragment = new Fragment();
+                }
+            }
+            return fragment;
+        }
     }
 
     public interface AddDialogInteraction {

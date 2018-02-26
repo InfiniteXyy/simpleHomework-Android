@@ -8,7 +8,6 @@ import android.databinding.ViewDataBinding;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
@@ -25,7 +24,6 @@ import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

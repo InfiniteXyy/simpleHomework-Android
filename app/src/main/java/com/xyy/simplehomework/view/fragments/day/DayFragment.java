@@ -93,7 +93,6 @@ public class DayFragment extends Fragment {
     }
 
 
-
     private static class DayPageAdapter extends FragmentStatePagerAdapter {
 
         public DayPageAdapter(FragmentManager fm) {

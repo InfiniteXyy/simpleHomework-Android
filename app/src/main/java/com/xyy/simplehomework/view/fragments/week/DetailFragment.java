@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xyy.simplehomework.R;
@@ -83,8 +82,7 @@ public class DetailFragment extends Fragment {
         headerView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.setWaitingForAdd(true);
-                Toast.makeText(getContext(), "请在上方的科目列表里选择一个科目", Toast.LENGTH_LONG).show();
+                mListener.showAddDialog();
             }
         });
         adapter.addHeaderView(headerView);

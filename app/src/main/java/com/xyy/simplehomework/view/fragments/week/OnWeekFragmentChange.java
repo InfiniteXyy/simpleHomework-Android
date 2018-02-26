@@ -13,5 +13,6 @@ public interface OnWeekFragmentChange {
 
     void onClickSubject(MySubject subject);
 
-    void setWaitingForAdd(boolean waitingForAdd);
+    void showAddDialog();
+
 }

@@ -14,34 +14,31 @@ import android.view.ViewGroup;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.SubjectActivity;
-import com.xyy.simplehomework.view.fragments.week.AddDialog.HomeworkAddDialog;
+import com.xyy.simplehomework.view.fragments.week.addDialog.HomeworkAddDialog;
+import com.xyy.simplehomework.view.fragments.week.detailDialog.MainDetailDialog;
 import com.xyy.simplehomework.view.helper.DateHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by xyy on 2018/1/27.
  */
 
-public class WeekFragment extends Fragment implements OnWeekFragmentChange, View.OnClickListener {
+public class WeekFragment extends Fragment implements WeekUIInteraction {
     private static final int WEEK_PAGE = 0;
     private static final int SUBJECT_PAGE = 1;
     private static MaterialMenuDrawable menuDrawable;
-    private int pageStatus;
+    private int currentPage;
     private Toolbar toolbar;
     private SubjectFragment subjectFragment;
     private DetailFragment detailFragment;
-    private Context mContext;
-    private List<MySubject> subjects;
+    private ViewModel viewModel;
 
     @Override
     public void onAttach(Context context) {
-        mContext = context;
+        viewModel = new ViewModel(context);
         super.onAttach(context);
     }
 
@@ -52,32 +49,42 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange, View
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
-        // show all subjects(should put week id, use 0 for test)
+        super.onViewCreated(view, savedInstanceState);
+        // first, init toolbar
         if (menuDrawable == null) {
-            menuDrawable = new MaterialMenuDrawable(mContext,
+            menuDrawable = new MaterialMenuDrawable(getContext(),
                     getResources().getColor(android.R.color.secondary_text_light),
                     MaterialMenuDrawable.Stroke.THIN);
         }
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(menuDrawable);
         toolbar.setTitle(DateHelper.getWeekTitle());
-        toolbar.setNavigationOnClickListener(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentPage == WEEK_PAGE) {
+                    ((MainActivity) getContext()).showDrawer();
+                } else {
+                    onChangeToDetail();
+                }
+            }
+        });
 
+        // second, init child fragments
         subjectFragment = SubjectFragment.newInstance(0);
         detailFragment = new DetailFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_week, detailFragment).commit();
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
-    public void onChangeBack() {
+    public void onChangeToDetail() {
         getChildFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                 .hide(subjectFragment)
                 .show(detailFragment)
                 .commit();
-        pageStatus = WEEK_PAGE;
+        currentPage = WEEK_PAGE;
         toolbar.setTitle(DateHelper.getWeekTitle());
         menuDrawable.animateIconState(MaterialMenuDrawable.IconState.BURGER);
     }
@@ -92,24 +99,9 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange, View
                 .hide(detailFragment)
                 .show(subjectFragment)
                 .commit();
-        pageStatus = SUBJECT_PAGE;
+        currentPage = SUBJECT_PAGE;
         toolbar.setTitle("科目列表");
         menuDrawable.animateIconState(MaterialMenuDrawable.IconState.ARROW);
-    }
-
-    public List<MySubject> getSubjectList() {
-        if (subjects == null) {
-            subjects = App.getInstance().getBoxStore().boxFor(MySubject.class).getAll();
-        }
-        return subjects;
-    }
-
-    public List<String> getSubjectNameList() {
-        List<String> name = new ArrayList<>();
-        for (MySubject subject : subjects) {
-            name.add(subject.getName());
-        }
-        return name;
     }
 
     @Override
@@ -120,18 +112,18 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange, View
     }
 
     @Override
+    public void onClickHomework(Homework homework) {
+        MainDetailDialog.newInstance(homework).show(getChildFragmentManager(), null);
+    }
+
+    @Override
     public void showAddDialog() {
         new HomeworkAddDialog().show(getChildFragmentManager(), null);
     }
 
     @Override
-    public void onClick(View v) {
-        // home button click
-        if (pageStatus == WEEK_PAGE) {
-            ((MainActivity) mContext).showDrawer();
-        } else {
-            onChangeBack();
-        }
+    public ViewModel getViewModel() {
+        return viewModel;
     }
 
     @Override
@@ -139,5 +131,6 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange, View
         super.onDestroy();
         subjectFragment = null;
         detailFragment = null;
+        viewModel = null;
     }
 }

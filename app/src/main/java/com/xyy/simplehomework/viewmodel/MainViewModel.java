@@ -1,14 +1,7 @@
 package com.xyy.simplehomework.viewmodel;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.Homework_;
@@ -18,8 +11,7 @@ import com.xyy.simplehomework.entity.Week;
 import com.xyy.simplehomework.model.DataServer;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.fragments.day.PageFragment;
-import com.xyy.simplehomework.view.fragments.week.AddDialog.HomeworkAddDialog;
-import com.xyy.simplehomework.view.fragments.week.WeekHomeworkClick;
+import com.xyy.simplehomework.view.fragments.week.addDialog.HomeworkAddDialog;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.ArrayList;
@@ -35,8 +27,8 @@ import io.objectbox.query.Query;
  * Created by xyy on 2018/2/5.
  */
 
-public class ProjectViewModel implements WeekHomeworkClick, HomeworkAddDialog.AddDialogInteraction {
-    private static ProjectViewModel instance;
+public class MainViewModel implements HomeworkAddDialog.AddDialogInteraction {
+    private static MainViewModel instance;
     Week week;
     Semester semester;
     private DataServer dataServer;
@@ -45,7 +37,7 @@ public class ProjectViewModel implements WeekHomeworkClick, HomeworkAddDialog.Ad
     private Homework onChangingHomework;
     private Map<PageFragment, List<Homework>> dayMap;
 
-    public ProjectViewModel(Context context) {
+    public MainViewModel(Context context) {
         mContext = context;
         instance = this;
         // set up data server
@@ -63,7 +55,7 @@ public class ProjectViewModel implements WeekHomeworkClick, HomeworkAddDialog.Ad
         useDemo(week, semester);
     }
 
-    public static ProjectViewModel getInstance() {
+    public static MainViewModel getInstance() {
         return instance;
     }
 
@@ -178,17 +170,6 @@ public class ProjectViewModel implements WeekHomeworkClick, HomeworkAddDialog.Ad
             homework.setPlanDate(DateHelper.getToday());
             dataServer.put(homework);
         }
-    }
-
-    @Override
-    public void showDetail(View view, Homework homework) {
-        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
-        ViewDataBinding binding = DataBindingUtil.inflate(((Activity) mContext).getLayoutInflater(),
-                R.layout.dialog_homework, (ViewGroup) view.findViewById(R.id.dialog), false);
-        dialog.setView(binding.getRoot());
-        binding.setVariable(BR.handler, this);
-        binding.setVariable(BR.homework, homework);
-        dialog.show();
     }
 
     @Override

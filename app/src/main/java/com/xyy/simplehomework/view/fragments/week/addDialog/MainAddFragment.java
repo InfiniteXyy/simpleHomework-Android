@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.view.fragments.week.AddDialog;
+package com.xyy.simplehomework.view.fragments.week.addDialog;
 
 
 import android.os.Bundle;
@@ -16,9 +16,9 @@ import com.xyy.simplehomework.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddMainFragment extends Fragment {
+public class MainAddFragment extends Fragment {
 
-    public AddMainFragment() {
+    public MainAddFragment() {
         // Required empty public constructor
     }
 
@@ -35,7 +35,7 @@ public class AddMainFragment extends Fragment {
         ArrayAdapter<String> arrayAdapter =
                 new ArrayAdapter<String>(getContext(),
                         android.R.layout.simple_spinner_item,
-                        new String[] {"计算机系统", "计算机网络"});
+                        new String[]{"计算机系统", "计算机网络"});
         arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
 
         spinner.setAdapter(arrayAdapter);

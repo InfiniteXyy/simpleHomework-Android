@@ -19,10 +19,10 @@ import com.xyy.simplehomework.view.fragments.HomeFragment;
 import com.xyy.simplehomework.view.fragments.day.DayFragment;
 import com.xyy.simplehomework.view.fragments.semester.SemesterFragment;
 import com.xyy.simplehomework.view.fragments.week.WeekFragment;
-import com.xyy.simplehomework.viewmodel.ProjectViewModel;
+import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    public ProjectViewModel viewModel;
+    public MainViewModel viewModel;
     private Fragment lastFragment = new Fragment();
     private DrawerLayout drawerLayout;
 
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         // set up view model
-        viewModel = new ProjectViewModel(this);
+        viewModel = new MainViewModel(this);
 
         // set up view
         setUpView();

@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.view.fragments.week.AddDialog;
+package com.xyy.simplehomework.view.fragments.week.addDialog;
 
 
 import android.os.Bundle;
@@ -12,13 +12,12 @@ import com.xyy.simplehomework.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddSecondFragment extends Fragment {
+public class SecondPageFragment extends Fragment {
 
 
-    public AddSecondFragment() {
+    public SecondPageFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

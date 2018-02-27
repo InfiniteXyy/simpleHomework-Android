@@ -10,22 +10,16 @@
         <variable
             name="homework"
             type="com.xyy.simplehomework.entity.Homework" />
-
-        <variable
-            name="handler"
-            type="com.xyy.simplehomework.view.fragments.week.WeekHomeworkClick" />
-
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="72dp"
-        android:padding="16dp"
         android:background="?android:attr/selectableItemBackground"
-        android:onClick="@{(view) -> handler.showDetail(view, homework)}"
         android:clickable="true"
         android:focusable="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/circle"
@@ -37,55 +31,57 @@
             android:textSize="20sp" />
 
         <LinearLayout
-            android:layout_toRightOf="@id/circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
+            android:layout_toRightOf="@id/circle"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="计算机网络"
                 android:maxLines="1"
                 android:text="@{homework.title}"
                 android:textColor="@color/textDarkPrimary"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="计算机网络" />
 
             <TextView
-                tools:text="截止时间：明天"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text='@{"截止时间：" + homework.getDeadline()}'
                 android:textColor="@color/textDarkSecondary"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:text="截止时间：明天" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:visibility="@{homework.planDate == null ? View.GONE : View.VISIBLE}"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:orientation="horizontal"
+            android:visibility="@{homework.planDate == null ? View.GONE : View.VISIBLE}"
             tools:ignore="UseCompoundDrawables">
+
             <TextView
-                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="今天"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:text='@{homework.planDate ?? "未设置"}'
                 android:textColor="@color/textDarkSecondary"
                 android:textSize="13sp"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp" />
+                tools:text="今天" />
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_alarm_black_24px"/>
+                app:srcCompat="@drawable/ic_alarm_black_24px" />
         </LinearLayout>
 
     </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.xyy.simplehomework.view.fragments.week;
 
+import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,34 +19,27 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.view.App;
 
 import java.util.List;
 
 public class SubjectFragment extends Fragment {
-    private static final String WEEK_ID = "week_id";
-    private long week_id;
-    private List<MySubject> subjectList;
     private View headerView;
+    private WeekUIInteraction mListener;
 
     public SubjectFragment() {
     }
 
     public static SubjectFragment newInstance(long id) {
-        SubjectFragment fragment = new SubjectFragment();
-        Bundle args = new Bundle();
-        args.putLong(WEEK_ID, id);
-        fragment.setArguments(args);
-        return fragment;
+        return new SubjectFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        if (getArguments() != null) {
-            week_id = getArguments().getLong(WEEK_ID);
-            subjectList = App.getInstance().getBoxStore().boxFor(MySubject.class).getAll();
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof WeekUIInteraction) {
+            mListener = (WeekUIInteraction) getParentFragment();
+        } else {
+            throw new RuntimeException("Parent fragment must implement WeekUIInteraction");
         }
     }
 
@@ -59,24 +53,24 @@ public class SubjectFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        // first set subject recycler
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        SubjectAdapter adapter = new SubjectAdapter(R.layout.item_subject, subjectList);
-        // set spinner
+        SubjectAdapter adapter = new SubjectAdapter(R.layout.item_subject, mListener.getViewModel().getSubjectList());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // second, set spinner
         AppCompatSpinner spinner = headerView.findViewById(R.id.spinner);
         TextView btn = headerView.findViewById(R.id.button);
         btn.setText("管理");
-        // context, the layout of title, TextView ID, and array Res
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 getContext(),
                 R.layout.spinner_item_text,
                 getResources().getStringArray(R.array.week_subject_show_type));
         arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
+
         adapter.addHeaderView(headerView);
-
-
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
 

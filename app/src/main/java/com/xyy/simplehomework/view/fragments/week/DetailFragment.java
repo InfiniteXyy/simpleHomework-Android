@@ -1,6 +1,9 @@
 package com.xyy.simplehomework.view.fragments.week;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,27 +17,31 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
+import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.viewmodel.ProjectViewModel;
+import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
+
+import java.util.List;
 
 /**
  * Created by xyy on 2018/2/22.
  */
 
 public class DetailFragment extends Fragment {
-    private ProjectViewModel viewModel;
-    private OnWeekFragmentChange mListener;
+    private WeekUIInteraction mListener;
     private View headerView;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         // check if parent Fragment implements listener
-        if (getParentFragment() instanceof OnWeekFragmentChange) {
-            mListener = (OnWeekFragmentChange) getParentFragment();
+        if (getParentFragment() instanceof WeekUIInteraction) {
+            mListener = (WeekUIInteraction) getParentFragment();
         } else {
-            throw new RuntimeException("The parent fragment must implement OnWeekFragmentChange");
+            throw new RuntimeException("The parent fragment must implement WeekUIInteraction");
         }
     }
 
@@ -47,17 +54,25 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = ProjectViewModel.getInstance();
+        ViewModel viewModel = mListener.getViewModel();
 
-        // set main recyclerView
+        // first, set main recyclerView
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
-        WeekAdapter adapter = new WeekAdapter(R.layout.item_homework_detail, viewModel.getHomeworkThisWeek(), viewModel);
+        WeekHomeworkAdapter adapter = new WeekHomeworkAdapter(R.layout.item_homework_detail,
+                viewModel.getHomeworkList());
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                mListener.onClickHomework((Homework) adapter.getItem(position));
+            }
+        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         weekRecyclerView.setLayoutManager(layoutManager);
         weekRecyclerView.setAdapter(adapter);
 
-        // set small subject view
-        WeekHeaderAdapter subjectHeaderAdapter = new WeekHeaderAdapter(R.layout.item_project, viewModel.getSubjectsThisWeek());
+        // second, set small subject view on the top
+        WeekHeaderAdapter subjectHeaderAdapter = new WeekHeaderAdapter(R.layout.item_project,
+                viewModel.getSubjectList());
 
         final RecyclerView headerRecycler = view.findViewById(R.id.subject_recycler_view);
         headerRecycler.setAdapter(subjectHeaderAdapter);
@@ -74,9 +89,11 @@ public class DetailFragment extends Fragment {
             }
         });
 
-        // add spinner
+        // finally, add spinner to the main recycler
         AppCompatSpinner spinner = headerView.findViewById(R.id.spinner);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_item_text, getResources().getStringArray(R.array.week_homework_show_type));
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(),
+                R.layout.spinner_item_text,
+                getResources().getStringArray(R.array.week_homework_show_type));
         arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
         headerView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
@@ -86,6 +103,47 @@ public class DetailFragment extends Fragment {
             }
         });
         adapter.addHeaderView(headerView);
+    }
+
+
+    public static class WeekHomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {
+        public WeekHomeworkAdapter(int layoutResId, @Nullable List<Homework> data) {
+            super(layoutResId, data);
+        }
+
+        @Override
+        protected void convert(BaseDataBindingHolder helper, Homework item) {
+            ViewDataBinding binding = helper.getBinding();
+            binding.setVariable(BR.homework, item);
+            // prepare UI before show
+            binding.executePendingBindings();
+            GradientDrawable circle = (GradientDrawable) helper.getView(R.id.circle).getBackground();
+            circle.setColor(item.subject.getTarget().color);
+        }
+
+        @Override
+        protected View getItemView(int layoutResId, ViewGroup parent) {
+            ViewDataBinding binding = DataBindingUtil.inflate(mLayoutInflater, layoutResId, parent, false);
+            if (binding == null) {
+                return super.getItemView(layoutResId, parent);
+            }
+            View view = binding.getRoot();
+            view.setTag(R.id.BaseQuickAdapter_databinding_support, binding);
+            return view;
+        }
+    }
+
+    public static class WeekHeaderAdapter extends BaseQuickAdapter<MySubject, BaseViewHolder> {
+        public WeekHeaderAdapter(int layoutResId, @Nullable List<MySubject> data) {
+            super(layoutResId, data);
+        }
+
+        @Override
+        protected void convert(BaseViewHolder helper, MySubject item) {
+            GradientDrawable circle = (GradientDrawable) helper.getView(R.id.circle).getBackground();
+            circle.setColor(item.color);
+            helper.setText(R.id.circle, item.getName().substring(0, 1));
+        }
     }
 
 

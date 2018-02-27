@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.view.fragments.week.AddDialog;
+package com.xyy.simplehomework.view.fragments.week.addDialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.viewmodel.ProjectViewModel;
+import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -25,8 +25,8 @@ import me.relex.circleindicator.CircleIndicator;
 public class HomeworkAddDialog extends DialogFragment {
     private static final String TAG = "HomeworkAddDialog";
     private AddDialogInteraction mListener;
+
     public HomeworkAddDialog() {
-        // Required empty public constructor
         setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle);
     }
 
@@ -73,8 +73,8 @@ public class HomeworkAddDialog extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (ProjectViewModel.getInstance() instanceof AddDialogInteraction) {
-            mListener = ProjectViewModel.getInstance();
+        if (MainViewModel.getInstance() instanceof AddDialogInteraction) {
+            mListener = MainViewModel.getInstance();
         } else {
             throw new RuntimeException("The parent fragment must implement AddDialogInteraction");
         }
@@ -100,8 +100,8 @@ public class HomeworkAddDialog extends DialogFragment {
     }
 
     private enum AddFragments {
-        main(AddMainFragment.class),
-        second(AddSecondFragment.class);
+        main(MainAddFragment.class),
+        second(SecondPageFragment.class);
         private final Class<? extends Fragment> clazz;
         private Fragment fragment;
 

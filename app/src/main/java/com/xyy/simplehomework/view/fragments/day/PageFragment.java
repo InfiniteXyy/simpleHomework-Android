@@ -18,7 +18,7 @@ import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.helper.DateHelper;
 import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
-import com.xyy.simplehomework.viewmodel.ProjectViewModel;
+import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 import java.util.Date;
 import java.util.List;
@@ -65,7 +65,7 @@ public class PageFragment extends Fragment {
     }
 
     private List<Homework> getData() {
-        return ProjectViewModel.getInstance().getHomework(this);
+        return MainViewModel.getInstance().getHomework(this);
     }
 
     public Date getDate() {

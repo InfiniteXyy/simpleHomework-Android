@@ -69,7 +69,6 @@ public class SubjectFragment extends Fragment {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 getContext(),
                 R.layout.spinner_item_text,
-                R.id.textView,
                 getResources().getStringArray(R.array.week_subject_show_type));
         arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);

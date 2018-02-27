@@ -25,7 +25,6 @@ dependencies {
     compile 'com.roughike:bottom-bar:2.3.1'
     compile 'com.balysv.materialmenu:material-menu:2.0.0'
     compile 'me.relex:circleindicator:1.2.2@aar'
-
     debugImplementation "io.objectbox:objectbox-android-objectbrowser:$objectboxVersion"
     releaseImplementation "io.objectbox:objectbox-android:$objectboxVersion"
 }
@@ -33,7 +32,7 @@ dependencies {
 apply plugin: 'io.objectbox'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 26
     defaultConfig {
         applicationId "com.xyy.simplehomework"
         minSdkVersion 15

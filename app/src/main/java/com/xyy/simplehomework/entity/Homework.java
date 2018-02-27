@@ -66,7 +66,7 @@ public class Homework extends BaseObservable {
     }
 
     public String getDeadline() {
-        return new SimpleDateFormat("M.d").format(deadline);
+        return new SimpleDateFormat("截止时间：M.d").format(deadline);
     }
 
 }

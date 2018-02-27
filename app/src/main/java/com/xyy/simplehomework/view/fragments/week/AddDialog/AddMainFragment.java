@@ -4,16 +4,14 @@ package com.xyy.simplehomework.view.fragments.week.AddDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
 
-import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.view.helper.DateHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,21 +31,15 @@ public class AddMainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView title = view.findViewById(R.id.title);
-        TextView subTitle = view.findViewById(R.id.subtitle);
-        title.setText(((HomeworkAddDialog) getParentFragment()).getTitle());
-        subTitle.setText(DateHelper.getWeekTitle());
-        TextInputEditText editText = view.findViewById(R.id.dateSetter);
-        editText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new SingleDateAndTimePickerDialog.Builder(getContext())
-                        .bottomSheet()
-                        .curved()
-                        .build()
-                        .display();
-            }
-        });
+        AppCompatSpinner spinner = view.findViewById(R.id.spinner);
+        ArrayAdapter<String> arrayAdapter =
+                new ArrayAdapter<String>(getContext(),
+                        android.R.layout.simple_spinner_item,
+                        new String[] {"计算机系统", "计算机网络"});
+        arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
+
+        spinner.setAdapter(arrayAdapter);
+
     }
 
 

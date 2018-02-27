@@ -8,30 +8,52 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:layout_width="wrap_content"
-            android:layout_height="200dp">
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/close"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="@drawable/ic_close_black_24px"
-                app:layout_collapseMode="pin"/>
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/ic_photo_camera_white_24px"/>
-
-        </android.support.design.widget.CollapsingToolbarLayout>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:navigationIcon="@drawable/ic_close_black_24px">
+            <TextView
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_gravity="right"
+                android:layout_marginRight="16dp"
+                android:text="SAVE" />
+        </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
+    <LinearLayout
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/view_page"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v4.view.ViewPager>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <FrameLayout
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#FAFAFA">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/shadow" />
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_photo_camera_white_24px" />
+        </FrameLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
 
     <me.relex.circleindicator.CircleIndicator
         android:id="@+id/indicator"

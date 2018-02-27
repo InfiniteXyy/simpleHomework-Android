@@ -87,4 +87,6 @@ public class DetailFragment extends Fragment {
         });
         adapter.addHeaderView(headerView);
     }
+
+
 }

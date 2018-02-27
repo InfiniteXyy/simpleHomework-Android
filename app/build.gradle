@@ -20,7 +20,7 @@ dependencies {
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4-7'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
     //compile 'com.wdullaer:materialdatetimepicker:3.5.1'
-    compile 'com.github.florent37:singledateandtimepicker:1.2.0'
+    // compile 'com.github.florent37:singledateandtimepicker:1.2.0'
     compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.roughike:bottom-bar:2.3.1'
     compile 'com.balysv.materialmenu:material-menu:2.0.0'
@@ -32,7 +32,7 @@ dependencies {
 apply plugin: 'io.objectbox'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.xyy.simplehomework"
         minSdkVersion 15

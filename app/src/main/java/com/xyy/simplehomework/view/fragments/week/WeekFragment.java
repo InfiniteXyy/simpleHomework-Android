@@ -15,10 +15,14 @@ import android.view.ViewGroup;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.SubjectActivity;
 import com.xyy.simplehomework.view.fragments.week.AddDialog.HomeworkAddDialog;
 import com.xyy.simplehomework.view.helper.DateHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by xyy on 2018/1/27.
@@ -33,6 +37,7 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange, View
     private SubjectFragment subjectFragment;
     private DetailFragment detailFragment;
     private Context mContext;
+    private List<MySubject> subjects;
 
     @Override
     public void onAttach(Context context) {
@@ -90,6 +95,21 @@ public class WeekFragment extends Fragment implements OnWeekFragmentChange, View
         pageStatus = SUBJECT_PAGE;
         toolbar.setTitle("科目列表");
         menuDrawable.animateIconState(MaterialMenuDrawable.IconState.ARROW);
+    }
+
+    public List<MySubject> getSubjectList() {
+        if (subjects == null) {
+            subjects = App.getInstance().getBoxStore().boxFor(MySubject.class).getAll();
+        }
+        return subjects;
+    }
+
+    public List<String> getSubjectNameList() {
+        List<String> name = new ArrayList<>();
+        for (MySubject subject : subjects) {
+            name.add(subject.getName());
+        }
+        return name;
     }
 
     @Override

@@ -18,7 +18,7 @@ import com.xyy.simplehomework.entity.Homework;
 public class MainDetailDialog extends DialogFragment {
 
     public MainDetailDialog() {
-        setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_Dialog);
+        setStyle(STYLE_NORMAL, R.style.InfoDialog);
     }
 
     public static MainDetailDialog newInstance(Homework homework) {

@@ -47,5 +47,8 @@ public class MySubject extends BaseObservable {
         this.name = name;
         notifyPropertyChanged(BR.name);
     }
+    public String toString() {
+        return name;
+    }
 }
 

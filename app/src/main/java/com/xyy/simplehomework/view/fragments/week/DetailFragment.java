@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,7 @@ public class DetailFragment extends Fragment {
 
         // first, set main recyclerView
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
-        WeekHomeworkAdapter adapter = new WeekHomeworkAdapter(R.layout.item_homework_detail,
+        final WeekHomeworkAdapter adapter = new WeekHomeworkAdapter(R.layout.item_homework_detail,
                 viewModel.getHomeworkList());
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -66,6 +67,13 @@ public class DetailFragment extends Fragment {
                 mListener.onClickHomework((Homework) adapter.getItem(position));
             }
         });
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                //TODO:不知道为什么可以，有内存泄露风险
+            }
+        }, weekRecyclerView);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         weekRecyclerView.setLayoutManager(layoutManager);
         weekRecyclerView.setAdapter(adapter);
@@ -104,7 +112,6 @@ public class DetailFragment extends Fragment {
         });
         adapter.addHeaderView(headerView);
     }
-
 
     public static class WeekHomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {
         public WeekHomeworkAdapter(int layoutResId, @Nullable List<Homework> data) {

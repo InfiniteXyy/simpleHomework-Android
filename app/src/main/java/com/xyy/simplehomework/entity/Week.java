@@ -17,5 +17,5 @@ public class Week {
     @Backlink
     public ToMany<Homework> homeworks;
     @Id
-    long id;
+    public long id;
 }

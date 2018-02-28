@@ -85,6 +85,8 @@ public class MainViewModel {
         return dayMap.get(pf);
     }
 
+    public Week getWeek() {return week;}
+
     private Week getThisWeek(Semester semester) {
         int weekIndex = DateHelper.getTimeBetween(semester.startDate, new Date(), DateHelper.WEEK);
         for (Week week : semester.weeks) {

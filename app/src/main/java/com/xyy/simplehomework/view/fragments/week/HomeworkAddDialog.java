@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.databinding.DialogHomeworkAddBinding;
 import com.xyy.simplehomework.entity.Homework;
+import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 
@@ -53,11 +55,11 @@ public class HomeworkAddDialog extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         // first, set spinner
-        AppCompatSpinner spinner = view.findViewById(R.id.spinner);
-        ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<String>(getContext(),
+        final AppCompatSpinner spinner = view.findViewById(R.id.spinner);
+        ArrayAdapter<MySubject> arrayAdapter =
+                new ArrayAdapter<MySubject>(getContext(),
                         android.R.layout.simple_spinner_item,
-                        mListener.getViewModel().getSubjectNameList());
+                        mListener.getViewModel().getSubjectList());
         arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
 
@@ -85,13 +87,11 @@ public class HomeworkAddDialog extends DialogFragment {
         view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                homework.subject.setTarget((MySubject) spinner.getSelectedItem());
                 mListener.getViewModel().putHomework(homework);
                 dismiss();
             }
         });
-
-
         super.onViewCreated(view, savedInstanceState);
     }
-
 }

@@ -1,10 +1,15 @@
 package com.xyy.simplehomework.view.fragments.week;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.entity.Week;
+import com.xyy.simplehomework.entity.Week_;
 import com.xyy.simplehomework.view.App;
+import com.xyy.simplehomework.view.MainActivity;
+import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +21,10 @@ import io.objectbox.BoxStore;
  */
 
 class ViewModel {
-    private Context mContext;
     private BoxStore boxStore;
     private List<Homework> homeworkList;
     private List<MySubject> subjectList;
+    private Week week;
 
     ViewModel(Context context) {
         // first, get reference of ObjectBox
@@ -27,8 +32,14 @@ class ViewModel {
 
         // TODO: should only get homework and subject This Week (Use DateHelper)
         // second, get needed List (Homework and Subjects of this week)
-        homeworkList = boxStore.boxFor(Homework.class).getAll();
+        week = ((MainActivity) context).viewModel.getWeek();
+
+        homeworkList = week.homeworks;
         subjectList = boxStore.boxFor(MySubject.class).getAll();
+    }
+
+    long getWeekId() {
+        return week.id;
     }
 
     List<Homework> getHomeworkList() {
@@ -39,15 +50,8 @@ class ViewModel {
         return subjectList;
     }
 
-    List<String> getSubjectNameList() {
-        List<String> nameList = new ArrayList<>();
-        for (MySubject subject : subjectList) {
-            nameList.add(subject.getName());
-        }
-        return nameList;
-    }
-
     void putHomework(Homework homework) {
-        boxStore.boxFor(Homework.class).put(homework);
+        week.homeworks.add(homework);
+        week.homeworks.applyChangesToDb();
     }
 }

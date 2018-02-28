@@ -5,8 +5,6 @@ import android.content.Context;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.App;
-import com.xyy.simplehomework.view.MainActivity;
-import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

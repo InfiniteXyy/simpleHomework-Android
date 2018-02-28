@@ -1,33 +1,24 @@
 package com.xyy.simplehomework.view.fragments.week;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.databinding.DialogHomeworkAddBinding;
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.view.fragments.week.WeekUIInteraction;
-import com.xyy.simplehomework.viewmodel.MainViewModel;
-
-import org.w3c.dom.Text;
-
-import me.relex.circleindicator.CircleIndicator;
+import com.xyy.simplehomework.view.helper.DateHelper;
 
 
 public class HomeworkAddDialog extends DialogFragment {
@@ -54,7 +45,6 @@ public class HomeworkAddDialog extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         DialogHomeworkAddBinding binding = DialogHomeworkAddBinding.inflate(inflater, container, false);
-        // TODO: add homework logic
         homework = new Homework();
         binding.setHomework(homework);
         return binding.getRoot();
@@ -71,7 +61,19 @@ public class HomeworkAddDialog extends DialogFragment {
         arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
 
-        // second, set toolbar listener
+        // second, set DatePicker
+        final MaterialCalendarView calendarView = view.findViewById(R.id.calendarView);
+        calendarView.state().edit()
+                .setMinimumDate(DateHelper.date)
+                .commit();
+        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                homework.setDeadline(date.getDate());
+            }
+        });
+
+        // finally, set toolbar listener
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +90,8 @@ public class HomeworkAddDialog extends DialogFragment {
             }
         });
 
+
         super.onViewCreated(view, savedInstanceState);
     }
+
 }

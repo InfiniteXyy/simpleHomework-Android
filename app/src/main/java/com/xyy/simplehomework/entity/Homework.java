@@ -41,6 +41,7 @@ public class Homework extends BaseObservable {
     }
 
     public Homework() {
+        status = NOT_FINISHED;
     }
 
     public void setFinished() {
@@ -65,8 +66,17 @@ public class Homework extends BaseObservable {
         notifyPropertyChanged(BR.planDate);
     }
 
+    @Bindable
     public String getDeadline() {
+        if (deadline == null) {
+            return "截止时间";
+        }
         return new SimpleDateFormat("截止时间：M.d").format(deadline);
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
+        notifyPropertyChanged(BR.deadline);
     }
 
     public String getTitle() {
@@ -83,9 +93,5 @@ public class Homework extends BaseObservable {
 
     public void setDetail(String detail) {
         this.detail = detail;
-    }
-
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
     }
 }

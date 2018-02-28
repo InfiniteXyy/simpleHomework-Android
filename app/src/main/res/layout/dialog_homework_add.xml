@@ -36,83 +36,104 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_marginTop="?attr/actionBarSize">
-
-        <FrameLayout
-            android:id="@+id/img"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="#FAFAFA">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/shadow" />
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/ic_photo_camera_white_24px" />
-        </FrameLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="72dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="8dp"
-                android:background="@color/dividerColor" />
-
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp" />
-        </RelativeLayout>
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-            <android.support.design.widget.TextInputEditText
+            android:orientation="vertical">
+            <FrameLayout
+                android:id="@+id/img"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@={homework.title}"
-                android:hint="@string/title" />
+                android:layout_height="200dp"
+                android:background="#FAFAFA">
 
-            <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@={homework.detail}"
-                android:hint="@string/content" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/shadow" />
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/dateSetter"
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_photo_camera_white_24px" />
+            </FrameLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:hint="截止时间" />
+                android:layout_height="72dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/dividerColor" />
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp" />
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@={homework.title}" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:hint="@string/content">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@={homework.title}" />
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="16dp"
+                    android:textColor="@color/textDarkSecondary"
+                    android:text="@{homework.deadline}"/>
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/calendarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:mcv_showOtherDates="all"
+                    app:mcv_selectionColor="@color/colorPrimary"
+                    />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+
+    </ScrollView>
 
     <me.relex.circleindicator.CircleIndicator
         android:id="@+id/indicator"

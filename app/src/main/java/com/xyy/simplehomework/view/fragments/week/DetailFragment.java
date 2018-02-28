@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +33,7 @@ import java.util.List;
 public class DetailFragment extends Fragment {
     private WeekUIInteraction mListener;
     private View headerView;
+    private WeekHomeworkAdapter adapter;
 
     @Override
     public void onAttach(Context context) {
@@ -59,7 +59,7 @@ public class DetailFragment extends Fragment {
 
         // first, set main recyclerView
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
-        final WeekHomeworkAdapter adapter = new WeekHomeworkAdapter(R.layout.item_homework_detail,
+        adapter = new WeekHomeworkAdapter(R.layout.item_homework_detail,
                 viewModel.getHomeworkList());
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -67,12 +67,6 @@ public class DetailFragment extends Fragment {
                 mListener.onClickHomework((Homework) adapter.getItem(position));
             }
         });
-        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                //TODO:不知道为什么可以，有内存泄露风险
-            }
-        }, weekRecyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         weekRecyclerView.setLayoutManager(layoutManager);
@@ -111,6 +105,10 @@ public class DetailFragment extends Fragment {
             }
         });
         adapter.addHeaderView(headerView);
+    }
+
+    public void notifyDataSetChange() {
+       adapter.notifyDataSetChanged();
     }
 
     public static class WeekHomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {

@@ -81,4 +81,6 @@ public class DateHelper {
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
     }
+
+    public static String getDayPassFormat(Date dateb) {return "";}
 }

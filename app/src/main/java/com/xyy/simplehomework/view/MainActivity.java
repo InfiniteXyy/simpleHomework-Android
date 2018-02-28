@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         for (TabFragment fragment : TabFragment.values()) {
-            transaction.add(R.id.mainFragment, fragment.getFragment())
+            transaction.add(R.id.mainFragment, fragment.getFragment(), WeekFragment.TAG)
                     .hide(fragment.getFragment());
         }
         transaction.commit();

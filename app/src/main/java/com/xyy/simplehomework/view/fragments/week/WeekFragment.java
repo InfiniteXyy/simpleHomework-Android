@@ -25,6 +25,7 @@ import com.xyy.simplehomework.view.helper.DateHelper;
  */
 
 public class WeekFragment extends Fragment implements WeekUIInteraction {
+    public static final String TAG = "WeekFragment";
     private static final int WEEK_PAGE = 0;
     private static final int SUBJECT_PAGE = 1;
     private static MaterialMenuDrawable menuDrawable;
@@ -73,6 +74,11 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         detailFragment = new DetailFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_week, detailFragment).commit();
+    }
+
+    @Override
+    public void updateUI() {
+        detailFragment.notifyDataSetChange();
     }
 
     @Override

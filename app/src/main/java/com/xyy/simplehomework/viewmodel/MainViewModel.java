@@ -11,7 +11,6 @@ import com.xyy.simplehomework.entity.Week;
 import com.xyy.simplehomework.model.DataServer;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.fragments.day.PageFragment;
-import com.xyy.simplehomework.view.fragments.week.addDialog.HomeworkAddDialog;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.ArrayList;
@@ -27,14 +26,13 @@ import io.objectbox.query.Query;
  * Created by xyy on 2018/2/5.
  */
 
-public class MainViewModel implements HomeworkAddDialog.AddDialogInteraction {
+public class MainViewModel {
     private static MainViewModel instance;
     Week week;
     Semester semester;
     private DataServer dataServer;
     private Context mContext;
     private BoxStore boxStore;
-    private Homework onChangingHomework;
     private Map<PageFragment, List<Homework>> dayMap;
 
     public MainViewModel(Context context) {
@@ -112,30 +110,6 @@ public class MainViewModel implements HomeworkAddDialog.AddDialogInteraction {
         return semester;
     }
 
-
-    public void setCurrentHomework(Homework homework) {
-        onChangingHomework = homework;
-    }
-
-    public void finishHomework() {
-        onChangingHomework.setFinished();
-    }
-
-//    @Override
-//    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-//        onChangingHomework.setPlanDate(new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime());
-//        dataServer.put(onChangingHomework);
-//        updateDayView();
-//    }
-
-    private void updateDayView() {
-        for (PageFragment fragment : dayMap.keySet()) {
-            List<Homework> temp = boxStore.boxFor(Homework.class).query().equal(Homework_.planDate, fragment.getDate()).build().find();
-            fragment.updateAdapter(temp);
-        }
-    }
-
-
     private void useDemo(Week week, Semester semester) {
         Semester thisSemester = getThisSemester();
 
@@ -172,9 +146,4 @@ public class MainViewModel implements HomeworkAddDialog.AddDialogInteraction {
         }
     }
 
-    @Override
-    public void addHomework(Homework homework) {
-        dataServer.put(homework);
-        week.homeworks.add(homework);
-    }
 }

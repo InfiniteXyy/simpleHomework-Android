@@ -18,8 +18,6 @@ import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.SubjectActivity;
-import com.xyy.simplehomework.view.fragments.week.addDialog.HomeworkAddDialog;
-import com.xyy.simplehomework.view.fragments.week.detailDialog.MainDetailDialog;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 /**

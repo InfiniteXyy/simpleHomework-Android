@@ -69,4 +69,23 @@ public class Homework extends BaseObservable {
         return new SimpleDateFormat("截止时间：M.d").format(deadline);
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
+    }
 }

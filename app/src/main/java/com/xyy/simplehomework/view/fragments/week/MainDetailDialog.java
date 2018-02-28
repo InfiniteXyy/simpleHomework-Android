@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.view.fragments.week.detailDialog;
+package com.xyy.simplehomework.view.fragments.week;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

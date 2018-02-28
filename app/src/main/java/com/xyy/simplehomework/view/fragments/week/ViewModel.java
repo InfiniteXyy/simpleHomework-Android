@@ -5,6 +5,8 @@ import android.content.Context;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.App;
+import com.xyy.simplehomework.view.MainActivity;
+import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +24,6 @@ class ViewModel {
     private List<MySubject> subjectList;
 
     ViewModel(Context context) {
-        mContext = context;
-
         // first, get reference of ObjectBox
         boxStore = App.getInstance().getBoxStore();
 
@@ -47,5 +47,9 @@ class ViewModel {
             nameList.add(subject.getName());
         }
         return nameList;
+    }
+
+    void putHomework(Homework homework) {
+        boxStore.boxFor(Homework.class).put(homework);
     }
 }

@@ -1,9 +1,16 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.xyy.simplehomework.view.fragments.week.addDialog.HomeworkAddDialog">
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="homework"
+            type="com.xyy.simplehomework.entity.Homework" />
+    </data>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -24,7 +31,8 @@
                 android:layout_marginRight="16dp"
                 android:text="SAVE"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:layout_marginEnd="16dp" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
@@ -32,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_marginTop="?attr/actionBarSize">
 
         <FrameLayout
             android:id="@+id/img"
@@ -53,12 +61,58 @@
                 app:srcCompat="@drawable/ic_photo_camera_white_24px" />
         </FrameLayout>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_page"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+            android:layout_height="72dp">
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="8dp"
+                android:background="@color/dividerColor" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@={homework.title}"
+                android:hint="@string/title" />
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@={homework.detail}"
+                android:hint="@string/content" />
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/dateSetter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="截止时间" />
+        </LinearLayout>
+    </LinearLayout>
 
     <me.relex.circleindicator.CircleIndicator
         android:id="@+id/indicator"
@@ -72,4 +126,7 @@
         app:ci_margin="6dp"
         app:ci_width="10dp" />
 
-</android.support.design.widget.CoordinatorLayout>
+    </FrameLayout>
+</layout>
+
+

@@ -137,4 +137,6 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         detailFragment = null;
         viewModel = null;
     }
+
+
 }

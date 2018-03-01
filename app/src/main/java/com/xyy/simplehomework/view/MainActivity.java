@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.view.fragments.HomeFragment;
+import com.xyy.simplehomework.view.fragments.home.HomeFragment;
 import com.xyy.simplehomework.view.fragments.day.DayFragment;
 import com.xyy.simplehomework.view.fragments.semester.SemesterFragment;
 import com.xyy.simplehomework.view.fragments.week.WeekFragment;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         for (TabFragment fragment : TabFragment.values()) {
-            transaction.add(R.id.mainFragment, fragment.getFragment(), WeekFragment.TAG)
+            transaction.add(R.id.mainFragment, fragment.getFragment(), fragment.getTag())
                     .hide(fragment.getFragment());
         }
         transaction.commit();
@@ -94,18 +94,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private enum TabFragment {
-        home(R.id.home, HomeFragment.class),
-        day(R.id.day, DayFragment.class),
-        week(R.id.week, WeekFragment.class),
-        semester(R.id.month, SemesterFragment.class);
+        home(R.id.home, HomeFragment.class, "HomeFragment"),
+        day(R.id.day, DayFragment.class, "DayFragment"),
+        week(R.id.week, WeekFragment.class, "WeekFragment"),
+        semester(R.id.month, SemesterFragment.class, "SemesterFragment");
 
         private final int menuId;
         private final Class<? extends Fragment> clazz;
+        private final String tag;
         private Fragment fragment;
 
-        TabFragment(@IdRes int menuId, Class<? extends Fragment> clazz) {
+        TabFragment(@IdRes int menuId, Class<? extends Fragment> clazz, String tag) {
             this.clazz = clazz;
             this.menuId = menuId;
+            this.tag = tag;
         }
 
         public static TabFragment from(int itemId) {
@@ -133,6 +135,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
             return fragment;
+        }
+
+        public String getTag() {
+            return tag;
         }
     }
 }

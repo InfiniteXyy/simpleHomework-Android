@@ -1,6 +1,7 @@
 package com.xyy.simplehomework.view.fragments.week;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
@@ -35,10 +36,6 @@ class ViewModel {
                 .findFragmentByTag(WeekFragment.TAG);
         homeworkList = week.homeworks;
         subjectList = boxStore.boxFor(MySubject.class).getAll();
-    }
-
-    long getWeekId() {
-        return week.id;
     }
 
     List<Homework> getHomeworkList() {

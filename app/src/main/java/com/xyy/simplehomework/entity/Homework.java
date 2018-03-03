@@ -18,7 +18,7 @@ import io.objectbox.relation.ToOne;
  */
 @Entity
 public class Homework extends BaseObservable {
-    private final static SimpleDateFormat format = new SimpleDateFormat("截止时间：M.d");
+    private final static SimpleDateFormat format = new SimpleDateFormat("M.d");
     public static final int FINISHED = 0;
     public static final int NOT_FINISHED = 1;
     @Id
@@ -45,13 +45,6 @@ public class Homework extends BaseObservable {
         status = NOT_FINISHED;
     }
 
-    public void setFinished() {
-        status = FINISHED;
-    }
-
-    public boolean hasFinished() {
-        return status == FINISHED;
-    }
 
     @Bindable
     public String getPlanDate() {
@@ -70,7 +63,7 @@ public class Homework extends BaseObservable {
     @Bindable
     public String getDeadline() {
         if (deadline == null) {
-            return "截止时间";
+            return "";
         }
         return format.format(deadline);
     }

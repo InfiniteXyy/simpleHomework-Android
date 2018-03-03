@@ -39,7 +39,6 @@ public class DateHelper {
 
     public static Date afterDays(int i) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
         calendar.add(Calendar.DATE, i);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
@@ -68,13 +67,11 @@ public class DateHelper {
 
     public static int getDayOfWeek() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
         return calendar.get(Calendar.DAY_OF_WEEK) - 1;
     }
 
     public static Date getToday() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
@@ -82,5 +79,7 @@ public class DateHelper {
         return calendar.getTime();
     }
 
-    public static String getDayPassFormat(Date dateb) {return "";}
+    public static String getDayPassFormat(Date dateb) {
+        return "";
+    }
 }

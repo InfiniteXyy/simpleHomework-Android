@@ -1,142 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/dialog"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="176dp"
-            android:background="@color/dividerColor"
-            android:scaleType="centerCrop" />
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="homework"
+            type="com.xyy.simplehomework.entity.Homework" />
+    </data>
+    <FrameLayout
+        android:id="@+id/dialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <RelativeLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:paddingTop="24dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:text="完成一张卷子"
-                    android:textColor="@color/textDarkPrimary"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:id="@+id/deadline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:text="周四"
-                    android:textColor="@color/textDarkSecondary"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:layout_toLeftOf="@id/deadline"
-                    app:srcCompat="@drawable/ic_location_on_black_24px" />
-            </RelativeLayout>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text='作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试'
-                android:textColor="@color/textDarkSecondary"
-                android:textSize="14sp" />
+                android:layout_height="176dp"
+                android:background="@color/dividerColor"
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@color/dividerColor" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="设置计划"
-                    android:textColor="@color/textDarkPrimary"
-                    android:textSize="14sp" />
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
+                    android:paddingBottom="16dp"
+                    android:paddingTop="24dp">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/ic_access_time_black_24px" />
+                        android:layout_weight="3"
+                        android:text="@{homework.title}"
+                        android:textColor="@color/textDarkPrimary"
+                        android:textSize="24sp"
+                        android:maxLines="1"
+                        tools:text="完成一张卷子" />
 
-                    <Button
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="今天"
-                        android:textColor="@color/textDarkSecondary" />
+                        android:layout_weight="1">
 
-                    <Button
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="明天"
-                        android:textColor="@color/textDarkSecondary" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_toLeftOf="@id/deadline"
+                            app:srcCompat="@drawable/ic_location_on_black_24px"
+                            android:layout_toStartOf="@id/deadline" />
 
-                    <Button
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="后天"
-                        android:textColor="@color/textDarkSecondary" />
+                        <TextView
+                            android:id="@+id/deadline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_vertical"
+                            android:text="@{homework.deadline}"
+                            android:textColor="@color/textDarkSecondary"
+                            android:textSize="14sp"
+                            tools:text="周四" />
+                    </RelativeLayout>
+
                 </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="@{homework.detail}"
+                    android:textColor="@color/textDarkSecondary"
+                    android:textSize="14sp"
+                    tools:text='作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试' />
+
             </LinearLayout>
 
 
+            <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/set_plan"
+                android:textColor="@color/colorBtn" />
+
         </LinearLayout>
 
+    </FrameLayout>
+</layout>
 
-        <Button
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="立即完成"
-            android:textColor="@color/colorBtn" />
-
-    </LinearLayout>
-
-</FrameLayout>
 

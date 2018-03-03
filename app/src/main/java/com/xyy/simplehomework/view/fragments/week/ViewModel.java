@@ -1,13 +1,13 @@
 package com.xyy.simplehomework.view.fragments.week;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.entity.Week;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.MainActivity;
+import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 import java.util.List;
 
@@ -18,7 +18,6 @@ import io.objectbox.BoxStore;
  */
 
 class ViewModel {
-    private BoxStore boxStore;
     private List<Homework> homeworkList;
     private List<MySubject> subjectList;
     private Week week;
@@ -26,11 +25,11 @@ class ViewModel {
 
     ViewModel(Context context) {
         // first, get reference of ObjectBox
-        boxStore = App.getInstance().getBoxStore();
+        BoxStore boxStore = App.getInstance().getBoxStore();
 
         // TODO: should only get homework and subject This Week (Use DateHelper)
         // second, get needed List (Homework and Subjects of this week)
-        week = ((MainActivity) context).viewModel.getWeek();
+        week = MainViewModel.getInstance().getWeek();
         fragment = (WeekFragment) ((MainActivity) context)
                 .getSupportFragmentManager()
                 .findFragmentByTag(WeekFragment.TAG);

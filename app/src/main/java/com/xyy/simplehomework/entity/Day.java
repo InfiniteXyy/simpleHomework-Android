@@ -1,6 +1,7 @@
 package com.xyy.simplehomework.entity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -9,12 +10,22 @@ import java.util.List;
  */
 
 public class Day {
+    private static final String[] week = {
+            "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+    };
+    private Calendar cal;
     private Date date;
     private List<Homework> homeworkList;
 
     public Day(Date date) {
         this.date = date;
+        cal = Calendar.getInstance();
+        cal.setTime(date);
         this.homeworkList = new ArrayList<>();
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public void setHomeworkList(List<Homework> homeworkList) {
@@ -23,5 +34,13 @@ public class Day {
 
     public List<Homework> getHomeworkList() {
         return homeworkList;
+    }
+
+    public String getDayOfMonth() {
+        return String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+    }
+
+    public String getDayOfWeek() {
+        return week[cal.get(Calendar.DAY_OF_WEEK) - 1];
     }
 }

@@ -57,23 +57,6 @@ public class MainViewModel {
         return instance;
     }
 
-    public List<Homework> getHomeworkThisWeek() {
-        return week.homeworks;
-    }
-
-    public List<MySubject> getSubjectsThisWeek() {
-        int weekIndex = week.weekIndex;
-        List<MySubject> subjects = new ArrayList<>();
-        for (MySubject subject : semester.allSubjects) {
-            for (byte a : subject.availableWeeks) {
-                if (a == weekIndex) {
-                    subjects.add(subject);
-                    break;
-                }
-            }
-        }
-        return subjects;
-    }
 
     public List<Homework> getHomework(PageFragment pf) {
         if (dayMap.get(pf) == null) {
@@ -85,7 +68,9 @@ public class MainViewModel {
         return dayMap.get(pf);
     }
 
-    public Week getWeek() {return week;}
+    public Week getWeek() {
+        return week;
+    }
 
     private Week getThisWeek(Semester semester) {
         int weekIndex = DateHelper.getTimeBetween(semester.startDate, new Date(), DateHelper.WEEK);
@@ -137,6 +122,7 @@ public class MainViewModel {
                 Homework homework = new Homework(subject.getName() + "练习" + (i + 1), DateHelper.afterDays(i + 2));
                 homework.week.setTarget(week);
                 homework.subject.setTarget(subject);
+                homework.setDetail("这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情");
                 dataServer.put(homework);
             }
             i++;
@@ -144,6 +130,7 @@ public class MainViewModel {
             homework.subject.setTarget(subject);
             homework.week.setTarget(week);
             homework.setPlanDate(DateHelper.getToday());
+            homework.setDetail("这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情");
             dataServer.put(homework);
         }
     }

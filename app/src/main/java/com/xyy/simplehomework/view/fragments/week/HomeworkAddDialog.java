@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -20,6 +21,8 @@ import com.xyy.simplehomework.databinding.DialogHomeworkAddBinding;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.helper.DateHelper;
+
+import java.util.Date;
 
 
 public class HomeworkAddDialog extends DialogFragment {
@@ -67,6 +70,17 @@ public class HomeworkAddDialog extends DialogFragment {
         calendarView.state().edit()
                 .setMinimumDate(DateHelper.date)
                 .commit();
+        EditText text = view.findViewById(R.id.timeBtn);
+        text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (calendarView.getVisibility() == View.GONE)
+                    calendarView.setVisibility(View.VISIBLE);
+                else
+                    calendarView.setVisibility(View.GONE);
+            }
+        });
+        calendarView.setDateSelected(new Date(), true);
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {

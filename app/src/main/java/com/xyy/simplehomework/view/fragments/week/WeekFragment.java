@@ -2,6 +2,7 @@ package com.xyy.simplehomework.view.fragments.week;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -52,7 +53,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         // first, init toolbar
         if (menuDrawable == null) {
             menuDrawable = new MaterialMenuDrawable(getContext(),
-                    getResources().getColor(android.R.color.secondary_text_light),
+                    Color.BLACK,
                     MaterialMenuDrawable.Stroke.THIN);
         }
         toolbar = view.findViewById(R.id.toolbar);
@@ -62,7 +63,8 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
             @Override
             public void onClick(View v) {
                 if (currentPage == WEEK_PAGE) {
-                    ((MainActivity) getContext()).showDrawer();
+                    if (getContext() != null)
+                        ((MainActivity) getContext()).showDrawer();
                 } else {
                     onChangeToDetail();
                 }

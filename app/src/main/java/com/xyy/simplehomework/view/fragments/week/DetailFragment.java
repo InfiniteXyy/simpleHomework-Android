@@ -108,7 +108,7 @@ public class DetailFragment extends Fragment {
     }
 
     public void notifyDataSetChange() {
-       adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     public static class WeekHomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {

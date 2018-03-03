@@ -4,23 +4,16 @@ import android.content.Context;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.entity.Homework_;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.entity.Semester;
 import com.xyy.simplehomework.entity.Week;
 import com.xyy.simplehomework.model.DataServer;
 import com.xyy.simplehomework.view.App;
-import com.xyy.simplehomework.view.fragments.day.PageFragment;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import io.objectbox.BoxStore;
-import io.objectbox.query.Query;
 
 /**
  * Created by xyy on 2018/2/5.
@@ -28,12 +21,11 @@ import io.objectbox.query.Query;
 
 public class MainViewModel {
     private static MainViewModel instance;
-    Week week;
-    Semester semester;
+    private Week week;
+    private Semester semester;
     private DataServer dataServer;
     private Context mContext;
     private BoxStore boxStore;
-    private Map<PageFragment, List<Homework>> dayMap;
 
     public MainViewModel(Context context) {
         mContext = context;
@@ -49,7 +41,6 @@ public class MainViewModel {
         week = getThisWeek(semester);
         DateHelper.setUp(week, semester);
 
-        dayMap = new HashMap<>();
         useDemo(week, semester);
     }
 
@@ -58,15 +49,6 @@ public class MainViewModel {
     }
 
 
-    public List<Homework> getHomework(PageFragment pf) {
-        if (dayMap.get(pf) == null) {
-            List<Homework> homeworkList = new ArrayList<>();
-            Query<Homework> query = boxStore.boxFor(Homework.class).query().equal(Homework_.planDate, pf.getDate()).build();
-            homeworkList.addAll(query.find());
-            dayMap.put(pf, homeworkList);
-        }
-        return dayMap.get(pf);
-    }
 
     public Week getWeek() {
         return week;

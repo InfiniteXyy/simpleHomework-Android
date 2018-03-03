@@ -16,6 +16,7 @@ import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.view.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,26 +41,12 @@ public class SemesterFragment extends Fragment {
                 Color.BLACK,
                 MaterialMenuDrawable.Stroke.THIN
         ));
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-
-        List<String> arrays = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            arrays.add(Integer.toString(i));
-        }
-        SimpleTest test = new SimpleTest(R.layout.item_small_title, arrays);
-        recyclerView.setAdapter(test);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    }
-
-    public class SimpleTest extends BaseQuickAdapter<String, BaseViewHolder> {
-
-        public SimpleTest(int layoutResId, @Nullable List<String> data) {
-            super(layoutResId, data);
-        }
-
-        @Override
-        protected void convert(BaseViewHolder helper, String item) {
-            helper.setText(R.id.button, item);
-        }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getContext() != null)
+                    ((MainActivity) getContext()).showDrawer();
+            }
+        });
     }
 }

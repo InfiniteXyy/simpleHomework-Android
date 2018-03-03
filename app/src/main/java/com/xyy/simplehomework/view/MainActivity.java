@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.view.fragments.day.DayFragment;
 import com.xyy.simplehomework.view.fragments.home.HomeFragment;
 import com.xyy.simplehomework.view.fragments.semester.SemesterFragment;
 import com.xyy.simplehomework.view.fragments.week.WeekFragment;
@@ -42,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // init drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.day);
         navigationView.setNavigationItemSelectedListener(this);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -91,11 +89,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
         TabFragment.onDestroy();
+        lastFragment = null;
     }
 
     private enum TabFragment {
         home(R.id.home, HomeFragment.class, "HomeFragment"),
-        day(R.id.day, DayFragment.class, "DayFragment"),
         week(R.id.week, WeekFragment.class, "WeekFragment"),
         semester(R.id.month, SemesterFragment.class, "SemesterFragment");
 

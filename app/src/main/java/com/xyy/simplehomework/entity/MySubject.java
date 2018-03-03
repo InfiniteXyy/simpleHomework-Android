@@ -5,9 +5,12 @@ import android.databinding.Bindable;
 
 import com.xyy.simplehomework.BR;
 
+import java.util.List;
+
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.annotation.Transient;
 import io.objectbox.relation.ToMany;
 import io.objectbox.relation.ToOne;
 
@@ -23,6 +26,8 @@ public class MySubject extends BaseObservable {
     @Backlink
     public ToMany<Homework> homework;
     public ToOne<Semester> semester;
+    @Transient
+    private List<Homework> homeworkThisWeek;
 
     public String name;
     public int color;
@@ -50,6 +55,10 @@ public class MySubject extends BaseObservable {
 
     public String toString() {
         return name;
+    }
+
+    public List<Homework> getHomeworkThisWeek() {
+        return homeworkThisWeek;
     }
 }
 

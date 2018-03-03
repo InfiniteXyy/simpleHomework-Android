@@ -34,7 +34,10 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     private Toolbar toolbar;
     private SubjectFragment subjectFragment;
     private DetailFragment detailFragment;
+    private TextFragment textFragment;
     private ViewModel viewModel;
+    private View textBtn;
+    private View imgBtn;
 
     @Override
     public void onAttach(Context context) {
@@ -70,12 +73,39 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                 }
             }
         });
-
         // second, init child fragments
         subjectFragment = SubjectFragment.newInstance(0);
         detailFragment = new DetailFragment();
+        textFragment = new TextFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_week, detailFragment).commit();
+
+        // third, set changeBtn between textFragment and defaultFragment
+        textBtn = view.findViewById(R.id.textBtn);
+        imgBtn = view.findViewById(R.id.imgBtn);
+        textBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // change to Text mode
+                getChildFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .replace(R.id.fragment_week, textFragment)
+                        .commit();
+                imgBtn.setVisibility(View.VISIBLE);
+                textBtn.setVisibility(View.GONE);
+            }
+        });
+        imgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getChildFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .replace(R.id.fragment_week, detailFragment)
+                        .commit();
+                textBtn.setVisibility(View.VISIBLE);
+                imgBtn.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -92,6 +122,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                 .commit();
         currentPage = WEEK_PAGE;
         toolbar.setTitle(DateHelper.getWeekTitle());
+        textBtn.setVisibility(View.VISIBLE);
         menuDrawable.animateIconState(MaterialMenuDrawable.IconState.BURGER);
     }
 
@@ -107,6 +138,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                 .commit();
         currentPage = SUBJECT_PAGE;
         toolbar.setTitle("科目列表");
+        textBtn.setVisibility(View.GONE);
         menuDrawable.animateIconState(MaterialMenuDrawable.IconState.ARROW);
     }
 
@@ -137,6 +169,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         super.onDestroy();
         subjectFragment = null;
         detailFragment = null;
+        textFragment = null;
         viewModel = null;
     }
 

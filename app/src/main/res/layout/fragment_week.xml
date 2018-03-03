@@ -14,7 +14,25 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="第三周" />
+            app:title="第三周">
+            <ImageView
+                android:id="@+id/textBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_text_fields_black_24px"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp" />
+            <ImageView
+                android:id="@+id/imgBtn"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_web_black_24px"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp" />
+        </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout

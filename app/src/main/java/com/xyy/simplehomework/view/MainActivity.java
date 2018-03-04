@@ -2,17 +2,14 @@ package com.xyy.simplehomework.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.roughike.bottombar.BottomBar;
@@ -28,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Fragment lastFragment = new Fragment();
     private DrawerLayout drawerLayout;
     private BottomBar bottomBar;
-    private final static String LAST_FRAGMENT_KEY = "lastFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +62,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        for (TabFragment fragment : TabFragment.values()) {
+            if (!fragment.getFragment().isAdded())
+                transaction.add(R.id.mainFragment, fragment.getFragment(), fragment.getTag())
+                        .hide(fragment.getFragment());
+        }
+        transaction.show(lastFragment);
+        transaction.commit();
+    }
+
 
     public void showDrawer() {
         drawerLayout.openDrawer(GravityCompat.START);

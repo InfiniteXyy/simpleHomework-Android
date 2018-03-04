@@ -11,21 +11,36 @@
             name="homework"
             type="com.xyy.simplehomework.entity.Homework" />
     </data>
-    <FrameLayout
-        android:id="@+id/dialog"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <FrameLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
+            <LinearLayout
 
-            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:background="@color/dividerColor"
-                android:scaleType="centerCrop" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:background="@color/dividerColor"
+                    android:scaleType="centerCrop" />
+                <ImageView
+                    android:onClickListener="@{handler.clickClose}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_close_black_24px"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp" />
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,27 +105,17 @@
                     android:textSize="14sp"
                     tools:text='作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试作业内容测试' />
 
+                </LinearLayout>
             </LinearLayout>
-
-
-            <Button
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/set_plan"
-                android:textColor="@color/colorBtn" />
-
-        </LinearLayout>
-
-        <ImageView
-            android:onClickListener="@{handler.clickClose}"
+        </FrameLayout>
+        <Button
+            android:onClickListener="@{handler.clickSetPlan}"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_close_black_24px"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp" />
-    </FrameLayout>
+            android:text="@string/set_plan"
+            android:textColor="@color/colorBtn" />
+    </LinearLayout>
 </layout>
 
 

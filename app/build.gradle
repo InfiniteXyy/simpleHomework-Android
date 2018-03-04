@@ -20,7 +20,7 @@ dependencies {
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4-7'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
     //compile 'com.wdullaer:materialdatetimepicker:3.5.1'
-     //compile 'com.github.florent37:singledateandtimepicker:1.2.0'
+    //compile 'com.github.florent37:singledateandtimepicker:1.2.0'
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
     compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.roughike:bottom-bar:2.3.1'

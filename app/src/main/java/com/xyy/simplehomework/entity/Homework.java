@@ -42,6 +42,7 @@ public class Homework extends BaseObservable {
     }
 
     public Homework() {
+        initDate = new Date();
         status = NOT_FINISHED;
     }
 

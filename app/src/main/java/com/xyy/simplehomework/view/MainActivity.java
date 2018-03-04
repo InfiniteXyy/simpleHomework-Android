@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         lastFragment = null;
     }
 
+
     private enum TabFragment {
         home(R.id.home, HomeFragment.class, "HomeFragment"),
         week(R.id.week, WeekFragment.class, "WeekFragment"),

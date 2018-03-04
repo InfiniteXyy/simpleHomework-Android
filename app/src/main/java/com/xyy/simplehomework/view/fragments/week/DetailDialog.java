@@ -9,17 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.databinding.DialogHomeworkBinding;
+import com.xyy.simplehomework.databinding.DialogHomeworkDetailBinding;
 import com.xyy.simplehomework.entity.Homework;
 
 /**
  * Created by xyy on 2018/2/27.
  */
 
-public class MainDetailDialog extends DialogFragment {
+public class DetailDialog extends DialogFragment {
     private Homework homework;
 
-    public MainDetailDialog() {
+    public DetailDialog() {
         setStyle(STYLE_NORMAL, R.style.InfoDialog);
     }
 
@@ -27,8 +27,8 @@ public class MainDetailDialog extends DialogFragment {
         this.homework = homework;
     }
 
-    public static MainDetailDialog newInstance(Homework homework) {
-        MainDetailDialog detailDialog = new MainDetailDialog();
+    public static DetailDialog newInstance(Homework homework) {
+        DetailDialog detailDialog = new DetailDialog();
         detailDialog.setHomework(homework);
         return detailDialog;
     }
@@ -36,8 +36,9 @@ public class MainDetailDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        DialogHomeworkBinding binding = DialogHomeworkBinding.inflate(inflater, container, false);
+        DialogHomeworkDetailBinding binding = DialogHomeworkDetailBinding.inflate(inflater, container, false);
         binding.setHomework(homework);
+        binding.setHandler(this);
         return binding.getRoot();
     }
 
@@ -45,4 +46,11 @@ public class MainDetailDialog extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
+
+    public View.OnClickListener clickClose = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            dismiss();
+        }
+    };
 }

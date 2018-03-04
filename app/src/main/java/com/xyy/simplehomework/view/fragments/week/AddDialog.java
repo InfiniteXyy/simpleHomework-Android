@@ -25,12 +25,12 @@ import com.xyy.simplehomework.view.helper.DateHelper;
 import java.util.Date;
 
 
-public class HomeworkAddDialog extends DialogFragment {
-    private static final String TAG = "HomeworkAddDialog";
+public class AddDialog extends DialogFragment {
+    private static final String TAG = "AddDialog";
     private WeekUIInteraction mListener;
     private Homework homework;
 
-    public HomeworkAddDialog() {
+    public AddDialog() {
         setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle);
     }
 

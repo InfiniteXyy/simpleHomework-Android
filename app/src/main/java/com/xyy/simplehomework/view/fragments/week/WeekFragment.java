@@ -151,12 +151,12 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
 
     @Override
     public void onClickHomework(Homework homework) {
-        MainDetailDialog.newInstance(homework).show(getChildFragmentManager(), null);
+        DetailDialog.newInstance(homework).show(getChildFragmentManager(), null);
     }
 
     @Override
     public void showAddDialog() {
-        new HomeworkAddDialog().show(getChildFragmentManager(), null);
+        new AddDialog().show(getChildFragmentManager(), null);
     }
 
     @Override

@@ -5,6 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
+            name="handler"
+            type="com.xyy.simplehomework.view.fragments.week.DetailDialog"/>
+        <variable
             name="homework"
             type="com.xyy.simplehomework.entity.Homework" />
     </data>
@@ -14,13 +17,13 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="176dp"
+                android:layout_height="250dp"
                 android:background="@color/dividerColor"
                 android:scaleType="centerCrop" />
 
@@ -99,6 +102,14 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:onClickListener="@{handler.clickClose}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_close_black_24px"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp" />
     </FrameLayout>
 </layout>
 

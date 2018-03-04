@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -24,6 +25,8 @@ import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -32,7 +35,7 @@ import java.util.List;
 
 public class DetailFragment extends Fragment {
     private WeekUIInteraction mListener;
-    private View headerView;
+    private View spinnerView;
     private WeekHomeworkAdapter adapter;
 
     @Override
@@ -48,7 +51,7 @@ public class DetailFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        headerView = inflater.inflate(R.layout.item_small_title, container, false);
+        spinnerView = inflater.inflate(R.layout.item_small_title, container, false);
         return inflater.inflate(R.layout.fragment_week_recycler, container, false);
     }
 
@@ -92,19 +95,39 @@ public class DetailFragment extends Fragment {
         });
 
         // finally, add spinner to the main recycler
-        AppCompatSpinner spinner = headerView.findViewById(R.id.spinner);
+        AppCompatSpinner spinner = spinnerView.findViewById(R.id.spinner);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(),
                 R.layout.spinner_item_text,
                 getResources().getStringArray(R.array.week_homework_show_type));
         arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
-        headerView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+        spinnerView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.showAddDialog();
             }
         });
-        adapter.addHeaderView(headerView);
+        adapter.addHeaderView(spinnerView);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        Collections.sort(adapter.getData(), deadlineComparator);
+                        break;
+                    case 1:
+                        Collections.sort(adapter.getData(), initDateComparator);
+                        break;
+                    default:
+                        break;
+                }
+                adapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
     }
 
     public void notifyDataSetChange() {
@@ -151,5 +174,18 @@ public class DetailFragment extends Fragment {
         }
     }
 
+    private Comparator<Homework> deadlineComparator = new Comparator<Homework>() {
+        @Override
+        public int compare(Homework o1, Homework o2) {
+            return o1.deadline.compareTo(o2.deadline);
+        }
+    };
+
+    private Comparator<Homework> initDateComparator = new Comparator<Homework>() {
+        @Override
+        public int compare(Homework o1, Homework o2) {
+            return o1.initDate.compareTo(o2.initDate);
+        }
+    };
 
 }

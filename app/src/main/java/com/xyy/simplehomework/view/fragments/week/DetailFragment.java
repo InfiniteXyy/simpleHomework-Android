@@ -64,6 +64,8 @@ public class DetailFragment extends Fragment {
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
         adapter = new WeekHomeworkAdapter(R.layout.item_homework_detail,
                 viewModel.getHomeworkList());
+        // default sort by deadline
+        Collections.sort(adapter.getData(), deadlineComparator);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -108,6 +110,8 @@ public class DetailFragment extends Fragment {
             }
         });
         adapter.addHeaderView(spinnerView);
+
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -123,6 +127,7 @@ public class DetailFragment extends Fragment {
                 }
                 adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }

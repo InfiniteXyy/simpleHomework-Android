@@ -49,9 +49,12 @@ public class MainViewModel {
     }
 
 
-
     public Week getWeek() {
         return week;
+    }
+
+    public Semester getSemester() {
+        return semester;
     }
 
     private Week getThisWeek(Semester semester) {
@@ -101,7 +104,7 @@ public class MainViewModel {
         int i = 0;
         for (MySubject subject : subjects) {
             if (i < 3) {
-                Homework homework = new Homework(subject.getName() + "练习" + (i + 1), DateHelper.afterDays(9-i));
+                Homework homework = new Homework(subject.getName() + "练习" + (i + 1), DateHelper.afterDays(9 - i));
                 homework.week.setTarget(week);
                 homework.subject.setTarget(subject);
                 homework.setDetail("这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情");

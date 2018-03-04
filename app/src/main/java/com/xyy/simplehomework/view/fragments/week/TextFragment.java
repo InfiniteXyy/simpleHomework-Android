@@ -24,6 +24,7 @@ import java.util.List;
 
 public class TextFragment extends Fragment {
     private WeekUIInteraction mListener;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -34,6 +35,7 @@ public class TextFragment extends Fragment {
             throw new RuntimeException("The parent fragment must implement WeekUIInteraction");
         }
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -18,4 +18,11 @@ public class Week {
     public ToMany<Homework> homeworks;
     @Id
     public long id;
+
+    public Week() {
+    }
+
+    public Week(int weekIndex) {
+        this.weekIndex = weekIndex;
+    }
 }

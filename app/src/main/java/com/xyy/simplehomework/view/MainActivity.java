@@ -2,14 +2,17 @@ package com.xyy.simplehomework.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.roughike.bottombar.BottomBar;
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public MainViewModel viewModel;
     private Fragment lastFragment = new Fragment();
     private DrawerLayout drawerLayout;
+    private BottomBar bottomBar;
+    private final static String LAST_FRAGMENT_KEY = "lastFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +39,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewModel = new MainViewModel(this);
 
         // set up view
-        setUpView();
-    }
-
-    private void setUpView() {
         // init drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -48,10 +49,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             transaction.add(R.id.mainFragment, fragment.getFragment(), fragment.getTag())
                     .hide(fragment.getFragment());
         }
+
         transaction.commit();
 
         // init bottomBar
-        final BottomBar bottomBar = findViewById(R.id.bottomBar);
+        bottomBar = findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(int tabId) {
@@ -136,9 +138,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return fragment;
         }
 
+
         public String getTag() {
             return tag;
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        for (TabFragment tabFragment : TabFragment.values()) {
+            transaction.remove(tabFragment.fragment);
+        }
+        transaction.commitAllowingStateLoss();
+        super.onSaveInstanceState(outState);
+    }
+
 }
 

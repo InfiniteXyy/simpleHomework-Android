@@ -58,7 +58,11 @@ public class DateHelper {
     }
 
     public static String getWeekTitle() {
-        return "第" + num2cn[weekIndex] + "周";
+        return getWeekTitle(weekIndex);
+    }
+
+    public static String getWeekTitle(int index) {
+        return "第" + num2cn[index + 1] + "周";
     }
 
     public static int getWeekIndex() {

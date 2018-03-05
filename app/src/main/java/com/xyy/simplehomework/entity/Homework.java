@@ -18,12 +18,12 @@ import io.objectbox.relation.ToOne;
  */
 @Entity
 public class Homework extends BaseObservable {
-    private final static SimpleDateFormat format = new SimpleDateFormat("M.d");
     public static final int FINISHED = 0;
     public static final int NOT_FINISHED = 1;
+    private final static SimpleDateFormat format = new SimpleDateFormat("M.d");
     @Id
     public long id;
-    public ToOne<Week> week;
+    public int weekIndex;
     public ToOne<MySubject> subject;
 
     public String title;

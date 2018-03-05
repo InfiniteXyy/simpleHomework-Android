@@ -17,7 +17,6 @@ import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.entity.Week;
 import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.helper.DateHelper;
 

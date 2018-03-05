@@ -6,13 +6,13 @@ import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.entity.Semester;
-import com.xyy.simplehomework.entity.Week;
 import com.xyy.simplehomework.model.DataServer;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.Date;
 
+import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
 /**
@@ -21,8 +21,6 @@ import io.objectbox.BoxStore;
 
 public class MainViewModel {
     private static MainViewModel instance;
-    private Week week;
-    private Semester semester;
     private DataServer dataServer;
     private Context mContext;
     private BoxStore boxStore;
@@ -36,12 +34,11 @@ public class MainViewModel {
         dataServer = new DataServer(boxStore);
         dataServer.resetAll();
 
-        // get week and semester
-        semester = getThisSemester();
-        week = getThisWeek(semester);
-        DateHelper.setUp(week, semester);
+        // get semester
+        Semester semester = getThisSemester();
+        DateHelper.setUpSemester(semester);
 
-        useDemo(week, semester);
+        useDemo(semester);
     }
 
     public static MainViewModel getInstance() {
@@ -49,42 +46,18 @@ public class MainViewModel {
     }
 
 
-    public Week getWeek() {
-        return week;
-    }
-
-    public Semester getSemester() {
-        return semester;
-    }
-
-    private Week getThisWeek(Semester semester) {
-        int weekIndex = DateHelper.getTimeBetween(semester.startDate, new Date(), DateHelper.WEEK);
-        for (Week week : semester.weeks) {
-            if (week.weekIndex == weekIndex) {
-                return week;
-            }
-        }
-        Week week = new Week();
-        week.weekIndex = weekIndex;
-        week.semester.setTarget(semester);
-        dataServer.put(week);
-        return week;
-    }
-
     private Semester getThisSemester() {
         Semester semester = dataServer.findSemester();
         if (semester == null) {
             semester = new Semester(12, Semester.FIRST_TERM);
             semester.startDate = new Date(118, 0, 1);
             semester.endDate = new Date(118, 10, 2);
-            dataServer.put(semester);
+            boxStore.boxFor(Semester.class).put(semester);
         }
         return semester;
     }
 
-    private void useDemo(Week week, Semester semester) {
-        Semester thisSemester = getThisSemester();
-
+    private void useDemo(Semester semester) {
         MySubject[] subjects = {
                 new MySubject("计算机系统", mContext.getResources().getColor(R.color.japanBrown)),
                 new MySubject("高等数学", mContext.getResources().getColor(R.color.japanBlue)),
@@ -93,30 +66,31 @@ public class MainViewModel {
                 new MySubject("概率论", mContext.getResources().getColor(R.color.japanOrange)),
         };
         for (MySubject subject : subjects) {
-            subject.semester.setTarget(thisSemester);
+            subject.semester.setTarget(semester);
             subject.availableWeeks = new byte[]{6, 7, 8, 9};
-            thisSemester.allSubjects.add(subject);
+            semester.allSubjects.add(subject);
         }
-        thisSemester.allSubjects.applyChangesToDb();
-        // refresh this week homework
-        week.homeworks.reset();
+        semester.allSubjects.applyChangesToDb();
+
+        int weekIndex = DateHelper.getWeekIndex();
+        Box<Homework> homeworkBox = boxStore.boxFor(Homework.class);
         // homework demo
         int i = 0;
         for (MySubject subject : subjects) {
             if (i < 3) {
                 Homework homework = new Homework(subject.getName() + "练习" + (i + 1), DateHelper.afterDays(9 - i));
-                homework.week.setTarget(week);
                 homework.subject.setTarget(subject);
                 homework.setDetail("这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情");
-                dataServer.put(homework);
+                homework.weekIndex = weekIndex;
+                homeworkBox.put(homework);
             }
             i++;
             Homework homework = new Homework(subject.getName() + "计划练习", DateHelper.afterDays(i + 2));
             homework.subject.setTarget(subject);
-            homework.week.setTarget(week);
+            homework.weekIndex = weekIndex;
             homework.setPlanDate(DateHelper.getToday());
-            homework.setDetail("这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情");
-            dataServer.put(homework);
+            homework.setDetail("这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划");
+            homeworkBox.put(homework);
         }
     }
 

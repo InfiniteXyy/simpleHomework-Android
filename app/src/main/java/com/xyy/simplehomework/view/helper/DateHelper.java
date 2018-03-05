@@ -1,7 +1,6 @@
 package com.xyy.simplehomework.view.helper;
 
 import com.xyy.simplehomework.entity.Semester;
-import com.xyy.simplehomework.entity.Week;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -31,8 +30,8 @@ public class DateHelper {
     private static int semesterIndex = -1;
     private static int termIndex = -1;
 
-    public static void setUp(Week week, Semester semester) {
-        weekIndex = week.weekIndex;
+    public static void setUpSemester(Semester semester) {
+        weekIndex = getTimeBetween(semester.startDate, date, WEEK);
         semesterIndex = semester.grade;
         termIndex = semester.term;
     }
@@ -83,7 +82,4 @@ public class DateHelper {
         return calendar.getTime();
     }
 
-    public static String getDayPassFormat(Date dateb) {
-        return "";
-    }
 }

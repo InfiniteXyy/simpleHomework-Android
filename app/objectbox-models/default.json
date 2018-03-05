@@ -33,29 +33,8 @@
       "relations": []
     },
     {
-      "id": "2:4404261599649635401",
-      "lastPropertyId": "3:3383437248203196509",
-      "name": "Week",
-      "properties": [
-        {
-          "id": "1:3123823922005811025",
-          "name": "weekIndex"
-        },
-        {
-          "id": "2:3886278945364840545",
-          "name": "id"
-        },
-        {
-          "id": "3:3383437248203196509",
-          "indexId": "2:1076374501053298025",
-          "name": "semesterId"
-        }
-      ],
-      "relations": []
-    },
-    {
       "id": "3:2655315342517484679",
-      "lastPropertyId": "9:3540760439533922301",
+      "lastPropertyId": "10:3984051654840412520",
       "name": "Homework",
       "properties": [
         {
@@ -87,14 +66,13 @@
           "name": "status"
         },
         {
-          "id": "8:5121252749204945134",
-          "indexId": "3:4519110327533960678",
-          "name": "weekId"
-        },
-        {
           "id": "9:3540760439533922301",
           "indexId": "4:4794622604969717101",
           "name": "subjectId"
+        },
+        {
+          "id": "10:3984051654840412520",
+          "name": "weekIndex"
         }
       ],
       "relations": []
@@ -134,9 +112,19 @@
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,
-  "retiredEntityUids": [],
-  "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredEntityUids": [
+    4404261599649635401
+  ],
+  "retiredIndexUids": [
+    1076374501053298025,
+    4519110327533960678
+  ],
+  "retiredPropertyUids": [
+    3123823922005811025,
+    3886278945364840545,
+    3383437248203196509,
+    5121252749204945134
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

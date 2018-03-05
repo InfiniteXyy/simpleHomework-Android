@@ -108,13 +108,29 @@
                 </LinearLayout>
             </LinearLayout>
         </FrameLayout>
-        <Button
-            android:onClickListener="@{handler.clickSetPlan}"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/set_plan"
-            android:textColor="@color/colorBtn" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:onClickListener="@{handler.clickSetPlan}"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/set_plan"
+                android:textColor="@color/colorBtn" />
+            <TextView
+                tools:text="计划在：明天"
+                android:text='@{homework.planDate ?? ""}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textSize="14sp"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp" />
+        </RelativeLayout>
+
     </LinearLayout>
 </layout>
 

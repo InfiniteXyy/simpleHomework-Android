@@ -25,6 +25,7 @@ import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -37,6 +38,18 @@ public class DetailFragment extends Fragment {
     private WeekUIInteraction mListener;
     private View spinnerView;
     private WeekHomeworkAdapter adapter;
+    private Comparator<Homework> deadlineComparator = new Comparator<Homework>() {
+        @Override
+        public int compare(Homework o1, Homework o2) {
+            return o1.deadline.compareTo(o2.deadline);
+        }
+    };
+    private Comparator<Homework> initDateComparator = new Comparator<Homework>() {
+        @Override
+        public int compare(Homework o1, Homework o2) {
+            return o1.initDate.compareTo(o2.initDate);
+        }
+    };
 
     @Override
     public void onAttach(Context context) {
@@ -63,7 +76,7 @@ public class DetailFragment extends Fragment {
         // first, set main recyclerView
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
         adapter = new WeekHomeworkAdapter(R.layout.item_homework_detail,
-                viewModel.getHomeworkList());
+                new ArrayList<Homework>());
         // default sort by deadline
         Collections.sort(adapter.getData(), deadlineComparator);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -135,8 +148,8 @@ public class DetailFragment extends Fragment {
 
     }
 
-    public void notifyDataSetChange() {
-        adapter.notifyDataSetChanged();
+    public void setList(List<Homework> list) {
+        adapter.replaceData(list);
     }
 
     public static class WeekHomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {
@@ -178,19 +191,5 @@ public class DetailFragment extends Fragment {
             helper.setText(R.id.circle, item.getName().substring(0, 1));
         }
     }
-
-    private Comparator<Homework> deadlineComparator = new Comparator<Homework>() {
-        @Override
-        public int compare(Homework o1, Homework o2) {
-            return o1.deadline.compareTo(o2.deadline);
-        }
-    };
-
-    private Comparator<Homework> initDateComparator = new Comparator<Homework>() {
-        @Override
-        public int compare(Homework o1, Homework o2) {
-            return o1.initDate.compareTo(o2.initDate);
-        }
-    };
 
 }

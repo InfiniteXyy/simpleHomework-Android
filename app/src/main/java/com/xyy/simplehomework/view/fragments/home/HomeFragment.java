@@ -31,6 +31,8 @@ import java.util.List;
  */
 public class HomeFragment extends Fragment {
     private ViewModel viewModel;
+    private HomeAdapter adapter;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -46,7 +48,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        viewModel = new ViewModel();
+        viewModel = new ViewModel(this);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(new MaterialMenuDrawable(getContext(), Color.BLACK, MaterialMenuDrawable.Stroke.THIN));
@@ -57,12 +59,23 @@ public class HomeFragment extends Fragment {
                     ((MainActivity) getContext()).showDrawer();
             }
         });
-        HomeAdapter adapter = new HomeAdapter(R.layout.item_homework_tiny_recycler, viewModel.getDayList());
+        adapter = new HomeAdapter(R.layout.item_homework_tiny_recycler, viewModel.getDayList());
         recyclerView.setAdapter(adapter);
         super.onViewCreated(view, savedInstanceState);
     }
 
+    public void updateDayData() {
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        viewModel.onDestroy();
+    }
+
     public static class HomeAdapter extends BaseQuickAdapter<Day, BaseViewHolder> {
+
 
         public HomeAdapter(int layoutResId, @Nullable List<Day> data) {
             super(layoutResId, data);
@@ -71,7 +84,8 @@ public class HomeFragment extends Fragment {
         @Override
         protected void convert(BaseViewHolder helper, Day item) {
             RecyclerView recyclerView = helper.getView(R.id.recycler_view);
-            recyclerView.setAdapter(new HomeworkAdapter(R.layout.item_homework_tiny, item.getHomeworkList()));
+            HomeworkAdapter adapter = new HomeworkAdapter(R.layout.item_homework_tiny, item.getHomeworkList());
+            recyclerView.setAdapter(adapter);
             helper.setText(R.id.day, item.getDayOfMonth());
             helper.setText(R.id.weekIndex, item.getDayOfWeek());
         }

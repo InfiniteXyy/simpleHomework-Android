@@ -19,8 +19,6 @@ public class Semester {
     public long id;
     @Backlink
     public ToMany<MySubject> allSubjects;
-    @Backlink
-    public ToMany<Week> weeks;
 
     public Date startDate;
     public Date endDate;

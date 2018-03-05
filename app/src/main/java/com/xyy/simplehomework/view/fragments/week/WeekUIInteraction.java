@@ -8,8 +8,6 @@ import com.xyy.simplehomework.entity.MySubject;
  */
 
 public interface WeekUIInteraction {
-    void updateUI();
-
     void onChangeToDetail();
 
     void onChangeToSubject();

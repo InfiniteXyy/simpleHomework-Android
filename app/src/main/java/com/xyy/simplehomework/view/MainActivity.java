@@ -104,6 +104,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         lastFragment = null;
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        for (TabFragment tabFragment : TabFragment.values()) {
+            transaction.remove(tabFragment.fragment);
+        }
+        transaction.commitAllowingStateLoss();
+        super.onSaveInstanceState(outState);
+    }
 
     private enum TabFragment {
         home(R.id.home, HomeFragment.class, "HomeFragment"),
@@ -152,16 +161,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public String getTag() {
             return tag;
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        for (TabFragment tabFragment : TabFragment.values()) {
-            transaction.remove(tabFragment.fragment);
-        }
-        transaction.commitAllowingStateLoss();
-        super.onSaveInstanceState(outState);
     }
 
 }

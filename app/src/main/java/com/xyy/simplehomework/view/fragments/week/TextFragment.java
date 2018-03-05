@@ -24,6 +24,8 @@ import java.util.List;
 
 public class TextFragment extends Fragment {
     private WeekUIInteraction mListener;
+    private BaseQuickAdapter<MySubject, BaseViewHolder> adapter;
+    private List<MySubject> subjects;
 
     @Override
     public void onAttach(Context context) {
@@ -46,9 +48,9 @@ public class TextFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final ViewModel viewModel = mListener.getViewModel();
-        List<MySubject> subjects = viewModel.getSubjectList();
+        subjects = viewModel.getSubjectList();
         final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setAdapter(new BaseQuickAdapter<MySubject, BaseViewHolder>(R.layout.item_text_subject, subjects) {
+        adapter = new BaseQuickAdapter<MySubject, BaseViewHolder>(R.layout.item_text_subject, subjects) {
             @Override
             protected void convert(BaseViewHolder helper, MySubject item) {
                 helper.setText(R.id.subject_name, item.getName());
@@ -60,7 +62,14 @@ public class TextFragment extends Fragment {
                     }
                 });
             }
-        });
+        };
+        recyclerView.setAdapter(adapter);
+    }
 
+    void setList() {
+        for (MySubject subject : subjects) {
+            subject.homework.reset();
+        }
+        adapter.notifyDataSetChanged();
     }
 }

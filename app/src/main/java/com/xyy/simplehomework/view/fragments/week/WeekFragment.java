@@ -21,6 +21,8 @@ import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.SubjectActivity;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
+import java.util.List;
+
 /**
  * Created by xyy on 2018/1/27.
  */
@@ -41,7 +43,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
 
     @Override
     public void onAttach(Context context) {
-        viewModel = new ViewModel(context);
+        viewModel = new ViewModel(this);
         super.onAttach(context);
     }
 
@@ -78,7 +80,11 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         detailFragment = new DetailFragment();
         textFragment = new TextFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment_week, detailFragment).commit();
+        transaction.add(R.id.fragment_week, detailFragment)
+                .add(R.id.fragment_week, textFragment)
+                .hide(textFragment)
+                .commit();
+
 
         // third, set changeBtn between textFragment and defaultFragment
         textBtn = view.findViewById(R.id.textBtn);
@@ -88,8 +94,10 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
             public void onClick(View v) {
                 // change to Text mode
                 getChildFragmentManager().beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                        .replace(R.id.fragment_week, textFragment)
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                        .show(textFragment)
+                        .hide(detailFragment)
+                        .addToBackStack(null)
                         .commit();
                 imgBtn.setVisibility(View.VISIBLE);
                 textBtn.setVisibility(View.GONE);
@@ -98,19 +106,16 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getChildFragmentManager().beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                        .replace(R.id.fragment_week, detailFragment)
-                        .commit();
+                getChildFragmentManager().popBackStack();
                 textBtn.setVisibility(View.VISIBLE);
                 imgBtn.setVisibility(View.GONE);
             }
         });
     }
 
-    @Override
-    public void updateUI() {
-        detailFragment.notifyDataSetChange();
+    public void setHomeworkList(List<Homework> list) {
+        detailFragment.setList(list);
+        textFragment.setList();
     }
 
     @Override
@@ -170,6 +175,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         subjectFragment = null;
         detailFragment = null;
         textFragment = null;
+        viewModel.onDestroy();
         viewModel = null;
     }
 

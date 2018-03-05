@@ -28,12 +28,12 @@ public class Day {
         return date;
     }
 
-    public void setHomeworkList(List<Homework> homeworkList) {
-        this.homeworkList = homeworkList;
-    }
-
     public List<Homework> getHomeworkList() {
         return homeworkList;
+    }
+
+    public void setHomeworkList(List<Homework> homeworkList) {
+        this.homeworkList = homeworkList;
     }
 
     public String getDayOfMonth() {

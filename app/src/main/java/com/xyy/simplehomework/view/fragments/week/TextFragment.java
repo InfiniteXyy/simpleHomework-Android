@@ -23,18 +23,17 @@ import java.util.List;
  */
 
 public class TextFragment extends Fragment {
-    private WeekUIInteraction mListener;
     private BaseQuickAdapter<MySubject, BaseViewHolder> adapter;
+    private WeekUIInteraction mListener;
     private List<MySubject> subjects;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        // check if parent Fragment implements listener
         if (getParentFragment() instanceof WeekUIInteraction) {
             mListener = (WeekUIInteraction) getParentFragment();
         } else {
-            throw new RuntimeException("The parent fragment must implement WeekUIInteraction");
+            throw new RuntimeException("parent Fragment should implement WeekUIInteraction");
         }
     }
 
@@ -47,9 +46,8 @@ public class TextFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final ViewModel viewModel = mListener.getViewModel();
-        subjects = viewModel.getSubjectList();
         final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        subjects = mListener.getSubjectList();
         adapter = new BaseQuickAdapter<MySubject, BaseViewHolder>(R.layout.item_text_subject, subjects) {
             @Override
             protected void convert(BaseViewHolder helper, MySubject item) {
@@ -66,7 +64,8 @@ public class TextFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    void setList() {
+
+    void updateHomeworkList() {
         for (MySubject subject : subjects) {
             subject.homework.reset();
         }

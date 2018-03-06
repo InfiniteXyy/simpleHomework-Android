@@ -29,19 +29,16 @@ public class SubjectFragment extends Fragment {
     public SubjectFragment() {
     }
 
-    public static SubjectFragment newInstance(long id) {
-        return new SubjectFragment();
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (getParentFragment() instanceof WeekUIInteraction) {
             mListener = (WeekUIInteraction) getParentFragment();
         } else {
-            throw new RuntimeException("Parent fragment must implement WeekUIInteraction");
+            throw new RuntimeException("parent Fragment should implement WeekUIInteraction");
         }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,7 +52,7 @@ public class SubjectFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         // first set subject recycler
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        SubjectAdapter adapter = new SubjectAdapter(R.layout.item_subject, mListener.getViewModel().getSubjectList());
+        SubjectAdapter adapter = new SubjectAdapter(R.layout.item_subject, mListener.getSubjectList());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -72,7 +69,6 @@ public class SubjectFragment extends Fragment {
 
         adapter.addHeaderView(headerView);
     }
-
 
     private static class SubjectAdapter extends BaseQuickAdapter<MySubject, BaseViewHolder> {
 

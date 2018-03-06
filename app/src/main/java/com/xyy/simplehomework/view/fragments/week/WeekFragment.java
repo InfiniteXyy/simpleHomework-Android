@@ -1,6 +1,7 @@
 package com.xyy.simplehomework.view.fragments.week;
 
-import android.content.Context;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -37,15 +38,10 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     private SubjectFragment subjectFragment;
     private DetailFragment detailFragment;
     private TextFragment textFragment;
-    private ViewModel viewModel;
+    private WeekViewModel viewModel;
     private View textBtn;
     private View imgBtn;
 
-    @Override
-    public void onAttach(Context context) {
-        viewModel = new ViewModel(this);
-        super.onAttach(context);
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +51,8 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewModel = ViewModelProviders.of(this).get(WeekViewModel.class);
+
         // first, init toolbar
         if (menuDrawable == null) {
             menuDrawable = new MaterialMenuDrawable(getContext(),
@@ -76,7 +74,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
             }
         });
         // second, init child fragments
-        subjectFragment = SubjectFragment.newInstance(0);
+        subjectFragment = new SubjectFragment();
         detailFragment = new DetailFragment();
         textFragment = new TextFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -111,11 +109,15 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                 imgBtn.setVisibility(View.GONE);
             }
         });
-    }
 
-    public void setHomeworkList(List<Homework> list) {
-        detailFragment.setList(list);
-        textFragment.setList();
+        //finally bind view model to sub fragments
+        viewModel.getHomeworkLiveData().observe(this, new Observer<List<Homework>>() {
+            @Override
+            public void onChanged(@Nullable List<Homework> homework) {
+                detailFragment.setHomeworkList(homework);
+                textFragment.updateHomeworkList();
+            }
+        });
     }
 
     @Override
@@ -165,19 +167,13 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     }
 
     @Override
-    public ViewModel getViewModel() {
-        return viewModel;
+    public List<MySubject> getSubjectList() {
+        return viewModel.getSubjectList();
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        subjectFragment = null;
-        detailFragment = null;
-        textFragment = null;
-        viewModel.onDestroy();
-        viewModel = null;
+    public void putHomework(Homework homework) {
+        viewModel.putHomework(homework);
     }
-
 
 }

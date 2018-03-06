@@ -61,7 +61,7 @@ public class AddDialog extends DialogFragment {
         ArrayAdapter<MySubject> arrayAdapter =
                 new ArrayAdapter<MySubject>(getContext(),
                         android.R.layout.simple_spinner_item,
-                        mListener.getViewModel().getSubjectList());
+                        mListener.getSubjectList());
         arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
 
@@ -101,7 +101,7 @@ public class AddDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 homework.subject.setTarget((MySubject) spinner.getSelectedItem());
-                mListener.getViewModel().putHomework(homework);
+                mListener.putHomework(homework);
                 dismiss();
             }
         });

@@ -71,7 +71,6 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ViewModel viewModel = mListener.getViewModel();
 
         // first, set main recyclerView
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
@@ -92,7 +91,7 @@ public class DetailFragment extends Fragment {
 
         // second, set small subject view on the top
         WeekHeaderAdapter subjectHeaderAdapter = new WeekHeaderAdapter(R.layout.item_project,
-                viewModel.getSubjectList());
+                mListener.getSubjectList());
 
         final RecyclerView headerRecycler = view.findViewById(R.id.subject_recycler_view);
         headerRecycler.setAdapter(subjectHeaderAdapter);
@@ -148,9 +147,10 @@ public class DetailFragment extends Fragment {
 
     }
 
-    public void setList(List<Homework> list) {
+    public void setHomeworkList(List<Homework> list) {
         adapter.replaceData(list);
     }
+
 
     public static class WeekHomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {
         public WeekHomeworkAdapter(int layoutResId, @Nullable List<Homework> data) {

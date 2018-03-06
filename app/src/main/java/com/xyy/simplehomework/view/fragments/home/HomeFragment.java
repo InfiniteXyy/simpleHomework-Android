@@ -1,6 +1,8 @@
 package com.xyy.simplehomework.view.fragments.home;
 
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.graphics.Color;
@@ -22,16 +24,19 @@ import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Day;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.MainActivity;
+import com.xyy.simplehomework.view.helper.DateHelper;
 import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
-    private ViewModel viewModel;
+    private HomeViewModel viewModel;
     private HomeAdapter adapter;
+    private List<Day> days;
 
 
     public HomeFragment() {
@@ -48,7 +53,10 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        viewModel = new ViewModel(this);
+        days = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            days.add(new Day(DateHelper.afterDays(i)));
+        }
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(new MaterialMenuDrawable(getContext(), Color.BLACK, MaterialMenuDrawable.Stroke.THIN));
@@ -59,19 +67,24 @@ public class HomeFragment extends Fragment {
                     ((MainActivity) getContext()).showDrawer();
             }
         });
-        adapter = new HomeAdapter(R.layout.item_homework_tiny_recycler, viewModel.getDayList());
+        adapter = new HomeAdapter(R.layout.item_homework_tiny_recycler, new ArrayList<Day>());
         recyclerView.setAdapter(adapter);
-        super.onViewCreated(view, savedInstanceState);
-    }
 
-    public void updateDayData() {
-        adapter.notifyDataSetChanged();
+        viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        viewModel.getHomeworkLiveData().observe(this, new Observer<List<Homework>>() {
+            @Override
+            public void onChanged(@Nullable List<Homework> homework) {
+                for (int i = 0; i < 7; i++) {
+                    days.get(0).setHomeworkList(homework);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        viewModel.onDestroy();
     }
 
     public static class HomeAdapter extends BaseQuickAdapter<Day, BaseViewHolder> {
@@ -113,6 +126,5 @@ public class HomeFragment extends Fragment {
             view.setTag(R.id.BaseQuickAdapter_databinding_support, binding);
             return view;
         }
-
     }
 }

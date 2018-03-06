@@ -3,26 +3,33 @@ package com.xyy.simplehomework.view.fragments.week;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Canvas;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
+import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.view.helper.SimpleDividerItemDecoration;
 import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 
 import java.util.ArrayList;
@@ -76,18 +83,41 @@ public class DetailFragment extends Fragment {
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
         adapter = new WeekHomeworkAdapter(R.layout.item_homework_detail,
                 new ArrayList<Homework>());
-        // default sort by deadline
-        Collections.sort(adapter.getData(), deadlineComparator);
+        Collections.sort(adapter.getData(), deadlineComparator); // default sort by deadline
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 mListener.onClickHomework((Homework) adapter.getItem(position));
             }
         });
+        ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
+        itemDragAndSwipeCallback.setSwipeMoveFlags(ItemTouchHelper.START);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
+        itemTouchHelper.attachToRecyclerView(weekRecyclerView);
+        adapter.enableSwipeItem();
+        adapter.setOnItemSwipeListener(new OnItemSwipeListener() {
+            @Override
+            public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        weekRecyclerView.setLayoutManager(layoutManager);
+            }
+
+            @Override
+            public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {
+
+            }
+
+            @Override
+            public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
+
+            }
+
+            @Override
+            public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
+
+            }
+        });
         weekRecyclerView.setAdapter(adapter);
+        weekRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext(), 1));
 
         // second, set small subject view on the top
         WeekHeaderAdapter subjectHeaderAdapter = new WeekHeaderAdapter(R.layout.item_project,
@@ -152,7 +182,7 @@ public class DetailFragment extends Fragment {
     }
 
 
-    public static class WeekHomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {
+    public static class WeekHomeworkAdapter extends BaseItemDraggableAdapter<Homework, BaseDataBindingHolder> {
         public WeekHomeworkAdapter(int layoutResId, @Nullable List<Homework> data) {
             super(layoutResId, data);
         }

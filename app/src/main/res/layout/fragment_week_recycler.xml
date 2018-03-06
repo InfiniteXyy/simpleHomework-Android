@@ -44,7 +44,6 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
         app:srlEnablePreviewInEditMode="true">
 
         <com.scwang.smartrefresh.layout.header.FalsifyHeader
@@ -55,6 +54,7 @@
             android:id="@+id/week_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             tools:listitem="@layout/item_homework_detail">
 
         </android.support.v7.widget.RecyclerView>

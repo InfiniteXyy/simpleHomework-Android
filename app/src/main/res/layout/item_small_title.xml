@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="8dp">
+    android:paddingRight="16dp">
 
     <android.support.v7.widget.AppCompatSpinner
         android:id="@+id/spinner"
@@ -14,6 +13,7 @@
         android:background="@null" />
 
     <TextView
+        android:layout_marginTop="16dp"
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

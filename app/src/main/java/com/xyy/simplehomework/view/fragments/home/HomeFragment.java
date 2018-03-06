@@ -1,6 +1,8 @@
 package com.xyy.simplehomework.view.fragments.home;
 
 
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
@@ -10,8 +12,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,25 +33,21 @@ import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
-    private HomeViewModel viewModel;
     private HomeAdapter adapter;
     private List<Day> days;
-
-
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
+    private View headerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        headerView = inflater.inflate(R.layout.item_home_header, container, false);
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -67,19 +67,27 @@ public class HomeFragment extends Fragment {
                     ((MainActivity) getContext()).showDrawer();
             }
         });
-        adapter = new HomeAdapter(R.layout.item_homework_tiny_recycler, new ArrayList<Day>());
+        adapter = new HomeAdapter(R.layout.item_homework_tiny_recycler, days);
         recyclerView.setAdapter(adapter);
 
-        viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        HomeViewModel viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         viewModel.getHomeworkLiveData().observe(this, new Observer<List<Homework>>() {
             @Override
-            public void onChanged(@Nullable List<Homework> homework) {
+            public void onChanged(List<Homework> homework) {
                 for (int i = 0; i < 7; i++) {
-                    days.get(0).setHomeworkList(homework);
+                    List<Homework> temp = new ArrayList<>();
+                    for (Homework homework1 :homework) {
+                        if (homework1.planDate.equals(days.get(i).getDate())) {
+                            temp.add(homework1);
+                        }
+                    }
+                    days.get(i).setHomeworkList(temp);
                     adapter.notifyDataSetChanged();
                 }
             }
         });
+        // add header
+        adapter.addHeaderView(headerView);
     }
 
     @Override

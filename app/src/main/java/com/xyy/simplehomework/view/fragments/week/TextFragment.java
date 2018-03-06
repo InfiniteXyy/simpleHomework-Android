@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.view.fragments.semester.Week;
 
 import java.util.List;
 
@@ -24,17 +26,18 @@ import java.util.List;
 
 public class TextFragment extends Fragment {
     private BaseQuickAdapter<MySubject, BaseViewHolder> adapter;
-    private WeekUIInteraction mListener;
     private List<MySubject> subjects;
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (getParentFragment() instanceof WeekUIInteraction) {
-            mListener = (WeekUIInteraction) getParentFragment();
-        } else {
-            throw new RuntimeException("parent Fragment should implement WeekUIInteraction");
-        }
+    public static TextFragment newInstance(Week week) {
+        TextFragment textFragment = new TextFragment();
+        textFragment.subjects = week.getSubjects();
+        return textFragment;
+    }
+
+    public static TextFragment newInstance(List<MySubject> data) {
+        TextFragment textFragment = new TextFragment();
+        textFragment.subjects = data;
+        return textFragment;
     }
 
     @Nullable
@@ -47,7 +50,6 @@ public class TextFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        subjects = mListener.getSubjectList();
         adapter = new BaseQuickAdapter<MySubject, BaseViewHolder>(R.layout.item_text_subject, subjects) {
             @Override
             protected void convert(BaseViewHolder helper, MySubject item) {

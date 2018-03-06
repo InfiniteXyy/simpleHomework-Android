@@ -76,7 +76,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         // second, init child fragments
         subjectFragment = new SubjectFragment();
         detailFragment = new DetailFragment();
-        textFragment = new TextFragment();
+        textFragment = TextFragment.newInstance(viewModel.getSubjectList());
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_week, detailFragment)
                 .add(R.id.fragment_week, textFragment)

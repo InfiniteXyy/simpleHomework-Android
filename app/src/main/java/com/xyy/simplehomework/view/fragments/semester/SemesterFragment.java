@@ -1,6 +1,7 @@
 package com.xyy.simplehomework.view.fragments.semester;
 
 import android.animation.LayoutTransition;
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,12 +13,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.MainActivity;
+import com.xyy.simplehomework.view.fragments.week.TextFragment;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 /**
@@ -43,7 +46,7 @@ public class SemesterFragment extends Fragment {
         container.setLayoutTransition(transition);
         weekDetail = view.findViewById(R.id.week_card);
 
-        ViewModel viewModel = new ViewModel();
+        SemesterViewModel viewModel = ViewModelProviders.of(this).get(SemesterViewModel.class);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(new MaterialMenuDrawable(
                 getContext(),
@@ -66,13 +69,17 @@ public class SemesterFragment extends Fragment {
                 helper.setText(R.id.text, DateHelper.getWeekTitle(item.weekIndex));
             }
         };
+        final TextView textView = view.findViewById(R.id.title);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (weekDetail.getVisibility() == View.GONE)
                     weekDetail.setVisibility(View.VISIBLE);
-                else weekDetail.setVisibility(View.GONE);
+                getChildFragmentManager().beginTransaction()
+                        .replace(R.id.textView, TextFragment.newInstance((Week) adapter.getItem(position)))
+                        .commit();
+                textView.setText(DateHelper.getWeekTitle(position));
             }
         });
     }

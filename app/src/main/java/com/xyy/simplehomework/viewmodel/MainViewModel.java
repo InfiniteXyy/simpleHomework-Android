@@ -67,7 +67,7 @@ public class MainViewModel {
         };
         for (MySubject subject : subjects) {
             subject.semester.setTarget(semester);
-            subject.availableWeeks = new byte[]{6, 7, 8, 9};
+            subject.availableWeeks = new byte[]{6, 7, 8, 9, 10};
             semester.allSubjects.add(subject);
         }
         semester.allSubjects.applyChangesToDb();
@@ -75,23 +75,24 @@ public class MainViewModel {
         int weekIndex = DateHelper.getWeekIndex();
         Box<Homework> homeworkBox = boxStore.boxFor(Homework.class);
         // homework demo
-        int i = 0;
-        for (MySubject subject : subjects) {
-            if (i < 3) {
-                Homework homework = new Homework(subject.getName() + "练习" + (i + 1), DateHelper.afterDays(9 - i));
+        for (int i = 0; i < DateHelper.getWeekIndex(); i++) {
+            for (MySubject subject : subjects) {
+                Homework homework = new Homework(subject.getName() + "练习周" + (i + 1), DateHelper.afterDays(9 - i));
                 homework.subject.setTarget(subject);
                 homework.setDetail("这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情");
                 homework.weekIndex = weekIndex;
                 homeworkBox.put(homework);
+
+                Homework homework2 = new Homework(subject.getName() + "计划练习", DateHelper.afterDays(i + 2));
+                homework2.subject.setTarget(subject);
+                homework2.weekIndex = weekIndex;
+                if (i != 7)
+                    homework2.setPlanDate(DateHelper.getToday());
+                homework2.setDetail("这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划");
+                homeworkBox.put(homework2);
             }
-            i++;
-            Homework homework = new Homework(subject.getName() + "计划练习", DateHelper.afterDays(i + 2));
-            homework.subject.setTarget(subject);
-            homework.weekIndex = weekIndex;
-            homework.setPlanDate(DateHelper.getToday());
-            homework.setDetail("这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划");
-            homeworkBox.put(homework);
         }
+
     }
 
 }

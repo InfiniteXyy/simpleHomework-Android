@@ -1,5 +1,6 @@
 package com.xyy.simplehomework.view.fragments.week;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +26,7 @@ import java.util.Date;
  */
 
 public class DetailDialog extends DialogFragment {
+    private WeekUIInteraction mListener;
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     public View.OnClickListener clickClose = new View.OnClickListener() {
         @Override
@@ -64,6 +66,12 @@ public class DetailDialog extends DialogFragment {
         return detailDialog;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mListener = (WeekUIInteraction) getParentFragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,6 +92,12 @@ public class DetailDialog extends DialogFragment {
 
     private void setHomework(Homework homework) {
         this.homework = homework;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mListener.putHomework(homework);
     }
 
     public static class CalendarFragment extends Fragment {

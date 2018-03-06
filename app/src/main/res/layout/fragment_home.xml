@@ -18,7 +18,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginTop="?attr/actionBarSize"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

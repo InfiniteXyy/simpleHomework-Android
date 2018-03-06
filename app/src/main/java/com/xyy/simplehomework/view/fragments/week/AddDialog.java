@@ -18,6 +18,8 @@ import com.xyy.simplehomework.databinding.DialogHomeworkAddBinding;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 
+import org.joda.time.LocalDate;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -77,6 +79,7 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
                 );
                 deadline.setTime(new Date());
                 dpd.setMinDate(deadline);
+                dpd.vibrate(false);// 禁止震动
                 dpd.show(getActivity().getFragmentManager(), null);
             }
         };

@@ -2,18 +2,13 @@ package com.xyy.simplehomework.view.fragments.semester;
 
 import android.arch.lifecycle.ViewModel;
 
-import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.entity.MySubject_;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.helper.DateHelper;
-import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.objectbox.Box;
-import io.objectbox.BoxStore;
 import io.objectbox.query.Query;
 import io.objectbox.query.QueryFilter;
 
@@ -21,7 +16,7 @@ import io.objectbox.query.QueryFilter;
  * Created by xyy on 2018/3/4.
  */
 
-public class SemesterViewModel extends ViewModel{
+public class SemesterViewModel extends ViewModel {
     private List<Week> weekList;
 
     public SemesterViewModel() {

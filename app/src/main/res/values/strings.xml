@@ -23,12 +23,20 @@
         <item>仅显示本周</item>
         <item>显示全部</item>
     </string-array>
+    <string-array name="day_type">
+        <item>上午</item>
+        <item>下午</item>
+        <item>晚上</item>
+    </string-array>
 
     <string name="title">标题</string>
     <string name="content">内容</string>
     <string name="deadline">截止时间</string>
     <string name="set_plan">设置计划</string>
-
+    <string name="today">Today</string>
+    <string name="save">SAVE</string>
+    <string name="ddl">DDL</string>
+    <string name="set_clock">设置提醒</string>
 
 
 </resources>

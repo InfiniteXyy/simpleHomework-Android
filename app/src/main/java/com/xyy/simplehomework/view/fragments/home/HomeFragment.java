@@ -1,8 +1,6 @@
 package com.xyy.simplehomework.view.fragments.home;
 
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
@@ -12,10 +10,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +29,6 @@ import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,7 +71,7 @@ public class HomeFragment extends Fragment {
             public void onChanged(List<Homework> homework) {
                 for (int i = 0; i < 7; i++) {
                     List<Homework> temp = new ArrayList<>();
-                    for (Homework homework1 :homework) {
+                    for (Homework homework1 : homework) {
                         if (homework1.planDate.equals(days.get(i).getDate())) {
                             temp.add(homework1);
                         }

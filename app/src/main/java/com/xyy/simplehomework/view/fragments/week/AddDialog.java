@@ -11,21 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.databinding.DialogHomeworkAddBinding;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.view.helper.DateHelper;
 
+import java.util.Calendar;
 import java.util.Date;
 
 
-public class AddDialog extends DialogFragment {
+public class AddDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     private static final String TAG = "AddDialog";
     private WeekUIInteraction mListener;
     private Homework homework;
@@ -50,6 +47,7 @@ public class AddDialog extends DialogFragment {
         // Inflate the layout for this fragment
         DialogHomeworkAddBinding binding = DialogHomeworkAddBinding.inflate(inflater, container, false);
         homework = new Homework();
+        homework.setDeadline(new Date());
         binding.setHomework(homework);
         return binding.getRoot();
     }
@@ -66,27 +64,24 @@ public class AddDialog extends DialogFragment {
         spinner.setAdapter(arrayAdapter);
 
         // second, set DatePicker
-        final MaterialCalendarView calendarView = view.findViewById(R.id.calendarView);
-        calendarView.state().edit()
-                .setMinimumDate(DateHelper.date)
-                .commit();
-        EditText text = view.findViewById(R.id.timeBtn);
-        text.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener showCalendar = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (calendarView.getVisibility() == View.GONE)
-                    calendarView.setVisibility(View.VISIBLE);
-                else
-                    calendarView.setVisibility(View.GONE);
+                Calendar deadline = Calendar.getInstance();
+                deadline.setTime(homework.deadline);
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        AddDialog.this,
+                        deadline.get(Calendar.YEAR),
+                        deadline.get(Calendar.MONTH),
+                        deadline.get(Calendar.DAY_OF_MONTH)
+                );
+                deadline.setTime(new Date());
+                dpd.setMinDate(deadline);
+                dpd.show(getActivity().getFragmentManager(), null);
             }
-        });
-        calendarView.setDateSelected(new Date(), true);
-        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                homework.setDeadline(date.getDate());
-            }
-        });
+        };
+
+        view.findViewById(R.id.timeBtn).setOnClickListener(showCalendar);
 
         // finally, set toolbar listener
         Toolbar toolbar = view.findViewById(R.id.toolbar);
@@ -107,4 +102,11 @@ public class AddDialog extends DialogFragment {
         });
         super.onViewCreated(view, savedInstanceState);
     }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        homework.setDeadline(new Date(year - 1900, monthOfYear, dayOfMonth));
+    }
+
+
 }

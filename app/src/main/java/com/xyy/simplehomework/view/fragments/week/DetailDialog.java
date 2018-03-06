@@ -26,7 +26,6 @@ import java.util.Date;
  */
 
 public class DetailDialog extends DialogFragment {
-    private WeekUIInteraction mListener;
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     public View.OnClickListener clickClose = new View.OnClickListener() {
         @Override
@@ -34,6 +33,7 @@ public class DetailDialog extends DialogFragment {
             dismiss();
         }
     };
+    private WeekUIInteraction mListener;
     private Homework homework;
     private boolean isSettingPlan = false;
     public View.OnClickListener clickSetPlan = new View.OnClickListener() {

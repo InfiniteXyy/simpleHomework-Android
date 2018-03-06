@@ -6,6 +6,7 @@ import android.databinding.Bindable;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,7 +21,7 @@ import io.objectbox.relation.ToOne;
 public class Homework extends BaseObservable {
     public static final int FINISHED = 0;
     public static final int NOT_FINISHED = 1;
-    private final static SimpleDateFormat format = new SimpleDateFormat("M.d");
+    private final static DateFormat FORMAT = SimpleDateFormat.getDateInstance();
     @Id
     public long id;
     public int weekIndex;
@@ -63,10 +64,7 @@ public class Homework extends BaseObservable {
 
     @Bindable
     public String getDeadline() {
-        if (deadline == null) {
-            return "";
-        }
-        return format.format(deadline);
+        return FORMAT.format(deadline);
     }
 
     public void setDeadline(Date deadline) {

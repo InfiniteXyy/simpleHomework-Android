@@ -7,20 +7,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.MainActivity;
-import com.xyy.simplehomework.view.fragments.week.TextFragment;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 /**
@@ -28,7 +25,6 @@ import com.xyy.simplehomework.view.helper.DateHelper;
  */
 
 public class SemesterFragment extends Fragment {
-    private CardView weekDetail;
 
     @Nullable
     @Override
@@ -44,7 +40,6 @@ public class SemesterFragment extends Fragment {
         LayoutTransition transition = new LayoutTransition();
         transition.setDuration(300);
         container.setLayoutTransition(transition);
-        weekDetail = view.findViewById(R.id.week_card);
 
         SemesterViewModel viewModel = ViewModelProviders.of(this).get(SemesterViewModel.class);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
@@ -69,17 +64,16 @@ public class SemesterFragment extends Fragment {
                 helper.setText(R.id.text, DateHelper.getWeekTitle(item.weekIndex));
             }
         };
-        final TextView textView = view.findViewById(R.id.title);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (weekDetail.getVisibility() == View.GONE)
-                    weekDetail.setVisibility(View.VISIBLE);
-                getChildFragmentManager().beginTransaction()
-                        .replace(R.id.textView, TextFragment.newInstance((Week) adapter.getItem(position)))
-                        .commit();
-                textView.setText(DateHelper.getWeekTitle(position));
+//                if (weekDetail.getVisibility() == View.GONE)
+//                    weekDetail.setVisibility(View.VISIBLE);
+//                getChildFragmentManager().beginTransaction()
+//                        .replace(R.id.textView, TextFragment.newInstance((Week) adapter.getItem(position)))
+//                        .commit();
+//                textView.setText(DateHelper.getWeekTitle(position));
             }
         });
     }

@@ -20,14 +20,12 @@ import io.objectbox.BoxStore;
  */
 
 public class MainViewModel {
-    private static MainViewModel instance;
     private DataServer dataServer;
     private Context mContext;
     private BoxStore boxStore;
 
     public MainViewModel(Context context) {
         mContext = context;
-        instance = this;
         // set up data server
         boxStore = ((App) context.getApplicationContext()).getBoxStore();
 
@@ -40,11 +38,6 @@ public class MainViewModel {
 
         useDemo(semester);
     }
-
-    public static MainViewModel getInstance() {
-        return instance;
-    }
-
 
     private Semester getThisSemester() {
         Semester semester = dataServer.findSemester();
@@ -75,23 +68,22 @@ public class MainViewModel {
         int weekIndex = DateHelper.getWeekIndex();
         Box<Homework> homeworkBox = boxStore.boxFor(Homework.class);
         // homework demo
-        for (int i = 0; i < DateHelper.getWeekIndex(); i++) {
-            for (MySubject subject : subjects) {
-                Homework homework = new Homework(subject.getName() + "练习周" + (i + 1), DateHelper.afterDays(9 - i));
-                homework.subject.setTarget(subject);
-                homework.setDetail("这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情");
-                homework.weekIndex = weekIndex;
-                homeworkBox.put(homework);
+        // for (int i = 0; i < DateHelper.getWeekIndex(); i++) {
+        for (MySubject subject : subjects) {
+            Homework homework = new Homework(subject.getName() + "练习", DateHelper.afterDays(3));
+            homework.subject.setTarget(subject);
+            homework.setDetail("这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情");
+            homework.weekIndex = weekIndex;
+            homeworkBox.put(homework);
 
-                Homework homework2 = new Homework(subject.getName() + "计划练习", DateHelper.afterDays(i + 2));
-                homework2.subject.setTarget(subject);
-                homework2.weekIndex = weekIndex;
-                if (i != 7)
-                    homework2.setPlanDate(DateHelper.getToday());
-                homework2.setDetail("这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划");
-                homeworkBox.put(homework2);
-            }
+            Homework homework2 = new Homework(subject.getName() + "计划练习", DateHelper.afterDays(2));
+            homework2.subject.setTarget(subject);
+            homework2.weekIndex = weekIndex;
+            homework2.setPlanDate(DateHelper.getToday());
+            homework2.setDetail("这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划");
+            homeworkBox.put(homework2);
         }
+        //  }
 
     }
 

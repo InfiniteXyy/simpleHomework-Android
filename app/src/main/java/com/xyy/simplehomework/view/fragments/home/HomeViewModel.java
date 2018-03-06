@@ -1,16 +1,11 @@
 package com.xyy.simplehomework.view.fragments.home;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.xyy.simplehomework.entity.Day;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.Homework_;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.helper.DateHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;

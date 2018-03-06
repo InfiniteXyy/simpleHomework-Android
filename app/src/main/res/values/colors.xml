@@ -8,6 +8,7 @@
     <color name="japanPink">#e198b4</color>
     <color name="japanTea">#a1a46d</color>
     <color name="japanOrange">#f6ad49</color>
+    <color name="lightBlue">#019AE8</color>
 
     <!-- Dark Text Color for Light Background -->
     <color name="textDarkPrimary">#DE000000</color> <!--DE for %87 opacity-->

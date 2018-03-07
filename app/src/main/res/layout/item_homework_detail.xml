@@ -50,7 +50,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='@{homework.getDeadline()}'
+                android:text='@{@string/deadline + ": " +homework.deadline}'
                 android:textColor="@color/textDarkSecondary"
                 android:textSize="14sp"
                 tools:text="截止时间：明天" />

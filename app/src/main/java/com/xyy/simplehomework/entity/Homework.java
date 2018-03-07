@@ -53,10 +53,7 @@ public class Homework extends BaseObservable implements ItemDrag, ItemData{
     @Bindable
     public String getPlanDate() {
         if (planDate == null) return null;
-        else
-            // TODO: 用 "今天" "明天" 来代替英文的表达
-            return Integer.toString(DateHelper.getTimeBetween(DateHelper.date, planDate, DateHelper.DAY))
-                    + "d after";
+        else return DateHelper.afterDayFormat(planDate);
     }
 
     public void setPlanDate(Date date) {
@@ -66,7 +63,7 @@ public class Homework extends BaseObservable implements ItemDrag, ItemData{
 
     @Bindable
     public String getDeadline() {
-        return FORMAT.format(deadline);
+        return DateHelper.afterDayFormat(deadline);
     }
 
     public void setDeadline(Date deadline) {

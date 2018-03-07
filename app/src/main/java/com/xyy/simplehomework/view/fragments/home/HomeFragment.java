@@ -12,35 +12,49 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
-import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
-import com.chad.library.adapter.base.listener.OnItemDragListener;
+import com.freelib.multiitem.adapter.BaseItemAdapter;
+import com.freelib.multiitem.adapter.holder.BaseViewHolderManager;
+import com.freelib.multiitem.adapter.holder.DataBindViewHolderManager;
+import com.freelib.multiitem.helper.ItemDragHelper;
+import com.freelib.multiitem.item.UniqueItemManager;
+import com.freelib.multiitem.listener.OnItemLongClickListener;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.entity.Day;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.helper.DateHelper;
 import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
-    private HomeAdapter adapter;
-    private List<Day> days;
+    private List<UniqueItemManager> days;
     private View headerView;
+    private ItemDragHelper dragHelper;
+    private final String[] week = {
+            "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+    };
+
+    public ItemDragHelper getDragHelper() {
+        return dragHelper;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,11 +66,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        days = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            days.add(new Day(DateHelper.afterDays(i)));
-        }
-        RecyclerView mainRecycler = view.findViewById(R.id.recycler_view);
+        // set tool bar
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(new MaterialMenuDrawable(getContext(), Color.BLACK, MaterialMenuDrawable.Stroke.THIN));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -66,9 +76,11 @@ public class HomeFragment extends Fragment {
                     ((MainActivity) getContext()).showDrawer();
             }
         });
-        adapter = new HomeAdapter(R.layout.item_homework_tiny_recycler, days);
-        mainRecycler.setAdapter(adapter);
-
+        // bind with view model
+        days = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            days.add(new UniqueItemManager(new DayViewManager(DateHelper.afterDays(i))));
+        }
         HomeViewModel viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         viewModel.getHomeworkLiveData().observe(this, new Observer<List<Homework>>() {
             @Override
@@ -76,82 +88,100 @@ public class HomeFragment extends Fragment {
                 for (int i = 0; i < 7; i++) {
                     List<Homework> temp = new ArrayList<>();
                     for (Homework homework1 : homework) {
-                        if (homework1.planDate.equals(days.get(i).getDate())) {
+                        if (homework1.planDate.equals(((DayViewManager) days.get(i).getViewHolderManager()).getDate())) {
                             temp.add(homework1);
                         }
                     }
-                    days.get(i).setHomeworkList(temp);
-                    adapter.notifyDataSetChanged();
+                    ((DayViewManager) days.get(i).getViewHolderManager()).setHomeworkList(temp);
                 }
             }
         });
-        // add header
-        adapter.addHeaderView(headerView);
 
+        // set main recycler view
+        RecyclerView mainRecycler = view.findViewById(R.id.recycler_view);
+        final BaseItemAdapter adapter = new BaseItemAdapter();
+        adapter.addHeadView(headerView);
+        adapter.addDataItems(days);
+        mainRecycler.setAdapter(adapter);
 
+        dragHelper = new ItemDragHelper(mainRecycler);
+        dragHelper.setOnItemDragListener(new com.freelib.multiitem.listener.OnItemDragListener() {
+            @Override
+            public void onDragFinish(RecyclerView recyclerView, int recyclerPos, int itemPos) {
+                super.onDragFinish(recyclerView, recyclerPos, itemPos);
+                Log.d("123", "onDragFinish: "+recyclerView+" POS: "+recyclerPos + " itemPOS: "+itemPos);
+            }
+        });
     }
 
-    public static class HomeAdapter extends BaseQuickAdapter<Day, BaseViewHolder> {
-        public HomeAdapter(int layoutResId, @Nullable List<Day> data) {
-            super(layoutResId, data);
+
+    class DayViewManager extends BaseViewHolderManager<UniqueItemManager> {
+        private Calendar cal;
+        private Date date;
+        private List<Homework> homeworkList;
+        private BaseItemAdapter adapter;
+
+        public DayViewManager(Date date) {
+            this.date = date;
+            cal = Calendar.getInstance();
+            cal.setTime(date);
+            this.homeworkList = new ArrayList<>();
+        }
+
+        public Date getDate() {
+            return date;
+        }
+
+        public List<Homework> getHomeworkList() {
+            return homeworkList;
+        }
+
+        public void setHomeworkList(List<Homework> homeworkList) {
+            this.homeworkList = homeworkList;
+            if (adapter != null){
+                adapter.setDataItems(homeworkList);
+            }
+        }
+
+        private String getDayOfMonth() {
+            return String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+        }
+
+        private String getDayOfWeek() {
+            return week[cal.get(Calendar.DAY_OF_WEEK) - 1];
         }
 
         @Override
-        protected void convert(BaseViewHolder helper, Day item) {
-            RecyclerView recyclerView = helper.getView(R.id.recycler_view);
-            HomeworkAdapter adapter = new HomeworkAdapter(R.layout.item_homework_tiny, item.getHomeworkList());
-            // set draggable
-            ItemDragAndSwipeCallback callback = new ItemDragAndSwipeCallback(adapter);
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-            itemTouchHelper.attachToRecyclerView(recyclerView);
+        public void onBindViewHolder(com.freelib.multiitem.adapter.holder.BaseViewHolder baseViewHolder, UniqueItemManager uniqueItemManager) {
+            TextView dayNum = baseViewHolder.itemView.findViewById(R.id.day);
+            TextView day = baseViewHolder.itemView.findViewById(R.id.weekIndex);
+            dayNum.setText(getDayOfMonth());
+            day.setText(getDayOfWeek());
+        }
 
-            // 开启拖拽
-            adapter.enableDragItem(itemTouchHelper, R.id.homework, true);
-            adapter.setOnItemDragListener(new OnItemDragListener() {
+        @Override
+        protected void onCreateViewHolder(@NonNull com.freelib.multiitem.adapter.holder.BaseViewHolder holder) {
+            super.onCreateViewHolder(holder);
+
+            View view = holder.itemView;
+            RecyclerView recyclerView = getView(view, R.id.recycler_view);
+            // set drag
+            adapter = new BaseItemAdapter();
+            adapter.register(Homework.class, new DataBindViewHolderManager<Homework>(R.layout.item_homework_tiny, BR.homework));
+            adapter.setDataItems(homeworkList);
+            adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
                 @Override
-                public void onItemDragStart(RecyclerView.ViewHolder viewHolder, int pos) {
-
-                }
-
-                @Override
-                public void onItemDragMoving(RecyclerView.ViewHolder source, int from, RecyclerView.ViewHolder target, int to) {
-
-                }
-
-                @Override
-                public void onItemDragEnd(RecyclerView.ViewHolder viewHolder, int pos) {
-
+                protected void onItemLongClick(com.freelib.multiitem.adapter.holder.BaseViewHolder baseViewHolder) {
+                    dragHelper.startDrag(baseViewHolder);
                 }
             });
-
-
             recyclerView.setAdapter(adapter);
-            helper.setText(R.id.day, item.getDayOfMonth());
-            helper.setText(R.id.weekIndex, item.getDayOfWeek());
         }
-    }
 
-    public static class HomeworkAdapter extends BaseItemDraggableAdapter<Homework, BaseDataBindingHolder> {
-
-        public HomeworkAdapter(int layoutResId, @Nullable List<Homework> data) {
-            super(layoutResId, data);
-        }
 
         @Override
-        protected void convert(BaseDataBindingHolder helper, Homework item) {
-            ViewDataBinding binding = helper.getBinding();
-            binding.setVariable(BR.homework, item);
-        }
-
-        @Override
-        protected View getItemView(int layoutResId, ViewGroup parent) {
-            ViewDataBinding binding = DataBindingUtil.inflate(mLayoutInflater, layoutResId, parent, false);
-            if (binding == null) {
-                return super.getItemView(layoutResId, parent);
-            }
-            View view = binding.getRoot();
-            view.setTag(R.id.BaseQuickAdapter_databinding_support, binding);
-            return view;
+        protected int getItemLayoutId() {
+            return R.layout.item_homework_tiny_recycler;
         }
     }
 }

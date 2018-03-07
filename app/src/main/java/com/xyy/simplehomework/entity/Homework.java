@@ -3,6 +3,8 @@ package com.xyy.simplehomework.entity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import com.freelib.multiitem.item.ItemData;
+import com.freelib.multiitem.item.ItemDrag;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
@@ -18,7 +20,7 @@ import io.objectbox.relation.ToOne;
  * Created by xyy on 2018/2/8.
  */
 @Entity
-public class Homework extends BaseObservable {
+public class Homework extends BaseObservable implements ItemDrag, ItemData{
     public static final int FINISHED = 0;
     public static final int NOT_FINISHED = 1;
     private final static DateFormat FORMAT = SimpleDateFormat.getDateInstance();
@@ -86,5 +88,30 @@ public class Homework extends BaseObservable {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    @Override
+    public boolean isCanMove() {
+        return true;
+    }
+
+    @Override
+    public boolean isCanChangeRecycler() {
+        return true;
+    }
+
+    @Override
+    public boolean isCanDrag() {
+        return true;
+    }
+
+    @Override
+    public void setVisibility(int i) {
+
+    }
+
+    @Override
+    public int getVisibility() {
+        return 0;
     }
 }

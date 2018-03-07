@@ -1,9 +1,10 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.xyy.simplehomework.view.fragments.home.HomeFragment">
+    tools:context="com.xyy.simplehomework.view.fragments.home.HomeFragment"
+    android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -17,13 +18,14 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <!--<include layout="@layout/item_home_header" />-->
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="?attr/actionBarSize"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        android:orientation="vertical"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/item_homework_tiny_recycler">
     </android.support.v7.widget.RecyclerView>
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

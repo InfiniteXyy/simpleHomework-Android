@@ -39,10 +39,10 @@ public class SubjectFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mListener.onChangeToSubject();
         View view = inflater.inflate(R.layout.fragment_week_subject, container, false);
         headerView = inflater.inflate(R.layout.item_small_title, container, false);
         return view;

@@ -3,8 +3,6 @@ package com.xyy.simplehomework.view.fragments.home;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,16 +10,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.freelib.multiitem.adapter.BaseItemAdapter;
 import com.freelib.multiitem.adapter.holder.BaseViewHolderManager;
 import com.freelib.multiitem.adapter.holder.DataBindViewHolderManager;
@@ -33,10 +27,8 @@ import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.helper.DateHelper;
-import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +37,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
+    public final static String TAG = "HomeFragment";
     private List<UniqueItemManager> days;
     private View headerView;
     private ItemDragHelper dragHelper;
@@ -101,6 +94,8 @@ public class HomeFragment extends Fragment {
         RecyclerView mainRecycler = view.findViewById(R.id.recycler_view);
         final BaseItemAdapter adapter = new BaseItemAdapter();
         adapter.addHeadView(headerView);
+//        PagerSnapHelper helper = new PagerSnapHelper();
+//        helper.attachToRecyclerView(mainRecycler);
         adapter.addDataItems(days);
         mainRecycler.setAdapter(adapter);
 
@@ -109,7 +104,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDragFinish(RecyclerView recyclerView, int recyclerPos, int itemPos) {
                 super.onDragFinish(recyclerView, recyclerPos, itemPos);
-                Log.d("123", "onDragFinish: "+recyclerView+" POS: "+recyclerPos + " itemPOS: "+itemPos);
             }
         });
     }

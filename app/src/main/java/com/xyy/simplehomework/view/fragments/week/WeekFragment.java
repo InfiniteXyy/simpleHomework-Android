@@ -69,7 +69,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                     if (getContext() != null)
                         ((MainActivity) getContext()).showDrawer();
                 } else {
-                    onChangeToDetail();
+                    getChildFragmentManager().popBackStack();
                 }
             }
         });
@@ -106,7 +106,6 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
             public void onClick(View v) {
                 getChildFragmentManager().popBackStack();
                 textBtn.setVisibility(View.VISIBLE);
-                imgBtn.setVisibility(View.GONE);
             }
         });
 
@@ -122,19 +121,23 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
 
     @Override
     public void onChangeToDetail() {
-        getChildFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                .hide(subjectFragment)
-                .show(detailFragment)
-                .commit();
         currentPage = WEEK_PAGE;
         toolbar.setTitle(DateHelper.getWeekTitle());
         textBtn.setVisibility(View.VISIBLE);
+        imgBtn.setVisibility(View.GONE);
         menuDrawable.animateIconState(MaterialMenuDrawable.IconState.BURGER);
     }
 
     @Override
     public void onChangeToSubject() {
+        currentPage = SUBJECT_PAGE;
+        toolbar.setTitle("科目列表");
+        textBtn.setVisibility(View.GONE);
+        menuDrawable.animateIconState(MaterialMenuDrawable.IconState.ARROW);
+    }
+
+    @Override
+    public void changeToSubject() {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         if (!subjectFragment.isAdded()) {
             transaction.add(R.id.fragment_week, subjectFragment);
@@ -142,11 +145,8 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                 .hide(detailFragment)
                 .show(subjectFragment)
+                .addToBackStack(null)
                 .commit();
-        currentPage = SUBJECT_PAGE;
-        toolbar.setTitle("科目列表");
-        textBtn.setVisibility(View.GONE);
-        menuDrawable.animateIconState(MaterialMenuDrawable.IconState.ARROW);
     }
 
     @Override

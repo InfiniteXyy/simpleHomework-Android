@@ -10,8 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
@@ -67,6 +65,12 @@ public class DetailFragment extends Fragment {
         } else {
             throw new RuntimeException("The parent fragment must implement WeekUIInteraction");
         }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) mListener.onChangeToDetail();
     }
 
     @Override
@@ -134,7 +138,7 @@ public class DetailFragment extends Fragment {
         view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onChangeToSubject();
+                mListener.changeToSubject();
             }
         });
 

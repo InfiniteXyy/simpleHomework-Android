@@ -18,8 +18,6 @@ import com.xyy.simplehomework.databinding.DialogHomeworkAddBinding;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 
-import org.joda.time.LocalDate;
-
 import java.util.Calendar;
 import java.util.Date;
 

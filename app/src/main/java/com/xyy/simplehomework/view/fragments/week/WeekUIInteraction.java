@@ -14,6 +14,8 @@ public interface WeekUIInteraction {
 
     void onChangeToSubject();
 
+    void changeToSubject();
+
     void onClickSubject(MySubject subject);
 
     void onClickHomework(Homework homework);

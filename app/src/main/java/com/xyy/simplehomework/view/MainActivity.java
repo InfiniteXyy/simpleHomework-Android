@@ -110,6 +110,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            if (lastFragment.getChildFragmentManager().getBackStackEntryCount() == 0)
+               if (getSupportFragmentManager().getBackStackEntryCount() == 0)
+                    if (lastFragment instanceof HomeFragment)
+                        finish();
+                    else bottomBar.selectTabAtPosition(0);
+               else
+                   super.onBackPressed();
+            else
+                lastFragment.getChildFragmentManager().popBackStack();
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         for (TabFragment tabFragment : TabFragment.values()) {
@@ -120,9 +137,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private enum TabFragment {
-        home(R.id.home, HomeFragment.class, "HomeFragment"),
-        week(R.id.week, WeekFragment.class, "WeekFragment"),
-        semester(R.id.month, SemesterFragment.class, "SemesterFragment");
+        home(R.id.home, HomeFragment.class, HomeFragment.TAG),
+        week(R.id.week, WeekFragment.class, WeekFragment.TAG),
+        semester(R.id.month, SemesterFragment.class, SemesterFragment.TAG);
 
         private final int menuId;
         private final Class<? extends Fragment> clazz;

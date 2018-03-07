@@ -12,13 +12,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
+import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
+import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Day;
@@ -52,7 +56,7 @@ public class HomeFragment extends Fragment {
         for (int i = 0; i < 7; i++) {
             days.add(new Day(DateHelper.afterDays(i)));
         }
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        RecyclerView mainRecycler = view.findViewById(R.id.recycler_view);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(new MaterialMenuDrawable(getContext(), Color.BLACK, MaterialMenuDrawable.Stroke.THIN));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -63,7 +67,7 @@ public class HomeFragment extends Fragment {
             }
         });
         adapter = new HomeAdapter(R.layout.item_homework_tiny_recycler, days);
-        recyclerView.setAdapter(adapter);
+        mainRecycler.setAdapter(adapter);
 
         HomeViewModel viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         viewModel.getHomeworkLiveData().observe(this, new Observer<List<Homework>>() {
@@ -83,16 +87,11 @@ public class HomeFragment extends Fragment {
         });
         // add header
         adapter.addHeaderView(headerView);
-    }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+
     }
 
     public static class HomeAdapter extends BaseQuickAdapter<Day, BaseViewHolder> {
-
-
         public HomeAdapter(int layoutResId, @Nullable List<Day> data) {
             super(layoutResId, data);
         }
@@ -101,13 +100,38 @@ public class HomeFragment extends Fragment {
         protected void convert(BaseViewHolder helper, Day item) {
             RecyclerView recyclerView = helper.getView(R.id.recycler_view);
             HomeworkAdapter adapter = new HomeworkAdapter(R.layout.item_homework_tiny, item.getHomeworkList());
+            // set draggable
+            ItemDragAndSwipeCallback callback = new ItemDragAndSwipeCallback(adapter);
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+
+            // 开启拖拽
+            adapter.enableDragItem(itemTouchHelper, R.id.homework, true);
+            adapter.setOnItemDragListener(new OnItemDragListener() {
+                @Override
+                public void onItemDragStart(RecyclerView.ViewHolder viewHolder, int pos) {
+
+                }
+
+                @Override
+                public void onItemDragMoving(RecyclerView.ViewHolder source, int from, RecyclerView.ViewHolder target, int to) {
+
+                }
+
+                @Override
+                public void onItemDragEnd(RecyclerView.ViewHolder viewHolder, int pos) {
+
+                }
+            });
+
+
             recyclerView.setAdapter(adapter);
             helper.setText(R.id.day, item.getDayOfMonth());
             helper.setText(R.id.weekIndex, item.getDayOfWeek());
         }
     }
 
-    public static class HomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {
+    public static class HomeworkAdapter extends BaseItemDraggableAdapter<Homework, BaseDataBindingHolder> {
 
         public HomeworkAdapter(int layoutResId, @Nullable List<Homework> data) {
             super(layoutResId, data);

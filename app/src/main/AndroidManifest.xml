@@ -28,7 +28,6 @@
         <activity
             android:name=".view.SettingActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.HomeworkActivity" />
         <activity android:name=".view.SubjectActivity"></activity>
     </application>
 

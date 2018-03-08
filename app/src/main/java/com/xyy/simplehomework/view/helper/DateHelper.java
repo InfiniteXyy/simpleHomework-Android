@@ -2,7 +2,10 @@ package com.xyy.simplehomework.view.helper;
 
 import com.xyy.simplehomework.entity.Semester;
 
-import java.util.Calendar;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Weeks;
+
 import java.util.Date;
 
 /**
@@ -17,6 +20,7 @@ public class DateHelper {
     public final static String[] weekInCn = {
             "周日", "周一", "周二", "周三", "周四", "周五", "周六"
     };
+    public final static String[] afterDate = {"今天", "明天", "后天", "三", "四", "五", "六", "日", "下周", "周后"};
     public final static String[] semesters = {
             "一年级", "两年级", "三年级", "四年级", "五年级", "六年级",
             "初一", "初二", "初三",
@@ -29,6 +33,7 @@ public class DateHelper {
     private static int weekIndex = -1;
     private static int semesterIndex = -1;
     private static int termIndex = -1;
+    private static DateTime nowTime = new DateTime().withTimeAtStartOfDay();
 
     public static void setUpSemester(Semester semester) {
         weekIndex = getTimeBetween(semester.startDate, date, WEEK);
@@ -37,22 +42,19 @@ public class DateHelper {
     }
 
     public static Date afterDays(int i) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, i);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTime();
+        return nowTime.plusDays(i).toDate();
     }
 
     public static int getTimeBetween(Date start, Date fin, int type) {
-        long a = start.getTime();
-        long b = fin.getTime();
-        if (type == WEEK)
-            return (int) ((b - a) / 1000 / 60 / 60 / 24 / 7);
+
+        DateTime s = new DateTime(start);
+        DateTime f = new DateTime(fin);
+        if (type == WEEK) {
+
+            return Weeks.weeksBetween(s,f).getWeeks();
+        }
         else if (type == DAY)
-            return (int) ((b - a) / 1000 / 60 / 60 / 24);
+            return Days.daysBetween(s,f).getDays();
         else return 0;
     }
 
@@ -68,17 +70,33 @@ public class DateHelper {
         return weekIndex;
     }
 
-    public static int getDayOfWeek() {
-        Calendar calendar = Calendar.getInstance();
-        return calendar.get(Calendar.DAY_OF_WEEK) - 1;
-    }
-
     public static Date getToday() {
         return afterDays(0);
     }
 
     public static String afterDayFormat(Date date) {
-        return "明天";
+        DateTime thisDate = new DateTime(date);
+        int days = Days.daysBetween(nowTime, thisDate).getDays();
+        if (days < 0)
+            return "已逾期";
+        else {
+            if (days < 3)
+                return afterDate[days];
+            else {
+                int weekBet= Days.daysBetween(nowTime.dayOfWeek().withMinimumValue(), thisDate).getDays();
+                if (weekBet < 8)
+                    return "本周" + afterDate[weekBet];
+                else {
+                    if (weekBet >= 8 && weekBet < 15)
+                        return afterDate[7];
+                    else
+                        return weekBet / 7 + afterDate[8];
+                }
+            }
+
+
+        }
     }
+}
 
 }

@@ -38,12 +38,12 @@ import java.util.List;
  */
 public class HomeFragment extends Fragment {
     public final static String TAG = "HomeFragment";
-    private List<UniqueItemManager> days;
-    private View headerView;
-    private ItemDragHelper dragHelper;
     private final String[] week = {
             "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
     };
+    private List<UniqueItemManager> days;
+    private View headerView;
+    private ItemDragHelper dragHelper;
 
     public ItemDragHelper getDragHelper() {
         return dragHelper;
@@ -132,7 +132,7 @@ public class HomeFragment extends Fragment {
 
         public void setHomeworkList(List<Homework> homeworkList) {
             this.homeworkList = homeworkList;
-            if (adapter != null){
+            if (adapter != null) {
                 adapter.setDataItems(homeworkList);
             }
         }

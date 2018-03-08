@@ -63,9 +63,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        return ((HomeFragment)TabFragment.home.getFragment()).getDragHelper().onTouch(ev) || super.dispatchTouchEvent(ev);
+        return ((HomeFragment) TabFragment.home.getFragment()).getDragHelper().onTouch(ev) || super.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -115,12 +116,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             if (lastFragment.getChildFragmentManager().getBackStackEntryCount() == 0)
-               if (getSupportFragmentManager().getBackStackEntryCount() == 0)
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0)
                     if (lastFragment instanceof HomeFragment)
                         finish();
                     else bottomBar.selectTabAtPosition(0);
-               else
-                   super.onBackPressed();
+                else
+                    super.onBackPressed();
             else
                 lastFragment.getChildFragmentManager().popBackStack();
         }

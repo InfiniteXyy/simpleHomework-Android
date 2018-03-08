@@ -20,7 +20,7 @@ import io.objectbox.relation.ToOne;
  * Created by xyy on 2018/2/8.
  */
 @Entity
-public class Homework extends BaseObservable implements ItemDrag, ItemData{
+public class Homework extends BaseObservable implements ItemDrag, ItemData {
     public static final int FINISHED = 0;
     public static final int NOT_FINISHED = 1;
     private final static DateFormat FORMAT = SimpleDateFormat.getDateInstance();
@@ -69,6 +69,12 @@ public class Homework extends BaseObservable implements ItemDrag, ItemData{
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
         notifyPropertyChanged(BR.deadline);
+        notifyPropertyChanged(BR.deadlineFormal);
+    }
+
+    @Bindable
+    public String getDeadlineFormal() {
+        return FORMAT.format(deadline);
     }
 
     public String getTitle() {
@@ -103,12 +109,12 @@ public class Homework extends BaseObservable implements ItemDrag, ItemData{
     }
 
     @Override
-    public void setVisibility(int i) {
-
+    public int getVisibility() {
+        return 0;
     }
 
     @Override
-    public int getVisibility() {
-        return 0;
+    public void setVisibility(int i) {
+
     }
 }

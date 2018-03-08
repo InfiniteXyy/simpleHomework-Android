@@ -17,10 +17,6 @@ public class DateHelper {
     public final static int DAY = 2;
     public final static String[] weeks = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     public final static String[] num2cn = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
-    public final static String[] weekInCn = {
-            "周日", "周一", "周二", "周三", "周四", "周五", "周六"
-    };
-    public final static String[] afterDate = {"今天", "明天", "后天", "三", "四", "五", "六", "日", "下周", "周后"};
     public final static String[] semesters = {
             "一年级", "两年级", "三年级", "四年级", "五年级", "六年级",
             "初一", "初二", "初三",
@@ -28,8 +24,10 @@ public class DateHelper {
             "大一", "大二", "大三", "大四",
             "研一", "研二", "研三"
     };
+    private final static String[] afterDate = {"今天", "明天", "后天"};
+    private final static String[] weekDay = {"一", "二", "三", "四", "五", "六", "日"};
     public static Date date = new Date();
-
+    private static DateTime firstDayOfThisWeek;
     private static int weekIndex = -1;
     private static int semesterIndex = -1;
     private static int termIndex = -1;
@@ -46,15 +44,12 @@ public class DateHelper {
     }
 
     public static int getTimeBetween(Date start, Date fin, int type) {
-
-        DateTime s = new DateTime(start);
-        DateTime f = new DateTime(fin);
-        if (type == WEEK) {
-
-            return Weeks.weeksBetween(s,f).getWeeks();
-        }
+        DateTime startDateTime = new DateTime(start);
+        DateTime finalDateTime = new DateTime(fin);
+        if (type == WEEK)
+            return Weeks.weeksBetween(startDateTime, finalDateTime).getWeeks();
         else if (type == DAY)
-            return Days.daysBetween(s,f).getDays();
+            return Days.daysBetween(startDateTime, finalDateTime).getDays();
         else return 0;
     }
 
@@ -71,7 +66,7 @@ public class DateHelper {
     }
 
     public static Date getToday() {
-        return afterDays(0);
+        return nowTime.toDate();
     }
 
     public static String afterDayFormat(Date date) {
@@ -83,20 +78,24 @@ public class DateHelper {
             if (days < 3)
                 return afterDate[days];
             else {
-                int weekBet= Days.daysBetween(nowTime.dayOfWeek().withMinimumValue(), thisDate).getDays();
-                if (weekBet < 8)
-                    return "本周" + afterDate[weekBet];
-                else {
-                    if (weekBet >= 8 && weekBet < 15)
-                        return afterDate[7];
-                    else
-                        return weekBet / 7 + afterDate[8];
-                }
+                if (firstDayOfThisWeek == null)
+                    firstDayOfThisWeek = nowTime.dayOfWeek().withMinimumValue();
+                int daysAfterThisWeekMonday = Days.daysBetween(firstDayOfThisWeek, thisDate).getDays();
+                if (daysAfterThisWeekMonday < 7)
+                    return "本周" + weekDay[daysAfterThisWeekMonday];
+                else if (daysAfterThisWeekMonday < 14)
+                    return "下周" + weekDay[daysAfterThisWeekMonday - 7];
+                else
+                    return num2cn[daysAfterThisWeekMonday / 7] + "周后";
             }
+        }
+    }
 
-
+    public static void main(String[] args) {
+        for (int i = 0; i < 20; i++) {
+            System.out.println(afterDayFormat(afterDays(i)));
         }
     }
 }
 
-}
+

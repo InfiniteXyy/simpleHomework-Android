@@ -11,14 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.databinding.DialogHomeworkDetailBinding;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -26,7 +26,6 @@ import java.util.Date;
  */
 
 public class DetailDialog extends DialogFragment {
-    private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     public View.OnClickListener clickClose = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -103,6 +102,7 @@ public class DetailDialog extends DialogFragment {
     public static class CalendarFragment extends Fragment {
         private Date planDate;
         private MaterialCalendarView calendarView;
+        private Homework homework;
 
         public static CalendarFragment newInstance(Date planDate) {
             CalendarFragment calendarFragment = new CalendarFragment();
@@ -113,6 +113,7 @@ public class DetailDialog extends DialogFragment {
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            homework = ((DetailDialog) getParentFragment()).getHomework();
             return inflater.inflate(R.layout.dialog_homework_detail_setplan, container, false);
         }
 
@@ -124,13 +125,12 @@ public class DetailDialog extends DialogFragment {
             calendarView.state().edit()
                     .setMinimumDate(DateHelper.date)
                     .commit();
+            calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+                @Override
+                public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                    homework.setPlanDate(calendarView.getSelectedDate().getDate());
+                }
+            });
         }
-
-        @Override
-        public void onDestroy() {
-            super.onDestroy();
-            ((DetailDialog) getParentFragment()).getHomework().setPlanDate(calendarView.getSelectedDate().getDate());
-        }
-
     }
 }

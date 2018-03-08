@@ -26,6 +26,7 @@ import com.xyy.simplehomework.view.helper.DateHelper;
 
 public class SemesterFragment extends Fragment {
     public final static String TAG = "SemesterFragment";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

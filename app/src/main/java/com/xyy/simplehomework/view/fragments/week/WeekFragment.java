@@ -2,24 +2,21 @@ package com.xyy.simplehomework.view.fragments.week;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
-import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.view.MainActivity;
-import com.xyy.simplehomework.view.SubjectActivity;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.List;
@@ -30,17 +27,11 @@ import java.util.List;
 
 public class WeekFragment extends Fragment implements WeekUIInteraction {
     public static final String TAG = "WeekFragment";
-    private static final int WEEK_PAGE = 0;
-    private static final int SUBJECT_PAGE = 1;
-    private static MaterialMenuDrawable menuDrawable;
-    private int currentPage;
-    private Toolbar toolbar;
-    private SubjectFragment subjectFragment;
+    private boolean isText = false;
     private DetailFragment detailFragment;
     private TextFragment textFragment;
     private WeekViewModel viewModel;
-    private View textBtn;
-    private View imgBtn;
+    private ImageView imgBtn;
 
 
     @Override
@@ -52,29 +43,10 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(WeekViewModel.class);
-
-        // first, init toolbar
-        if (menuDrawable == null) {
-            menuDrawable = new MaterialMenuDrawable(getContext(),
-                    Color.BLACK,
-                    MaterialMenuDrawable.Stroke.THIN);
-        }
-        toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(menuDrawable);
+        // first, init Toolbar
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setTitle(DateHelper.getWeekTitle());
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentPage == WEEK_PAGE) {
-                    if (getContext() != null)
-                        ((MainActivity) getContext()).showDrawer();
-                } else {
-                    getChildFragmentManager().popBackStack();
-                }
-            }
-        });
         // second, init child fragments
-        subjectFragment = new SubjectFragment();
         detailFragment = new DetailFragment();
         textFragment = TextFragment.newInstance(viewModel.getSubjectList());
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -83,29 +55,32 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                 .hide(textFragment)
                 .commit();
 
-
-        // third, set changeBtn between textFragment and defaultFragment
-        textBtn = view.findViewById(R.id.textBtn);
-        imgBtn = view.findViewById(R.id.imgBtn);
-        textBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // change to Text mode
-                getChildFragmentManager().beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
-                        .show(textFragment)
-                        .hide(detailFragment)
-                        .addToBackStack(null)
-                        .commit();
-                imgBtn.setVisibility(View.VISIBLE);
-                textBtn.setVisibility(View.GONE);
-            }
-        });
+        imgBtn = view.findViewById(R.id.button);
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getChildFragmentManager().popBackStack();
-                textBtn.setVisibility(View.VISIBLE);
+                if (isText) {
+                    getChildFragmentManager().popBackStack();
+                    imgBtn.setImageResource(R.drawable.ic_text_fields_black_24px);
+                } else {
+                    getChildFragmentManager().beginTransaction()
+                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                            .show(textFragment)
+                            .hide(detailFragment)
+                            .addToBackStack(null)
+                            .commit();
+                    imgBtn.setImageResource(R.drawable.ic_web_black_24px);
+                }
+                isText = !isText;
+            }
+        });
+
+        //third, int fab
+        final FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddDialog();
             }
         });
 
@@ -117,43 +92,6 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                 textFragment.updateHomeworkList();
             }
         });
-    }
-
-    @Override
-    public void onChangeToDetail() {
-        currentPage = WEEK_PAGE;
-        toolbar.setTitle(DateHelper.getWeekTitle());
-        textBtn.setVisibility(View.VISIBLE);
-        imgBtn.setVisibility(View.GONE);
-        menuDrawable.animateIconState(MaterialMenuDrawable.IconState.BURGER);
-    }
-
-    @Override
-    public void onChangeToSubject() {
-        currentPage = SUBJECT_PAGE;
-        toolbar.setTitle("科目列表");
-        textBtn.setVisibility(View.GONE);
-        menuDrawable.animateIconState(MaterialMenuDrawable.IconState.ARROW);
-    }
-
-    @Override
-    public void changeToSubject() {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        if (!subjectFragment.isAdded()) {
-            transaction.add(R.id.fragment_week, subjectFragment);
-        }
-        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                .hide(detailFragment)
-                .show(subjectFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public void onClickSubject(MySubject subject) {
-        Intent intent = new Intent(getContext(), SubjectActivity.class);
-        intent.putExtra(SubjectActivity.SUBJECT_ID, subject.id);
-        startActivity(intent);
     }
 
     @Override

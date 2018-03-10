@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.view.fragments.week;
+package com.xyy.simplehomework.view.fragments.semester;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
@@ -19,6 +19,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.view.fragments.week.WeekUIInteraction;
 
 import java.util.List;
 
@@ -42,7 +43,6 @@ public class SubjectFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mListener.onChangeToSubject();
         View view = inflater.inflate(R.layout.fragment_week_subject, container, false);
         headerView = inflater.inflate(R.layout.item_small_title, container, false);
         return view;

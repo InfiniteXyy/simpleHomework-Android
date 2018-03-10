@@ -55,7 +55,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onTabSelected(int tabId) {
                 Fragment thisFragment = TabFragment.from(tabId).getFragment();
+                boolean fromRight = TabFragment.getPosition(lastFragment) < TabFragment.getPosition(thisFragment);
                 getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(
+                                fromRight ? R.anim.slide_in_right : R.anim.slide_in_left,
+                                fromRight ? R.anim.slide_out_left : R.anim.slide_out_right)
                         .hide(lastFragment)
                         .show(thisFragment)
                         .commit();
@@ -159,6 +163,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     return fragment;
             }
             return home;
+        }
+
+        public static int getPosition(Fragment fragment) {
+            if (fragment == null || fragment.getTag() == null)
+                return 0;
+            else {
+                switch (fragment.getTag()) {
+                    case HomeFragment.TAG:
+                        return 0;
+                    case WeekFragment.TAG:
+                        return 1;
+                    case SemesterFragment.TAG:
+                        return 2;
+                }
+            }
+            return 0;
         }
 
         public static void onDestroy() {

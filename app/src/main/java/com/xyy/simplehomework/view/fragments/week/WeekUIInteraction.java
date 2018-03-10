@@ -10,14 +10,6 @@ import java.util.List;
  */
 
 public interface WeekUIInteraction {
-    void onChangeToDetail();
-
-    void onChangeToSubject();
-
-    void changeToSubject();
-
-    void onClickSubject(MySubject subject);
-
     void onClickHomework(Homework homework);
 
     void showAddDialog();

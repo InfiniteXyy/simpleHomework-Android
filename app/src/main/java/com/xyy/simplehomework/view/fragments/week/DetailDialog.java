@@ -96,7 +96,7 @@ public class DetailDialog extends DialogFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mListener.putHomework(homework);
+        //   mListener.putHomework(homework);
     }
 
     public static class CalendarFragment extends Fragment {

@@ -24,4 +24,6 @@
     <color name="dividerColor">#dcdcdc</color>
     <color name="colorBtn">#4A90E2</color>
     <color name="dateBlue">#738a93</color>
+    <color name="japanGray">#887f7a</color>
+    <color name="japanAir">#2a83a2</color>
 </resources>

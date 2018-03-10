@@ -43,6 +43,7 @@ public class DetailFragment extends Fragment {
     private WeekUIInteraction mListener;
     private View spinnerView;
     private WeekHomeworkAdapter adapter;
+    private List<Homework> homeworkList;
     private Comparator<Homework> deadlineComparator = new Comparator<Homework>() {
         @Override
         public int compare(Homework o1, Homework o2) {
@@ -68,12 +69,6 @@ public class DetailFragment extends Fragment {
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) mListener.onChangeToDetail();
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         spinnerView = inflater.inflate(R.layout.item_small_title, container, false);
         return inflater.inflate(R.layout.fragment_week_recycler, container, false);
@@ -82,11 +77,10 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        homeworkList = new ArrayList<>();
         // first, set main recyclerView
         RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
-        adapter = new WeekHomeworkAdapter(R.layout.item_homework_detail,
-                new ArrayList<Homework>());
+        adapter = new WeekHomeworkAdapter(R.layout.item_homework_detail, homeworkList);
         Collections.sort(adapter.getData(), deadlineComparator); // default sort by deadline
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -132,13 +126,13 @@ public class DetailFragment extends Fragment {
         subjectHeaderAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                mListener.onClickSubject((MySubject) adapter.getItem(position));
+                filterBySubject((MySubject) adapter.getItem(position));
             }
         });
         view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.changeToSubject();
+                adapter.replaceData(homeworkList);
             }
         });
 
@@ -152,7 +146,7 @@ public class DetailFragment extends Fragment {
         spinnerView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.showAddDialog();
+                // mListener.showAddDialog();
             }
         });
         adapter.addHeaderView(spinnerView);
@@ -182,7 +176,18 @@ public class DetailFragment extends Fragment {
     }
 
     public void setHomeworkList(List<Homework> list) {
-        adapter.replaceData(list);
+        homeworkList = list;
+        adapter.replaceData(homeworkList);
+    }
+
+    public void filterBySubject(MySubject subject) {
+        List<Homework> singleHomeworkList = new ArrayList<>();
+        for (Homework homework : homeworkList) {
+            if (homework.subject.getTargetId() == subject.id) {
+                singleHomeworkList.add(homework);
+            }
+        }
+        adapter.replaceData(singleHomeworkList);
     }
 
 
@@ -211,6 +216,8 @@ public class DetailFragment extends Fragment {
             view.setTag(R.id.BaseQuickAdapter_databinding_support, binding);
             return view;
         }
+
+
     }
 
     public static class WeekHeaderAdapter extends BaseQuickAdapter<MySubject, BaseViewHolder> {

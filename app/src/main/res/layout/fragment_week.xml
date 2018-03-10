@@ -1,42 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.AppCompat.Light">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        android:layout_height="?attr/actionBarSize"
+        android:paddingRight="16dp">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="第三周">
-            <ImageView
-                android:id="@+id/textBtn"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/appBtn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_apps_black_24px"
+                android:tint="@color/japanGray" />
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="周记"
+                android:textStyle="bold"
+                android:textColor="@color/japanAir"
+                android:textSize="20sp" />
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/button"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 app:srcCompat="@drawable/ic_text_fields_black_24px"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp" />
-            <ImageView
-                android:id="@+id/imgBtn"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_web_black_24px"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp" />
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+                android:tint="@color/japanGray" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
 
     <FrameLayout
+        android:layout_marginTop="?attr/actionBarSize"
         android:id="@+id/fragment_week"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_add_black_24px"
+        app:layout_anchor="@id/fragment_week"
+        app:backgroundTint="@color/japanAir"
+        app:layout_anchorGravity="bottom|right"/>
+</android.support.design.widget.CoordinatorLayout>

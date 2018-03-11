@@ -1,24 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <android.support.design.widget.AppBarLayout
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.AppCompat.Light">
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        android:layout_height="?attr/actionBarSize"
+        android:paddingRight="16dp">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="学期" />
-    </android.support.design.widget.AppBarLayout>
+            android:layout_height="match_parent">
+            <android.support.v7.widget.AppCompatImageView
+                android:visibility="gone"
+                android:id="@+id/appBtn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_apps_black_24px"
+                android:tint="@color/japanGray" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="偏好"
+                android:textStyle="bold"
+                android:textColor="@color/japanAir"
+                android:textSize="20sp" />
+            <android.support.v7.widget.AppCompatImageView
+                android:visibility="gone"
+                android:id="@+id/button"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_text_fields_black_24px"
+                android:tint="@color/japanGray" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_height="match_parent">
         <LinearLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
@@ -60,4 +85,4 @@
             </FrameLayout>
         </LinearLayout>
     </ScrollView>
-</FrameLayout>
+</LinearLayout>

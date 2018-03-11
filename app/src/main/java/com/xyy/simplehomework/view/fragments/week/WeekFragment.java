@@ -40,6 +40,16 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         else fab.show();
     }
 
+    public void setFab(FloatingActionButton fab) {
+        this.fab = fab;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddDialog();
+            }
+        });
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_week, container, false);
@@ -78,15 +88,6 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                     imgBtn.setImageResource(R.drawable.ic_web_black_24px);
                 }
                 isText = !isText;
-            }
-        });
-
-        //third, int fab
-        fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddDialog();
             }
         });
 

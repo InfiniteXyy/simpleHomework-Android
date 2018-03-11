@@ -1,45 +1,50 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.xyy.simplehomework.view.fragments.home.HomeFragment"
-    android:orientation="vertical">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:paddingRight="16dp">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="今日"
-                android:textStyle="bold"
-                android:textColor="@color/japanAir"
-                android:textSize="20sp" />
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_more_vert_black_24px"
-                android:tint="@color/japanGray" />
-        </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabs"
+    tools:context="com.xyy.simplehomework.view.fragments.home.HomeFragment">
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/japanAir"
-        app:tabTextColor="@color/textDarkSecondary"
-        app:tabSelectedTextColor="@color/japanAir"/>
+        android:background="@android:color/white"
+        app:elevation="0dp">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingRight="16dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/today"
+                    android:textStyle="bold"
+                    android:textColor="@color/japanAir"
+                    android:textSize="20sp" />
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_more_vert_black_24px"
+                    android:tint="@color/japanGray" />
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="@color/japanAir"
+            app:tabTextColor="@color/textDarkSecondary"
+            app:tabSelectedTextColor="@color/japanAir"/>
+    </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.v4.view.ViewPager
@@ -54,7 +59,4 @@
             android:rotation="180"/>
     </FrameLayout>
 
-
-
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

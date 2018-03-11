@@ -61,9 +61,7 @@ public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
         for (int i = 0; i < childCount; i++) {
             View child = parent.getChildAt(i);
             if (child.getHeight() < headerHeight) continue; // 标题不用画分割线
-
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-
             int top = child.getBottom() + params.bottomMargin;
             int bottom = top + mDividerHeight;
             mDivider.setBounds(left, top, right, bottom);

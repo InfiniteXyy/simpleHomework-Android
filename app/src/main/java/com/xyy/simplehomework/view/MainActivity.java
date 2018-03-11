@@ -1,16 +1,14 @@
 package com.xyy.simplehomework.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
@@ -20,10 +18,9 @@ import com.xyy.simplehomework.view.fragments.semester.SemesterFragment;
 import com.xyy.simplehomework.view.fragments.week.WeekFragment;
 import com.xyy.simplehomework.viewmodel.MainViewModel;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
     public MainViewModel viewModel;
     private Fragment lastFragment = new Fragment();
-    private DrawerLayout drawerLayout;
     private BottomBar bottomBar;
 
     @Override
@@ -35,11 +32,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewModel = new MainViewModel(this);
 
         // set up view
-        // init drawer layout
-        drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         for (TabFragment fragment : TabFragment.values()) {
             transaction.add(R.id.mainFragment, fragment.getFragment(), fragment.getTag())
@@ -65,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 lastFragment = thisFragment;
             }
         });
+
+        // init fab
+        FloatingActionButton fab = findViewById(R.id.fab);
+        ((WeekFragment) TabFragment.week.fragment).setFab(fab);
     }
 
 
@@ -81,27 +77,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
 
-
-    public void showDrawer() {
-        drawerLayout.openDrawer(GravityCompat.START);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        drawerLayout.closeDrawers();
-        switch (item.getItemId()) {
-            case R.id.set:
-                startActivity(new Intent(getApplicationContext(), SettingActivity.class));
-                break;
-            case R.id.profile:
-                Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
-                startActivity(intent);
-                break;
-        }
-        return true;
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -111,19 +86,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            if (lastFragment.getChildFragmentManager().getBackStackEntryCount() == 0)
-                if (getSupportFragmentManager().getBackStackEntryCount() == 0)
-                    if (lastFragment instanceof HomeFragment)
-                        finish();
-                    else bottomBar.selectTabAtPosition(0);
-                else
-                    super.onBackPressed();
+        if (lastFragment.getChildFragmentManager().getBackStackEntryCount() == 0)
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0)
+                if (lastFragment instanceof HomeFragment)
+                    finish();
+                else bottomBar.selectTabAtPosition(0);
             else
-                lastFragment.getChildFragmentManager().popBackStack();
-        }
+                super.onBackPressed();
+        else
+            lastFragment.getChildFragmentManager().popBackStack();
     }
 
     @Override

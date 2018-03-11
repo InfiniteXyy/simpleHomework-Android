@@ -24,8 +24,14 @@ import java.lang.reflect.Field;
  */
 public class HomeFragment extends Fragment {
     public final static String TAG = "HomeFragment";
+    private static String[] pageNames = {
+            "我的",
+            "计划",
+            "课程"
+    };
     private FragmentMine fragmentMine;
     private FragmentSubjects fragmentSubjects;
+    private FragmentPlan fragmentPlan;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,7 +50,9 @@ public class HomeFragment extends Fragment {
                             fragmentMine = new FragmentMine();
                         return fragmentMine;
                     case 1:
-                        return new FragmentMine();
+                        if (fragmentPlan == null)
+                            fragmentPlan = new FragmentPlan();
+                        return fragmentPlan;
                     case 2:
                         if (fragmentSubjects == null)
                             fragmentSubjects = new FragmentSubjects();
@@ -60,15 +68,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public CharSequence getPageTitle(int position) {
-                switch (position) {
-                    case 0:
-                        return "我的";
-                    case 1:
-                        return "计划";
-                    case 2:
-                        return "课程";
-                }
-                return "错误";
+                return pageNames[position];
             }
         });
         TabLayout tabLayout = view.findViewById(R.id.tabs);

@@ -40,29 +40,12 @@
             android:background="@color/dividerColor" />
     </RelativeLayout>
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refreshLayout"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/week_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srlEnablePreviewInEditMode="true">
-
-        <com.scwang.smartrefresh.layout.header.FalsifyHeader
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/week_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_homework_detail">
-
-        </android.support.v7.widget.RecyclerView>
-
-        <com.scwang.smartrefresh.layout.footer.FalsifyFooter
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_homework_detail">
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

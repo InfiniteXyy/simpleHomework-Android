@@ -2,22 +2,18 @@ package com.xyy.simplehomework.view.fragments.semester;
 
 import android.animation.LayoutTransition;
 import android.arch.lifecycle.ViewModelProviders;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 /**
@@ -43,19 +39,6 @@ public class SemesterFragment extends Fragment {
         container.setLayoutTransition(transition);
 
         SemesterViewModel viewModel = ViewModelProviders.of(this).get(SemesterViewModel.class);
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(new MaterialMenuDrawable(
-                getContext(),
-                Color.BLACK,
-                MaterialMenuDrawable.Stroke.THIN
-        ));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getContext() != null)
-                    ((MainActivity) getContext()).showDrawer();
-            }
-        });
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         BaseQuickAdapter<Week, BaseViewHolder> adapter
                 = new BaseQuickAdapter<Week, BaseViewHolder>

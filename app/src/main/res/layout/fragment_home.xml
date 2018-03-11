@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,26 +31,30 @@
                 android:tint="@color/japanGray" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
-
-    <View
-        android:layout_below="@id/toolbar"
-        android:id="@+id/shadow"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_gravity="bottom"
-        android:background="@drawable/shadow"
-        android:rotation="180"/>
-
-    <!--<include layout="@layout/item_home_header" />-->
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="?attr/actionBarSize"
-        android:id="@+id/recycler_view"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_homework_tiny_recycler" />
+        app:tabIndicatorColor="@color/japanAir"
+        app:tabTextColor="@color/textDarkSecondary"
+        app:tabSelectedTextColor="@color/japanAir"/>
 
-</RelativeLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/mainFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <View
+            android:id="@+id/shadow"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/shadow"
+            android:rotation="180"/>
+    </FrameLayout>
+
+
+
+
+</LinearLayout>

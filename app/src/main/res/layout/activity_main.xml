@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_gravity="bottom"
-            app:bb_activeTabColor="#f9a825"
+            app:bb_activeTabColor="@color/japanAir"
             app:bb_behavior="iconsOnly"
             app:bb_tabXmlResource="@xml/bottom_tab" />
     </FrameLayout>

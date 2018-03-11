@@ -32,7 +32,13 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     private TextFragment textFragment;
     private WeekViewModel viewModel;
     private ImageView imgBtn;
+    private FloatingActionButton fab;
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) fab.hide();
+        else fab.show();
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -76,7 +82,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         });
 
         //third, int fab
-        final FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

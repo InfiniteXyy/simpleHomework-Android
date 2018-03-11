@@ -150,7 +150,7 @@ public class DetailFragment extends Fragment {
             }
         });
         adapter.addHeaderView(spinnerView);
-
+        adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

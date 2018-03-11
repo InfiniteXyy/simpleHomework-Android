@@ -1,6 +1,5 @@
 package com.xyy.simplehomework.view.fragments.week;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,7 +31,6 @@ public class DetailDialog extends DialogFragment {
             dismiss();
         }
     };
-    private WeekUIInteraction mListener;
     private Homework homework;
     private boolean isSettingPlan = false;
     public View.OnClickListener clickSetPlan = new View.OnClickListener() {
@@ -63,12 +61,6 @@ public class DetailDialog extends DialogFragment {
         DetailDialog detailDialog = new DetailDialog();
         detailDialog.setHomework(homework);
         return detailDialog;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mListener = (WeekUIInteraction) getParentFragment();
     }
 
     @Nullable

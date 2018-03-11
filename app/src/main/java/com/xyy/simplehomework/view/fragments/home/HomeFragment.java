@@ -1,168 +1,109 @@
 package com.xyy.simplehomework.view.fragments.home;
 
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
-import com.freelib.multiitem.adapter.BaseItemAdapter;
-import com.freelib.multiitem.adapter.holder.BaseViewHolderManager;
-import com.freelib.multiitem.adapter.holder.DataBindViewHolderManager;
-import com.freelib.multiitem.helper.ItemDragHelper;
-import com.freelib.multiitem.item.UniqueItemManager;
-import com.freelib.multiitem.listener.OnItemLongClickListener;
-import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.view.helper.DateHelper;
+import com.xyy.simplehomework.view.App;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.lang.reflect.Field;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
     public final static String TAG = "HomeFragment";
-    private final String[] week = {
-            "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
-    };
-    private List<UniqueItemManager> days;
-    private View headerView;
-    private ItemDragHelper dragHelper;
-
-    public ItemDragHelper getDragHelper() {
-        return dragHelper;
-    }
+    private FragmentMine fragmentMine;
+    private FragmentSubjects fragmentSubjects;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        headerView = inflater.inflate(R.layout.item_home_header, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        // bind with view model
-        days = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            days.add(new UniqueItemManager(new DayViewManager(DateHelper.afterDays(i))));
-        }
-        HomeViewModel viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        viewModel.getHomeworkLiveData().observe(this, new Observer<List<Homework>>() {
+        ViewPager viewPager = view.findViewById(R.id.mainFragment);
+        viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
-            public void onChanged(List<Homework> homework) {
-                for (int i = 0; i < 7; i++) {
-                    List<Homework> temp = new ArrayList<>();
-                    for (Homework homework1 : homework) {
-                        if (homework1.planDate.equals(((DayViewManager) days.get(i).getViewHolderManager()).getDate())) {
-                            temp.add(homework1);
-                        }
-                    }
-                    ((DayViewManager) days.get(i).getViewHolderManager()).setHomeworkList(temp);
+            public Fragment getItem(int position) {
+                switch (position) {
+                    case 0:
+                        if (fragmentMine == null)
+                            fragmentMine = new FragmentMine();
+                        return fragmentMine;
+                    case 1:
+                        return new FragmentMine();
+                    case 2:
+                        if (fragmentSubjects == null)
+                            fragmentSubjects = new FragmentSubjects();
+                        return fragmentSubjects;
                 }
+                return new FragmentMine();
             }
-        });
 
-        // set main recycler view
-        RecyclerView mainRecycler = view.findViewById(R.id.recycler_view);
-        // TODO:滑动时阴影变大
-        final BaseItemAdapter adapter = new BaseItemAdapter();
-        adapter.addHeadView(headerView);
-//        PagerSnapHelper helper = new PagerSnapHelper();
-//        helper.attachToRecyclerView(mainRecycler);
-        adapter.addDataItems(days);
-        mainRecycler.setAdapter(adapter);
-
-        dragHelper = new ItemDragHelper(mainRecycler);
-        dragHelper.setOnItemDragListener(new com.freelib.multiitem.listener.OnItemDragListener() {
             @Override
-            public void onDragFinish(RecyclerView recyclerView, int recyclerPos, int itemPos) {
-                super.onDragFinish(recyclerView, recyclerPos, itemPos);
+            public int getCount() {
+                return 3;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                switch (position) {
+                    case 0:
+                        return "我的";
+                    case 1:
+                        return "计划";
+                    case 2:
+                        return "课程";
+                }
+                return "错误";
             }
         });
+        TabLayout tabLayout = view.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        setUpIndicatorWidth(tabLayout);
     }
 
-
-    class DayViewManager extends BaseViewHolderManager<UniqueItemManager> {
-        private Calendar cal;
-        private Date date;
-        private List<Homework> homeworkList;
-        private BaseItemAdapter adapter;
-
-        public DayViewManager(Date date) {
-            this.date = date;
-            cal = Calendar.getInstance();
-            cal.setTime(date);
-            this.homeworkList = new ArrayList<>();
+    private void setUpIndicatorWidth(TabLayout tabLayout) {
+        Class<?> tabLayoutClass = tabLayout.getClass();
+        Field tabStrip = null;
+        try {
+            tabStrip = tabLayoutClass.getDeclaredField("mTabStrip");
+            tabStrip.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
         }
 
-        public Date getDate() {
-            return date;
-        }
-
-        public List<Homework> getHomeworkList() {
-            return homeworkList;
-        }
-
-        public void setHomeworkList(List<Homework> homeworkList) {
-            this.homeworkList = homeworkList;
-            if (adapter != null) {
-                adapter.setDataItems(homeworkList);
+        LinearLayout layout = null;
+        try {
+            if (tabStrip != null) {
+                layout = (LinearLayout) tabStrip.get(tabLayout);
             }
-        }
-
-        private String getDayOfMonth() {
-            return String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
-        }
-
-        private String getDayOfWeek() {
-            return week[cal.get(Calendar.DAY_OF_WEEK) - 1];
-        }
-
-        @Override
-        public void onBindViewHolder(com.freelib.multiitem.adapter.holder.BaseViewHolder baseViewHolder, UniqueItemManager uniqueItemManager) {
-            TextView dayNum = baseViewHolder.itemView.findViewById(R.id.day);
-            TextView day = baseViewHolder.itemView.findViewById(R.id.weekIndex);
-            dayNum.setText(getDayOfMonth());
-            day.setText(getDayOfWeek());
-        }
-
-        @Override
-        protected void onCreateViewHolder(@NonNull com.freelib.multiitem.adapter.holder.BaseViewHolder holder) {
-            super.onCreateViewHolder(holder);
-
-            View view = holder.itemView;
-            RecyclerView recyclerView = getView(view, R.id.recycler_view);
-            // set drag
-            adapter = new BaseItemAdapter();
-            adapter.register(Homework.class, new DataBindViewHolderManager<Homework>(R.layout.item_homework_tiny, BR.homework));
-            adapter.setDataItems(homeworkList);
-            adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
-                @Override
-                protected void onItemLongClick(com.freelib.multiitem.adapter.holder.BaseViewHolder baseViewHolder) {
-                    dragHelper.startDrag(baseViewHolder);
+            for (int i = 0; i < layout.getChildCount(); i++) {
+                View child = layout.getChildAt(i);
+                child.setPadding(0, 0, 0, 0);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    params.setMarginStart(App.dp2px(18f));
+                    params.setMarginEnd(App.dp2px(18f));
                 }
-            });
-            recyclerView.setAdapter(adapter);
-        }
-
-
-        @Override
-        protected int getItemLayoutId() {
-            return R.layout.item_homework_tiny_recycler;
+                child.setLayoutParams(params);
+                child.invalidate();
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 }

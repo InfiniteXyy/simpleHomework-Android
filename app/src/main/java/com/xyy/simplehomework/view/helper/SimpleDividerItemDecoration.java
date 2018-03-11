@@ -10,10 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.view.App;
 
 
 public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
-    private float scale;
     private int headerHeight;
     private Drawable mDivider;     //分割线Drawable  
     private int mDividerHeight;  //分割线高度  
@@ -25,8 +25,7 @@ public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
      * @param dividerHeight 分割线高度
      */
     public SimpleDividerItemDecoration(Context context, int dividerHeight) {
-        scale = context.getResources().getDisplayMetrics().density;
-        headerHeight = dp2px(50);
+        headerHeight = App.dp2px(50);
         mDivider = ContextCompat.getDrawable(context, R.drawable.line_divider);
         mDividerHeight = dividerHeight;
     }
@@ -37,8 +36,7 @@ public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
      * @param dividerHeight 分割线高度
      */
     public SimpleDividerItemDecoration(Context context, Drawable divider, int dividerHeight) {
-        scale = context.getResources().getDisplayMetrics().density;
-        headerHeight = dp2px(50);
+        headerHeight = App.dp2px(50);
         if (divider == null) {
             mDivider = ContextCompat.getDrawable(context, R.drawable.line_divider);
         } else {
@@ -56,7 +54,7 @@ public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        int left = parent.getPaddingLeft() + dp2px(72);
+        int left = parent.getPaddingLeft() + App.dp2px(72);
         int right = parent.getWidth() - parent.getPaddingRight();
 
         int childCount = parent.getChildCount();
@@ -71,9 +69,5 @@ public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }
-    }
-
-    private int dp2px(float dpValue) {
-        return (int) (dpValue * scale + 0.5f);
     }
 }

@@ -8,6 +8,7 @@ import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.objectbox.Box;
@@ -22,14 +23,20 @@ public class WeekViewModel extends ViewModel {
     private List<MySubject> subjectList;
     private ObjectBoxLiveData<Homework> homeworkObjectBoxLiveData;
     private Box<Homework> homeworkBox;
+    private int weekIndex;
+    private List<Week> weeks;
 
     public WeekViewModel() {
         // first, get reference of ObjectBox
         BoxStore boxStore = App.getInstance().getBoxStore();
         homeworkBox = boxStore.boxFor(Homework.class);
         subjectList = boxStore.boxFor(MySubject.class).getAll();
+        weekIndex = DateHelper.getWeekIndex();
     }
 
+    public void setWeekIndex(int weekIndex) {
+        this.weekIndex = weekIndex;
+    }
 
     public List<MySubject> getSubjectList() {
         return subjectList;
@@ -43,10 +50,18 @@ public class WeekViewModel extends ViewModel {
     public ObjectBoxLiveData<Homework> getHomeworkLiveData() {
         if (homeworkObjectBoxLiveData == null) {
             homeworkObjectBoxLiveData = new ObjectBoxLiveData<>(homeworkBox.query()
-                    .equal(Homework_.weekIndex, DateHelper.getWeekIndex())
+                    .equal(Homework_.weekIndex, weekIndex)
                     .order(Homework_.deadline) // default sort by deadline
                     .build());
         }
         return homeworkObjectBoxLiveData;
+    }
+
+    public List<Week> getWeeks() {
+        List<Week> weeks = new ArrayList<>();
+        for (int i = 0; i < DateHelper.getWeekIndex(); i++) {
+            weeks.add(new Week(i));
+        }
+        return weeks;
     }
 }

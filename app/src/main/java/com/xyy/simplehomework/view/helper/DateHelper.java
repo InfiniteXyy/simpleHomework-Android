@@ -16,7 +16,7 @@ public class DateHelper {
     public final static int WEEK = 1;
     public final static int DAY = 2;
     public final static String[] weeks = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-    public final static String[] num2cn = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
+    public final static String[] num2cn = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"};
     public final static String[] semesters = {
             "一年级", "两年级", "三年级", "四年级", "五年级", "六年级",
             "初一", "初二", "初三",
@@ -58,7 +58,7 @@ public class DateHelper {
     }
 
     public static String getWeekTitle(int index) {
-        return "第" + num2cn[index + 1] + "周";
+        return "第" + num2cn[(index + 1)] + "周";
     }
 
     public static int getWeekIndex() {

@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="周记"
+                android:text="@string/week_plan"
                 android:textStyle="bold"
                 android:textColor="@color/japanAir"
                 android:textSize="20sp" />

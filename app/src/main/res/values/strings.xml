@@ -37,6 +37,7 @@
     <string name="save">SAVE</string>
     <string name="ddl">DDL</string>
     <string name="set_clock">设置提醒</string>
+    <string name="week_plan">周记</string>
 
 
 </resources>

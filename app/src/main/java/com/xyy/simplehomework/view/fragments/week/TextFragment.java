@@ -14,7 +14,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.view.fragments.semester.Week;
 
 import java.util.List;
 

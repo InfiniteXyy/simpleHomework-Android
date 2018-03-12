@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.view.fragments.semester;
+package com.xyy.simplehomework.view.fragments.week;
 
 import com.xyy.simplehomework.entity.MySubject;
 
@@ -22,5 +22,9 @@ public class Week {
 
     public void setSubjects(List<MySubject> subjects) {
         this.subjects = subjects;
+    }
+
+    public String getWeekName() {
+        return "第"+weekIndex+"周";
     }
 }

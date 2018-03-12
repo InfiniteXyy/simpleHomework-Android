@@ -9,9 +9,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.xyy.simplehomework.R;
@@ -30,6 +32,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     private boolean isText = false;
     private DetailFragment detailFragment;
     private TextFragment textFragment;
+    private WeeksFragment weeksFragment;
     private WeekViewModel viewModel;
     private ImageView imgBtn;
     private FloatingActionButton fab;
@@ -65,9 +68,13 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         // second, init child fragments
         detailFragment = new DetailFragment();
         textFragment = TextFragment.newInstance(viewModel.getSubjectList());
+        weeksFragment = new WeeksFragment();
+        weeksFragment.setWeeks(viewModel.getWeeks());
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_week, detailFragment)
                 .add(R.id.fragment_week, textFragment)
+                .add(R.id.fragment_week, weeksFragment)
+                .hide(weeksFragment)
                 .hide(textFragment)
                 .commit();
 
@@ -88,6 +95,20 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                     imgBtn.setImageResource(R.drawable.ic_web_black_24px);
                 }
                 isText = !isText;
+            }
+        });
+
+        View weekBtn = view.findViewById(R.id.appBtn);
+        weekBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getChildFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.scale_in, R.anim.scale_out, R.anim.scale_in_re, R.anim.scale_out_re)
+                        .show(weeksFragment)
+                        .hide(detailFragment)
+                        .addToBackStack(null)
+                        .commit();
+                imgBtn.setVisibility(View.GONE);
             }
         });
 

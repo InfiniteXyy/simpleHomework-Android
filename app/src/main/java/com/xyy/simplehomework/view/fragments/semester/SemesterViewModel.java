@@ -4,10 +4,12 @@ import android.arch.lifecycle.ViewModel;
 
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.App;
+import com.xyy.simplehomework.view.fragments.week.Week;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Filter;
 
 import io.objectbox.query.Query;
 import io.objectbox.query.QueryFilter;
@@ -20,12 +22,6 @@ public class SemesterViewModel extends ViewModel {
     private List<Week> weekList;
 
     public SemesterViewModel() {
-        QueryFilter<MySubject> filter = new QueryFilter<MySubject>() {
-            @Override
-            public boolean keep(MySubject entity) {
-                return false;
-            }
-        };
         // TODO: 解决一下取得每一个
         weekList = new ArrayList<>();
         Query<MySubject> subjectQuery = App

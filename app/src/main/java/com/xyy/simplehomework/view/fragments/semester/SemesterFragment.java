@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.view.fragments.week.Week;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 /**

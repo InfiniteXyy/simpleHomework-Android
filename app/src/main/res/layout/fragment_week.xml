@@ -21,14 +21,12 @@
                 android:layout_centerVertical="true"
                 app:srcCompat="@drawable/ic_apps_black_24px"
                 android:tint="@color/japanGray" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <TextSwitcher
+                android:id="@+id/title"
                 android:layout_centerInParent="true"
-                android:text="@string/week_plan"
-                android:textStyle="bold"
-                android:textColor="@color/japanAir"
-                android:textSize="20sp" />
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/week_plan" />
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/button"
                 android:layout_width="24dp"

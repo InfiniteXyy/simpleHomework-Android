@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@drawable/default_background</item>
         <item name="android:dividerHorizontal">@drawable/line_divider</item>
         <item name="android:listDivider">@drawable/line_divider</item>
     </style>
@@ -25,5 +25,11 @@
     <style name="BottomFloatAnim">
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
+    <style name="textSwitcher" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/japanAir</item>
+        <item name="android:textSize">20sp</item>
     </style>
 </resources>

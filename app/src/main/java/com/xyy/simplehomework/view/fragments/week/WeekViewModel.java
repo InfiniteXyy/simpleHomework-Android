@@ -24,8 +24,6 @@ public class WeekViewModel extends ViewModel {
     private ObjectBoxLiveData<Homework> homeworkObjectBoxLiveData;
     private Box<Homework> homeworkBox;
     private int weekIndex;
-    private List<Week> weeks;
-
     public WeekViewModel() {
         // first, get reference of ObjectBox
         BoxStore boxStore = App.getInstance().getBoxStore();
@@ -57,11 +55,11 @@ public class WeekViewModel extends ViewModel {
         return homeworkObjectBoxLiveData;
     }
 
-    public List<Week> getWeeks() {
-        List<Week> weeks = new ArrayList<>();
-        for (int i = 0; i < DateHelper.getWeekIndex(); i++) {
-            weeks.add(new Week(i));
-        }
-        return weeks;
+    public List<Homework> getHomeworkData(int index) {
+        return homeworkBox.query()
+                .equal(Homework_.weekIndex, index)
+                .order(Homework_.deadline)
+                .build()
+                .find();
     }
 }

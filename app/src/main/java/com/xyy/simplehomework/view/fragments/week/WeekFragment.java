@@ -10,11 +10,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextSwitcher;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
@@ -35,7 +41,11 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     private WeeksFragment weeksFragment;
     private WeekViewModel viewModel;
     private ImageView imgBtn;
+    private ImageView weekBtn;
     private FloatingActionButton fab;
+    private TextSwitcher title;
+    private Animation fadeIn;
+    private Animation fadeOut;
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -55,6 +65,8 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        fadeIn = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
+        fadeOut = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
         return inflater.inflate(R.layout.fragment_week, container, false);
     }
 
@@ -62,14 +74,24 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(WeekViewModel.class);
-        // first, init Toolbar
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setTitle(DateHelper.getWeekTitle());
         // second, init child fragments
+        title = view.findViewById(R.id.title);
+        title.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                TextView tv = new TextView(getContext());
+                tv.setTextAppearance(getContext(), R.style.textSwitcher);
+                tv.setGravity(Gravity.CENTER);
+                return tv;
+            }
+        });
+        title.setInAnimation(fadeIn);
+        title.setOutAnimation(fadeOut);
+        title.setCurrentText("周记");
+
         detailFragment = new DetailFragment();
         textFragment = TextFragment.newInstance(viewModel.getSubjectList());
         weeksFragment = new WeeksFragment();
-        weeksFragment.setWeeks(viewModel.getWeeks());
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_week, detailFragment)
                 .add(R.id.fragment_week, textFragment)
@@ -98,7 +120,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
             }
         });
 
-        View weekBtn = view.findViewById(R.id.appBtn);
+        weekBtn = view.findViewById(R.id.appBtn);
         weekBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +130,6 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                         .hide(detailFragment)
                         .addToBackStack(null)
                         .commit();
-                imgBtn.setVisibility(View.GONE);
             }
         });
 
@@ -125,6 +146,37 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     @Override
     public void onClickHomework(Homework homework) {
         DetailDialog.newInstance(homework).show(getChildFragmentManager(), null);
+    }
+
+    @Override
+    public void onClickWeek(int weekIndex) {
+        List<Homework> data = viewModel.getHomeworkData(weekIndex);
+        detailFragment.setHomeworkList(data);
+        if (weekIndex == DateHelper.getWeekIndex()) {
+            title.setText("周记");
+        } else {
+            String titleText = "第"+DateHelper.num2cn[weekIndex+1]+"周";
+            title.setText(titleText);
+        }
+        getChildFragmentManager().popBackStack();
+    }
+
+    @Override
+    public void needBtns(boolean need) {
+        if (need) {
+            fab.show();
+            imgBtn.setVisibility(View.VISIBLE);
+            weekBtn.setVisibility(View.VISIBLE);
+            imgBtn.startAnimation(fadeIn);
+            weekBtn.startAnimation(fadeIn);
+        }
+        else {
+            fab.hide();
+            imgBtn.setVisibility(View.GONE);
+            weekBtn.setVisibility(View.GONE);
+            imgBtn.startAnimation(fadeOut);
+            weekBtn.startAnimation(fadeOut);
+        }
     }
 
     @Override

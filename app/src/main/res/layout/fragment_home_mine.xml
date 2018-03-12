@@ -59,10 +59,9 @@
                     android:textColor="@color/textDarkSecondary"
                     android:text="周五下午7-8节"/>
                 <android.support.v7.widget.CardView
-                    android:background="?android:attr/selectableItemBackground"
-                    android:id="@+id/button"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:clickable="true"
-                    android:focusable="true"
+                    android:id="@+id/button"
                     android:layout_width="250dp"
                     android:layout_height="40dp"
                     app:cardBackgroundColor="#5AAFEE"
@@ -70,7 +69,8 @@
                     app:cardElevation="0dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="18dp">
+                    android:layout_marginBottom="18dp"
+                    android:focusable="true">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

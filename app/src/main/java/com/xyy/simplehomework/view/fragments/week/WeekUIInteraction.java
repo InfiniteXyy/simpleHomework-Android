@@ -12,6 +12,10 @@ import java.util.List;
 public interface WeekUIInteraction {
     void onClickHomework(Homework homework);
 
+    void onClickWeek(int weekIndex);
+
+    void needBtns(boolean need);
+
     void showAddDialog();
 
     List<MySubject> getSubjectList();

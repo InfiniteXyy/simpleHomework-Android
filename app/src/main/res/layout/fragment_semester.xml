@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="偏好"
+                android:text="设置"
                 android:textStyle="bold"
                 android:textColor="@color/japanAir"
                 android:textSize="20sp" />

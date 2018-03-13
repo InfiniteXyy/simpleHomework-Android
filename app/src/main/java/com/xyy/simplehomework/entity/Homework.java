@@ -3,7 +3,9 @@ package com.xyy.simplehomework.entity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.BR;
+import com.xyy.simplehomework.view.fragments.home.FragmentPlan;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.text.DateFormat;
@@ -18,7 +20,7 @@ import io.objectbox.relation.ToOne;
  * Created by xyy on 2018/2/8.
  */
 @Entity
-public class Homework extends BaseObservable {
+public class Homework extends BaseObservable implements MultiItemEntity{
     public static final int FINISHED = 0;
     public static final int NOT_FINISHED = 1;
     private final static DateFormat FORMAT = SimpleDateFormat.getDateInstance();
@@ -89,5 +91,10 @@ public class Homework extends BaseObservable {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    @Override
+    public int getItemType() {
+        return FragmentPlan.TYPE_PLAN;
     }
 }

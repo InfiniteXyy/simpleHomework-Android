@@ -91,6 +91,10 @@ public class DateHelper {
         }
     }
 
+    public static int afterDayNum(Date date) {
+        return Days.daysBetween(nowTime, new DateTime(date)).getDays();
+    }
+
     public static void main(String[] args) {
         for (int i = 0; i < 20; i++) {
             System.out.println(afterDayFormat(afterDays(i)));

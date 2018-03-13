@@ -20,6 +20,7 @@ import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.helper.SimpleDividerItemDecoration;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by xyy on 2018/3/11.
@@ -27,7 +28,13 @@ import java.util.Arrays;
 
 public class FragmentSubjects extends Fragment {
     private RecyclerView recyclerView;
+    private List<MySubject> subjectList;
 
+    public static FragmentSubjects newInstance(List<MySubject> subjects) {
+        FragmentSubjects fragmentSubjects = new FragmentSubjects();
+        fragmentSubjects.setSubjectList(subjects);
+        return fragmentSubjects;
+    }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         recyclerView = new RecyclerView(getContext());
@@ -37,10 +44,12 @@ public class FragmentSubjects extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView.setAdapter(new BaseQuickAdapter<MySubject, BaseViewHolder>(R.layout.item_home_subject,
-                Arrays.asList(new MySubject(), new MySubject(), new MySubject(), new MySubject())) {
+                subjectList) {
             @Override
             protected void convert(BaseViewHolder helper, MySubject item) {
-
+                helper.setText(R.id.title, item.getName());
+                // TODO: 怎么自动判断status = 未完成 的数目
+                helper.setText(R.id.textView, item.homework.size()+"个项目未完成");
             }
         });
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -49,5 +58,9 @@ public class FragmentSubjects extends Fragment {
                 DividerItemDecoration.VERTICAL));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.HORIZONTAL));
+    }
+
+    public void setSubjectList(List<MySubject> subjectList) {
+        this.subjectList = subjectList;
     }
 }

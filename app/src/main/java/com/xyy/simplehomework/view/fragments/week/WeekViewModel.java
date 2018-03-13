@@ -62,4 +62,7 @@ public class WeekViewModel extends ViewModel {
                 .build()
                 .find();
     }
+    public List<Homework> getHomeworkData() {
+        return homeworkBox.getAll();
+    }
 }

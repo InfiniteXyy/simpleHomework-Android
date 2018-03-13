@@ -1,6 +1,8 @@
 package com.xyy.simplehomework.view.fragments.home;
 
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,15 +17,19 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.App;
+import com.xyy.simplehomework.view.fragments.week.WeekViewModel;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
     public final static String TAG = "HomeFragment";
+    private HomeViewModel viewModel;
     private static String[] pageNames = {
             "我的",
             "计划",
@@ -39,23 +45,22 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+        final WeekViewModel weekViewModel = ViewModelProviders.of(this).get(WeekViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         ViewPager viewPager = view.findViewById(R.id.mainFragment);
         viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        if (fragmentMine == null)
-                            fragmentMine = new FragmentMine();
+                        fragmentMine = new FragmentMine();
                         return fragmentMine;
                     case 1:
-                        if (fragmentPlan == null)
-                            fragmentPlan = new FragmentPlan();
+                        fragmentPlan = FragmentPlan.newInstance(weekViewModel.getHomeworkData());
                         return fragmentPlan;
                     case 2:
-                        if (fragmentSubjects == null)
-                            fragmentSubjects = new FragmentSubjects();
+                        fragmentSubjects = FragmentSubjects.newInstance(viewModel.getSubjectList());
                         return fragmentSubjects;
                 }
                 return new FragmentMine();
@@ -71,6 +76,16 @@ public class HomeFragment extends Fragment {
                 return pageNames[position];
             }
         });
+
+        weekViewModel.getHomeworkLiveData().observe(this, new Observer<List<Homework>>() {
+            @Override
+            public void onChanged(@Nullable List<Homework> homework) {
+                if (fragmentPlan != null) {
+                    fragmentPlan.classifyPlanHomework(homework);
+                }
+            }
+        });
+
         TabLayout tabLayout = view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         setUpIndicatorWidth(tabLayout);

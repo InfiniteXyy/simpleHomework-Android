@@ -4,8 +4,11 @@ import android.arch.lifecycle.ViewModel;
 
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.Homework_;
+import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.helper.DateHelper;
+
+import java.util.List;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
@@ -18,22 +21,19 @@ import io.objectbox.android.ObjectBoxLiveData;
 public class HomeViewModel extends ViewModel {
     private ObjectBoxLiveData<Homework> homeworkObjectBoxLiveData;
     private Box<Homework> homeworkBox;
+    private List<MySubject> subjectList;
 
 
     public HomeViewModel() {
         // first, get reference of ObjectBox
         BoxStore boxStore = App.getInstance().getBoxStore();
         homeworkBox = boxStore.boxFor(Homework.class);
+        subjectList = boxStore.boxFor(MySubject.class).getAll();
     }
 
-    public ObjectBoxLiveData<Homework> getHomeworkLiveData() {
-        if (homeworkObjectBoxLiveData == null) {
-            homeworkObjectBoxLiveData = new ObjectBoxLiveData<>(homeworkBox.query()
-                    .greater(Homework_.planDate, DateHelper.afterDays(-1))
-                    .order(Homework_.planDate)
-                    .build());
-        }
-        return homeworkObjectBoxLiveData;
+    public List<MySubject> getSubjectList() {
+        return subjectList;
     }
+
 
 }

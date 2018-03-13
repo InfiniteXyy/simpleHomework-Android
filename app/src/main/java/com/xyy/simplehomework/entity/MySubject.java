@@ -3,7 +3,9 @@ package com.xyy.simplehomework.entity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.BR;
+import com.xyy.simplehomework.view.fragments.home.FragmentSubjects;
 
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
@@ -16,7 +18,7 @@ import io.objectbox.relation.ToOne;
  */
 
 @Entity
-public class MySubject extends BaseObservable {
+public class MySubject extends BaseObservable implements MultiItemEntity {
     @Id
     public long id;
 
@@ -53,5 +55,9 @@ public class MySubject extends BaseObservable {
         return name;
     }
 
+    @Override
+    public int getItemType() {
+        return FragmentSubjects.TYPE_SUBJECT;
+    }
 }
 

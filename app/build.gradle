@@ -29,6 +29,7 @@ dependencies {
     //implementation 'com.github.bumptech.glide:glide:4.5.0'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
     //compile 'com.github.free46000:MultiItem:0.9.7'
+    //compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
     compile 'de.hdodenhof:circleimageview:2.2.0'
 
     // 持久化存储和其他

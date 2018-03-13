@@ -29,12 +29,12 @@ import java.util.List;
  */
 public class HomeFragment extends Fragment {
     public final static String TAG = "HomeFragment";
-    private HomeViewModel viewModel;
     private static String[] pageNames = {
             "我的",
             "计划",
             "课程"
     };
+    private HomeViewModel viewModel;
     private FragmentMine fragmentMine;
     private FragmentSubjects fragmentSubjects;
     private FragmentPlan fragmentPlan;

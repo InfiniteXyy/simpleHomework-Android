@@ -8,15 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -90,14 +87,15 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         title.setCurrentText("周记");
 
         detailFragment = new DetailFragment();
-        textFragment = TextFragment.newInstance(viewModel.getSubjectList());
+        // TODO: textView应同样支持切换周
+        textFragment = TextFragment.newInstance(viewModel.getSubjectList(), DateHelper.getWeekIndex());
         weeksFragment = new WeeksFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_week, detailFragment)
-                .add(R.id.fragment_week, textFragment)
                 .add(R.id.fragment_week, weeksFragment)
-                .hide(weeksFragment)
+                .add(R.id.fragment_week, textFragment)
                 .hide(textFragment)
+                .hide(weeksFragment)
                 .commit();
 
         imgBtn = view.findViewById(R.id.button);
@@ -127,7 +125,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                 getChildFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.scale_in, R.anim.scale_out, R.anim.scale_in_re, R.anim.scale_out_re)
                         .show(weeksFragment)
-                        .hide(detailFragment)
+                        .hide(isText ? textFragment : detailFragment)
                         .addToBackStack(null)
                         .commit();
             }
@@ -152,10 +150,11 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     public void onClickWeek(int weekIndex) {
         List<Homework> data = viewModel.getHomeworkData(weekIndex);
         detailFragment.setHomeworkList(data);
+        textFragment.setWeek(weekIndex);
         if (weekIndex == DateHelper.getWeekIndex()) {
             title.setText("周记");
         } else {
-            String titleText = "第"+DateHelper.num2cn[weekIndex+1]+"周";
+            String titleText = "第" + DateHelper.num2cn[weekIndex + 1] + "周";
             title.setText(titleText);
         }
         getChildFragmentManager().popBackStack();
@@ -169,8 +168,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
             weekBtn.setVisibility(View.VISIBLE);
             imgBtn.startAnimation(fadeIn);
             weekBtn.startAnimation(fadeIn);
-        }
-        else {
+        } else {
             fab.hide();
             imgBtn.setVisibility(View.GONE);
             weekBtn.setVisibility(View.GONE);

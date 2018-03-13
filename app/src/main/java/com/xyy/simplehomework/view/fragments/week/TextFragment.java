@@ -15,6 +15,7 @@ import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,19 +23,35 @@ import java.util.List;
  */
 
 public class TextFragment extends Fragment {
-    private BaseQuickAdapter<MySubject, BaseViewHolder> adapter;
+    private BaseQuickAdapter<WeekSubject, BaseViewHolder> adapter;
+    private List<WeekSubject> weekSubjects;
     private List<MySubject> subjects;
 
-    public static TextFragment newInstance(Week week) {
+    public static TextFragment newInstance(List<MySubject> data, int weekIndex) {
         TextFragment textFragment = new TextFragment();
-        textFragment.subjects = week.getSubjects();
+        textFragment.subjects = data;
+        textFragment.setWeekSubjects(textFragment.getWeekSubjectList(weekIndex));
         return textFragment;
     }
 
-    public static TextFragment newInstance(List<MySubject> data) {
-        TextFragment textFragment = new TextFragment();
-        textFragment.subjects = data;
-        return textFragment;
+    public void setWeekSubjects(List<WeekSubject> weekSubjects) {
+        this.weekSubjects = weekSubjects;
+    }
+
+    private List<WeekSubject> getWeekSubjectList(int weekIndex) {
+        List<WeekSubject> subjects = new ArrayList<>();
+        for (MySubject subject : this.subjects) {
+            List<Homework> temp = new ArrayList<>();
+            for (Homework homework : subject.homework) {
+                if (homework.weekIndex == weekIndex) {
+                    temp.add(homework);
+                }
+            }
+            WeekSubject weekSubject = new WeekSubject(subject);
+            weekSubject.setHomeworkThisWeek(temp);
+            subjects.add(weekSubject);
+        }
+        return subjects;
     }
 
     @Nullable
@@ -47,12 +64,12 @@ public class TextFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        adapter = new BaseQuickAdapter<MySubject, BaseViewHolder>(R.layout.item_text_subject, subjects) {
+        adapter = new BaseQuickAdapter<WeekSubject, BaseViewHolder>(R.layout.item_text_subject, weekSubjects) {
             @Override
-            protected void convert(BaseViewHolder helper, MySubject item) {
-                helper.setText(R.id.subject_name, item.getName());
+            protected void convert(BaseViewHolder helper, WeekSubject item) {
+                helper.setText(R.id.subject_name, item.getSubject().getName());
                 RecyclerView homeworkRecycler = helper.getView(R.id.recycler_view);
-                homeworkRecycler.setAdapter(new BaseQuickAdapter<Homework, BaseViewHolder>(R.layout.item_text_homework, item.homework) {
+                homeworkRecycler.setAdapter(new BaseQuickAdapter<Homework, BaseViewHolder>(R.layout.item_text_homework, item.homeworkThisWeek) {
                     @Override
                     protected void convert(BaseViewHolder helper, Homework item) {
                         helper.setText(R.id.homework, item.getTitle());
@@ -65,9 +82,35 @@ public class TextFragment extends Fragment {
 
 
     void updateHomeworkList() {
-        for (MySubject subject : subjects) {
-            subject.homework.reset();
+        for (WeekSubject subject : weekSubjects) {
+            subject.getSubject().homework.reset();
         }
-        adapter.notifyDataSetChanged();
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+    }
+
+    public void setWeek(int week) {
+        adapter.replaceData(getWeekSubjectList(week));
+    }
+
+    public static class WeekSubject {
+        private MySubject subject;
+        private List<Homework> homeworkThisWeek;
+
+        public WeekSubject(MySubject subject) {
+            this.subject = subject;
+        }
+
+        public MySubject getSubject() {
+            return subject;
+        }
+
+        public List<Homework> getHomeworkThisWeek() {
+            return homeworkThisWeek;
+        }
+
+        public void setHomeworkThisWeek(List<Homework> homeworkThisWeek) {
+            this.homeworkThisWeek = homeworkThisWeek;
+        }
     }
 }

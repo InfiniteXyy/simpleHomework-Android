@@ -25,6 +25,6 @@ public class Week {
     }
 
     public String getWeekName() {
-        return "第"+(weekIndex+1)+"周";
+        return "第" + (weekIndex + 1) + "周";
     }
 }

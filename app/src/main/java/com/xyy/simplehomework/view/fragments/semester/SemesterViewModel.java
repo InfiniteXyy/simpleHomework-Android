@@ -9,10 +9,8 @@ import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Filter;
 
 import io.objectbox.query.Query;
-import io.objectbox.query.QueryFilter;
 
 /**
  * Created by xyy on 2018/3/4.
@@ -22,7 +20,6 @@ public class SemesterViewModel extends ViewModel {
     private List<Week> weekList;
 
     public SemesterViewModel() {
-        // TODO: 解决一下取得每一个
         weekList = new ArrayList<>();
         Query<MySubject> subjectQuery = App
                 .getInstance()

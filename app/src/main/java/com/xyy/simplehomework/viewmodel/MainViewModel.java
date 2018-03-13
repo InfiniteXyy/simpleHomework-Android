@@ -43,8 +43,8 @@ public class MainViewModel {
         Semester semester = dataServer.findSemester();
         if (semester == null) {
             semester = new Semester(12, Semester.FIRST_TERM);
-            semester.startDate = new Date(118, 0, 1);
-            semester.endDate = new Date(118, 10, 2);
+            semester.startDate = new Date(118, 1, 16);
+            semester.endDate = new Date(118, 7, 6);
             boxStore.boxFor(Semester.class).put(semester);
         }
         return semester;
@@ -69,20 +69,22 @@ public class MainViewModel {
         // homework demo
         for (int i = 0; i <= DateHelper.getWeekIndex(); i++) {
             for (MySubject subject : subjects) {
-                Homework homework = new Homework(subject.getName() + "练习周="+i, DateHelper.afterDays(3));
+                Homework homework = new Homework(subject.getName() + "练习周=" + i, DateHelper.afterDays(3));
                 homework.subject.setTarget(subject);
                 homework.setDetail("这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情");
                 homework.weekIndex = i;
                 homeworkBox.put(homework);
 
-                Homework homework2 = new Homework(subject.getName() + "计划="+i, DateHelper.afterDays(2));
+                Homework homework2 = new Homework(subject.getName() + "计划=" + i, DateHelper.afterDays(2));
                 homework2.subject.setTarget(subject);
                 homework2.weekIndex = i;
+                if (i % 2 == 0) homework2.status = Homework.FINISHED;
+
                 homework2.setPlanDate(DateHelper.getToday());
                 homework2.setDetail("这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划");
                 homeworkBox.put(homework2);
             }
-          }
+        }
 
     }
 

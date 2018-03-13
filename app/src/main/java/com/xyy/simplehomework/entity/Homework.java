@@ -20,7 +20,7 @@ import io.objectbox.relation.ToOne;
  * Created by xyy on 2018/2/8.
  */
 @Entity
-public class Homework extends BaseObservable implements MultiItemEntity{
+public class Homework extends BaseObservable implements MultiItemEntity {
     public static final int FINISHED = 0;
     public static final int NOT_FINISHED = 1;
     private final static DateFormat FORMAT = SimpleDateFormat.getDateInstance();

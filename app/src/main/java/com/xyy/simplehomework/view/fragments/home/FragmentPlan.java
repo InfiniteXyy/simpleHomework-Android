@@ -6,14 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HeaderViewListAdapter;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.R;
@@ -21,7 +18,6 @@ import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,17 +25,17 @@ import java.util.List;
  */
 
 public class FragmentPlan extends Fragment {
-    private RecyclerView recyclerView;
-    private List<MultiItemEntity> sections;
-    private ExpandablePlanAdapter adapter;
+    public static final int TYPE_SECTION = 0;
+    public static final int TYPE_PLAN = 1;
     private static final String[] sectionNames = {
             "今天",
             "明天",
             "即将来临",
             "搁置"
     };
-    public static final int TYPE_SECTION = 0;
-    public static final int TYPE_PLAN = 1;
+    private RecyclerView recyclerView;
+    private List<MultiItemEntity> sections;
+    private ExpandablePlanAdapter adapter;
 
     public static FragmentPlan newInstance(List<Homework> homeworkList) {
         FragmentPlan fragmentPlan = new FragmentPlan();
@@ -76,13 +72,13 @@ public class FragmentPlan extends Fragment {
 
         for (Homework homework : homeworkList) {
             if (homework.planDate == null) {
-                ((PlanSection)sections.get(3)).addSubItem(homework);
+                ((PlanSection) sections.get(3)).addSubItem(homework);
             } else if (homework.planDate == DateHelper.getToday()) {
-                ((PlanSection)sections.get(0)).addSubItem(homework);
+                ((PlanSection) sections.get(0)).addSubItem(homework);
             } else if (DateHelper.afterDayNum(homework.planDate) == 1) {
-                ((PlanSection)sections.get(1)).addSubItem(homework);
+                ((PlanSection) sections.get(1)).addSubItem(homework);
             } else {
-                ((PlanSection)sections.get(2)).addSubItem(homework);
+                ((PlanSection) sections.get(2)).addSubItem(homework);
             }
         }
         if (adapter != null)
@@ -114,7 +110,8 @@ public class FragmentPlan extends Fragment {
                             } else {
                                 expand(pos);
                             }
-                        }});
+                        }
+                    });
                     break;
             }
         }

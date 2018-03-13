@@ -3,10 +3,8 @@ package com.xyy.simplehomework.view.fragments.home;
 import android.arch.lifecycle.ViewModel;
 
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.entity.Homework_;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.App;
-import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.List;
 

@@ -8,7 +8,6 @@ import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.objectbox.Box;
@@ -24,6 +23,7 @@ public class WeekViewModel extends ViewModel {
     private ObjectBoxLiveData<Homework> homeworkObjectBoxLiveData;
     private Box<Homework> homeworkBox;
     private int weekIndex;
+
     public WeekViewModel() {
         // first, get reference of ObjectBox
         BoxStore boxStore = App.getInstance().getBoxStore();
@@ -62,6 +62,7 @@ public class WeekViewModel extends ViewModel {
                 .build()
                 .find();
     }
+
     public List<Homework> getHomeworkData() {
         return homeworkBox.getAll();
     }

@@ -33,33 +33,11 @@ public class SemesterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ViewGroup container = view.findViewById(R.id.layout);
-        // set transition
-        LayoutTransition transition = new LayoutTransition();
-        transition.setDuration(300);
-        container.setLayoutTransition(transition);
+//        ViewGroup container = view.findViewById(R.id.layout);
+//        // set transition
+//        LayoutTransition transition = new LayoutTransition();
+//        transition.setDuration(300);
+//        container.setLayoutTransition(transition);
 
-        SemesterViewModel viewModel = ViewModelProviders.of(this).get(SemesterViewModel.class);
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        BaseQuickAdapter<Week, BaseViewHolder> adapter
-                = new BaseQuickAdapter<Week, BaseViewHolder>
-                (R.layout.item_week, viewModel.getWeekList()) {
-            @Override
-            protected void convert(BaseViewHolder helper, Week item) {
-                helper.setText(R.id.text, DateHelper.getWeekTitle(item.weekIndex));
-            }
-        };
-        recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                if (weekDetail.getVisibility() == View.GONE)
-//                    weekDetail.setVisibility(View.VISIBLE);
-//                getChildFragmentManager().beginTransaction()
-//                        .replace(R.id.textView, TextFragment.newInstance((Week) adapter.getItem(position)))
-//                        .commit();
-//                textView.setText(DateHelper.getWeekTitle(position));
-            }
-        });
     }
 }

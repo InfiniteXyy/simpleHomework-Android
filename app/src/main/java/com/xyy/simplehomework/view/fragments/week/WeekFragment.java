@@ -84,7 +84,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         });
         title.setInAnimation(fadeIn);
         title.setOutAnimation(fadeOut);
-        title.setCurrentText("周记");
+        title.setCurrentText("本周");
 
         detailFragment = new DetailFragment();
         // TODO: textView应同样支持切换周
@@ -152,7 +152,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         detailFragment.setHomeworkList(data);
         textFragment.setWeek(weekIndex);
         if (weekIndex == DateHelper.getWeekIndex()) {
-            title.setText("周记");
+            title.setText("本周");
         } else {
             String titleText = "第" + DateHelper.num2cn[weekIndex + 1] + "周";
             title.setText(titleText);

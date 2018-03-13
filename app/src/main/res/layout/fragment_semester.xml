@@ -13,15 +13,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <android.support.v7.widget.AppCompatImageView
-                android:visibility="gone"
-                android:id="@+id/appBtn"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_apps_black_24px"
-                android:tint="@color/japanGray" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -30,59 +21,30 @@
                 android:textStyle="bold"
                 android:textColor="@color/japanAir"
                 android:textSize="20sp" />
-            <android.support.v7.widget.AppCompatImageView
-                android:visibility="gone"
-                android:id="@+id/button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_text_fields_black_24px"
-                android:tint="@color/japanGray" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
-    <ScrollView
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/layout"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <FrameLayout
-                android:layout_marginTop="8dp"
+            android:layout_height="match_parent">
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp">
-
-                    <TextView
-                        android:id="@+id/text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="11dp"
-                        android:text="周"
-                        android:textColor="@color/textDarkPrimary"
-                        android:textSize="14sp" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/text"
-                        android:layout_marginTop="13dp"
-                        android:orientation="horizontal"
-                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_week">
-
-                    </android.support.v7.widget.RecyclerView>
-                </RelativeLayout>
-            </FrameLayout>
-        </LinearLayout>
-    </ScrollView>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="切换颜色"/>
+            </LinearLayout>
+        </ScrollView>
+        <View
+            android:id="@+id/shadow"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/shadow"
+            android:rotation="180"/>
+    </FrameLayout>
 </LinearLayout>

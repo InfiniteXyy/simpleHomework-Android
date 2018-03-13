@@ -9,7 +9,7 @@
         id="@+id/week"
         title="@string/week" />
     <tab
-        icon="@drawable/ic_assignment_black_24px"
+        icon="@drawable/ic_settings_black_24px"
         id="@+id/month"
-        title="@string/month" />
+        title="设置" />
 </tabs>

@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        weekViewModel.getHomeworkLiveData().observe(this, new Observer<List<Homework>>() {
+        weekViewModel.getAllHomeworkLiveData().observe(this, new Observer<List<Homework>>() {
             @Override
             public void onChanged(@Nullable List<Homework> homework) {
                 if (fragmentPlan != null) {

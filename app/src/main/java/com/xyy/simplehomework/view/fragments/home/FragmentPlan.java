@@ -66,10 +66,7 @@ public class FragmentPlan extends Fragment {
     }
 
     public void classifyPlanHomework(List<Homework> homeworkList) {
-        for (int i = 0; i < 4; i++) {
-            ((PlanSection) sections.get(i)).removeSubItems();
-        }
-
+        setSections();
         for (Homework homework : homeworkList) {
             if (homework.planDate == null) {
                 ((PlanSection) sections.get(3)).addSubItem(homework);
@@ -100,14 +97,19 @@ public class FragmentPlan extends Fragment {
                     helper.setText(R.id.text, ((Homework) item).getTitle());
                     break;
                 case TYPE_SECTION:
+                    final int badge = ((PlanSection) item).getSubItems() == null ? 0 : ((PlanSection) item).getSubItems().size();
+                    boolean showAdd = badge == 0 || ((PlanSection) item).isExpanded();
+                    helper.setGone(R.id.add, showAdd);
+                    helper.setGone(R.id.badge, !showAdd);
                     helper.setText(R.id.text, ((PlanSection) item).getSectionName());
+                    helper.setText(R.id.badge_num, String.valueOf(badge));
                     helper.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             int pos = helper.getAdapterPosition();
                             if (((PlanSection) item).isExpanded()) {
                                 collapse(pos);
-                            } else {
+                            } else if (badge != 0) {
                                 expand(pos);
                             }
                         }

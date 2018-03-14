@@ -27,24 +27,116 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="切换颜色"/>
-            </LinearLayout>
-        </ScrollView>
+
         <View
             android:id="@+id/shadow"
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:background="@drawable/shadow"
             android:rotation="180"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="内容设置"
+                    android:textColor="@color/japanAir"
+                    android:textSize="14sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="当前学期"
+                        android:textColor="@color/textDarkPrimary"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="偏好设置"
+                    android:textColor="@color/japanAir"
+                    android:textSize="14sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="颜色主题"
+                        android:textColor="@color/textDarkPrimary"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="16dp">
+                        <View
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginRight="8dp"
+                            android:background="@drawable/shape_circle"
+                            android:backgroundTint="@color/japanAir" />
+                        <View
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginRight="8dp"
+                            android:background="@drawable/shape_circle"
+                            android:backgroundTint="@color/japanTea" />
+                        <View
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:background="@drawable/shape_circle"
+                            android:backgroundTint="@color/japanOrange" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="禁用动画元素"
+                        android:textColor="@color/textDarkPrimary"
+                        android:textSize="16sp" />
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="16dp"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+        </ScrollView>
     </FrameLayout>
 </LinearLayout>

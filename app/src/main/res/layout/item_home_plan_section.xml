@@ -15,13 +15,35 @@
         android:layout_marginStart="16dp"
         tools:text="今日"/>
     <ImageView
+        android:visibility="gone"
+        android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
         app:srcCompat="@drawable/ic_add_black_24px"
-        android:tint="@color/japanGray"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp" />
+        android:tint="@color/japanAir"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"/>
+    <FrameLayout
+        android:visibility="visible"
+        android:id="@+id/badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp" >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/circle_border" />
+        <TextView
+            android:id="@+id/badge_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="14sp"
+            android:text="8"
+            android:textColor="@color/japanAir"/>
+    </FrameLayout>
+
 </RelativeLayout>

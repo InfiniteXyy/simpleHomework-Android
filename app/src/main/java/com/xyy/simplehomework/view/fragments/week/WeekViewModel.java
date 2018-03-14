@@ -23,6 +23,7 @@ public class WeekViewModel extends ViewModel {
     private ObjectBoxLiveData<Homework> homeworkObjectBoxLiveData;
     private Box<Homework> homeworkBox;
     private int weekIndex;
+    private ObjectBoxLiveData<Homework> allHomeworkObjectBoxLiveData;
 
     public WeekViewModel() {
         // first, get reference of ObjectBox
@@ -53,6 +54,14 @@ public class WeekViewModel extends ViewModel {
                     .build());
         }
         return homeworkObjectBoxLiveData;
+    }
+
+    public ObjectBoxLiveData<Homework> getAllHomeworkLiveData() {
+        if (allHomeworkObjectBoxLiveData == null) {
+            allHomeworkObjectBoxLiveData = new ObjectBoxLiveData<>(homeworkBox.query()
+                    .build());
+        }
+        return allHomeworkObjectBoxLiveData;
     }
 
     public List<Homework> getHomeworkData(int index) {

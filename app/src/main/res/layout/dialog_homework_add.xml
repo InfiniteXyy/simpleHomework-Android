@@ -6,6 +6,9 @@
         <variable
             name="homework"
             type="com.xyy.simplehomework.entity.Homework" />
+        <variable
+            name="handler"
+            type="com.xyy.simplehomework.view.fragments.week.AddDialogHandler"/>
     </data>
     <FrameLayout
         android:background="@android:color/white"
@@ -52,9 +55,10 @@
                     android:id="@+id/img"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:background="#FAFAFA">
+                    android:background="#FAFAFA"
+                    android:onClick="@{handler::setImg}">
 
-                    <View
+                    <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="5dp"
                         android:layout_gravity="bottom"
@@ -65,6 +69,10 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center"
                         app:srcCompat="@drawable/ic_photo_camera_white_24px" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:photoUrl="@{homework.imgUri}"/>
                 </FrameLayout>
 
                 <RelativeLayout

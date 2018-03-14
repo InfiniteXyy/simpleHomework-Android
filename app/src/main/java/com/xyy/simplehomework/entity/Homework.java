@@ -121,6 +121,16 @@ public class Homework extends BaseObservable implements MultiItemEntity {
         this.detail = detail;
     }
 
+    @Bindable
+    public String getImgUri() {
+        return imgUri;
+    }
+
+    public void setImgUri(String imgUri) {
+        this.imgUri = imgUri;
+        notifyPropertyChanged(BR.imgUri);
+    }
+
     @Override
     public int getItemType() {
         return FragmentPlan.TYPE_PLAN;

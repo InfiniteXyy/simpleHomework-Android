@@ -72,6 +72,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/dividerColor"
                 android:layout_margin="8dp"
+                android:photoUrl="@{homework.imgUri}"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
         <View

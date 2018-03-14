@@ -1,9 +1,13 @@
 package com.xyy.simplehomework.view;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -20,15 +24,29 @@ public class MainActivity extends AppCompatActivity {
     public MainViewModel viewModel;
     private Fragment lastFragment = new Fragment();
     private BottomBar bottomBar;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE };
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        verifyStoragePermissions(this);
 
         // set up view model
         viewModel = new MainViewModel(this);
-
         // set up view
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         for (TabFragment fragment : TabFragment.values()) {
@@ -95,15 +113,15 @@ public class MainActivity extends AppCompatActivity {
             lastFragment.getChildFragmentManager().popBackStack();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        for (TabFragment tabFragment : TabFragment.values()) {
-            transaction.remove(tabFragment.fragment);
-        }
-        transaction.commitAllowingStateLoss();
-        super.onSaveInstanceState(outState);
-    }
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        for (TabFragment tabFragment : TabFragment.values()) {
+//            transaction.remove(tabFragment.fragment);
+//        }
+//        transaction.commitAllowingStateLoss();
+//        super.onSaveInstanceState(outState);
+//    }
 
     private enum TabFragment {
         home(R.id.home, HomeFragment.class, HomeFragment.TAG),

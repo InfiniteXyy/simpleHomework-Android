@@ -1,9 +1,7 @@
 package com.xyy.simplehomework.view.fragments.week;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.graphics.Canvas;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +17,9 @@ import android.widget.ArrayAdapter;
 
 import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
-import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.helper.SimpleDividerItemDecoration;
 import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 
@@ -40,9 +33,9 @@ import java.util.List;
  */
 
 public class DetailFragment extends Fragment {
-    private WeekUIInteraction mListener;
     private View spinnerView;
     private WeekHomeworkAdapter adapter;
+    private RecyclerView.OnScrollListener listener;
     private List<Homework> homeworkList;
     private Comparator<Homework> deadlineComparator = new Comparator<Homework>() {
         @Override
@@ -57,16 +50,16 @@ public class DetailFragment extends Fragment {
         }
     };
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        // check if parent Fragment implements listener
-        if (getParentFragment() instanceof WeekUIInteraction) {
-            mListener = (WeekUIInteraction) getParentFragment();
-        } else {
-            throw new RuntimeException("The parent fragment must implement WeekUIInteraction");
+    private Comparator<Homework> subjectComparator = new Comparator<Homework>() {
+        @Override
+        public int compare(Homework o1, Homework o2) {
+            long i = o1.subject.getTargetId() - o2.subject.getTargetId();
+            if (i == 0) return 0;
+            else if (i < 0) return -1;
+            else return 1;
         }
-    }
+    };
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,63 +72,14 @@ public class DetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         homeworkList = new ArrayList<>();
         // first, set main recyclerView
-        RecyclerView weekRecyclerView = view.findViewById(R.id.week_recycler_view);
+        RecyclerView recyclerView = view.findViewById(R.id.week_recycler_view);
         adapter = new WeekHomeworkAdapter(R.layout.item_homework_detail, homeworkList);
-        Collections.sort(adapter.getData(), deadlineComparator); // default sort by deadline
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                mListener.onClickHomework((Homework) adapter.getItem(position));
-            }
-        });
-        ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
-        itemDragAndSwipeCallback.setSwipeMoveFlags(ItemTouchHelper.START);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
-        itemTouchHelper.attachToRecyclerView(weekRecyclerView);
-        adapter.enableSwipeItem();
-        adapter.setOnItemSwipeListener(new OnItemSwipeListener() {
-            @Override
-            public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
 
-            }
-
-            @Override
-            public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {
-
-            }
-
-            @Override
-            public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
-
-            }
-
-            @Override
-            public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
-
-            }
-        });
-        weekRecyclerView.setAdapter(adapter);
-        weekRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext(), 1));
-
-        // second, set small subject view on the top
-        WeekHeaderAdapter subjectHeaderAdapter = new WeekHeaderAdapter(R.layout.item_project,
-                mListener.getSubjectList());
-
-        final RecyclerView headerRecycler = view.findViewById(R.id.subject_recycler_view);
-        headerRecycler.setAdapter(subjectHeaderAdapter);
-        subjectHeaderAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                filterBySubject((MySubject) adapter.getItem(position));
-            }
-        });
-        view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.replaceData(homeworkList);
-            }
-        });
-
+        // TODO: 将现有的对话框替换为expandable
+        // TODO: 点击图标时有指示信息
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext(), 1));
+        recyclerView.addOnScrollListener(listener);
         // finally, add spinner to the main recycler
         AppCompatSpinner spinner = spinnerView.findViewById(R.id.spinner);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(),
@@ -143,12 +87,6 @@ public class DetailFragment extends Fragment {
                 getResources().getStringArray(R.array.week_homework_show_type));
         arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
-        spinnerView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // mListener.showAddDialog();
-            }
-        });
         adapter.addHeaderView(spinnerView);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
 
@@ -163,6 +101,7 @@ public class DetailFragment extends Fragment {
                         Collections.sort(adapter.getData(), initDateComparator);
                         break;
                     default:
+                        Collections.sort(adapter.getData(), subjectComparator);
                         break;
                 }
                 adapter.notifyDataSetChanged();
@@ -172,7 +111,6 @@ public class DetailFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
     }
 
     public void setHomeworkList(List<Homework> list) {
@@ -180,16 +118,9 @@ public class DetailFragment extends Fragment {
         adapter.replaceData(homeworkList);
     }
 
-    public void filterBySubject(MySubject subject) {
-        List<Homework> singleHomeworkList = new ArrayList<>();
-        for (Homework homework : homeworkList) {
-            if (homework.subject.getTargetId() == subject.id) {
-                singleHomeworkList.add(homework);
-            }
-        }
-        adapter.replaceData(singleHomeworkList);
+    public void setOnScrollListener(RecyclerView.OnScrollListener onScrollListener) {
+        listener = onScrollListener;
     }
-
 
     public static class WeekHomeworkAdapter extends BaseItemDraggableAdapter<Homework, BaseDataBindingHolder> {
         public WeekHomeworkAdapter(int layoutResId, @Nullable List<Homework> data) {
@@ -216,21 +147,5 @@ public class DetailFragment extends Fragment {
             view.setTag(R.id.BaseQuickAdapter_databinding_support, binding);
             return view;
         }
-
-
     }
-
-    public static class WeekHeaderAdapter extends BaseQuickAdapter<MySubject, BaseViewHolder> {
-        public WeekHeaderAdapter(int layoutResId, @Nullable List<MySubject> data) {
-            super(layoutResId, data);
-        }
-
-        @Override
-        protected void convert(BaseViewHolder helper, MySubject item) {
-            GradientDrawable circle = (GradientDrawable) helper.getView(R.id.circle).getBackground();
-            circle.setColor(item.color);
-            helper.setText(R.id.circle, item.getName().substring(0, 1));
-        }
-    }
-
 }

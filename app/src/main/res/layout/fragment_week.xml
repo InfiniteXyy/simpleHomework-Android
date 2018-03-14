@@ -39,8 +39,18 @@
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
-        android:id="@+id/fragment_week"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/fragment_week"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <View
+            android:alpha="0.0"
+            android:id="@+id/shadow"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/shadow"
+            android:rotation="180"/>
+    </FrameLayout>
 </LinearLayout>

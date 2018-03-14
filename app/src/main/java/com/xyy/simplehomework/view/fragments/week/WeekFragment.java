@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ import java.util.List;
 
 public class WeekFragment extends Fragment implements WeekUIInteraction {
     public static final String TAG = "WeekFragment";
+    int offsetY = 0;
     private boolean isText = false;
     private DetailFragment detailFragment;
     private TextFragment textFragment;
@@ -41,6 +43,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     private ImageView weekBtn;
     private FloatingActionButton fab;
     private TextSwitcher title;
+    private View shadow;
     private Animation fadeIn;
     private Animation fadeOut;
 
@@ -72,6 +75,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         super.onViewCreated(view, savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(WeekViewModel.class);
         // second, init child fragments
+        shadow = view.findViewById(R.id.shadow);
         title = view.findViewById(R.id.title);
         title.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
@@ -87,7 +91,16 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         title.setCurrentText("本周");
 
         detailFragment = new DetailFragment();
-        // TODO: textView应同样支持切换周
+        detailFragment.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                offsetY += dy;
+                if (offsetY <= 255) {
+                    shadow.setAlpha((float) (offsetY / 255.0));
+                }
+            }
+        });
         textFragment = TextFragment.newInstance(viewModel.getSubjectList(), DateHelper.getWeekIndex());
         weeksFragment = new WeeksFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

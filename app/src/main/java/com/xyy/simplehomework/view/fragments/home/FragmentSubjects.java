@@ -1,5 +1,6 @@
 package com.xyy.simplehomework.view.fragments.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,11 +14,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.view.SubjectActivity;
 import com.xyy.simplehomework.view.helper.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -50,7 +53,16 @@ public class FragmentSubjects extends Fragment {
         List<MultiItemEntity> data = new ArrayList<>();
         data.addAll(subjectList);
         data.add(new AddBtn());
-        recyclerView.setAdapter(new SubjectListAdapter(data));
+        SubjectListAdapter adapter = new SubjectListAdapter(data);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(getContext(), SubjectActivity.class);
+                intent.putExtra(SubjectActivity.SUBJECT_ID, ((MySubject) adapter.getItem(position)).id);
+                startActivity(intent);
+            }
+        });
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext(), 1));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),

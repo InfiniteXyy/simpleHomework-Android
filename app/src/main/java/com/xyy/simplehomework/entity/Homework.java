@@ -23,6 +23,10 @@ import io.objectbox.relation.ToOne;
 public class Homework extends BaseObservable implements MultiItemEntity {
     public static final int FINISHED = 0;
     public static final int NOT_FINISHED = 1;
+    public static final int WRITING = 2;
+    public static final int READDING = 3;
+    public static final int COMPUTER = 4;
+    public static final int LISTENING = 5;
     private final static DateFormat FORMAT = SimpleDateFormat.getDateInstance();
     @Id
     public long id;
@@ -36,6 +40,7 @@ public class Homework extends BaseObservable implements MultiItemEntity {
     public Date planDate;
     public Date initDate;
     public int status;
+    public int type;
 
     public Homework(String title, Date deadline) {
         this.title = title;

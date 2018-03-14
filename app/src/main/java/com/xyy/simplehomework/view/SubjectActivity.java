@@ -7,7 +7,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -32,13 +31,8 @@ public class SubjectActivity extends AppCompatActivity {
         long subject_id = getIntent().getLongExtra(SUBJECT_ID, 0);
         subject = App.getInstance().getBoxStore().boxFor(MySubject.class).get(subject_id);
 
-
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
 
         // set theme color
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

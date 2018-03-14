@@ -11,6 +11,7 @@ import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.Date;
+import java.util.Random;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
@@ -67,17 +68,20 @@ public class MainViewModel {
 
         Box<Homework> homeworkBox = boxStore.boxFor(Homework.class);
         // homework demo
+        Random random = new Random();
         for (int i = 0; i <= DateHelper.getWeekIndex(); i++) {
             for (MySubject subject : subjects) {
                 Homework homework = new Homework(subject.getName() + "练习周=" + i, DateHelper.afterDays(3));
                 homework.subject.setTarget(subject);
                 homework.setDetail("这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情");
                 homework.weekIndex = i;
+                homework.type = random.nextInt(3);
                 homeworkBox.put(homework);
 
                 Homework homework2 = new Homework(subject.getName() + "计划=" + i, DateHelper.afterDays(2));
                 homework2.subject.setTarget(subject);
                 homework2.weekIndex = i;
+                homework2.type = random.nextInt(3);
                 if (i % 2 == 0) homework2.status = Homework.FINISHED;
 
                 homework2.setPlanDate(DateHelper.getToday());

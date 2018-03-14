@@ -40,8 +40,6 @@ public class SubjectActivity extends AppCompatActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(subject.color);
         }
-        toolbar.setBackgroundColor(subject.color);
-        toolbar.setTitle(subject.getName());
         final TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setBackgroundColor(subject.color);
 

@@ -2,10 +2,10 @@ package com.xyy.simplehomework.view.fragments.week;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
@@ -34,6 +33,7 @@ import java.util.List;
 
 public class DetailFragment extends Fragment {
     private View spinnerView;
+    private RecyclerView recyclerView;
     private WeekHomeworkAdapter adapter;
     private RecyclerView.OnScrollListener listener;
     private List<Homework> homeworkList;
@@ -72,12 +72,10 @@ public class DetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         homeworkList = new ArrayList<>();
         // first, set main recyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.week_recycler_view);
-        adapter = new WeekHomeworkAdapter(R.layout.item_homework_detail, homeworkList);
+        recyclerView = view.findViewById(R.id.week_recycler_view);
+        adapter = new WeekHomeworkAdapter(R.layout.item_homework, homeworkList);
 
-        // TODO: 将现有的对话框替换为expandable
-        // TODO: 点击图标时有指示信息
-        recyclerView.setAdapter(adapter);
+        // TODO: 图标为图示信息
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext(), 1));
         recyclerView.addOnScrollListener(listener);
         // finally, add spinner to the main recycler
@@ -89,6 +87,8 @@ public class DetailFragment extends Fragment {
         spinner.setAdapter(arrayAdapter);
         adapter.addHeaderView(spinnerView);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
+
+        recyclerView.setAdapter(adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -122,7 +122,15 @@ public class DetailFragment extends Fragment {
         listener = onScrollListener;
     }
 
-    public static class WeekHomeworkAdapter extends BaseItemDraggableAdapter<Homework, BaseDataBindingHolder> {
+    public void onClickHomework(View view) {
+        TransitionManager.endTransitions(recyclerView);
+        View detail = ((View) view.getParent()).findViewById(R.id.detail);
+        boolean shouldExpand = detail.getVisibility() == View.GONE;
+        detail.setVisibility(shouldExpand ? View.VISIBLE : View.GONE);
+        TransitionManager.beginDelayedTransition(recyclerView);
+    }
+
+    class WeekHomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {
         public WeekHomeworkAdapter(int layoutResId, @Nullable List<Homework> data) {
             super(layoutResId, data);
         }
@@ -131,10 +139,8 @@ public class DetailFragment extends Fragment {
         protected void convert(BaseDataBindingHolder helper, Homework item) {
             ViewDataBinding binding = helper.getBinding();
             binding.setVariable(BR.homework, item);
-            // prepare UI before show
+            binding.setVariable(BR.handler, DetailFragment.this);
             binding.executePendingBindings();
-            GradientDrawable circle = (GradientDrawable) helper.getView(R.id.circle).getBackground();
-            circle.setColor(item.subject.getTarget().color);
         }
 
         @Override

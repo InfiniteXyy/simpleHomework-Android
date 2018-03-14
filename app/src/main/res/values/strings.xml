@@ -14,8 +14,8 @@
     <string name="homework_card">作业卡片</string>
 
     <string-array name="week_homework_show_type">
-        <item>按截止时间排序（从早到晚）</item>
-        <item>按添加时间排序（从早到晚）</item>
+        <item>按截止时间排序</item>
+        <item>按添加时间排序</item>
         <item>按课程排序</item>
     </string-array>
 

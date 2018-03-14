@@ -90,6 +90,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         title.setOutAnimation(fadeOut);
         title.setCurrentText("本周");
 
+        offsetY = 0;
         detailFragment = new DetailFragment();
         detailFragment.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -152,11 +153,6 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                 textFragment.updateHomeworkList();
             }
         });
-    }
-
-    @Override
-    public void onClickHomework(Homework homework) {
-        DetailDialog.newInstance(homework).show(getChildFragmentManager(), null);
     }
 
     @Override

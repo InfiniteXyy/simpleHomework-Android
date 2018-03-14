@@ -1,5 +1,6 @@
 package com.xyy.simplehomework.view.fragments.week;
 
+import android.animation.LayoutTransition;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -87,7 +88,6 @@ public class DetailFragment extends Fragment {
         spinner.setAdapter(arrayAdapter);
         adapter.addHeaderView(spinnerView);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
-
         recyclerView.setAdapter(adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -121,12 +121,15 @@ public class DetailFragment extends Fragment {
     public void setOnScrollListener(RecyclerView.OnScrollListener onScrollListener) {
         listener = onScrollListener;
     }
+    private View lastView;
 
     public void onClickHomework(View view) {
         TransitionManager.endTransitions(recyclerView);
         View detail = ((View) view.getParent()).findViewById(R.id.detail);
+        if (lastView != null && lastView != detail) lastView.setVisibility(View.GONE);
         boolean shouldExpand = detail.getVisibility() == View.GONE;
         detail.setVisibility(shouldExpand ? View.VISIBLE : View.GONE);
+        lastView = detail;
         TransitionManager.beginDelayedTransition(recyclerView);
     }
 

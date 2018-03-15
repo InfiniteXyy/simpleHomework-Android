@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="@string/subject_sample"
         android:textSize="14sp"
-        android:textColor="@color/japanAir"
+        android:textColor="?colorPrimary"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp" />
 

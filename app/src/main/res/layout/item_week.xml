@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="16dp"
     android:layout_marginStart="16dp"
-    app:cardBackgroundColor="@color/japanAir"
+    app:cardBackgroundColor="?colorPrimary"
     app:cardElevation="0dp">
 
     <RelativeLayout

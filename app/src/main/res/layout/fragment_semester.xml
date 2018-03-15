@@ -19,7 +19,7 @@
                 android:layout_centerInParent="true"
                 android:text="设置"
                 android:textStyle="bold"
-                android:textColor="@color/japanAir"
+                android:textColor="?colorPrimary"
                 android:textSize="20sp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
@@ -51,7 +51,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:text="内容设置"
-                    android:textColor="@color/japanAir"
+                    android:textColor="?colorPrimary"
                     android:textSize="14sp" />
 
                 <RelativeLayout
@@ -75,7 +75,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:text="偏好设置"
-                    android:textColor="@color/japanAir"
+                    android:textColor="?colorPrimary"
                     android:textSize="14sp" />
 
                 <RelativeLayout

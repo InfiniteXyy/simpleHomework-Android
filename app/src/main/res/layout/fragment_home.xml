@@ -23,7 +23,7 @@
                     android:layout_centerInParent="true"
                     android:text="@string/today"
                     android:textStyle="bold"
-                    android:textColor="@color/japanAir"
+                    android:textColor="?colorPrimary"
                     android:textSize="20sp" />
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="24dp"

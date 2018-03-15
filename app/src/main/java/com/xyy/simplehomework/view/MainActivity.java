@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme2);
         setContentView(R.layout.activity_main);
         // set up view model
         viewModel = new MainViewModel(this);

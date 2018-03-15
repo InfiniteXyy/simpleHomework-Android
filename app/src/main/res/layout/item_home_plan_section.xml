@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_add_black_24px"
-        android:tint="@color/japanAir"
+        android:tint="?colorPrimary"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="16dp"/>
@@ -43,7 +43,7 @@
             android:layout_gravity="center"
             android:textSize="14sp"
             android:text="8"
-            android:textColor="@color/japanAir"/>
+            android:textColor="?colorPrimary"/>
     </FrameLayout>
 
 </RelativeLayout>

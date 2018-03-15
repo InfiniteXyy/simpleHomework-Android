@@ -12,8 +12,17 @@
 
     <style name="Theme2" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/japanOrange</item>
-        <item name="colorAccent">@color/japanOrange</item>
+        <item name="colorPrimary">@color/japanTea</item>
+        <item name="colorAccent">@color/japanTea</item>
+        <item name="android:windowBackground">@drawable/default_background</item>
+        <item name="android:dividerHorizontal">@drawable/line_divider</item>
+        <item name="android:listDivider">@drawable/line_divider</item>
+    </style>
+
+    <style name="Theme3" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/japanBrown</item>
+        <item name="colorAccent">@color/japanBrown</item>
         <item name="android:windowBackground">@drawable/default_background</item>
         <item name="android:dividerHorizontal">@drawable/line_divider</item>
         <item name="android:listDivider">@drawable/line_divider</item>

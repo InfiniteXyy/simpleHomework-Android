@@ -28,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.Theme2);
+        int style = getSharedPreferences("data", MODE_PRIVATE).getInt("theme", R.style.Theme1);
+        setTheme(style);
+
         setContentView(R.layout.activity_main);
         // set up view model
         viewModel = new MainViewModel(this);

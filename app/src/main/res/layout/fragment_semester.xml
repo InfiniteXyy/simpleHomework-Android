@@ -47,9 +47,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
                     android:layout_marginLeft="18dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
                     android:text="内容设置"
                     android:textColor="?colorPrimary"
                     android:textSize="14sp" />
@@ -71,9 +71,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
                     android:layout_marginLeft="18dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
                     android:text="偏好设置"
                     android:textColor="?colorPrimary"
                     android:textSize="14sp" />
@@ -92,34 +92,31 @@
                         android:textSize="16sp" />
 
                     <LinearLayout
+                        android:id="@+id/group2"
+                        android:layout_marginRight="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="16dp">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/shape_circle"
-                            android:tint="@color/japanAir" />
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/shape_circle"
-                            android:tint="@color/japanTea" />
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/shape_circle"
-                            android:tint="@color/japanOrange" />
+                        android:layout_centerVertical="true">
+
+                        <include
+                            android:id="@+id/air"
+                            layout="@layout/item_select_color" />
+                        <include
+                            android:id="@+id/tea"
+                            layout="@layout/item_select_color" />
+                        <include
+                            android:id="@+id/brown"
+                            layout="@layout/item_select_color" />
                     </LinearLayout>
+
+
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="72dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -128,14 +125,14 @@
                         android:text="禁用动画元素"
                         android:textColor="@color/textDarkPrimary"
                         android:textSize="16sp" />
+
                     <Switch
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="16dp"/>
+                        android:layout_marginRight="16dp" />
                 </RelativeLayout>
-
             </LinearLayout>
         </ScrollView>
     </FrameLayout>

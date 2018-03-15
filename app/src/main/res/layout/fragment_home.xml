@@ -38,7 +38,8 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabTextColor="@color/textDarkSecondary" />
+            app:tabTextColor="@color/textDarkSecondary"
+            app:tabSelectedTextColor="?colorPrimary"/>
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout

@@ -26,7 +26,7 @@ dependencies {
     compile 'me.relex:circleindicator:1.2.2@aar'
 
     // UI 辅助
-    implementation 'com.github.bumptech.glide:glide:4.5.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
     //compile 'com.github.free46000:MultiItem:0.9.7'
     //compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
@@ -37,8 +37,9 @@ dependencies {
     releaseImplementation "io.objectbox:objectbox-android:$objectboxVersion"
     implementation 'android.arch.lifecycle:extensions:1.1.0'
     implementation 'joda-time:joda-time:2.3'
-
-
+    compile 'com.zhihu.android:matisse:0.5.0-beta3'
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+    compile "io.reactivex.rxjava2:rxjava:2.1.10"
 }
 
 apply plugin: 'io.objectbox'

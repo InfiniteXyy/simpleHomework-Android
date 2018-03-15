@@ -70,7 +70,8 @@
                         android:layout_gravity="center"
                         app:srcCompat="@drawable/ic_photo_camera_white_24px" />
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:photoUrl="@{homework.imgUri}"/>
                 </FrameLayout>

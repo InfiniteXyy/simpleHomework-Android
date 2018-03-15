@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.databinding.BindingAdapter;
 import android.net.Uri;
@@ -22,25 +23,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.tbruyelle.rxpermissions2.RxPermissionsFragment;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.databinding.DialogHomeworkAddBinding;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.filter.Filter;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+
 
 public class AddDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener, AddDialogHandler {
 
-
+    private static final String FILE_PATH = "file_path";
     private static final String TAG = "AddDialog";
-    private static final int RESULT_CAPTURE_IMAGE = 1;
+    private static final int REQUEST_CODE_CHOOSE = 23;
     private WeekUIInteraction mListener;
     private Homework homework;
 
@@ -134,25 +146,64 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
 
     @Override
     public void setImg(View view) {
-        String fileName = new SimpleDateFormat("/yyMMddmm").format(new Date()) + ".jpg";
-        String filePath = Environment.getExternalStorageDirectory().getPath() + fileName;
-        Intent imageCaptureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        imageCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                Uri.fromFile(new File(filePath)));
-        startActivityForResult(imageCaptureIntent, RESULT_CAPTURE_IMAGE);
-        homework.setImgUri(filePath);
+        RxPermissions rxPermissions = new RxPermissions(getActivity());
+        rxPermissions
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        if (aBoolean) {
+                            Matisse.from(AddDialog.this)
+                                    .choose(MimeType.of(MimeType.JPEG))
+                                    .capture(true)
+                                    .captureStrategy(
+                                            new CaptureStrategy(true, "com.xyy.simpleHomework.fileprovider"))
+                                    .maxSelectable(1)
+                                    .gridExpectedSize(
+                                            getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                                    .thumbnailScale(0.85f)
+                                    .imageEngine(new GlideEngine())
+                                    .forResult(REQUEST_CODE_CHOOSE);
+                        } else {
+                            Toast.makeText(getContext(), "请在系统设置中打开权限", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
     }
+
 
     @BindingAdapter({"android:photoUrl"})
     public static void loadImage(ImageView imageView, String url) {
-        Glide.with(imageView.getContext())
-                .load(url)
-                .into(imageView);
+        if (url != null) {
+            Glide.with(imageView.getContext())
+                    .load(url)
+                    .into(imageView);
+        }
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("img", homework.imgUri);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == Activity.RESULT_OK) {
+            Log.d(TAG, "onActivityResult: " + Matisse.obtainPathResult(data));
+            homework.setImgUri(Matisse.obtainPathResult(data).get(0));
+        }
     }
 }

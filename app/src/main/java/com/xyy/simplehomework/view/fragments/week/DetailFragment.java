@@ -17,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
@@ -24,15 +26,17 @@ import com.xyy.simplehomework.view.helper.SimpleDividerItemDecoration;
 import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by xyy on 2018/2/22.
  */
 
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements SetDetailHandler, DatePickerDialog.OnDateSetListener {
     private View spinnerView;
     private RecyclerView recyclerView;
     private WeekHomeworkAdapter adapter;
@@ -131,6 +135,28 @@ public class DetailFragment extends Fragment {
         detail.setVisibility(shouldExpand ? View.VISIBLE : View.GONE);
         lastView = detail;
         TransitionManager.beginDelayedTransition(recyclerView);
+    }
+
+    @Override
+    public void setPlan(View view, Homework homework) {
+        Calendar deadline = Calendar.getInstance();
+        if (homework.planDate != null)
+            deadline.setTime(homework.planDate);
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                DetailFragment.this,
+                deadline.get(Calendar.YEAR),
+                deadline.get(Calendar.MONTH),
+                deadline.get(Calendar.DAY_OF_MONTH)
+        );
+        deadline.setTime(new Date());
+        dpd.setMinDate(deadline);
+        dpd.vibrate(false);// 禁止震动
+        dpd.show(getActivity().getFragmentManager(), null);
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+
     }
 
     class WeekHomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {

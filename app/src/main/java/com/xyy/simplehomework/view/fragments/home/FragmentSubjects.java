@@ -1,5 +1,7 @@
 package com.xyy.simplehomework.view.fragments.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -99,7 +101,17 @@ public class FragmentSubjects extends Fragment {
                     helper.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(getContext(), "点击了Add", Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setTitle("添加课程")
+                                    .setView(View.inflate(getContext(), R.layout.dialog_subject_add, null))
+                                    .setPositiveButton("添加", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    })
+                                    .create()
+                                    .show();
                         }
                     });
                     break;

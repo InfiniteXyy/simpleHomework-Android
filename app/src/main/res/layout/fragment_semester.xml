@@ -97,23 +97,23 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="16dp">
-                        <View
+                        <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginRight="8dp"
-                            android:background="@drawable/shape_circle"
-                            android:backgroundTint="@color/japanAir" />
-                        <View
+                            android:src="@drawable/shape_circle"
+                            android:tint="@color/japanAir" />
+                        <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginRight="8dp"
-                            android:background="@drawable/shape_circle"
-                            android:backgroundTint="@color/japanTea" />
-                        <View
+                            android:src="@drawable/shape_circle"
+                            android:tint="@color/japanTea" />
+                        <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:background="@drawable/shape_circle"
-                            android:backgroundTint="@color/japanOrange" />
+                            android:src="@drawable/shape_circle"
+                            android:tint="@color/japanOrange" />
                     </LinearLayout>
                 </RelativeLayout>
 

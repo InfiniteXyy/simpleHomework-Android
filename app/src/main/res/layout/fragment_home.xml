@@ -38,9 +38,7 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/japanAir"
-            app:tabTextColor="@color/textDarkSecondary"
-            app:tabSelectedTextColor="@color/japanAir"/>
+            app:tabTextColor="@color/textDarkSecondary" />
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout

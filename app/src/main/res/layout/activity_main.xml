@@ -19,14 +19,12 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_add_black_24px"
         app:layout_anchor="@id/mainFragment"
-        app:backgroundTint="@color/japanAir"
         app:layout_anchorGravity="bottom|right"/>
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_gravity="bottom"
-        app:bb_activeTabColor="@color/japanAir"
         app:bb_behavior="iconsOnly"
         app:bb_tabXmlResource="@xml/bottom_tab" />
 </android.support.design.widget.CoordinatorLayout>

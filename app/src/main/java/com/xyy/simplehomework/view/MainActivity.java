@@ -11,9 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.fragments.home.HomeFragment;
 import com.xyy.simplehomework.view.fragments.setting.SettingFragment;
 import com.xyy.simplehomework.view.fragments.week.WeekFragment;
+import com.xyy.simplehomework.view.fragments.week.WeeksFragment;
 import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -99,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
 
     public int getThemeId() {
         return themeId;
+    }
+
+    public void showAddDialog(MySubject subject) {
+        ((WeekFragment)TabFragment.week.getFragment()).showAddDialog();
     }
 
 //    @Override

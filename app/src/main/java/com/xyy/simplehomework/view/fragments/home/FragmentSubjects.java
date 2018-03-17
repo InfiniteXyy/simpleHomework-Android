@@ -66,8 +66,6 @@ public class FragmentSubjects extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        subjectList = new ArrayList<>();
-        subjectList.add(new AddBtn());
         adapter = new SubjectListAdapter(subjectList);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

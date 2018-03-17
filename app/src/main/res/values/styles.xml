@@ -4,7 +4,7 @@
     <style name="Theme1" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/japanAir</item>
-        <item name="colorAccent">@color/japanAir</item>
+        <item name="colorAccent">#3498db</item>
         <item name="android:windowBackground">@drawable/default_background</item>
         <item name="android:dividerHorizontal">@drawable/line_divider</item>
         <item name="android:listDivider">@drawable/line_divider</item>
@@ -49,5 +49,11 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">?colorPrimary</item>
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="whiteTitle" parent="TextAppearance.AppCompat" >
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

@@ -79,6 +79,7 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
         // Inflate the layout for this fragment
         DialogHomeworkAddBinding binding = DialogHomeworkAddBinding.inflate(inflater, container, false);
         homework = new Homework();
+        homework.weekIndex = DateHelper.getWeekIndex();
         homework.setDeadline(new Date());
         binding.setHomework(homework);
         binding.setHandler(this);
@@ -132,9 +133,13 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
         view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homework.subject.setTarget((MySubject) spinner.getSelectedItem());
-                mListener.putHomework(homework);
-                dismiss();
+                if (!homework.getTitle().trim().equals("") && !homework.getDetail().trim().equals("")) {
+                    homework.subject.setTarget((MySubject) spinner.getSelectedItem());
+                    mListener.putHomework(homework);
+                    dismiss();
+                } else {
+                    Toast.makeText(getContext(), "请正确填写信息", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         super.onViewCreated(view, savedInstanceState);
@@ -142,7 +147,6 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        homework.weekIndex = DateHelper.getWeekIndex();
         homework.setDeadline(new Date(year - 1900, monthOfYear, dayOfMonth));
     }
 

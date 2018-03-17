@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.Homework;
+import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.view.MainActivity;
 
 /**
  * Created by xyy on 2018/3/11.
@@ -26,7 +29,7 @@ public class FragmentMine extends Fragment {
         view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "添加作业", Toast.LENGTH_LONG).show();
+                ((MainActivity) getActivity()).showAddDialog(new MySubject());
             }
         });
     }

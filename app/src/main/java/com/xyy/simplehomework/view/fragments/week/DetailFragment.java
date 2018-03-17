@@ -25,6 +25,8 @@ import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.helper.SimpleDividerItemDecoration;
 import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -136,9 +138,11 @@ public class DetailFragment extends Fragment implements SetDetailHandler, DatePi
         lastView = detail;
         TransitionManager.beginDelayedTransition(recyclerView);
     }
+    private Homework thisHomework;
 
     @Override
     public void setPlan(View view, Homework homework) {
+        thisHomework = homework;
         Calendar deadline = Calendar.getInstance();
         if (homework.planDate != null)
             deadline.setTime(homework.planDate);
@@ -156,7 +160,7 @@ public class DetailFragment extends Fragment implements SetDetailHandler, DatePi
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-
+        thisHomework.setPlanDate(new Date(year - 1900, monthOfYear, dayOfMonth));
     }
 
     class WeekHomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {

@@ -52,8 +52,8 @@ public class SemesterFragment extends Fragment implements View.OnClickListener{
         };
         fadeIn = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
         fadeOut = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
-        fadeIn.setDuration(200);
-        fadeOut.setDuration(200);
+        fadeIn.setDuration(100);
+        fadeOut.setDuration(100);
 
         View buttons[] = {
                 view.findViewById(R.id.air),

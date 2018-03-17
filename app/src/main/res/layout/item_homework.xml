@@ -44,8 +44,15 @@
                     android:typeIc="@{homework.type}"
                     android:tint="@{homework.subject.getTarget().color}"/>
             </FrameLayout>
-
-
+            <ImageView
+                android:visibility="@{homework.finished ? View.GONE : View.VISIBLE}"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="16dp"
+                app:srcCompat="@drawable/ic_done_black_24px"
+                android:tint="?colorPrimary" />
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

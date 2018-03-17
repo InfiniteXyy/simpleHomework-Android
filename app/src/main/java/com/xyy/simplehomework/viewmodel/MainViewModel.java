@@ -82,7 +82,7 @@ public class MainViewModel {
                 homework2.subject.setTarget(subject);
                 homework2.weekIndex = i;
                 homework2.type = random.nextInt(3);
-                if (i % 2 == 0) homework2.status = Homework.FINISHED;
+                if (i % 2 == 0) homework2.setFinished(true);
 
                 homework2.setPlanDate(DateHelper.getToday());
                 homework2.setDetail("这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划");

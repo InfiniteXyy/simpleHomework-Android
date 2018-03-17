@@ -26,8 +26,6 @@ import io.objectbox.relation.ToOne;
  */
 @Entity
 public class Homework extends BaseObservable implements MultiItemEntity {
-    public static final int FINISHED = 0;
-    public static final int NOT_FINISHED = 1;
     public static final int WRITING = 0;
     public static final int COMPUTER = 1;
     public static final int LISTENING = 2;
@@ -45,19 +43,19 @@ public class Homework extends BaseObservable implements MultiItemEntity {
     public Date planDate;
     public Date initDate;
     public String imgUri;
-    public int status;
+    public boolean finished;
     public int type;
 
     public Homework(String title, Date deadline) {
         this.title = title;
         this.deadline = deadline;
         initDate = DateHelper.date;
-        status = NOT_FINISHED;
+        finished = false;
     }
 
     public Homework() {
         initDate = new Date();
-        status = NOT_FINISHED;
+        finished = false;
     }
 
     @BindingAdapter("android:typeIc")
@@ -120,6 +118,17 @@ public class Homework extends BaseObservable implements MultiItemEntity {
     public void setDetail(String detail) {
         this.detail = detail;
     }
+
+    @Bindable
+    public boolean getFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+        notifyPropertyChanged(BR.finished);
+    }
+
 
     @Bindable
     public String getImgUri() {

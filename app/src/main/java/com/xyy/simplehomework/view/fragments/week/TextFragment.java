@@ -1,5 +1,7 @@
 package com.xyy.simplehomework.view.fragments.week;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,9 +13,11 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,11 +73,23 @@ public class TextFragment extends Fragment {
             protected void convert(BaseViewHolder helper, WeekSubject item) {
                 helper.setText(R.id.subject_name, item.getSubject().getName());
                 RecyclerView homeworkRecycler = helper.getView(R.id.recycler_view);
-                homeworkRecycler.setAdapter(new BaseQuickAdapter<Homework, BaseViewHolder>(R.layout.item_text_homework, item.homeworkThisWeek) {
+                homeworkRecycler.setAdapter(new BaseQuickAdapter<Homework, BaseDataBindingHolder>(R.layout.item_text_homework, item.homeworkThisWeek) {
                     @Override
-                    protected void convert(BaseViewHolder helper, Homework item) {
-                        helper.setText(R.id.homework, item.getTitle());
+                    protected void convert(BaseDataBindingHolder helper, Homework item) {
+                        helper.getBinding().setVariable(BR.homework, item);
                     }
+
+                    @Override
+                    protected View getItemView(int layoutResId, ViewGroup parent) {
+                        ViewDataBinding binding = DataBindingUtil.inflate(mLayoutInflater, layoutResId, parent, false);
+                        if (binding == null) {
+                            return super.getItemView(layoutResId, parent);
+                        }
+                        View view = binding.getRoot();
+                        view.setTag(R.id.BaseQuickAdapter_databinding_support, binding);
+                        return view;
+                    }
+
                 });
             }
         };

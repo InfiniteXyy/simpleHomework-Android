@@ -5,15 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.databinding.BindingAdapter;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
@@ -27,20 +22,19 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.tbruyelle.rxpermissions2.RxPermissionsFragment;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.databinding.DialogHomeworkAddBinding;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.view.helper.DateHelper;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
+import org.joda.time.DateTime;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -58,6 +52,15 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
 
     public AddDialog() {
         setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle);
+    }
+
+    @BindingAdapter({"android:photoUrl"})
+    public static void loadImage(ImageView imageView, String url) {
+        if (url != null) {
+            Glide.with(imageView.getContext())
+                    .load(url)
+                    .into(imageView);
+        }
     }
 
     @Override
@@ -85,7 +88,6 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         // first, set spinner
-        Log.d("123", "onViewCreated: "+homework);
         if (savedInstanceState != null)
             homework.setImgUri(savedInstanceState.getString("img"));
         final AppCompatSpinner spinner = view.findViewById(R.id.spinner);
@@ -140,9 +142,9 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        homework.weekIndex = DateHelper.getWeekIndex();
         homework.setDeadline(new Date(year - 1900, monthOfYear, dayOfMonth));
     }
-
 
     @Override
     public void setImg(View view) {
@@ -186,16 +188,6 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
                     }
                 });
 
-    }
-
-
-    @BindingAdapter({"android:photoUrl"})
-    public static void loadImage(ImageView imageView, String url) {
-        if (url != null) {
-            Glide.with(imageView.getContext())
-                    .load(url)
-                    .into(imageView);
-        }
     }
 
     @Override

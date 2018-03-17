@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
+import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.fragments.week.WeekViewModel;
 
@@ -27,7 +28,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeUIInteraction {
     public final static String TAG = "HomeFragment";
     private static String[] pageNames = {
             "我的",
@@ -49,21 +50,20 @@ public class HomeFragment extends Fragment {
         final WeekViewModel weekViewModel = ViewModelProviders.of(this).get(WeekViewModel.class);
         viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         ViewPager viewPager = view.findViewById(R.id.mainFragment);
+        fragmentPlan = FragmentPlan.newInstance(weekViewModel.getHomeworkData());
+        fragmentMine = new FragmentMine();
+        fragmentSubjects = FragmentSubjects.newInstance(viewModel.getSubjectList());
         viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        fragmentMine = new FragmentMine();
                         return fragmentMine;
                     case 1:
-                        fragmentPlan = FragmentPlan.newInstance(weekViewModel.getHomeworkData());
                         return fragmentPlan;
-                    case 2:
-                        fragmentSubjects = FragmentSubjects.newInstance(viewModel.getSubjectList());
+                    default:
                         return fragmentSubjects;
                 }
-                return new FragmentMine();
             }
 
             @Override
@@ -74,6 +74,13 @@ public class HomeFragment extends Fragment {
             @Override
             public CharSequence getPageTitle(int position) {
                 return pageNames[position];
+            }
+        });
+
+        viewModel.getSubjectLiveData().observe(this, new Observer<List<MySubject>>() {
+            @Override
+            public void onChanged(@Nullable List<MySubject> subjects) {
+                fragmentSubjects.setSubjectList(subjects);
             }
         });
 
@@ -120,5 +127,10 @@ public class HomeFragment extends Fragment {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void putSubject(MySubject subject) {
+        viewModel.putSubject(subject);
     }
 }

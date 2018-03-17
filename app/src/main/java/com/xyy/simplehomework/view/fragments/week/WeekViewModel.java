@@ -42,7 +42,6 @@ public class WeekViewModel extends ViewModel {
     }
 
     public void putHomework(Homework homework) {
-        homework.weekIndex = DateHelper.getWeekIndex();
         homeworkBox.put(homework);
     }
 

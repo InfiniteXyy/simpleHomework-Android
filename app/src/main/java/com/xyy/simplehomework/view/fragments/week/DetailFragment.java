@@ -1,6 +1,6 @@
 package com.xyy.simplehomework.view.fragments.week;
 
-import android.animation.LayoutTransition;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.xyy.simplehomework.BR;
 import com.xyy.simplehomework.R;
@@ -39,11 +38,13 @@ import java.util.List;
  */
 
 public class DetailFragment extends Fragment implements SetDetailHandler, DatePickerDialog.OnDateSetListener {
+    private static final String TAG = "DetailFragment";
     private View spinnerView;
     private RecyclerView recyclerView;
     private WeekHomeworkAdapter adapter;
     private RecyclerView.OnScrollListener listener;
     private List<Homework> homeworkList;
+    private WeekUIInteraction mListener;
     private Comparator<Homework> deadlineComparator = new Comparator<Homework>() {
         @Override
         public int compare(Homework o1, Homework o2) {
@@ -56,7 +57,6 @@ public class DetailFragment extends Fragment implements SetDetailHandler, DatePi
             return o1.initDate.compareTo(o2.initDate);
         }
     };
-
     private Comparator<Homework> subjectComparator = new Comparator<Homework>() {
         @Override
         public int compare(Homework o1, Homework o2) {
@@ -66,7 +66,18 @@ public class DetailFragment extends Fragment implements SetDetailHandler, DatePi
             else return 1;
         }
     };
+    private View lastView;
+    private Homework thisHomework;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof WeekUIInteraction) {
+            mListener = (WeekUIInteraction) getParentFragment();
+        } else {
+            throw new RuntimeException("parent Fragment should implement WeekUIInteraction");
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -127,7 +138,6 @@ public class DetailFragment extends Fragment implements SetDetailHandler, DatePi
     public void setOnScrollListener(RecyclerView.OnScrollListener onScrollListener) {
         listener = onScrollListener;
     }
-    private View lastView;
 
     public void onClickHomework(View view) {
         TransitionManager.endTransitions(recyclerView);
@@ -138,7 +148,6 @@ public class DetailFragment extends Fragment implements SetDetailHandler, DatePi
         lastView = detail;
         TransitionManager.beginDelayedTransition(recyclerView);
     }
-    private Homework thisHomework;
 
     @Override
     public void setPlan(View view, Homework homework) {
@@ -160,11 +169,12 @@ public class DetailFragment extends Fragment implements SetDetailHandler, DatePi
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        thisHomework.setPlanDate(new Date(year - 1900, monthOfYear, dayOfMonth));
+        thisHomework.setPlanDate(new DateTime(year, monthOfYear, dayOfMonth, 0, 0, 0, 0).toDate());
+        mListener.putHomework(thisHomework);
     }
 
     class WeekHomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {
-        public WeekHomeworkAdapter(int layoutResId, @Nullable List<Homework> data) {
+        WeekHomeworkAdapter(int layoutResId, @Nullable List<Homework> data) {
             super(layoutResId, data);
         }
 
@@ -187,4 +197,5 @@ public class DetailFragment extends Fragment implements SetDetailHandler, DatePi
             return view;
         }
     }
+
 }

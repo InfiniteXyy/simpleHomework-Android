@@ -1,11 +1,14 @@
 package com.xyy.simplehomework.view.fragments.home;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,11 +16,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
@@ -36,11 +39,23 @@ public class FragmentSubjects extends Fragment {
     public final static int TYPE_ADD = 1;
     private RecyclerView recyclerView;
     private List<MySubject> subjectList;
+    private HomeUIInteraction mListener;
+    private SubjectListAdapter adapter;
 
     public static FragmentSubjects newInstance(List<MySubject> subjects) {
         FragmentSubjects fragmentSubjects = new FragmentSubjects();
         fragmentSubjects.setSubjectList(subjects);
         return fragmentSubjects;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof HomeUIInteraction) {
+            mListener = (HomeUIInteraction) getParentFragment();
+        } else {
+            throw new RuntimeException("parent Fragment should implement HomeUIInteraction");
+        }
     }
 
     @Override
@@ -51,10 +66,9 @@ public class FragmentSubjects extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        List<MultiItemEntity> data = new ArrayList<>();
-        data.addAll(subjectList);
-        data.add(new AddBtn());
-        SubjectListAdapter adapter = new SubjectListAdapter(data);
+        subjectList = new ArrayList<>();
+        subjectList.add(new AddBtn());
+        adapter = new SubjectListAdapter(subjectList);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -74,24 +88,28 @@ public class FragmentSubjects extends Fragment {
 
     public void setSubjectList(List<MySubject> subjectList) {
         this.subjectList = subjectList;
+        this.subjectList.add(new AddBtn());
+        if (adapter != null) {
+            adapter.replaceData(this.subjectList);
+        }
+
     }
 
-    class SubjectListAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
+    class SubjectListAdapter extends BaseMultiItemQuickAdapter<MySubject, BaseViewHolder> {
 
-        SubjectListAdapter(List<MultiItemEntity> data) {
+        SubjectListAdapter(List<MySubject> data) {
             super(data);
             addItemType(TYPE_SUBJECT, R.layout.item_home_subject);
             addItemType(TYPE_ADD, R.layout.item_home_subject_add);
         }
 
         @Override
-        protected void convert(BaseViewHolder helper, MultiItemEntity item) {
+        protected void convert(BaseViewHolder helper, MySubject item) {
             switch (helper.getItemViewType()) {
                 case TYPE_SUBJECT:
-                    final MySubject subject = (MySubject) item;
-                    helper.setText(R.id.title, subject.getName());
+                    helper.setText(R.id.title, item.getName());
                     int unfinishedNum = 0;
-                    for (Homework homework : subject.homework) {
+                    for (Homework homework : item.homework) {
                         if (!homework.getFinished()) unfinishedNum++;
                     }
                     helper.setText(R.id.textView, unfinishedNum + "个项目未完成");
@@ -100,13 +118,18 @@ public class FragmentSubjects extends Fragment {
                     helper.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            final View view = View.inflate(getContext(), R.layout.dialog_subject_add, null);
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                             builder.setTitle("添加课程")
-                                    .setView(View.inflate(getContext(), R.layout.dialog_subject_add, null))
+                                    .setView(view)
                                     .setPositiveButton("添加", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-
+                                            String name = ((TextInputEditText) view.findViewById(R.id.name)).getText().toString();
+                                            if (!name.trim().equals(""))
+                                                mListener.putSubject(new MySubject(name, Color.GRAY));
+                                            else
+                                                Toast.makeText(getContext(), "请输入正确的学科名称", Toast.LENGTH_SHORT).show();
                                         }
                                     })
                                     .create()
@@ -120,8 +143,7 @@ public class FragmentSubjects extends Fragment {
         }
     }
 
-    class AddBtn implements MultiItemEntity {
-
+    class AddBtn extends MySubject {
         @Override
         public int getItemType() {
             return TYPE_ADD;

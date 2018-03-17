@@ -5,7 +5,6 @@
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
-
     <View
         android:id="@+id/circle"
         android:layout_width="24dp"
@@ -14,9 +13,8 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/shape_circle" />
-
     <TextView
-        android:id="@+id/subject_name"
+        android:id="@+id/homework"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

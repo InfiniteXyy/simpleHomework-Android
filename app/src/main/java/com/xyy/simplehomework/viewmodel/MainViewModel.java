@@ -33,7 +33,7 @@ public class MainViewModel {
         dataServer = new DataServer(boxStore);
         dataServer.resetAll();
 
-        // get semester
+        // get setting
         Semester semester = getThisSemester();
         DateHelper.setUpSemester(semester);
 

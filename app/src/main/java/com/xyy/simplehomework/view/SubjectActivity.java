@@ -2,14 +2,12 @@ package com.xyy.simplehomework.view;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -20,8 +18,15 @@ import com.xyy.simplehomework.view.fragments.subject.SubjectOverviewFragment;
 import com.xyy.simplehomework.view.fragments.subject.SubjectSocietyFragment;
 
 public class SubjectActivity extends AppCompatActivity {
-
     public static final String SUBJECT_ID = "subject_id";
+    private final static String[] names = {
+            "作业",
+            "发现",
+            "总览"
+    };
+    private SubjectHomeworkFragment homeworkFragment;
+    private SubjectOverviewFragment overviewFragment;
+    private SubjectSocietyFragment societyFragment;
     private MySubject subject;
 
     @Override
@@ -43,79 +48,36 @@ public class SubjectActivity extends AppCompatActivity {
         final TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setBackgroundColor(subject.color);
 
+        homeworkFragment = new SubjectHomeworkFragment();
+        societyFragment = new SubjectSocietyFragment();
+        overviewFragment = new SubjectOverviewFragment();
         // init viewPager
         ViewPager viewPager = findViewById(R.id.subjectMainPage);
         viewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return TabFragment.values()[position].getFragment();
+                switch (position) {
+                    case 0:
+                        return homeworkFragment;
+                    case 1:
+                        return societyFragment;
+                    default:
+                        return overviewFragment;
+                }
             }
 
             @Override
             public int getCount() {
-                return TabFragment.values().length;
+                return 3;
             }
 
             @Override
             public CharSequence getPageTitle(int position) {
-                return TabFragment.values()[position].getTitle();
+                return names[position];
             }
         });
+        homeworkFragment.setHomeworkList(subject.homework);
         // bind tabLayout to viewPager
         tabLayout.setupWithViewPager(viewPager);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-        }
-        return true;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        TabFragment.onDestroy();
-    }
-
-    private enum TabFragment {
-        homework(R.id.homework, "作业", SubjectHomeworkFragment.class),
-        society(R.id.society, "社区", SubjectSocietyFragment.class),
-        Overview(R.id.overview, "总览", SubjectOverviewFragment.class);
-
-        private final int tabId;
-        private final String title;
-        private final Class<? extends Fragment> clazz;
-        private Fragment fragment;
-
-        TabFragment(@IdRes int tabId, String title, Class<? extends Fragment> clazz) {
-            this.tabId = tabId;
-            this.clazz = clazz;
-            this.title = title;
-        }
-
-        public static void onDestroy() {
-            for (TabFragment fragment : values()) {
-                fragment.fragment = null;
-            }
-        }
-
-        public Fragment getFragment() {
-            if (fragment == null) {
-                try {
-                    fragment = clazz.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    fragment = new Fragment();
-                }
-            }
-            return fragment;
-        }
-
-        public String getTitle() {
-            return title;
-        }
     }
 }

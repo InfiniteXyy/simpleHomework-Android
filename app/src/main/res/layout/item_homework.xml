@@ -45,7 +45,7 @@
                     android:tint="@{homework.subject.getTarget().color}"/>
             </FrameLayout>
             <ImageView
-                android:visibility="@{homework.finished ? View.GONE : View.VISIBLE}"
+                android:visibility="@{homework.finished ? View.VISIBLE : View.GONE}"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_width="24dp"

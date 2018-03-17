@@ -1,13 +1,9 @@
 package com.xyy.simplehomework.view;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +12,7 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.fragments.home.HomeFragment;
-import com.xyy.simplehomework.view.fragments.semester.SemesterFragment;
+import com.xyy.simplehomework.view.fragments.setting.SettingFragment;
 import com.xyy.simplehomework.view.fragments.week.WeekFragment;
 import com.xyy.simplehomework.viewmodel.MainViewModel;
 
@@ -24,12 +20,13 @@ public class MainActivity extends AppCompatActivity {
     public MainViewModel viewModel;
     private Fragment lastFragment = new Fragment();
     private BottomBar bottomBar;
+    private int themeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int style = getSharedPreferences("data", MODE_PRIVATE).getInt("theme", R.style.Theme1);
-        setTheme(style);
+        themeId = getSharedPreferences("data", MODE_PRIVATE).getInt(SettingFragment.THEME, R.style.Theme1);
+        setTheme(themeId);
 
         setContentView(R.layout.activity_main);
         // set up view model
@@ -100,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
             lastFragment.getChildFragmentManager().popBackStack();
     }
 
+    public int getThemeId() {
+        return themeId;
+    }
+
 //    @Override
 //    protected void onSaveInstanceState(Bundle outState) {
 //        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     private enum TabFragment {
         home(R.id.home, HomeFragment.class, HomeFragment.TAG),
         week(R.id.week, WeekFragment.class, WeekFragment.TAG),
-        semester(R.id.month, SemesterFragment.class, SemesterFragment.TAG);
+        setting(R.id.month, SettingFragment.class, SettingFragment.TAG);
 
         private final int menuId;
         private final Class<? extends Fragment> clazz;
@@ -143,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                         return 0;
                     case WeekFragment.TAG:
                         return 1;
-                    case SemesterFragment.TAG:
+                    case SettingFragment.TAG:
                         return 2;
                 }
             }

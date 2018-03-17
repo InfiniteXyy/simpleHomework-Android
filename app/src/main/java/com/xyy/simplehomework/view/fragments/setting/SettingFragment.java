@@ -1,23 +1,21 @@
-package com.xyy.simplehomework.view.fragments.semester;
+package com.xyy.simplehomework.view.fragments.setting;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.view.MainActivity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,8 +24,9 @@ import java.util.List;
  * Created by xyy on 2018/1/29.
  */
 
-public class SemesterFragment extends Fragment implements View.OnClickListener{
-    public final static String TAG = "SemesterFragment";
+public class SettingFragment extends Fragment implements View.OnClickListener {
+    public final static String TAG = "SettingFragment";
+    public final static String THEME = "theme";
     private View last;
     private Animation fadeIn;
     private Animation fadeOut;
@@ -38,13 +37,16 @@ public class SemesterFragment extends Fragment implements View.OnClickListener{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_semester, container, false);
+        return inflater.inflate(R.layout.fragment_setting, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        int selectColor = getActivity().getSharedPreferences("data", Activity.MODE_PRIVATE).getInt("theme", themes.get(0));
+        int selectTheme = R.style.Theme1;
+        if (((MainActivity) getActivity()) != null) {
+            selectTheme = ((MainActivity) getActivity()).getThemeId();
+        }
         int colors[] = {
                 getResources().getColor(R.color.japanAir),
                 getResources().getColor(R.color.japanTea),
@@ -65,7 +67,7 @@ public class SemesterFragment extends Fragment implements View.OnClickListener{
             background.setColorFilter(colors[i]);
             buttons[i].setOnClickListener(this);
         }
-        last = buttons[themes.indexOf(selectColor)].findViewById(R.id.done);
+        last = buttons[themes.indexOf(selectTheme)].findViewById(R.id.done);
         last.setVisibility(View.VISIBLE);
 
     }
@@ -75,13 +77,13 @@ public class SemesterFragment extends Fragment implements View.OnClickListener{
         SharedPreferences.Editor editor = getActivity().getSharedPreferences("data", Activity.MODE_PRIVATE).edit();
         switch (v.getId()) {
             case R.id.air:
-                editor.putInt("theme", themes.get(0));
+                editor.putInt(THEME, themes.get(0));
                 break;
             case R.id.tea:
-                editor.putInt("theme", themes.get(1));
+                editor.putInt(THEME, themes.get(1));
                 break;
             case R.id.brown:
-                editor.putInt("theme", themes.get(2));
+                editor.putInt(THEME, themes.get(2));
                 break;
         }
 

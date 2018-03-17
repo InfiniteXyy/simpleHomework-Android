@@ -42,6 +42,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/subjectMainPage"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

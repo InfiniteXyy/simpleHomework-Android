@@ -3,7 +3,6 @@ package com.xyy.simplehomework.entity;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 

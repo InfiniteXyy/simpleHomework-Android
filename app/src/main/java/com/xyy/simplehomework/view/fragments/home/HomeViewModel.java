@@ -1,5 +1,6 @@
 package com.xyy.simplehomework.view.fragments.home;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.xyy.simplehomework.entity.Homework;
@@ -19,19 +20,30 @@ import io.objectbox.android.ObjectBoxLiveData;
 public class HomeViewModel extends ViewModel {
     private ObjectBoxLiveData<Homework> homeworkObjectBoxLiveData;
     private Box<Homework> homeworkBox;
-    private List<MySubject> subjectList;
+    private Box<MySubject> subjectBox;
+    private LiveData<List<MySubject>> subjectLiveData;
 
 
     public HomeViewModel() {
         // first, get reference of ObjectBox
         BoxStore boxStore = App.getInstance().getBoxStore();
         homeworkBox = boxStore.boxFor(Homework.class);
-        subjectList = boxStore.boxFor(MySubject.class).getAll();
+        subjectBox = boxStore.boxFor(MySubject.class);
     }
 
     public List<MySubject> getSubjectList() {
-        return subjectList;
+        return subjectBox.getAll();
     }
 
 
+    public void putSubject(MySubject subject) {
+        subjectBox.put(subject);
+    }
+
+    public LiveData<List<MySubject>> getSubjectLiveData() {
+        if (subjectLiveData == null) {
+            subjectLiveData = new ObjectBoxLiveData<>(subjectBox.query().build());
+        }
+        return subjectLiveData;
+    }
 }

@@ -84,7 +84,8 @@ public class DetailFragment extends Fragment {
         adapter.addHeaderView(spinnerView);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         recyclerView.setAdapter(adapter);
-
+        adapter.bindToRecyclerView(recyclerView);
+        adapter.setEmptyView(R.layout.empty_view);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

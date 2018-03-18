@@ -18,6 +18,7 @@ import java.util.Date;
 
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.relation.ToMany;
 import io.objectbox.relation.ToOne;
 
 /**
@@ -34,6 +35,7 @@ public class Homework extends BaseObservable implements MultiItemEntity {
     public long id;
     public int weekIndex;
     public ToOne<MySubject> subject;
+    public ToMany<Note> notes;
 
     public String title;
     public String detail;

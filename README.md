@@ -1,2 +1,2 @@
 # simpleHomework
-a homework app for college students
+a homeworkList app for college students

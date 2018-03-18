@@ -38,6 +38,9 @@
     <string name="ddl">DDL</string>
     <string name="set_clock">设置提醒</string>
     <string name="week_plan">周记</string>
+    <string name="enter_new_note">Add a comment</string>
+    <string name="click_to_remove">点击删除</string>
+    <string name="note">备注</string>
 
 
 </resources>

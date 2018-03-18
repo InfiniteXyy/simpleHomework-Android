@@ -63,7 +63,33 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="16dp"
-                        android:text="当前学期"
+                        android:text="切换学期"
+                        android:textColor="@color/textDarkPrimary"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="当前周"
+                        android:textColor="@color/textDarkPrimary"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="导出数据"
                         android:textColor="@color/textDarkPrimary"
                         android:textSize="16sp" />
                 </RelativeLayout>

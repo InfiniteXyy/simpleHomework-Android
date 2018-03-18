@@ -83,7 +83,12 @@
           "name": "finished"
         }
       ],
-      "relations": []
+      "relations": [
+        {
+          "id": "1:7306257767672524372",
+          "name": "notes"
+        }
+      ]
     },
     {
       "id": "4:3546515760597277261",
@@ -112,11 +117,32 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "5:301532837228252400",
+      "lastPropertyId": "3:8108219397201810389",
+      "name": "Note",
+      "properties": [
+        {
+          "id": "1:8744976441150356813",
+          "name": "id"
+        },
+        {
+          "id": "2:2482048890692671861",
+          "name": "comment"
+        },
+        {
+          "id": "3:8108219397201810389",
+          "indexId": "5:7889535418119484654",
+          "name": "homeworkId"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "4:3546515760597277261",
-  "lastIndexId": "4:4794622604969717101",
-  "lastRelationId": "0:0",
+  "lastEntityId": "5:301532837228252400",
+  "lastIndexId": "5:7889535418119484654",
+  "lastRelationId": "1:7306257767672524372",
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,

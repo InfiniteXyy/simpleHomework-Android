@@ -1,6 +1,6 @@
 package com.xyy.simplehomework.view.fragments.week;
 
-import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.entity.Homework;
 
 import java.util.List;
 
@@ -10,21 +10,39 @@ import java.util.List;
 
 public class Week {
     public int weekIndex;
-    private List<MySubject> subjects;
+    private List<Homework> homeworkList;
+    private boolean finished = true;
+    private int num = 0;
 
     public Week(int weekIndex) {
         this.weekIndex = weekIndex;
     }
 
-    public List<MySubject> getSubjects() {
-        return subjects;
+    public String getProgress() {
+        return num + "/" + homeworkList.size();
     }
 
-    public void setSubjects(List<MySubject> subjects) {
-        this.subjects = subjects;
+    public boolean hasFinished() {
+        return finished;
     }
+
 
     public String getWeekName() {
         return "第" + (weekIndex + 1) + "周";
+    }
+
+    public List<Homework> getHomeworkList() {
+        return homeworkList;
+    }
+
+    public void setHomeworkList(List<Homework> homeworkList) {
+        this.homeworkList = homeworkList;
+        num = 0;
+        for (Homework homework : homeworkList) {
+            if (!homework.getFinished()) {
+                finished = false;
+                num++;
+            }
+        }
     }
 }

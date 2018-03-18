@@ -57,21 +57,21 @@ public class WeeksFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         weeks = new ArrayList<>();
         for (int i = 0; i <= DateHelper.getWeekIndex(); i++) {
-            weeks.add(new Week(i));
+            Week week = new Week(i);
+            week.setHomeworkList(mListener.getViewModel().getHomeworkData(i));
+            weeks.add(week);
         }
 
         adapter = new BaseQuickAdapter<Week, BaseViewHolder>(R.layout.item_week_weeks, weeks) {
             @Override
             protected void convert(BaseViewHolder helper, Week item) {
                 helper.setText(R.id.textView, item.getWeekName());
+                helper.setGone(R.id.finish, item.hasFinished());
+                helper.setText(R.id.progress, item.getProgress());
             }
         };
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                mListener.onClickWeek(position);
-            }
-        });
+        adapter.setOnItemClickListener((adapter, view1, position) ->
+                mListener.onClickWeek(position, ((Week) adapter.getItem(position)).getHomeworkList()));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));

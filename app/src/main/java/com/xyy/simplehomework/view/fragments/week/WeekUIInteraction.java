@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 public interface WeekUIInteraction {
-    void onClickWeek(int weekIndex);
+    void onClickWeek(int weekIndex, List<Homework> data);
 
     void needBtns(boolean need);
 
@@ -21,4 +21,6 @@ public interface WeekUIInteraction {
     List<MySubject> getSubjectList();
 
     void putHomework(Homework homework);
+
+    WeekViewModel getViewModel();
 }

@@ -135,8 +135,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     }
 
     @Override
-    public void onClickWeek(int weekIndex) {
-        List<Homework> data = viewModel.getHomeworkData(weekIndex);
+    public void onClickWeek(int weekIndex, List<Homework> data) {
         detailFragment.setHomeworkList(data);
         textFragment.setWeek(weekIndex);
         if (weekIndex == DateHelper.getWeekIndex()) {
@@ -183,6 +182,11 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     @Override
     public void putHomework(Homework homework) {
         viewModel.putHomework(homework);
+    }
+
+    @Override
+    public WeekViewModel getViewModel() {
+        return viewModel;
     }
 
 }

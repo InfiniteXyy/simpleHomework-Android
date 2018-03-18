@@ -6,6 +6,8 @@ import android.content.Context;
 import android.support.transition.ChangeBounds;
 import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
+import com.xyy.simplehomework.view.fragments.week.CommentFragment;
 import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 import java.util.Calendar;
@@ -44,15 +47,20 @@ public class HomeworkHandler implements DatePickerDialog.OnDateSetListener {
         fadeOut = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out);
         fadeOut.setDuration(200);
         transition = new ChangeBounds();
-        transition.setDuration(300);
+        transition.setInterpolator(new FastOutLinearInInterpolator());
+        transition.setDuration(200);
     }
 
     public void onClickHomework(View view) {
         RecyclerView recyclerView = (RecyclerView) view.getParent();
         TransitionManager.endTransitions(recyclerView);
-        boolean needExpand = view.findViewById(R.id.detail).getVisibility() == View.GONE;
-        if (lastView != null && lastView != view) showDetail(lastView, false);
-        showDetail(view, needExpand);
+        if (lastView != view) {
+            showDetail(view, true);
+            if (lastView != null) showDetail(lastView, false);
+        } else {
+            boolean needExpand = view.findViewById(R.id.detail).getVisibility() == View.GONE;
+            showDetail(view, needExpand);
+        }
         lastView = view;
         TransitionManager.beginDelayedTransition(recyclerView, transition);
     }
@@ -60,10 +68,13 @@ public class HomeworkHandler implements DatePickerDialog.OnDateSetListener {
     private void showDetail(View view, boolean visible) {
         View detail = view.findViewById(R.id.detail);
         View text = view.findViewById(R.id.text2);
-        detail.setVisibility(visible ? View.VISIBLE : View.GONE);
-        text.setVisibility(visible ? View.VISIBLE : View.GONE);
-        text.startAnimation(visible ? fadeIn : fadeOut);
-        detail.startAnimation(visible ? fadeIn : fadeOut);
+        int status = visible ? View.VISIBLE : View.GONE;
+        if (status != detail.getVisibility()) {
+            detail.setVisibility(visible ? View.VISIBLE : View.GONE);
+            text.setVisibility(visible ? View.VISIBLE : View.GONE);
+            text.startAnimation(visible ? fadeIn : fadeOut);
+            detail.startAnimation(visible ? fadeIn : fadeOut);
+        }
     }
 
     public void setPlan(Homework homework) {
@@ -84,7 +95,7 @@ public class HomeworkHandler implements DatePickerDialog.OnDateSetListener {
     }
 
     public void showDetail(Homework homework) {
-
+        new CommentFragment().show(((AppCompatActivity) mContext).getSupportFragmentManager(), null);
     }
 
     public void showImg(Homework homework) {

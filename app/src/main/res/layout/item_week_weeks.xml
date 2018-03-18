@@ -8,6 +8,16 @@
     android:clickable="true"
     android:focusable="true">
     <TextView
+        android:id="@+id/finish"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/textDarkSecondary"
+        tools:text="完成"/>
+    <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,4 +25,15 @@
         android:textColor="@color/textDarkPrimary"
         android:textSize="20sp"
         tools:text="第1周"/>
+
+    <TextView
+        android:id="@+id/progress"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/textDarkSecondary"
+        tools:text="16/16"/>
 </RelativeLayout>

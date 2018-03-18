@@ -4,6 +4,7 @@
     <style name="Theme1" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/japanAir</item>
+        <item name="android:colorSecondary">@color/japanAir</item>
         <item name="colorAccent">#3498db</item>
         <item name="android:windowBackground">@drawable/default_background</item>
         <item name="android:dividerHorizontal">@drawable/line_divider</item>
@@ -45,6 +46,10 @@
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
+    <style name="SlideAnim">
+        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+    </style>
 
     <style name="textSwitcher" parent="TextAppearance.AppCompat">
         <item name="android:textStyle">bold</item>
@@ -56,5 +61,9 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="FullScreenDialogStyleSlide" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/SlideAnim</item>
     </style>
 </resources>

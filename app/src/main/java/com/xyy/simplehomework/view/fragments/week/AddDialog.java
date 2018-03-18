@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +32,6 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
-import org.joda.time.DateTime;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +45,7 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
     private WeekUIInteraction mListener;
     private Homework homework;
     private MySubject subject;
+
     public AddDialog() {
         setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle);
     }

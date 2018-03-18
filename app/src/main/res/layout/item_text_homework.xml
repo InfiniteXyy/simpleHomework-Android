@@ -18,7 +18,7 @@
             android:visibility="@{homework.finished ? View.GONE : View.VISIBLE}"
             android:id="@+id/deleteLine"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="3dp"
             android:layout_alignLeft="@id/homework"
             android:layout_alignRight="@id/homework"
             android:layout_centerVertical="true"

@@ -10,18 +10,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.view.fragments.week.DetailFragment;
 import com.xyy.simplehomework.view.handler.HomeworkHandler;
 import com.xyy.simplehomework.view.helper.DateHelper;
 import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
@@ -96,7 +92,7 @@ public class FragmentPlan extends Fragment {
         for (Homework homework : homeworkList) {
             if (homework.planDate == null) {
                 ((PlanSection) sections.get(3)).addSubItem(homework);
-            } else if (homework.planDate == DateHelper.getToday()) {
+            } else if (homework.planDate.equals(DateHelper.getToday())) {
                 ((PlanSection) sections.get(0)).addSubItem(homework);
             } else if (DateHelper.afterDayNum(homework.planDate) == 1) {
                 ((PlanSection) sections.get(1)).addSubItem(homework);
@@ -110,6 +106,7 @@ public class FragmentPlan extends Fragment {
 
     class ExpandablePlanAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseDataBindingHolder> {
         private HomeworkHandler handler;
+
         ExpandablePlanAdapter(List<MultiItemEntity> data) {
             super(data);
             addItemType(TYPE_PLAN, R.layout.item_homework);
@@ -145,6 +142,7 @@ public class FragmentPlan extends Fragment {
                     break;
             }
         }
+
         @Override
         protected View getItemView(int layoutResId, ViewGroup parent) {
             ViewDataBinding binding = DataBindingUtil.inflate(mLayoutInflater, layoutResId, parent, false);

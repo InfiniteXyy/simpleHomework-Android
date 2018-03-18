@@ -7,11 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.MainActivity;
 
 /**

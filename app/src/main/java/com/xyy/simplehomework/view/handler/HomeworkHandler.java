@@ -34,7 +34,7 @@ public class HomeworkHandler implements DatePickerDialog.OnDateSetListener {
     private Animation fadeIn;
     private Animation fadeOut;
     private View lastView;
-    Transition transition;
+    private Transition transition;
 
     public HomeworkHandler(Context context, MainViewModel viewModel) {
         this.mContext = context;
@@ -106,8 +106,8 @@ public class HomeworkHandler implements DatePickerDialog.OnDateSetListener {
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        homework.setPlanDate(new Date(year-1900, monthOfYear, dayOfMonth));
-        Log.d(TAG, "onDateSet: year: "+year +" month: "+monthOfYear+" day: "+dayOfMonth);
+        homework.setPlanDate(new Date(year - 1900, monthOfYear, dayOfMonth));
+        Log.d(TAG, "onDateSet: year: " + year + " month: " + monthOfYear + " day: " + dayOfMonth);
         viewModel.appendHomework(homework);
     }
 }

@@ -2,7 +2,6 @@ package com.xyy.simplehomework.view.fragments.home;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,7 +26,6 @@ import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.SubjectActivity;
 import com.xyy.simplehomework.view.helper.SimpleDividerItemDecoration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

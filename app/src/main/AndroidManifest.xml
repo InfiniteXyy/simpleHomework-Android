@@ -4,6 +4,7 @@
 
     <!-- For Object Browser -->
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".view.App"
         android:allowBackup="true"
@@ -21,15 +22,17 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths_public" />
         </provider>
+
         <activity
             android:name=".view.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.SubjectActivity"></activity>
+        <activity android:name=".view.SubjectActivity" />
     </application>
 
 </manifest>

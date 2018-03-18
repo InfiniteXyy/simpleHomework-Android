@@ -1,6 +1,5 @@
 package com.xyy.simplehomework.view.fragments.week;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,7 +17,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;

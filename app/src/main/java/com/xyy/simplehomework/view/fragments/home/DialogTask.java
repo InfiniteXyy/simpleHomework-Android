@@ -39,6 +39,6 @@ public class DialogTask extends DialogFragment {
             protected void convert(BaseViewHolder helper, String item) {
             }
         });
-        view.findViewById(R.id.close_btn).setOnClickListener((v)->dismiss());
+        view.findViewById(R.id.close_btn).setOnClickListener((v) -> dismiss());
     }
 }

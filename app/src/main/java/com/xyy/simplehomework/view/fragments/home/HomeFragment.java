@@ -3,7 +3,6 @@ package com.xyy.simplehomework.view.fragments.home;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,16 +14,13 @@ import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.fragments.week.WeekViewModel;
 import com.xyy.simplehomework.view.helper.KitHelper;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -59,15 +55,20 @@ public class HomeFragment extends Fragment implements HomeUIInteraction {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
-                    case 0: return fragmentMine;
-                    case 1: return fragmentPlan;
-                    default: return fragmentSubjects;
+                    case 0:
+                        return fragmentMine;
+                    case 1:
+                        return fragmentPlan;
+                    default:
+                        return fragmentSubjects;
                 }
             }
+
             @Override
             public int getCount() {
                 return 3;
             }
+
             @Override
             public CharSequence getPageTitle(int position) {
                 return pageNames[position];
@@ -101,7 +102,6 @@ public class HomeFragment extends Fragment implements HomeUIInteraction {
         tabLayout.setupWithViewPager(viewPager);
         KitHelper.setUpIndicatorWidth(tabLayout);
     }
-
 
 
     @Override

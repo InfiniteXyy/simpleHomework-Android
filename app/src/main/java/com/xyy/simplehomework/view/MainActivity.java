@@ -9,13 +9,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.fragments.home.HomeFragment;
 import com.xyy.simplehomework.view.fragments.setting.SettingFragment;
 import com.xyy.simplehomework.view.fragments.week.WeekFragment;
-import com.xyy.simplehomework.view.fragments.week.WeeksFragment;
 import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,26 +37,23 @@ public class MainActivity extends AppCompatActivity {
             transaction.add(R.id.mainFragment, fragment.getFragment(), fragment.getTag())
                     .hide(fragment.getFragment());
         }
-
+        transaction.show(TabFragment.home.getFragment());
         transaction.commit();
 
         // init bottomBar
         bottomBar = findViewById(R.id.bottomBar);
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelected(int tabId) {
-                Fragment thisFragment = TabFragment.from(tabId).getFragment();
-                boolean fromRight = TabFragment.getPosition(lastFragment) < TabFragment.getPosition(thisFragment);
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(
-                                fromRight ? R.anim.slide_in_right : R.anim.slide_in_left,
-                                fromRight ? R.anim.slide_out_left : R.anim.slide_out_right)
-                        .hide(lastFragment)
-                        .show(thisFragment)
-                        .commit();
-                lastFragment = thisFragment;
-                viewModel.popHomework();
-            }
+        bottomBar.setOnTabSelectListener(tabId -> {
+            Fragment thisFragment = TabFragment.from(tabId).getFragment();
+            boolean fromRight = TabFragment.getPosition(lastFragment) < TabFragment.getPosition(thisFragment);
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(
+                            fromRight ? R.anim.slide_in_right : R.anim.slide_in_left,
+                            fromRight ? R.anim.slide_out_left : R.anim.slide_out_right)
+                    .hide(lastFragment)
+                    .show(thisFragment)
+                    .commit();
+            lastFragment = thisFragment;
+            viewModel.popHomework();
         });
 
         // init fab
@@ -106,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showAddDialog(MySubject subject) {
-        ((WeekFragment)TabFragment.week.getFragment()).showAddDialog(subject);
+        ((WeekFragment) TabFragment.week.getFragment()).showAddDialog(subject);
     }
 
 //    @Override

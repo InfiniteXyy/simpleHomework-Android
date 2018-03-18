@@ -22,10 +22,10 @@ import io.objectbox.BoxStore;
  */
 
 public class MainViewModel {
+    private static MainViewModel instance;
     private DataServer dataServer;
     private Context mContext;
     private BoxStore boxStore;
-    private static MainViewModel instance;
     private Stack<Homework> homeworkStack;
 
     public MainViewModel(Context context) {
@@ -44,6 +44,10 @@ public class MainViewModel {
         instance = this;
     }
 
+    public static MainViewModel getInstance() {
+        return instance;
+    }
+
     public void appendHomework(Homework homework) {
         homeworkStack.push(homework);
     }
@@ -53,10 +57,6 @@ public class MainViewModel {
         while (!homeworkStack.empty()) {
             box.put(homeworkStack.pop());
         }
-    }
-
-    public static MainViewModel getInstance() {
-        return instance;
     }
 
     private Semester getThisSemester() {
@@ -88,27 +88,31 @@ public class MainViewModel {
         Box<Homework> homeworkBox = boxStore.boxFor(Homework.class);
         // homework demo
         Random random = new Random();
+        String names[] = {
+                "完成一张卷子",
+                "复习准备月考",
+                "看ppt",
+                "见图片",
+                "继续做项目",
+                "写一篇作文"
+        };
         for (int i = 0; i <= DateHelper.getWeekIndex(); i++) {
             for (MySubject subject : subjects) {
-                Homework homework = new Homework(subject.getName() + "练习周=" + i, DateHelper.afterDays(3));
-                homework.subject.setTarget(subject);
-                homework.setDetail("这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情这是详情");
-                homework.weekIndex = i;
-                homework.type = random.nextInt(3);
-                homeworkBox.put(homework);
-
-                Homework homework2 = new Homework(subject.getName() + "计划=" + i, DateHelper.afterDays(2));
-                homework2.subject.setTarget(subject);
-                homework2.weekIndex = i;
-                homework2.type = random.nextInt(3);
-                if (i % 2 == 0) homework2.setFinished(true);
-
-                homework2.setPlanDate(DateHelper.getToday());
-                homework2.setDetail("这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划这是计划");
-                homeworkBox.put(homework2);
+                if (random.nextBoolean()) {
+                    Homework homework = new Homework(names[random.nextInt(names.length)], DateHelper.afterDays(random.nextInt(10)));
+                    homework.subject.setTarget(subject);
+                    homework.weekIndex = i;
+                    homework.type = random.nextInt(3);
+                    if (random.nextBoolean()) {
+                        homework.setFinished(true);
+                    } else {
+                        if (random.nextBoolean()) {
+                            homework.setPlanDate(DateHelper.afterDays(random.nextInt(4)));
+                        }
+                    }
+                    homeworkBox.put(homework);
+                }
             }
         }
-
     }
-
 }

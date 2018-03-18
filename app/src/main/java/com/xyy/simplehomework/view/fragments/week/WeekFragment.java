@@ -188,7 +188,12 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
 
     @Override
     public void showAddDialog() {
-        new AddDialog().show(getChildFragmentManager(), null);
+        AddDialog.newInstance(null).show(getChildFragmentManager(), null);
+    }
+
+    @Override
+    public void showAddDialog(MySubject subject) {
+        AddDialog.newInstance(subject).show(getChildFragmentManager(), null);
     }
 
     @Override

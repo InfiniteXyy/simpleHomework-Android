@@ -29,7 +29,7 @@ public class FragmentMine extends Fragment {
         view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) getActivity()).showAddDialog(new MySubject());
+                ((MainActivity) getActivity()).showAddDialog(null);
             }
         });
     }

@@ -37,6 +37,7 @@ import org.joda.time.DateTime;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -49,9 +50,15 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
     private static final int REQUEST_CODE_CHOOSE = 23;
     private WeekUIInteraction mListener;
     private Homework homework;
-
+    private MySubject subject;
     public AddDialog() {
         setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle);
+    }
+
+    public static AddDialog newInstance(MySubject subject) {
+        AddDialog fragment = new AddDialog();
+        fragment.subject = subject;
+        return fragment;
     }
 
     @BindingAdapter({"android:photoUrl"})
@@ -77,8 +84,8 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        DialogHomeworkAddBinding binding = DialogHomeworkAddBinding.inflate(inflater, container, false);
         homework = new Homework();
+        DialogHomeworkAddBinding binding = DialogHomeworkAddBinding.inflate(inflater, container, false);
         homework.weekIndex = DateHelper.getWeekIndex();
         homework.setDeadline(new Date());
         binding.setHomework(homework);
@@ -92,13 +99,15 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
         if (savedInstanceState != null)
             homework.setImgUri(savedInstanceState.getString("img"));
         final AppCompatSpinner spinner = view.findViewById(R.id.spinner);
+        List<MySubject> subjects = mListener.getSubjectList();
         ArrayAdapter<MySubject> arrayAdapter =
                 new ArrayAdapter<MySubject>(getContext(),
                         android.R.layout.simple_spinner_item,
-                        mListener.getSubjectList());
+                        subjects);
         arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
-
+        if (subject != null)
+            spinner.setSelection(subjects.indexOf(subject));
         // second, set DatePicker
         View.OnClickListener showCalendar = new View.OnClickListener() {
             @Override
@@ -133,7 +142,9 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
         view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!homework.getTitle().trim().equals("") && !homework.getDetail().trim().equals("")) {
+                if (homework.getTitle() == null || homework.getDetail() == null) {
+                    Toast.makeText(getContext(), "请正确填写信息", Toast.LENGTH_SHORT).show();
+                } else if (!homework.getTitle().trim().equals("") && !homework.getDetail().trim().equals("")) {
                     homework.subject.setTarget((MySubject) spinner.getSelectedItem());
                     mListener.putHomework(homework);
                     dismiss();
@@ -198,7 +209,6 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == Activity.RESULT_OK) {
-            Log.d(TAG, "onActivityResult: " + Matisse.obtainPathResult(data));
             homework.setImgUri(Matisse.obtainPathResult(data).get(0));
         }
     }

@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.App;
 import com.xyy.simplehomework.view.fragments.week.WeekViewModel;
+import com.xyy.simplehomework.view.helper.KitHelper;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -57,23 +59,27 @@ public class HomeFragment extends Fragment implements HomeUIInteraction {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
-                    case 0:
-                        return fragmentMine;
-                    case 1:
-                        return fragmentPlan;
-                    default:
-                        return fragmentSubjects;
+                    case 0: return fragmentMine;
+                    case 1: return fragmentPlan;
+                    default: return fragmentSubjects;
                 }
             }
-
             @Override
             public int getCount() {
                 return 3;
             }
-
             @Override
             public CharSequence getPageTitle(int position) {
                 return pageNames[position];
+            }
+        });
+
+        view.findViewById(R.id.popMenu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(getContext(), v);
+                popupMenu.getMenuInflater().inflate(R.menu.nav_menu, popupMenu.getMenu());
+                popupMenu.show();
             }
         });
 
@@ -87,47 +93,16 @@ public class HomeFragment extends Fragment implements HomeUIInteraction {
         weekViewModel.getAllHomeworkLiveData().observe(this, new Observer<List<Homework>>() {
             @Override
             public void onChanged(@Nullable List<Homework> homework) {
-                if (fragmentPlan != null) {
-                    fragmentPlan.classifyPlanHomework(homework);
-                }
+                if (fragmentPlan != null) fragmentPlan.classifyPlanHomework(homework);
             }
         });
 
         TabLayout tabLayout = view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        setUpIndicatorWidth(tabLayout);
+        KitHelper.setUpIndicatorWidth(tabLayout);
     }
 
-    private void setUpIndicatorWidth(TabLayout tabLayout) {
-        Class<?> tabLayoutClass = tabLayout.getClass();
-        Field tabStrip = null;
-        try {
-            tabStrip = tabLayoutClass.getDeclaredField("mTabStrip");
-            tabStrip.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
 
-        LinearLayout layout = null;
-        try {
-            if (tabStrip != null) {
-                layout = (LinearLayout) tabStrip.get(tabLayout);
-            }
-            for (int i = 0; i < layout.getChildCount(); i++) {
-                View child = layout.getChildAt(i);
-                child.setPadding(0, 0, 0, 0);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    params.setMarginStart(App.dp2px(18f));
-                    params.setMarginEnd(App.dp2px(18f));
-                }
-                child.setLayoutParams(params);
-                child.invalidate();
-            }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void putSubject(MySubject subject) {

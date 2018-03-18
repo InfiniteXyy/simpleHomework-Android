@@ -2,7 +2,6 @@
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FAFAFA">
@@ -124,6 +123,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="182dp"
             android:background="@android:color/white">
@@ -167,7 +167,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textDarkPrimary"
-                android:text="简记目标"
+                android:text="推荐"
                 android:textSize="16sp"
                 android:layout_margin="16dp" />
             <ImageView
@@ -204,19 +204,60 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <android.support.v7.widget.CardView
+        <RelativeLayout
             android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
-            android:layout_height="182dp"
-            app:cardElevation="0dp">
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+            <TextView
+                android:id="@+id/title2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textDarkPrimary"
+                android:text="报告"
+                android:textSize="16sp"
+                android:layout_margin="16dp" />
+            <ImageView
+                android:layout_alignParentRight="true"
+                android:layout_margin="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_chevron_right_black_24px"/>
+            <HorizontalScrollView
+                android:layout_below="@id/title2"
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:scrollbars="none"
+                android:layout_marginBottom="16dp">
+                <LinearLayout
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="120dp"
+                    android:orientation="horizontal">
+                    <FrameLayout
+                        android:layout_width="300dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/japanTea">
+                    </FrameLayout>
+                    <FrameLayout
+                        android:layout_width="300dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/japanGray">
+                    </FrameLayout>
+                    <FrameLayout
+                        android:layout_width="300dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/japanPink">
+                    </FrameLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="182dp"
-                android:layout_marginBottom="12dp"
-                app:cardElevation="0dp">
-            </android.support.v7.widget.CardView>
-        </android.support.v7.widget.CardView>
+        </RelativeLayout>
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
     

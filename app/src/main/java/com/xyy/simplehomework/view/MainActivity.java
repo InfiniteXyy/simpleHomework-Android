@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showAddDialog(MySubject subject) {
-        ((WeekFragment)TabFragment.week.getFragment()).showAddDialog();
+        ((WeekFragment)TabFragment.week.getFragment()).showAddDialog(subject);
     }
 
 //    @Override

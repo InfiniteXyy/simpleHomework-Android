@@ -16,6 +16,8 @@ public interface WeekUIInteraction {
 
     void showAddDialog();
 
+    void showAddDialog(MySubject subject);
+
     List<MySubject> getSubjectList();
 
     void putHomework(Homework homework);

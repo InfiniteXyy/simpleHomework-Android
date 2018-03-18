@@ -29,6 +29,7 @@
     </style>
 
     <style name="FullScreenDialogStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/japanAir</item>
         <item name="android:windowAnimationStyle">@style/BottomFloatAnim</item>
     </style>
 

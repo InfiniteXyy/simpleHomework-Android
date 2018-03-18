@@ -1,5 +1,7 @@
 package com.xyy.simplehomework.view.fragments.home;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,13 +14,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.databinding.library.baseAdapters.BR;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
+import com.xyy.simplehomework.view.fragments.week.DetailFragment;
+import com.xyy.simplehomework.view.handler.HomeworkHandler;
 import com.xyy.simplehomework.view.helper.DateHelper;
+import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
+import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,26 +64,20 @@ public class FragmentPlan extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ExpandablePlanAdapter(sections);
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                PopupMenu popupMenu = new PopupMenu(getContext(), view);
-                popupMenu.getMenuInflater().inflate(R.menu.add_plan, popupMenu.getMenu());
-                popupMenu.show();
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.task:
-                                new DialogTask().show(getChildFragmentManager(), null);
-                                break;
-                            case R.id.homework:
-                                break;
-                        }
-                        return false;
-                    }
-                });
-            }
+        adapter.setOnItemChildClickListener((adapter, view1, position) -> {
+            PopupMenu popupMenu = new PopupMenu(getContext(), view1);
+            popupMenu.getMenuInflater().inflate(R.menu.add_plan, popupMenu.getMenu());
+            popupMenu.show();
+            popupMenu.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.task:
+                        new DialogTask().show(getChildFragmentManager(), null);
+                        break;
+                    case R.id.homework:
+                        break;
+                }
+                return false;
+            });
         });
 
         recyclerView.setAdapter(adapter);
@@ -107,19 +108,23 @@ public class FragmentPlan extends Fragment {
             adapter.replaceData(sections);
     }
 
-    class ExpandablePlanAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
-
+    class ExpandablePlanAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseDataBindingHolder> {
+        private HomeworkHandler handler;
         ExpandablePlanAdapter(List<MultiItemEntity> data) {
             super(data);
-            addItemType(TYPE_PLAN, R.layout.item_home_plan_item);
+            addItemType(TYPE_PLAN, R.layout.item_homework);
             addItemType(TYPE_SECTION, R.layout.item_home_plan_section);
         }
 
         @Override
-        protected void convert(final BaseViewHolder helper, final MultiItemEntity item) {
+        protected void convert(final BaseDataBindingHolder helper, final MultiItemEntity item) {
+            if (handler == null) {
+                handler = new HomeworkHandler(mContext, MainViewModel.getInstance());
+            }
             switch (helper.getItemViewType()) {
                 case TYPE_PLAN:
-                    helper.setText(R.id.text, ((Homework) item).getTitle());
+                    helper.getBinding().setVariable(BR.homework, item);
+                    helper.getBinding().setVariable(BR.handler, handler);
                     break;
                 case TYPE_SECTION:
                     final int badge = ((PlanSection) item).getSubItems() == null ? 0 : ((PlanSection) item).getSubItems().size();
@@ -128,20 +133,27 @@ public class FragmentPlan extends Fragment {
                     helper.setGone(R.id.badge, !showAdd);
                     helper.setText(R.id.text, ((PlanSection) item).getSectionName());
                     helper.setText(R.id.badge_num, String.valueOf(badge));
-                    helper.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int pos = helper.getAdapterPosition();
-                            if (((PlanSection) item).isExpanded()) {
-                                collapse(pos);
-                            } else if (badge != 0) {
-                                expand(pos);
-                            }
+                    helper.itemView.setOnClickListener(v -> {
+                        int pos = helper.getAdapterPosition();
+                        if (((PlanSection) item).isExpanded()) {
+                            collapse(pos);
+                        } else if (badge != 0) {
+                            expand(pos);
                         }
                     });
                     helper.addOnClickListener(R.id.add);
                     break;
             }
+        }
+        @Override
+        protected View getItemView(int layoutResId, ViewGroup parent) {
+            ViewDataBinding binding = DataBindingUtil.inflate(mLayoutInflater, layoutResId, parent, false);
+            if (binding == null) {
+                return super.getItemView(layoutResId, parent);
+            }
+            View view = binding.getRoot();
+            view.setTag(R.id.BaseQuickAdapter_databinding_support, binding);
+            return view;
         }
     }
 

@@ -121,10 +121,6 @@ public class TextFragment extends Fragment {
             return subject;
         }
 
-        public List<Homework> getHomeworkThisWeek() {
-            return homeworkThisWeek;
-        }
-
         public void setHomeworkThisWeek(List<Homework> homeworkThisWeek) {
             this.homeworkThisWeek = homeworkThisWeek;
         }

@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                         .show(thisFragment)
                         .commit();
                 lastFragment = thisFragment;
+                viewModel.popHomework();
             }
         });
 
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        viewModel.popHomework();
         super.onDestroy();
         TabFragment.onDestroy();
         lastFragment = null;

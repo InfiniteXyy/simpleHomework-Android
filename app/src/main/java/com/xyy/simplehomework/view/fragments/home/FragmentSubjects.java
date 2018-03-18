@@ -113,26 +113,20 @@ public class FragmentSubjects extends Fragment {
                     helper.setText(R.id.textView, unfinishedNum + "个项目未完成");
                     break;
                 case TYPE_ADD:
-                    helper.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            final View view = View.inflate(getContext(), R.layout.dialog_subject_add, null);
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                            builder.setTitle("添加课程")
-                                    .setView(view)
-                                    .setPositiveButton("添加", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            String name = ((TextInputEditText) view.findViewById(R.id.name)).getText().toString();
-                                            if (!name.trim().equals(""))
-                                                mListener.putSubject(new MySubject(name, Color.GRAY));
-                                            else
-                                                Toast.makeText(getContext(), "请输入正确的学科名称", Toast.LENGTH_SHORT).show();
-                                        }
-                                    })
-                                    .create()
-                                    .show();
-                        }
+                    helper.itemView.setOnClickListener(v -> {
+                        final View view = View.inflate(getContext(), R.layout.dialog_subject_add, null);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("添加课程")
+                                .setView(view)
+                                .setPositiveButton("添加", (dialog, which) -> {
+                                    String name = ((TextInputEditText) view.findViewById(R.id.name)).getText().toString();
+                                    if (!name.trim().equals(""))
+                                        mListener.putSubject(new MySubject(name, Color.GRAY));
+                                    else
+                                        Toast.makeText(getContext(), "请输入正确的学科名称", Toast.LENGTH_SHORT).show();
+                                })
+                                .create()
+                                .show();
                     });
                     break;
 

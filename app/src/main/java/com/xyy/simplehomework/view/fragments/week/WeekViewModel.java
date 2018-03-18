@@ -19,7 +19,7 @@ import io.objectbox.android.ObjectBoxLiveData;
  */
 
 public class WeekViewModel extends ViewModel {
-    private List<MySubject> subjectList;
+    private Box<MySubject> subjectBox;
     private ObjectBoxLiveData<Homework> homeworkObjectBoxLiveData;
     private Box<Homework> homeworkBox;
     private int weekIndex;
@@ -29,8 +29,8 @@ public class WeekViewModel extends ViewModel {
         // first, get reference of ObjectBox
         BoxStore boxStore = App.getInstance().getBoxStore();
         homeworkBox = boxStore.boxFor(Homework.class);
-        subjectList = boxStore.boxFor(MySubject.class).getAll();
         weekIndex = DateHelper.getWeekIndex();
+        subjectBox = boxStore.boxFor(MySubject.class);
     }
 
     public void setWeekIndex(int weekIndex) {
@@ -38,7 +38,7 @@ public class WeekViewModel extends ViewModel {
     }
 
     public List<MySubject> getSubjectList() {
-        return subjectList;
+        return subjectBox.getAll();
     }
 
     public void putHomework(Homework homework) {

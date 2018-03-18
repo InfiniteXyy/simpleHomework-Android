@@ -1,91 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="homework"
-            type="com.xyy.simplehomework.entity.Homework"/>
-        <variable
-            name="handler"
-            type="com.xyy.simplehomework.view.fragments.week.SetDetailHandler"/>
+            type="com.xyy.simplehomework.entity.Homework"/>/>
     </data>
-    <FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="110dp"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-
-        <LinearLayout
-            android:id="@+id/button"
-            android:layout_width="72dp"
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_done_black_24px"
-                android:tint="@color/japanGray"
-                android:layout_margin="4dp"/>
-            <ImageView
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_alarm_black_24px"
-                android:tint="@color/japanGray"
-                android:onClick="@{(v)->handler.setPlan(v, homework)}"
-                android:layout_margin="4dp"/>
-            <ImageView
-                android:visibility="invisible"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_settings_black_24px"
-                android:tint="@color/japanGray"
-                android:layout_margin="4dp"/>
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_marginLeft="72dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text='@{@string/deadline + ": " + homework.deadline}'
-                android:textSize="14sp"
-                android:textColor="@color/textDarkPrimary"
-                tools:text="截止时间: 后天"
-                android:layout_marginTop="16dp"/>
-
-            <TextView
-                android:layout_toLeftOf="@id/img"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{homework.detail}"
-                android:maxLines="3"
-                tools:text="123"
-                android:textSize="12sp"
-                android:ellipsize="end"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="16dp"/>
-
-            <ImageView
-                android:scaleType="centerCrop"
-                android:id="@+id/img"
-                android:layout_width="110dp"
-                android:layout_height="match_parent"
-                android:background="@color/dividerColor"
-                android:layout_margin="8dp"
-                android:photoUrl="@{homework.imgUri}"
-                android:layout_alignParentRight="true"/>
-        </RelativeLayout>
-        <View
-            android:alpha="0.8"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@drawable/shadow"
-            android:rotation="180"/>
-
-    </FrameLayout>
+            android:textSize="12sp"
+            android:textColor="@color/textDarkSecondary"
+            android:layout_below="@id/circle"
+            android:layout_alignLeft="@id/circle"
+            android:layout_marginTop="-2dp"
+            android:layout_marginBottom="16dp"
+            android:text="计算机网络  |  本周四"/>
+    </RelativeLayout>
 </layout>

@@ -55,12 +55,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
 
     public void setFab(FloatingActionButton fab) {
         this.fab = fab;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddDialog();
-            }
-        });
+        fab.setOnClickListener(v -> showAddDialog());
     }
 
     @Override
@@ -77,14 +72,11 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         // second, init child fragments
         shadow = view.findViewById(R.id.shadow);
         title = view.findViewById(R.id.title);
-        title.setFactory(new ViewSwitcher.ViewFactory() {
-            @Override
-            public View makeView() {
-                TextView tv = new TextView(getContext());
-                tv.setTextAppearance(getContext(), R.style.textSwitcher);
-                tv.setGravity(Gravity.CENTER);
-                return tv;
-            }
+        title.setFactory(() -> {
+            TextView tv = new TextView(getContext());
+            tv.setTextAppearance(getContext(), R.style.textSwitcher);
+            tv.setGravity(Gravity.CENTER);
+            return tv;
         });
         title.setInAnimation(fadeIn);
         title.setOutAnimation(fadeOut);
@@ -113,45 +105,34 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                 .commit();
 
         imgBtn = view.findViewById(R.id.button);
-        imgBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isText) {
-                    getChildFragmentManager().popBackStack();
-                    imgBtn.setImageResource(R.drawable.ic_text_fields_black_24px);
-                } else {
-                    getChildFragmentManager().beginTransaction()
-                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
-                            .show(textFragment)
-                            .hide(detailFragment)
-                            .addToBackStack(null)
-                            .commit();
-                    imgBtn.setImageResource(R.drawable.ic_web_black_24px);
-                }
-                isText = !isText;
+        imgBtn.setOnClickListener(v -> {
+            if (isText) {
+                getChildFragmentManager().popBackStack();
+                imgBtn.setImageResource(R.drawable.ic_text_fields_black_24px);
+            } else {
+                getChildFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                        .show(textFragment)
+                        .hide(detailFragment)
+                        .addToBackStack(null)
+                        .commit();
+                imgBtn.setImageResource(R.drawable.ic_web_black_24px);
             }
+            isText = !isText;
         });
 
         weekBtn = view.findViewById(R.id.appBtn);
-        weekBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getChildFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.scale_in, R.anim.scale_out, R.anim.scale_in_re, R.anim.scale_out_re)
-                        .show(weeksFragment)
-                        .hide(isText ? textFragment : detailFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+        weekBtn.setOnClickListener(v -> getChildFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.scale_in, R.anim.scale_out, R.anim.scale_in_re, R.anim.scale_out_re)
+                .show(weeksFragment)
+                .hide(isText ? textFragment : detailFragment)
+                .addToBackStack(null)
+                .commit());
 
         //finally bind view model to sub fragments
-        viewModel.getHomeworkLiveData().observe(this, new Observer<List<Homework>>() {
-            @Override
-            public void onChanged(@Nullable List<Homework> homework) {
-                detailFragment.setHomeworkList(homework);
-                textFragment.updateHomeworkList();
-            }
+        viewModel.getHomeworkLiveData().observe(this, homework -> {
+            detailFragment.setHomeworkList(homework);
+            textFragment.updateHomeworkList();
         });
     }
 

@@ -44,9 +44,6 @@ import io.reactivex.disposables.Disposable;
 
 
 public class AddDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener, AddDialogHandler {
-
-    private static final String FILE_PATH = "file_path";
-    private static final String TAG = "AddDialog";
     private static final int REQUEST_CODE_CHOOSE = 23;
     private WeekUIInteraction mListener;
     private Homework homework;
@@ -109,22 +106,19 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
         if (subject != null)
             spinner.setSelection(subjects.indexOf(subject));
         // second, set DatePicker
-        View.OnClickListener showCalendar = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar deadline = Calendar.getInstance();
-                deadline.setTime(homework.deadline);
-                DatePickerDialog dpd = DatePickerDialog.newInstance(
-                        AddDialog.this,
-                        deadline.get(Calendar.YEAR),
-                        deadline.get(Calendar.MONTH),
-                        deadline.get(Calendar.DAY_OF_MONTH)
-                );
-                deadline.setTime(new Date());
-                dpd.setMinDate(deadline);
-                dpd.vibrate(false);// 禁止震动
-                dpd.show(getActivity().getFragmentManager(), null);
-            }
+        View.OnClickListener showCalendar = v -> {
+            Calendar deadline = Calendar.getInstance();
+            deadline.setTime(homework.deadline);
+            DatePickerDialog dpd = DatePickerDialog.newInstance(
+                    AddDialog.this,
+                    deadline.get(Calendar.YEAR),
+                    deadline.get(Calendar.MONTH),
+                    deadline.get(Calendar.DAY_OF_MONTH)
+            );
+            deadline.setTime(new Date());
+            dpd.setMinDate(deadline);
+            dpd.vibrate(false);// 禁止震动
+            dpd.show(getActivity().getFragmentManager(), null);
         };
 
         view.findViewById(R.id.timeBtn).setOnClickListener(showCalendar);
@@ -132,25 +126,17 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
 
         // finally, set toolbar listener
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> dismiss());
 
-        view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (homework.getTitle() == null || homework.getDetail() == null) {
-                    Toast.makeText(getContext(), "请正确填写信息", Toast.LENGTH_SHORT).show();
-                } else if (!homework.getTitle().trim().equals("") && !homework.getDetail().trim().equals("")) {
-                    homework.subject.setTarget((MySubject) spinner.getSelectedItem());
-                    mListener.putHomework(homework);
-                    dismiss();
-                } else {
-                    Toast.makeText(getContext(), "请正确填写信息", Toast.LENGTH_SHORT).show();
-                }
+        view.findViewById(R.id.button).setOnClickListener(v -> {
+            if (homework.getTitle() == null || homework.getDetail() == null) {
+                Toast.makeText(getContext(), "请正确填写信息", Toast.LENGTH_SHORT).show();
+            } else if (!homework.getTitle().trim().equals("") && !homework.getDetail().trim().equals("")) {
+                homework.subject.setTarget((MySubject) spinner.getSelectedItem());
+                mListener.putHomework(homework);
+                dismiss();
+            } else {
+                Toast.makeText(getContext(), "请正确填写信息", Toast.LENGTH_SHORT).show();
             }
         });
         super.onViewCreated(view, savedInstanceState);

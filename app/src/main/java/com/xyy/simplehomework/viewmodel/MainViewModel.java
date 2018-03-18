@@ -12,6 +12,7 @@ import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.Date;
 import java.util.Random;
+import java.util.Stack;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
@@ -24,6 +25,8 @@ public class MainViewModel {
     private DataServer dataServer;
     private Context mContext;
     private BoxStore boxStore;
+    private static MainViewModel instance;
+    private Stack<Homework> homeworkStack;
 
     public MainViewModel(Context context) {
         mContext = context;
@@ -36,8 +39,24 @@ public class MainViewModel {
         // get setting
         Semester semester = getThisSemester();
         DateHelper.setUpSemester(semester);
-
+        homeworkStack = new Stack<>();
         useDemo(semester);
+        instance = this;
+    }
+
+    public void appendHomework(Homework homework) {
+        homeworkStack.push(homework);
+    }
+
+    public void popHomework() {
+        Box<Homework> box = boxStore.boxFor(Homework.class);
+        while (!homeworkStack.empty()) {
+            box.put(homeworkStack.pop());
+        }
+    }
+
+    public static MainViewModel getInstance() {
+        return instance;
     }
 
     private Semester getThisSemester() {

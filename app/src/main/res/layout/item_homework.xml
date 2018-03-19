@@ -14,35 +14,62 @@
             type="com.xyy.simplehomework.entity.Homework" />
     </data>
     <RelativeLayout
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="@{handler::onClickHomework}"
+        android:onClick="@{(v)->handler.onClickHomework(v, homework)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="54dp">
-            <ImageView
+            <FrameLayout
+                android:onClick="@{(v)->handler.clickFinish(v, homework)}"
                 android:id="@+id/circle"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
                 android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/circle_gray_border"/>
+                <ImageView
+                    android:visibility="@{homework.finished ? View.VISIBLE : View.GONE}"
+                    android:id="@+id/icon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:tint="@color/japanGray"
+                    app:srcCompat="@drawable/ic_done_black_24px"/>
+            </FrameLayout>
+            <View
+                android:id="@+id/deleteLine"
+                android:visibility="@{homework.finished ? View.VISIBLE : View.GONE}"
+                android:layout_toRightOf="@id/circle"
+                android:layout_toLeftOf="@id/circle2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/japanGray"
+                android:layout_centerVertical="true" />
+            <ImageView
+                android:id="@+id/circle2"
+                android:visibility="@{homework.finished ? View.VISIBLE : View.GONE}"
                 android:layout_marginRight="16dp"
-                android:src="@drawable/circle_gray_border"
-                android:layout_centerVertical="true"/>
+                android:layout_alignParentRight="true"
+                android:layout_width="16dp"
+                app:srcCompat="@drawable/ic_close"
+                android:layout_height="16dp"
+                android:layout_centerVertical="true" />
             <TextView
+                android:alpha="@{homework.finished ? 0.38f : 0.84f}"
                 android:id="@+id/text"
+                android:layout_marginLeft="16dp"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{homework.title}"
                 tools:text="计算机网络卷子"
                 android:textSize="16sp"
-                android:textColor="@color/textDarkPrimary"
+                android:textColor="@android:color/black"
                 android:layout_toRightOf="@id/circle"
                 android:layout_toEndOf="@id/circle" />
         </RelativeLayout>

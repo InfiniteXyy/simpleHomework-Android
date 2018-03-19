@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_add_black_24px"
         app:layout_anchor="@id/mainFragment"
+        android:tint="@android:color/white"
         app:layout_anchorGravity="bottom|right"/>
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"

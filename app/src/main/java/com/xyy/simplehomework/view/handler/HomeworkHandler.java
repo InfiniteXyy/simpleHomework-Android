@@ -36,6 +36,8 @@ public class HomeworkHandler implements DatePickerDialog.OnDateSetListener {
     private Homework homework;
     private Animation fadeIn;
     private Animation fadeOut;
+    private Animation alphaIn;
+    private Animation alphaOut;
     private View lastView;
     private Transition transition;
 
@@ -43,37 +45,55 @@ public class HomeworkHandler implements DatePickerDialog.OnDateSetListener {
         this.mContext = context;
         this.viewModel = viewModel;
         fadeIn = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_in);
-        fadeIn.setDuration(200);
         fadeOut = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out);
+        fadeIn.setDuration(200);
         fadeOut.setDuration(200);
+        alphaIn = AnimationUtils.loadAnimation(mContext, R.anim.alpha_in);
+        alphaOut = AnimationUtils.loadAnimation(mContext, R.anim.alpha_out);
+
         transition = new ChangeBounds();
         transition.setInterpolator(new FastOutLinearInInterpolator());
         transition.setDuration(200);
     }
 
-    public void onClickHomework(View view) {
+    public void onClickHomework(View view, Homework homework) {
+        if (homework.getFinished()) return;
         RecyclerView recyclerView = (RecyclerView) view.getParent();
         TransitionManager.endTransitions(recyclerView);
         if (lastView != view) {
-            showDetail(view, true);
-            if (lastView != null) showDetail(lastView, false);
+            showDetail(view, true, true);
+            if (lastView != null) showDetail(lastView, false, true);
         } else {
             boolean needExpand = view.findViewById(R.id.detail).getVisibility() == View.GONE;
-            showDetail(view, needExpand);
+            showDetail(view, needExpand, true);
         }
         lastView = view;
         TransitionManager.beginDelayedTransition(recyclerView, transition);
     }
 
-    private void showDetail(View view, boolean visible) {
+    public void clickFinish(View v, Homework homework) {
+        boolean finished = homework.getFinished();
+        v.findViewById(R.id.icon).startAnimation(finished ? fadeOut : fadeIn);
+        if (((View)v.getParent().getParent()).findViewById(R.id.detail).getVisibility() == View.VISIBLE) showDetail(((View)v.getParent().getParent()), false, false);
+        ((View)v.getParent()).findViewById(R.id.deleteLine).startAnimation(finished ? fadeOut : fadeIn);
+        ((View)v.getParent()).findViewById(R.id.circle2).startAnimation(finished ? fadeOut : fadeIn);
+        View text = ((View)v.getParent()).findViewById(R.id.text);
+        text.startAnimation(finished ? alphaIn : alphaOut);
+        homework.setFinished(!finished);
+        MainViewModel.getInstance().appendHomework(homework);
+    }
+
+    private void showDetail(View view, boolean visible, boolean needAnim) {
         View detail = view.findViewById(R.id.detail);
         View text = view.findViewById(R.id.text2);
         int status = visible ? View.VISIBLE : View.GONE;
         if (status != detail.getVisibility()) {
             detail.setVisibility(visible ? View.VISIBLE : View.GONE);
             text.setVisibility(visible ? View.VISIBLE : View.GONE);
-            text.startAnimation(visible ? fadeIn : fadeOut);
-            detail.startAnimation(visible ? fadeIn : fadeOut);
+            if (needAnim) {
+                text.startAnimation(visible ? fadeIn : fadeOut);
+                detail.startAnimation(visible ? fadeIn : fadeOut);
+            }
         }
     }
 

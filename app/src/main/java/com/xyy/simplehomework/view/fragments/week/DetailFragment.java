@@ -37,27 +37,9 @@ public class DetailFragment extends Fragment {
     private WeekHomeworkAdapter adapter;
     private RecyclerView.OnScrollListener listener;
     private List<Homework> homeworkList;
-    private Comparator<Homework> deadlineComparator = new Comparator<Homework>() {
-        @Override
-        public int compare(Homework o1, Homework o2) {
-            return o1.deadline.compareTo(o2.deadline);
-        }
-    };
-    private Comparator<Homework> initDateComparator = new Comparator<Homework>() {
-        @Override
-        public int compare(Homework o1, Homework o2) {
-            return o1.initDate.compareTo(o2.initDate);
-        }
-    };
-    private Comparator<Homework> subjectComparator = new Comparator<Homework>() {
-        @Override
-        public int compare(Homework o1, Homework o2) {
-            long i = o1.subject.getTargetId() - o2.subject.getTargetId();
-            if (i == 0) return 0;
-            else if (i < 0) return -1;
-            else return 1;
-        }
-    };
+    private Comparator<Homework> deadlineComparator = (o1, o2) -> o1.deadline.compareTo(o2.deadline);
+    private Comparator<Homework> initDateComparator = (o1, o2) -> o1.initDate.compareTo(o2.initDate);
+    private Comparator<Homework> subjectComparator = (o1, o2) -> (int) (o1.subject.getTargetId() - o2.subject.getTargetId());
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -89,17 +71,19 @@ public class DetailFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                List<Homework> data = adapter.getData();
                 switch (position) {
                     case 0:
-                        Collections.sort(adapter.getData(), deadlineComparator);
+                        Collections.sort(data, deadlineComparator);
                         break;
                     case 1:
-                        Collections.sort(adapter.getData(), initDateComparator);
+                        Collections.sort(data, initDateComparator);
                         break;
                     default:
-                        Collections.sort(adapter.getData(), subjectComparator);
+                        Collections.sort(data, subjectComparator);
                         break;
                 }
+                Collections.sort(data, ((o1, o2) -> o2.getFinished() ? 1 : 0));
                 adapter.notifyDataSetChanged();
             }
 
@@ -116,6 +100,11 @@ public class DetailFragment extends Fragment {
 
     public void setOnScrollListener(RecyclerView.OnScrollListener onScrollListener) {
         listener = onScrollListener;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        MainViewModel.getInstance().popHomework();
     }
 
     class WeekHomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {
@@ -147,5 +136,4 @@ public class DetailFragment extends Fragment {
             return view;
         }
     }
-
 }

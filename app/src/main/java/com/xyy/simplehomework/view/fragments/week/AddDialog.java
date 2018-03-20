@@ -127,9 +127,9 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
         toolbar.setNavigationOnClickListener(v -> dismiss());
 
         view.findViewById(R.id.button).setOnClickListener(v -> {
-            if (homework.getTitle() == null || homework.getDetail() == null) {
+            if (homework.getTitle() == null) {
                 Toast.makeText(getContext(), "请正确填写信息", Toast.LENGTH_SHORT).show();
-            } else if (!homework.getTitle().trim().equals("") && !homework.getDetail().trim().equals("")) {
+            } else if (!homework.getTitle().trim().equals("")) {
                 homework.subject.setTarget((MySubject) spinner.getSelectedItem());
                 mListener.putHomework(homework);
                 dismiss();

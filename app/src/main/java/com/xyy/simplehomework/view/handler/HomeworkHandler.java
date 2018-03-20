@@ -74,10 +74,11 @@ public class HomeworkHandler implements DatePickerDialog.OnDateSetListener {
     public void clickFinish(View v, Homework homework) {
         boolean finished = homework.getFinished();
         v.findViewById(R.id.icon).startAnimation(finished ? fadeOut : fadeIn);
-        if (((View)v.getParent().getParent()).findViewById(R.id.detail).getVisibility() == View.VISIBLE) showDetail(((View)v.getParent().getParent()), false, false);
-        ((View)v.getParent()).findViewById(R.id.deleteLine).startAnimation(finished ? fadeOut : fadeIn);
-        ((View)v.getParent()).findViewById(R.id.circle2).startAnimation(finished ? fadeOut : fadeIn);
-        View text = ((View)v.getParent()).findViewById(R.id.text);
+        if (((View) v.getParent().getParent()).findViewById(R.id.detail).getVisibility() == View.VISIBLE)
+            showDetail(((View) v.getParent().getParent()), false, false);
+        ((View) v.getParent()).findViewById(R.id.deleteLine).startAnimation(finished ? fadeOut : fadeIn);
+        ((View) v.getParent()).findViewById(R.id.circle2).startAnimation(finished ? fadeOut : fadeIn);
+        View text = ((View) v.getParent()).findViewById(R.id.text);
         text.startAnimation(finished ? alphaIn : alphaOut);
         homework.setFinished(!finished);
         MainViewModel.getInstance().appendHomework(homework);
@@ -115,7 +116,7 @@ public class HomeworkHandler implements DatePickerDialog.OnDateSetListener {
     }
 
     public void showDetail(Homework homework) {
-        new CommentFragment().show(((AppCompatActivity) mContext).getSupportFragmentManager(), null);
+        CommentFragment.newInstance(homework).show(((AppCompatActivity) mContext).getSupportFragmentManager(), null);
     }
 
     public void showImg(Homework homework) {

@@ -4,7 +4,6 @@
     <style name="Theme1" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/japanAir</item>
-        <item name="android:colorSecondary">@color/japanAir</item>
         <item name="colorAccent">#3498db</item>
         <item name="android:windowBackground">@drawable/default_background</item>
         <item name="android:dividerHorizontal">@drawable/line_divider</item>

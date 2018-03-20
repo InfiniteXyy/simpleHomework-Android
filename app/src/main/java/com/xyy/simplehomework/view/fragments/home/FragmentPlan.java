@@ -90,6 +90,7 @@ public class FragmentPlan extends Fragment {
     public void classifyPlanHomework(List<Homework> homeworkList) {
         setSections();
         for (Homework homework : homeworkList) {
+            if (homework.getFinished()) continue; // ignore finished homework
             if (homework.planDate == null) {
                 ((PlanSection) sections.get(3)).addSubItem(homework);
             } else if (homework.planDate.equals(DateHelper.getToday())) {

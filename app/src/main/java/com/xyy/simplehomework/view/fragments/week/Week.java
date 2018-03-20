@@ -20,7 +20,7 @@ public class Week {
 
     public String getProgress() {
         int allSize = homeworkList.size();
-        return (allSize-num) + "/" + homeworkList.size();
+        return (allSize - num) + "/" + homeworkList.size();
     }
 
     public boolean hasFinished() {

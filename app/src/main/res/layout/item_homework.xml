@@ -106,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_textsms_black_24px"
-                android:tint="@{homework.detail == null ? @color/dividerColor : @color/japanGray}"
+                android:tint="@{homework.noteSize == 0 ? @color/dividerColor : @color/japanGray}"
                 android:layout_marginRight="8dp"/>
             <ImageView
                 android:onClick="@{(v)->handler.setPlan(homework)}"

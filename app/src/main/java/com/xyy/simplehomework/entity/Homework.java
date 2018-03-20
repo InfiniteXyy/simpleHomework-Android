@@ -121,6 +121,11 @@ public class Homework extends BaseObservable implements MultiItemEntity {
     }
 
     @Bindable
+    public int getNoteSize() {
+        return notes.size();
+    }
+
+    @Bindable
     public boolean getFinished() {
         return finished;
     }

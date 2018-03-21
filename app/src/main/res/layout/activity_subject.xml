@@ -17,11 +17,12 @@
             android:layout_height="match_parent">
 
             <android.support.v7.widget.AppCompatImageView
+                android:onClick="finish"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:tint="@color/japanGray"
-                app:srcCompat="@drawable/ic_list_thin" />
+                app:srcCompat="@drawable/ic_home" />
 
             <TextView
                 android:id="@+id/title"
@@ -51,7 +52,7 @@
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="16dp"
             android:orientation="vertical">
 
@@ -82,15 +83,14 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/layout"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            tools:listitem="@layout/item_subject_card">
+            android:clipToPadding="false">
 
-        </android.support.v7.widget.RecyclerView>
+        </android.support.v4.view.ViewPager>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

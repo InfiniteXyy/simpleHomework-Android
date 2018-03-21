@@ -1,11 +1,20 @@
 package com.xyy.simplehomework.view;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -28,21 +37,36 @@ public class SubjectActivity extends AppCompatActivity {
         long subject_id = getIntent().getLongExtra(SUBJECT_ID, 0);
         BoxStore boxStore = App.getInstance().getBoxStore();
         subject = boxStore.boxFor(MySubject.class).get(subject_id);
-
-        RecyclerView cardRecycler = findViewById(R.id.recycler_view);
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        cardRecycler.setLayoutManager(manager);
-        cardRecycler.setAdapter(new BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_subject_card, Arrays.asList("1", "2", "3", "4")) {
+        ((TextView) findViewById(R.id.title)).setText(subject.getName());
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
-            protected void convert(BaseViewHolder helper, String item) {
+            public Fragment getItem(int position) {
+                return new Card();
+            }
 
+            @Override
+            public int getCount() {
+                return 5;
+            }
+
+            @Override
+            public float getPageWidth(int position) {
+                return 0.8f;
             }
         });
-        SnapHelper snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(cardRecycler);
-        ((TextView) findViewById(R.id.title)).setText(subject.getName());
+        viewPager.setPageMargin(15);
     }
 
 
+    public void finish(View view) {
+        finish();
+    }
+
+    public static class Card extends Fragment {
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.item_subject_card, container, false);
+        }
+    }
 }

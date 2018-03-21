@@ -52,7 +52,7 @@
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="40dp"
             android:layout_marginTop="16dp"
             android:orientation="vertical">
 
@@ -92,5 +92,17 @@
             android:clipToPadding="false">
 
         </android.support.v4.view.ViewPager>
+        <me.relex.circleindicator.CircleIndicator
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            app:ci_animator="@anim/indicator_animator"
+            app:ci_animator_reverse="@anim/indicator_animator_reverse"
+            app:ci_drawable="@drawable/black_radius_square"
+            app:ci_height="4dp"
+            app:ci_margin="6dp"
+            android:layout_marginBottom="-5dp"
+            app:ci_width="10dp" />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

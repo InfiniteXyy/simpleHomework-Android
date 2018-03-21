@@ -25,6 +25,7 @@ import com.xyy.simplehomework.entity.MySubject;
 import java.util.Arrays;
 
 import io.objectbox.BoxStore;
+import me.relex.circleindicator.CircleIndicator;
 
 public class SubjectActivity extends AppCompatActivity {
     public static final String SUBJECT_ID = "subject_id";
@@ -39,6 +40,7 @@ public class SubjectActivity extends AppCompatActivity {
         subject = boxStore.boxFor(MySubject.class).get(subject_id);
         ((TextView) findViewById(R.id.title)).setText(subject.getName());
         ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager.setOffscreenPageLimit(5);
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -49,13 +51,10 @@ public class SubjectActivity extends AppCompatActivity {
             public int getCount() {
                 return 5;
             }
-
-            @Override
-            public float getPageWidth(int position) {
-                return 0.8f;
-            }
         });
-        viewPager.setPageMargin(15);
+        viewPager.setPageMargin(-180);
+        CircleIndicator indicator = findViewById(R.id.indicator);
+        indicator.setViewPager(viewPager);
     }
 
 

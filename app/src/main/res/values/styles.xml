@@ -45,6 +45,7 @@
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
+
     <style name="SlideAnim">
         <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
         <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
@@ -56,7 +57,7 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="whiteTitle" parent="TextAppearance.AppCompat" >
+    <style name="whiteTitle" parent="TextAppearance.AppCompat">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">bold</item>

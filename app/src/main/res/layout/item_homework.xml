@@ -1,120 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <import type="android.view.View" />
-        <import type="com.xyy.simplehomework.entity.MySubject"/>
+
+        <import type="com.xyy.simplehomework.entity.MySubject" />
+
         <variable
             name="handler"
-            type="com.xyy.simplehomework.view.handler.HomeworkHandler"/>
+            type="com.xyy.simplehomework.view.handler.HomeworkHandler" />
+
         <variable
             name="homework"
             type="com.xyy.simplehomework.entity.Homework" />
     </data>
+
     <RelativeLayout
-        android:onClick="@{(v)->handler.onClickHomework(v, homework)}"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{(v)->handler.onClickHomework(v, homework)}">
+
         <RelativeLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="54dp">
+
             <FrameLayout
-                android:onClick="@{(v)->handler.clickFinish(v, homework)}"
                 android:id="@+id/circle"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="16dp"
-                android:layout_centerVertical="true">
+                android:onClick="@{(v)->handler.clickFinish(v, homework)}">
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/circle_gray_border"/>
+                    android:src="@drawable/circle_gray_border" />
+
                 <ImageView
-                    android:visibility="@{homework.finished ? View.VISIBLE : View.GONE}"
                     android:id="@+id/icon"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:tint="@color/japanGray"
-                    app:srcCompat="@drawable/ic_done_black_24px"/>
+                    android:visibility="@{homework.finished ? View.VISIBLE : View.GONE}"
+                    app:srcCompat="@drawable/ic_done_black_24px" />
             </FrameLayout>
+
             <View
                 android:id="@+id/deleteLine"
-                android:visibility="@{homework.finished ? View.VISIBLE : View.GONE}"
-                android:layout_toRightOf="@id/circle"
-                android:layout_toLeftOf="@id/circle2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/circle2"
+                android:layout_toRightOf="@id/circle"
                 android:background="@color/japanGray"
-                android:layout_centerVertical="true" />
+                android:visibility="@{homework.finished ? View.VISIBLE : View.GONE}" />
+
             <ImageView
                 android:id="@+id/circle2"
-                android:visibility="@{homework.finished ? View.VISIBLE : View.GONE}"
-                android:layout_marginRight="16dp"
-                android:layout_alignParentRight="true"
                 android:layout_width="16dp"
-                app:srcCompat="@drawable/ic_close"
                 android:layout_height="16dp"
-                android:layout_centerVertical="true" />
-            <TextView
-                android:alpha="@{homework.finished ? 0.38f : 0.84f}"
-                android:id="@+id/text"
-                android:layout_marginLeft="16dp"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:visibility="@{homework.finished ? View.VISIBLE : View.GONE}"
+                app:srcCompat="@drawable/ic_close" />
+
+            <TextView
+                android:id="@+id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{homework.title}"
-                tools:text="计算机网络卷子"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toEndOf="@id/circle"
                 android:layout_toRightOf="@id/circle"
-                android:layout_toEndOf="@id/circle" />
+                android:alpha="@{homework.finished ? 0.38f : 0.84f}"
+                android:text="@{homework.title}"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                tools:text="计算机网络卷子" />
         </RelativeLayout>
+
         <TextView
-            android:visibility="gone"
             android:id="@+id/text2"
-            android:layout_below="@id/layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/textDarkSecondary"
-            android:layout_marginTop="-8dp"
+            android:layout_below="@id/layout"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="52dp"
-            android:text='@{homework.subject.getTarget().name+"  |  "+homework.deadline}'/>
+            android:layout_marginTop="-8dp"
+            android:text='@{homework.subject.getTarget().name+"  |  "+homework.deadline}'
+            android:textColor="@color/textDarkSecondary"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/detail"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
             android:orientation="horizontal"
-            android:layout_marginRight="8dp">
+            android:visibility="gone">
+
             <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
                 android:onClick="@{(v)->handler.showImg(homework)}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_photo_black_24px"
                 android:tint="@{homework.imgUri == null ? @color/dividerColor : @color/japanGray}"
-                android:layout_marginRight="8dp"/>
+                app:srcCompat="@drawable/ic_photo_black_24px" />
+
             <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
                 android:onClick="@{(v)->handler.showDetail(homework)}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_textsms_black_24px"
                 android:tint="@{homework.noteSize == 0 ? @color/dividerColor : @color/japanGray}"
-                android:layout_marginRight="8dp"/>
+                app:srcCompat="@drawable/ic_textsms_black_24px" />
+
             <ImageView
-                android:onClick="@{(v)->handler.setPlan(homework)}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_alarm_black_24px"
+                android:layout_marginRight="8dp"
+                android:onClick="@{(v)->handler.setPlan(homework)}"
                 android:tint="@{homework.planDate == null ? @color/dividerColor : @color/japanGray}"
-                android:layout_marginRight="8dp"/>
+                app:srcCompat="@drawable/ic_alarm_black_24px" />
         </LinearLayout>
     </RelativeLayout>
 </layout>

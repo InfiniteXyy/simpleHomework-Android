@@ -1,32 +1,24 @@
 package com.xyy.simplehomework.view;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Window;
-import android.view.WindowManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
+import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.view.fragments.subject.SubjectHomeworkFragment;
-import com.xyy.simplehomework.view.fragments.subject.SubjectOverviewFragment;
-import com.xyy.simplehomework.view.fragments.subject.SubjectSocietyFragment;
+
+import java.util.Arrays;
+
+import io.objectbox.BoxStore;
 
 public class SubjectActivity extends AppCompatActivity {
     public static final String SUBJECT_ID = "subject_id";
-    private final static String[] names = {
-            "作业",
-            "发现",
-            "总览"
-    };
-    private SubjectHomeworkFragment homeworkFragment;
-    private SubjectOverviewFragment overviewFragment;
-    private SubjectSocietyFragment societyFragment;
     private MySubject subject;
 
     @Override
@@ -34,50 +26,23 @@ public class SubjectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject);
         long subject_id = getIntent().getLongExtra(SUBJECT_ID, 0);
-        subject = App.getInstance().getBoxStore().boxFor(MySubject.class).get(subject_id);
+        BoxStore boxStore = App.getInstance().getBoxStore();
+        subject = boxStore.boxFor(MySubject.class).get(subject_id);
 
-        final Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // set theme color
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(subject.color);
-        }
-        final TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setBackgroundColor(subject.color);
-
-        homeworkFragment = new SubjectHomeworkFragment();
-        societyFragment = new SubjectSocietyFragment();
-        overviewFragment = new SubjectOverviewFragment();
-        // init viewPager
-        ViewPager viewPager = findViewById(R.id.subjectMainPage);
-        viewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+        RecyclerView cardRecycler = findViewById(R.id.recycler_view);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        cardRecycler.setLayoutManager(manager);
+        cardRecycler.setAdapter(new BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_subject_card, Arrays.asList("1", "2", "3", "4")) {
             @Override
-            public Fragment getItem(int position) {
-                switch (position) {
-                    case 0:
-                        return homeworkFragment;
-                    case 1:
-                        return societyFragment;
-                    default:
-                        return overviewFragment;
-                }
-            }
+            protected void convert(BaseViewHolder helper, String item) {
 
-            @Override
-            public int getCount() {
-                return 3;
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return names[position];
             }
         });
-        homeworkFragment.setHomeworkList(subject.homework);
-        // bind tabLayout to viewPager
-        tabLayout.setupWithViewPager(viewPager);
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(cardRecycler);
+        ((TextView) findViewById(R.id.title)).setText(subject.getName());
     }
+
+
 }

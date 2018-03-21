@@ -2,49 +2,55 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="45dp">
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:orientation="horizontal">
+
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="?colorPrimary"
         android:layout_centerVertical="true"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        tools:text="今日"/>
+        android:textColor="?colorPrimary"
+        android:textSize="16sp"
+        tools:text="今日" />
+
     <ImageView
-        android:visibility="gone"
         android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_add_black_24px"
-        android:tint="?colorPrimary"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="16dp"/>
+        android:layout_marginRight="16dp"
+        android:tint="?colorPrimary"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_add_black_24px" />
+
     <FrameLayout
-        android:visibility="visible"
         android:id="@+id/badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="16dp" >
+        android:layout_marginRight="16dp"
+        android:visibility="visible">
+
         <ImageView
             android:id="@+id/add_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/circle_border" />
+
         <TextView
             android:id="@+id/badge_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="14sp"
             android:text="8"
-            android:textColor="?colorPrimary"/>
+            android:textColor="?colorPrimary"
+            android:textSize="14sp" />
     </FrameLayout>
 
 </RelativeLayout>

@@ -13,13 +13,13 @@
         android:background="@null" />
 
     <TextView
-        android:layout_marginTop="16dp"
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginTop="16dp"
         android:text="选择"
         android:textColor="@color/colorBtn"
         android:textSize="14sp" />

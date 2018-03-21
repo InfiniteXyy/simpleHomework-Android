@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:paddingRight="16dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="设置"
-                android:textStyle="bold"
                 android:textColor="?colorPrimary"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
@@ -33,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:background="@drawable/shadow"
-            android:rotation="180"/>
+            android:rotation="180" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -67,6 +68,7 @@
                         android:textColor="@color/textDarkPrimary"
                         android:textSize="16sp" />
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="72dp">
@@ -80,6 +82,7 @@
                         android:textColor="@color/textDarkPrimary"
                         android:textSize="16sp" />
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="72dp">
@@ -119,18 +122,20 @@
 
                     <LinearLayout
                         android:id="@+id/group2"
-                        android:layout_marginRight="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true">
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="8dp">
 
                         <include
                             android:id="@+id/air"
                             layout="@layout/item_select_color" />
+
                         <include
                             android:id="@+id/tea"
                             layout="@layout/item_select_color" />
+
                         <include
                             android:id="@+id/brown"
                             layout="@layout/item_select_color" />

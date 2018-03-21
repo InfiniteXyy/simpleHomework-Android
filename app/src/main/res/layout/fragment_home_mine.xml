@@ -1,68 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FAFAFA">
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
+            android:layout_marginBottom="12dp"
             android:layout_marginTop="17dp"
-            android:layout_marginBottom="12dp">
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="ハクメイ"
                 android:textColor="@color/textDarkPrimary"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text=" | 晚上好！"
                 android:textColor="@color/textDarkPrimary"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
         </LinearLayout>
+
         <RelativeLayout
-            android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="84dp"
+            android:layout_marginBottom="12dp"
             android:background="@drawable/card_bg_color">
 
             <FrameLayout
                 android:layout_width="54dp"
                 android:layout_height="54dp"
-                android:layout_margin="16dp"
-                android:layout_centerVertical="true">
+                android:layout_centerVertical="true"
+                android:layout_margin="16dp">
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/shape_circle"
-                    android:tint="@android:color/white"
-                    android:layout_gravity="center"/>
-                <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_gravity="center"
+                    android:src="@drawable/shape_circle"
+                    android:tint="@android:color/white" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/image"
                     android:layout_width="52dp"
                     android:layout_height="52dp"
+                    android:layout_gravity="center"
                     android:src="@drawable/avatar1" />
             </FrameLayout>
 
             <TextView
+                style="@style/whiteTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                style="@style/whiteTitle"
-                android:text="2月5日"/>
+                android:text="2月5日" />
         </RelativeLayout>
 
 
@@ -73,11 +80,12 @@
             android:background="@android:color/white">
 
             <ImageView
-                android:layout_alignParentRight="true"
-                android:layout_margin="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_chevron_right_black_24px"/>
+                android:layout_alignParentRight="true"
+                android:layout_margin="16dp"
+                app:srcCompat="@drawable/ic_chevron_right_black_24px" />
+
             <TextView
                 android:id="@+id/text"
                 android:layout_width="wrap_content"
@@ -123,136 +131,128 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="182dp"
+            android:layout_marginBottom="12dp"
             android:background="@android:color/white">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
                 <TextView
-                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
+                    android:layout_gravity="center"
+                    android:text="剩余作业"
                     android:textColor="@color/textDarkSecondary"
-                    android:text="剩余作业"/>
+                    android:textSize="14sp" />
+
                 <TextView
-                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="40sp"
+                    android:layout_gravity="center"
+                    android:text="7"
                     android:textColor="@color/textDarkPrimary"
-                    android:text="7"/>
+                    android:textSize="40sp" />
+
                 <TextView
-                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
+                    android:layout_gravity="center"
+                    android:text="2份即将截止"
                     android:textColor="@color/textDarkSecondary"
-                    android:text="2份即将截止"/>
+                    android:textSize="14sp" />
             </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
             android:background="@android:color/white">
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textDarkPrimary"
-                android:text="推荐"
-                android:textSize="16sp"
-                android:layout_margin="16dp" />
-            <ImageView
-                android:layout_alignParentRight="true"
                 android:layout_margin="16dp"
+                android:text="推荐"
+                android:textColor="@color/textDarkPrimary"
+                android:textSize="16sp" />
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_chevron_right_black_24px"/>
-            <LinearLayout
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_below="@id/title"
+                android:layout_alignParentRight="true"
+                android:layout_margin="16dp"
+                app:srcCompat="@drawable/ic_chevron_right_black_24px" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="72dp"
-                    android:layout_marginBottom="6dp"
-                    android:background="@color/japanTea">
-                </FrameLayout>
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="72dp"
-                    android:layout_marginBottom="6dp"
-                    android:background="@color/japanGray">
-                </FrameLayout>
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="72dp"
-                    android:layout_marginBottom="6dp"
-                    android:background="@color/japanPink">
-                </FrameLayout>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title"
+                android:layout_marginBottom="16dp"
+                tools:listitem="@layout/item_suggestion" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
             android:background="@android:color/white">
+
             <TextView
                 android:id="@+id/title2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textDarkPrimary"
-                android:text="统计"
-                android:textSize="16sp"
-                android:layout_margin="16dp" />
-            <ImageView
-                android:layout_alignParentRight="true"
                 android:layout_margin="16dp"
+                android:text="统计"
+                android:textColor="@color/textDarkPrimary"
+                android:textSize="16sp" />
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_chevron_right_black_24px"/>
+                android:layout_alignParentRight="true"
+                android:layout_margin="16dp"
+                app:srcCompat="@drawable/ic_chevron_right_black_24px" />
+
             <HorizontalScrollView
-                android:layout_below="@id/title2"
                 android:layout_width="wrap_content"
                 android:layout_height="120dp"
-                android:scrollbars="none"
-                android:layout_marginBottom="16dp">
+                android:layout_below="@id/title2"
+                android:layout_marginBottom="16dp"
+                android:scrollbars="none">
+
                 <LinearLayout
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="120dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:orientation="horizontal">
+
                     <FrameLayout
                         android:layout_width="300dp"
-                        android:layout_marginRight="16dp"
                         android:layout_height="match_parent"
-                        android:background="@color/japanTea">
-                    </FrameLayout>
+                        android:layout_marginRight="16dp"
+                        android:background="@color/japanTea"></FrameLayout>
+
                     <FrameLayout
                         android:layout_width="300dp"
-                        android:layout_marginRight="16dp"
                         android:layout_height="match_parent"
-                        android:background="@color/japanGray">
-                    </FrameLayout>
+                        android:layout_marginRight="16dp"
+                        android:background="@color/japanGray"></FrameLayout>
+
                     <FrameLayout
                         android:layout_width="300dp"
-                        android:layout_marginRight="16dp"
                         android:layout_height="match_parent"
-                        android:background="@color/japanPink">
-                    </FrameLayout>
+                        android:layout_marginRight="16dp"
+                        android:background="@color/japanPink"></FrameLayout>
                 </LinearLayout>
             </HorizontalScrollView>
 

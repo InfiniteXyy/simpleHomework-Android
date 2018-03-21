@@ -3,6 +3,7 @@ package com.xyy.simplehomework.view.fragments.week;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,13 +51,14 @@ public class CommentFragment extends DialogFragment {
             @Override
             protected void convert(BaseViewHolder helper, Note item) {
                 helper.setText(R.id.text, item.comment);
-                helper.setText(R.id.index, Integer.toString(helper.getAdapterPosition()));
+                helper.setText(R.id.index, Integer.toString(helper.getAdapterPosition() + 1));
                 helper.addOnClickListener(R.id.delete);
             }
         };
         adapter.setOnItemChildClickListener(((adapter1, view1, position) -> {
             homework.notes.remove(position);
             adapter1.notifyDataSetChanged();
+            TransitionManager.beginDelayedTransition(recyclerView);
         }));
         EditText editText = view.findViewById(R.id.editTextNote);
         editText.setOnEditorActionListener((v, actionId, event) -> {
@@ -66,6 +68,7 @@ public class CommentFragment extends DialogFragment {
                 homework.notes.add(note);
                 editText.setText("");
                 adapter.notifyDataSetChanged();
+                TransitionManager.beginDelayedTransition(recyclerView);
                 return true;
             }
             return false;

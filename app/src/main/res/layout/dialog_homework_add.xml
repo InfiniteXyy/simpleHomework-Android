@@ -1,19 +1,23 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="homework"
             type="com.xyy.simplehomework.entity.Homework" />
+
         <variable
             name="handler"
-            type="com.xyy.simplehomework.view.fragments.week.AddDialogHandler"/>
+            type="com.xyy.simplehomework.view.fragments.week.AddDialogHandler" />
     </data>
+
     <FrameLayout
-        android:background="@android:color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,19 +28,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/lightBlue"
-                app:title="添加作业"
-                app:navigationIcon="@drawable/ic_close_black_24px">
+                app:navigationIcon="@drawable/ic_close_black_24px"
+                app:title="添加作业">
 
                 <TextView
                     android:id="@+id/button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:text="@string/save"
                     android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="16dp" />
+                    android:textSize="14sp" />
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
@@ -69,11 +73,12 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center"
                         app:srcCompat="@drawable/ic_photo_camera_white_24px" />
+
                     <ImageView
-                        android:scaleType="centerCrop"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:photoUrl="@{homework.imgUri}"/>
+                        android:photoUrl="@{homework.imgUri}"
+                        android:scaleType="centerCrop" />
                 </FrameLayout>
 
                 <RelativeLayout

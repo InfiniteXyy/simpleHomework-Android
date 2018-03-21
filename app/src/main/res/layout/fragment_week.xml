@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layout"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -11,47 +11,53 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:paddingRight="16dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/appBtn"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_apps_black_24px"
-                android:tint="@color/japanGray" />
+                android:tint="@color/japanGray"
+                app:srcCompat="@drawable/ic_apps_black_24px" />
+
             <TextSwitcher
                 android:id="@+id/title"
-                android:layout_centerInParent="true"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="@string/week_plan" />
+
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/button"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_text_fields_black_24px"
-                android:tint="@color/japanGray" />
+                android:tint="@color/japanGray"
+                app:srcCompat="@drawable/ic_text_fields_black_24px" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <FrameLayout
             android:id="@+id/fragment_week"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
         <View
-            android:alpha="0.0"
             android:id="@+id/shadow"
             android:layout_width="match_parent"
             android:layout_height="5dp"
+            android:alpha="0.0"
             android:background="@drawable/shadow"
-            android:rotation="180"/>
+            android:rotation="180" />
     </FrameLayout>
 </LinearLayout>

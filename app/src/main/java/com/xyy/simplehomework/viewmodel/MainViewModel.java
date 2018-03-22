@@ -98,19 +98,21 @@ public class MainViewModel {
         };
         for (int i = 0; i <= DateHelper.getWeekIndex(); i++) {
             for (MySubject subject : subjects) {
-                if (random.nextBoolean()) {
-                    Homework homework = new Homework(names[random.nextInt(names.length)], DateHelper.afterDays(random.nextInt(10)));
-                    homework.subject.setTarget(subject);
-                    homework.weekIndex = i;
-                    homework.type = random.nextInt(3);
+                for (int j = 0; j < random.nextInt(2)+2; j++) {
                     if (random.nextBoolean()) {
-                        homework.setFinished(true);
-                    } else {
-                        if (random.nextBoolean()) {
-                            homework.setPlanDate(DateHelper.afterDays(random.nextInt(4)));
+                        Homework homework = new Homework(names[random.nextInt(names.length)], DateHelper.afterDays(random.nextInt(10)));
+                        homework.subject.setTarget(subject);
+                        homework.weekIndex = i;
+                        homework.type = random.nextInt(3);
+                        if (i <= 2 || random.nextInt(5) <= 1) {
+                            homework.setFinished(true);
+                        } else {
+                            if (random.nextBoolean()) {
+                                homework.setPlanDate(DateHelper.afterDays(random.nextInt(4)));
+                            }
                         }
+                        homeworkBox.put(homework);
                     }
-                    homeworkBox.put(homework);
                 }
             }
         }

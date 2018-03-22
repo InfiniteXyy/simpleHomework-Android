@@ -33,12 +33,9 @@ import java.util.List;
 public class WeekFragment extends Fragment implements WeekUIInteraction {
     public static final String TAG = "WeekFragment";
     int offsetY = 0;
-    private boolean isText = false;
     private DetailFragment detailFragment;
-    private TextFragment textFragment;
     private WeeksFragment weeksFragment;
     private WeekViewModel viewModel;
-    private ImageView imgBtn;
     private ImageView weekBtn;
     private FloatingActionButton fab;
     private TextSwitcher title;
@@ -93,52 +90,38 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                 }
             }
         });
-        textFragment = TextFragment.newInstance(viewModel.getSubjectList(), DateHelper.getWeekIndex());
         weeksFragment = new WeeksFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_week, detailFragment)
                 .add(R.id.fragment_week, weeksFragment)
-                .add(R.id.fragment_week, textFragment)
-                .hide(textFragment)
                 .hide(weeksFragment)
                 .commit();
 
-        imgBtn = view.findViewById(R.id.button);
-        imgBtn.setOnClickListener(v -> {
-            if (isText) {
+        weekBtn = view.findViewById(R.id.appBtn);
+        weekBtn.setOnClickListener(v -> {
+            if (detailFragment.isHidden()) {
                 getChildFragmentManager().popBackStack();
-                imgBtn.setImageResource(R.drawable.ic_text_fields_black_24px);
+                weekBtn.setImageResource(R.drawable.ic_apps_black_24px);
             } else {
                 getChildFragmentManager().beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
-                        .show(textFragment)
+                        .setCustomAnimations(R.anim.scale_in, R.anim.scale_out, R.anim.scale_in_re, R.anim.scale_out_re)
+                        .show(weeksFragment)
                         .hide(detailFragment)
                         .addToBackStack(null)
                         .commit();
-                imgBtn.setImageResource(R.drawable.ic_web_black_24px);
+                weekBtn.setImageResource(R.drawable.ic_back);
             }
-            isText = !isText;
         });
-
-        weekBtn = view.findViewById(R.id.appBtn);
-        weekBtn.setOnClickListener(v -> getChildFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.scale_in, R.anim.scale_out, R.anim.scale_in_re, R.anim.scale_out_re)
-                .show(weeksFragment)
-                .hide(isText ? textFragment : detailFragment)
-                .addToBackStack(null)
-                .commit());
 
         //finally bind view model to sub fragments
-        viewModel.getHomeworkLiveData().observe(this, homework -> {
-            detailFragment.setHomeworkList(homework);
-            textFragment.updateHomeworkList();
-        });
+        viewModel.getHomeworkLiveData().observe(this, homework ->
+                detailFragment.setHomeworkList(homework));
     }
 
     @Override
     public void onClickWeek(int weekIndex, List<Homework> data) {
         detailFragment.setHomeworkList(data);
-        textFragment.setWeek(weekIndex);
+        weekBtn.setImageResource(R.drawable.ic_apps_black_24px);
         if (weekIndex == DateHelper.getWeekIndex()) {
             title.setText("本周");
         } else {
@@ -152,16 +135,8 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     public void needBtns(boolean need) {
         if (need) {
             fab.show();
-            imgBtn.setVisibility(View.VISIBLE);
-            weekBtn.setVisibility(View.VISIBLE);
-            imgBtn.startAnimation(fadeIn);
-            weekBtn.startAnimation(fadeIn);
         } else {
             fab.hide();
-            imgBtn.setVisibility(View.GONE);
-            weekBtn.setVisibility(View.GONE);
-            imgBtn.startAnimation(fadeOut);
-            weekBtn.startAnimation(fadeOut);
         }
     }
 

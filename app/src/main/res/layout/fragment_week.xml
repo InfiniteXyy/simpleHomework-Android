@@ -39,7 +39,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:tint="@color/japanGray"
-                app:srcCompat="@drawable/ic_text_fields_black_24px" />
+                app:srcCompat="@drawable/ic_more_vert_black_24px" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 

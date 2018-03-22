@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
@@ -26,8 +27,7 @@ import java.util.List;
 
 public class WeeksFragment extends Fragment {
     BaseQuickAdapter<Week, BaseViewHolder> adapter;
-    private RecyclerView recyclerView;
-    private List<Week> weeks;
+    BaseQuickAdapter<Week, BaseViewHolder> headerAdapter;
     private WeekUIInteraction mListener;
 
     @Override
@@ -48,33 +48,57 @@ public class WeeksFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        recyclerView = new RecyclerView(getContext());
-        return recyclerView;
+        return inflater.inflate(R.layout.fragment_week_weeks, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        weeks = new ArrayList<>();
+        List<Week> weeks = new ArrayList<>();
+        List<Week> headerWeeks = new ArrayList<>();
         for (int i = 0; i <= DateHelper.getWeekIndex(); i++) {
             Week week = new Week(i);
             week.setHomeworkList(mListener.getViewModel().getHomeworkData(i));
-            weeks.add(week);
+            if (!week.hasFinished())
+                weeks.add(week);
+            else
+                headerWeeks.add(week);
         }
 
         adapter = new BaseQuickAdapter<Week, BaseViewHolder>(R.layout.item_week_weeks, weeks) {
             @Override
             protected void convert(BaseViewHolder helper, Week item) {
-                helper.setText(R.id.textView, item.getWeekName());
-                helper.setGone(R.id.finish, item.hasFinished());
-                helper.setText(R.id.progress, item.getProgress());
+                helper.addOnClickListener(R.id.layout);
+                helper.setText(R.id.title, item.getWeekName());
+                helper.setText(R.id.detail, item.getLatestDue());
+                NumberProgressBar progressBar = helper.getView(R.id.progress);
+                progressBar.setProgress(item.getProgress());
             }
         };
-        adapter.setOnItemClickListener((adapter, view1, position) ->
-                mListener.onClickWeek(position, ((Week) adapter.getItem(position)).getHomeworkList()));
-        recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
-                DividerItemDecoration.VERTICAL));
-    }
 
+        adapter.setOnItemChildClickListener((adapter, view1, position) -> {
+            Week week = (Week) adapter.getItem(position);
+            mListener.onClickWeek(week.weekIndex, week.getHomeworkList());
+        });
+        recyclerView.setAdapter(adapter);
+
+        RecyclerView headerRecycler = new RecyclerView(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        headerRecycler.setLayoutManager(linearLayoutManager);
+
+        headerAdapter = new BaseQuickAdapter<Week, BaseViewHolder>(R.layout.item_week_small, headerWeeks) {
+            @Override
+            protected void convert(BaseViewHolder helper, Week item) {
+                helper.setText(R.id.title, item.getWeekName());
+            }
+        };
+        headerAdapter.setOnItemClickListener(((adapter1, view1, position) -> {
+            Week week = (Week) adapter1.getItem(position);
+            mListener.onClickWeek(week.weekIndex, week.getHomeworkList());
+        }));
+        headerRecycler.setAdapter(headerAdapter);
+        adapter.addHeaderView(headerRecycler);
+    }
 }

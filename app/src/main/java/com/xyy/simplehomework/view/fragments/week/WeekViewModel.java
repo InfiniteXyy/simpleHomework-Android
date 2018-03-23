@@ -67,6 +67,7 @@ public class WeekViewModel extends ViewModel {
         return homeworkBox.query()
                 .equal(Homework_.weekIndex, index)
                 .order(Homework_.deadline)
+                .order(Homework_.finished)
                 .build()
                 .find();
     }

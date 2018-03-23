@@ -3,6 +3,7 @@ package com.xyy.simplehomework.view.fragments.week;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class Week {
 
     public void setHomeworkList(List<Homework> homeworkList) {
         this.homeworkList = homeworkList;
+        Collections.sort(homeworkList, ((o1, o2) -> o1.getFinished() ? -1 : 1));
         num = 0;
         latestDate = new Date(0);
         for (Homework homework : homeworkList) {

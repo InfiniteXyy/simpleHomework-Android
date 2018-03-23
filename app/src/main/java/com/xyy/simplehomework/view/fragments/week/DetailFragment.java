@@ -83,7 +83,7 @@ public class DetailFragment extends Fragment {
                         Collections.sort(data, subjectComparator);
                         break;
                 }
-                Collections.sort(data, ((o1, o2) -> o2.getFinished() ? 1 : 0));
+                Collections.sort(data, ((o1, o2) -> o1.getFinished() ? 1 : -1));
                 adapter.notifyDataSetChanged();
             }
 

@@ -11,10 +11,12 @@
         <item name="colorPrimary">@color/japanAir</item>
         <item name="colorAccent">#3498db</item>
     </style>
+
     <style name="Theme2" parent="ThemeMain">
         <item name="colorPrimary">@color/japanTea</item>
         <item name="colorAccent">#3498db</item>
     </style>
+
     <style name="Theme3" parent="ThemeMain">
         <item name="colorPrimary">@color/japanBrown</item>
         <item name="colorAccent">#3498db</item>

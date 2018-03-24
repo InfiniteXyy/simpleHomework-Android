@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="#FAFAFA"
     tools:context="com.xyy.simplehomework.view.SubjectActivity">
 
     <android.support.v7.widget.Toolbar
@@ -18,10 +18,10 @@
             android:layout_height="match_parent">
 
             <android.support.v7.widget.AppCompatImageView
-                android:onClick="finish"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
+                android:onClick="finish"
                 android:tint="@color/japanGray"
                 app:srcCompat="@drawable/ic_home" />
 
@@ -44,68 +44,9 @@
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/mainFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="56dp">
-
-        <LinearLayout
-            android:id="@+id/layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/avatar1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:textColor="@color/textDarkSecondary"
-                android:text="功夫不负有心人，"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textDarkSecondary"
-                android:text="你已经在此完成了 16 个任务！"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="这周，你有 1 个任务待提交"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/layout"
-            android:layout_marginTop="10dp"
-            android:clipToPadding="false">
-
-        </android.support.v4.view.ViewPager>
-        <me.relex.circleindicator.CircleIndicator
-            android:id="@+id/indicator"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            app:ci_animator="@anim/indicator_animator"
-            app:ci_animator_reverse="@anim/indicator_animator_reverse"
-            app:ci_drawable="@drawable/black_radius_square"
-            app:ci_height="4dp"
-            app:ci_margin="6dp"
-            android:layout_marginBottom="-5dp"
-            app:ci_width="10dp" />
-    </RelativeLayout>
+        android:layout_marginTop="56dp" />
 </android.support.design.widget.CoordinatorLayout>

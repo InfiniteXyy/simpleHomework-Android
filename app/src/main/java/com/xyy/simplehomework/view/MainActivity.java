@@ -1,23 +1,17 @@
 package com.xyy.simplehomework.view;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.TransitionManager;
-import android.util.Log;
 
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.view.fragments.MyFragment;
 import com.xyy.simplehomework.view.fragments.home.HomeFragment;
 import com.xyy.simplehomework.view.fragments.setting.SettingFragment;
-import com.xyy.simplehomework.view.fragments.week.WeekFragment;
-import com.xyy.simplehomework.view.fragments.week.WeeksFragment;
+import com.xyy.simplehomework.view.fragments.week.RecordFragment;
 import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 import java.util.Arrays;
@@ -26,10 +20,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     public MainViewModel viewModel;
-    private Fragment lastFragment;
+    private MyFragment lastFragment;
     private BottomBar bottomBar;
     private int themeId;
-    private List<Fragment> fragments;
+    private List<MyFragment> fragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragments = Arrays.asList(
                 new HomeFragment(),
-                new WeekFragment(),
+                new RecordFragment(),
                 new SettingFragment()
         );
 
@@ -57,22 +51,17 @@ public class MainActivity extends AppCompatActivity {
         bottomBar.setOnTabSelectListener(tabId -> {
             int last = bottomBar.getCurrentTabPosition();
             int index = bottomBar.findPositionForTabWithId(tabId);
-            Fragment thisFragment = fragments.get(index);
+            MyFragment thisFragment = fragments.get(index);
             FragmentTransaction manager = getSupportFragmentManager().beginTransaction();
             manager.setCustomAnimations(
                     last > index ? R.anim.slide_in_left : R.anim.slide_in_right,
                     last > index ? R.anim.slide_out_right : R.anim.slide_out_left)
                     .hide(lastFragment)
                     .show(thisFragment)
-
                     .commit();
             lastFragment = thisFragment;
             viewModel.popHomework();
         });
-
-        // init fab
-        FloatingActionButton fab = findViewById(R.id.fab);
-        ((WeekFragment)fragments.get(1)).setFab(fab);
 
     }
 
@@ -93,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             else
                 super.onBackPressed();
         else
-            lastFragment.getChildFragmentManager().popBackStack();
+            lastFragment.onBackPressed();
     }
 
     public int getThemeId() {
@@ -101,7 +90,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showAddDialog(MySubject subject) {
-        ((WeekFragment) fragments.get(1)).showAddDialog(subject);
+        bottomBar.selectTabAtPosition(1);
+
+        ((RecordFragment) fragments.get(1)).showAddDialog(subject);
     }
 
 //    @Override

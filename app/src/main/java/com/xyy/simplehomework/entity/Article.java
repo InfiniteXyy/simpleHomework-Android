@@ -1,7 +1,5 @@
 package com.xyy.simplehomework.entity;
 
-import android.view.ViewAnimationUtils;
-
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.helper.DateHelper;
 

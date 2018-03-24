@@ -5,10 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.transition.Fade;
-import android.support.transition.Slide;
-import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +15,7 @@ import android.widget.Toast;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.view.MainActivity;
+import com.xyy.simplehomework.view.fragments.MyFragment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +24,7 @@ import java.util.List;
  * Created by xyy on 2018/1/29.
  */
 
-public class SettingFragment extends Fragment implements View.OnClickListener {
+public class SettingFragment extends MyFragment implements View.OnClickListener {
     public final static String TAG = "SettingFragment";
     public final static String THEME = "theme";
     private View last;

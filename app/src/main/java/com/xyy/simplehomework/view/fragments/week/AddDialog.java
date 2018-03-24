@@ -2,14 +2,13 @@ package com.xyy.simplehomework.view.fragments.week;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.databinding.BindingAdapter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -40,19 +39,18 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 
-public class AddDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener, AddDialogHandler {
+public class AddDialog extends Fragment implements DatePickerDialog.OnDateSetListener, AddDialogHandler {
     private static final int REQUEST_CODE_CHOOSE = 23;
     private Homework homework;
     private MySubject subject;
     private WeekUIInteraction mListener;
+    private WeekFragment weekFragment;
 
-    public AddDialog() {
-        setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle);
-    }
-
-    public static AddDialog newInstance(MySubject subject) {
+    public static AddDialog newInstance(MySubject subject, WeekFragment weekFragment) {
         AddDialog fragment = new AddDialog();
         fragment.subject = subject;
+        fragment.weekFragment = weekFragment;
+        weekFragment.needBtns(false);
         return fragment;
     }
 
@@ -64,6 +62,13 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
                     .into(imageView);
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        weekFragment.needBtns(true);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -117,7 +122,7 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
 
         // finally, set toolbar listener
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(v -> dismiss());
+        toolbar.setNavigationOnClickListener(v -> getParentFragment().getChildFragmentManager().popBackStack());
 
         view.findViewById(R.id.button).setOnClickListener(v -> {
             if (homework.getTitle() == null) {
@@ -125,7 +130,7 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
             } else if (!homework.getTitle().trim().equals("")) {
                 homework.subject.setTarget((MySubject) spinner.getSelectedItem());
                 mListener.putHomework(homework);
-                dismiss();
+                getParentFragment().getChildFragmentManager().popBackStack();
             } else {
                 Toast.makeText(getContext(), "请正确填写信息", Toast.LENGTH_SHORT).show();
             }

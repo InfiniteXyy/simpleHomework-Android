@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.transition.Fade;
-import android.support.transition.Slide;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,9 +40,9 @@ public class FragmentMine extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         List<Suggestion> suggestions = Arrays.asList(
-                new Suggestion("吃早饭", R.drawable.breakfast),
-                new Suggestion("早睡觉", R.drawable.sleep),
-                new Suggestion("学习新知识", R.drawable.learn_something_new)
+                new Suggestion("课堂作业", "完成一篇实验报告 (计算机网络)"),
+                new Suggestion("自学", "搭建Ruby on Rails环境"),
+                new Suggestion("锻炼", "下午跑步 2km")
         );
         List<Article> articles = Arrays.asList(
                 new Article(),
@@ -72,8 +71,8 @@ public class FragmentMine extends Fragment {
 
         @Override
         protected void convert(BaseViewHolder helper, Suggestion item) {
-//            helper.setText(R.id.title, item.getTitle());
-//            Glide.with(mContext).load(item.getImgRes()).into((ImageView) helper.getView(R.id.img));
+            helper.setText(R.id.title, item.getTitle());
+            helper.setText(R.id.detail, item.getDetail());
         }
     }
 

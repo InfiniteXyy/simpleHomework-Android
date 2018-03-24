@@ -6,8 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.transition.Fade;
-import android.support.transition.Slide;
-import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -45,11 +43,6 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     private Animation fadeIn;
     private Animation fadeOut;
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        if (hidden) fab.hide();
-        else fab.show();
-    }
 
     public void setFab(FloatingActionButton fab) {
         this.fab = fab;
@@ -60,6 +53,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         fadeIn = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
         fadeOut = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
+        setExitTransition(new Fade(Fade.OUT));
         return inflater.inflate(R.layout.fragment_week, container, false);
     }
 
@@ -68,6 +62,8 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
         super.onViewCreated(view, savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(WeekViewModel.class);
         // second, init child fragments
+        setFab(getActivity().findViewById(R.id.fab));
+        fab.show();
         shadow = view.findViewById(R.id.shadow);
         title = view.findViewById(R.id.title);
         title.setFactory(() -> {
@@ -144,21 +140,12 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
 
     @Override
     public void showAddDialog() {
-    //    AddDialog.newInstance(null).show(getChildFragmentManager(), null);
-        AddDialog addDialog = AddDialog.newInstance(null);
-        addDialog.setmListener(this);
-        Slide slideTransition = new Slide(Gravity.BOTTOM);
-        slideTransition.setDuration(300);
-        addDialog.setEnterTransition(slideTransition);
-        addDialog.setExitTransition(slideTransition);
-        getFragmentManager().beginTransaction().add(R.id.mainFragment, addDialog).show(addDialog).hide(this).addToBackStack(null).commit();
+        ((RecordFragment) getParentFragment()).showAddDialog(null);
     }
 
     @Override
     public void showAddDialog(MySubject subject) {
-        AddDialog addDialog = AddDialog.newInstance(subject);
-        addDialog.setmListener(this);
-        addDialog.show(getChildFragmentManager(), null);
+        ((RecordFragment) getParentFragment()).showAddDialog(subject);
     }
 
     @Override

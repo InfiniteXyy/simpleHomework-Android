@@ -8,11 +8,11 @@ public class Suggestion {
 
     private String title;
 
-    private int imgRes;
+    private String detail;
 
-    public Suggestion(String title, int imgRes) {
+    public Suggestion(String title, String detail) {
         this.title = title;
-        this.imgRes = imgRes;
+        this.detail = detail;
     }
 
     public String getTitle() {
@@ -23,11 +23,8 @@ public class Suggestion {
         this.title = title;
     }
 
-    public int getImgRes() {
-        return imgRes;
-    }
 
-    public void setImgRes(int imgRes) {
-        this.imgRes = imgRes;
+    public String getDetail() {
+        return detail;
     }
 }

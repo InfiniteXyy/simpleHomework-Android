@@ -42,9 +42,9 @@ import io.reactivex.disposables.Disposable;
 
 public class AddDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener, AddDialogHandler {
     private static final int REQUEST_CODE_CHOOSE = 23;
-    private WeekUIInteraction mListener;
     private Homework homework;
     private MySubject subject;
+    private WeekUIInteraction mListener;
 
     public AddDialog() {
         setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle);
@@ -64,17 +64,6 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
                     .into(imageView);
         }
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (getParentFragment() instanceof WeekUIInteraction) {
-            mListener = (WeekUIInteraction) getParentFragment();
-        } else {
-            throw new RuntimeException("parent Fragment should implement WeekUIInteraction");
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,6 +75,10 @@ public class AddDialog extends DialogFragment implements DatePickerDialog.OnDate
         binding.setHomework(homework);
         binding.setHandler(this);
         return binding.getRoot();
+    }
+
+    public void setmListener(WeekUIInteraction mListener) {
+        this.mListener = mListener;
     }
 
     @Override

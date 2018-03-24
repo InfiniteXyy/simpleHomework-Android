@@ -42,14 +42,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/text"
+                android:layout_above="@id/title"
                 android:layout_marginBottom="6dp"
                 android:layout_marginLeft="16dp"
                 android:text="9 Tasks"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/text"
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/progress"

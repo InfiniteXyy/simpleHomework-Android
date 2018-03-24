@@ -1,36 +1,28 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="Theme1" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="ThemeMain" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/default_background</item>
+        <item name="android:dividerHorizontal">@drawable/line_divider</item>
+        <item name="android:listDivider">@drawable/line_divider</item>
+    </style>
+
+    <style name="Theme1" parent="ThemeMain">
         <item name="colorPrimary">@color/japanAir</item>
         <item name="colorAccent">#3498db</item>
-        <item name="android:windowBackground">@drawable/default_background</item>
-        <item name="android:dividerHorizontal">@drawable/line_divider</item>
-        <item name="android:listDivider">@drawable/line_divider</item>
     </style>
-
-    <style name="Theme2" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="Theme2" parent="ThemeMain">
         <item name="colorPrimary">@color/japanTea</item>
-        <item name="colorAccent">@color/japanTea</item>
-        <item name="android:windowBackground">@drawable/default_background</item>
-        <item name="android:dividerHorizontal">@drawable/line_divider</item>
-        <item name="android:listDivider">@drawable/line_divider</item>
+        <item name="colorAccent">#3498db</item>
     </style>
-
-    <style name="Theme3" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="Theme3" parent="ThemeMain">
         <item name="colorPrimary">@color/japanBrown</item>
-        <item name="colorAccent">@color/japanBrown</item>
-        <item name="android:windowBackground">@drawable/default_background</item>
-        <item name="android:dividerHorizontal">@drawable/line_divider</item>
-        <item name="android:listDivider">@drawable/line_divider</item>
+        <item name="colorAccent">#3498db</item>
     </style>
 
     <style name="FullScreenDialogStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/japanAir</item>
-        <item name="android:windowAnimationStyle">@style/BottomFloatAnim</item>
+        <!--<item name="android:windowAnimationStyle">@style/BottomFloatAnim</item>-->
     </style>
 
     <style name="InfoDialog" parent="Base.Theme.AppCompat.Light.Dialog.Alert">

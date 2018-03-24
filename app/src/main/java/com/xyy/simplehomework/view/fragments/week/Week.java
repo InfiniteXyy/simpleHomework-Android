@@ -24,7 +24,7 @@ public class Week {
 
     public int getProgress() {
         int allSize = homeworkList.size();
-        return (int)(((float)(allSize - num)/allSize) * 100);
+        return (int) (((float) (allSize - num) / allSize) * 100);
     }
 
     public boolean hasFinished() {
@@ -42,7 +42,7 @@ public class Week {
 
     public void setHomeworkList(List<Homework> homeworkList) {
         this.homeworkList = homeworkList;
-        Collections.sort(homeworkList, ((o1, o2) -> o1.getFinished() ? -1 : 1));
+        Collections.sort(homeworkList, ((o1, o2) -> o1.getFinished() ? 1 : -1));
         num = 0;
         latestDate = new Date(0);
         for (Homework homework : homeworkList) {

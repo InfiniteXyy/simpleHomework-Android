@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.transition.Fade;
+import android.support.transition.Slide;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +24,6 @@ import android.widget.TextView;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.view.MainActivity;
 import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.List;
@@ -142,12 +144,21 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
 
     @Override
     public void showAddDialog() {
-        AddDialog.newInstance(null).show(getChildFragmentManager(), null);
+    //    AddDialog.newInstance(null).show(getChildFragmentManager(), null);
+        AddDialog addDialog = AddDialog.newInstance(null);
+        addDialog.setmListener(this);
+        Slide slideTransition = new Slide(Gravity.BOTTOM);
+        slideTransition.setDuration(300);
+        addDialog.setEnterTransition(slideTransition);
+        addDialog.setExitTransition(slideTransition);
+        getFragmentManager().beginTransaction().add(R.id.mainFragment, addDialog).show(addDialog).hide(this).addToBackStack(null).commit();
     }
 
     @Override
     public void showAddDialog(MySubject subject) {
-        AddDialog.newInstance(subject).show(getChildFragmentManager(), null);
+        AddDialog addDialog = AddDialog.newInstance(subject);
+        addDialog.setmListener(this);
+        addDialog.show(getChildFragmentManager(), null);
     }
 
     @Override

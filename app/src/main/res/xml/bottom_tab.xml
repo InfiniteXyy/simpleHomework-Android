@@ -10,6 +10,6 @@
         title="@string/week" />
     <tab
         icon="@drawable/ic_settings_black_24px"
-        id="@+id/month"
+        id="@+id/set"
         title="设置" />
 </tabs>

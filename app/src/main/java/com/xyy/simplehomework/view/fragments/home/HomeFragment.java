@@ -3,6 +3,7 @@ package com.xyy.simplehomework.view.fragments.home;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,11 +42,13 @@ public class HomeFragment extends Fragment implements HomeUIInteraction {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: ");
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onViewCreated: ");
         final WeekViewModel weekViewModel = ViewModelProviders.of(this).get(WeekViewModel.class);
         viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         ViewPager viewPager = view.findViewById(R.id.mainFragment);
@@ -75,27 +79,16 @@ public class HomeFragment extends Fragment implements HomeUIInteraction {
             }
         });
 
-        view.findViewById(R.id.popMenu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(getContext(), v);
-                popupMenu.getMenuInflater().inflate(R.menu.nav_menu, popupMenu.getMenu());
-                popupMenu.show();
-            }
+        view.findViewById(R.id.popMenu).setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(getContext(), v);
+            popupMenu.getMenuInflater().inflate(R.menu.nav_menu, popupMenu.getMenu());
+            popupMenu.show();
         });
 
-        viewModel.getSubjectLiveData().observe(this, new Observer<List<MySubject>>() {
-            @Override
-            public void onChanged(@Nullable List<MySubject> subjects) {
-                fragmentSubjects.setSubjectList(subjects);
-            }
-        });
+        viewModel.getSubjectLiveData().observe(this, subjects -> fragmentSubjects.setSubjectList(subjects));
 
-        weekViewModel.getAllHomeworkLiveData().observe(this, new Observer<List<Homework>>() {
-            @Override
-            public void onChanged(@Nullable List<Homework> homework) {
-                if (fragmentPlan != null) fragmentPlan.classifyPlanHomework(homework);
-            }
+        weekViewModel.getAllHomeworkLiveData().observe(this, homework -> {
+            if (fragmentPlan != null) fragmentPlan.classifyPlanHomework(homework);
         });
 
         TabLayout tabLayout = view.findViewById(R.id.tabs);

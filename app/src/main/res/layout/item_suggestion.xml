@@ -1,37 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="RtlHardcoded"
     android:layout_width="match_parent"
     android:layout_height="90dp"
     android:layout_marginBottom="6dp"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp">
 
-    <FrameLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        app:cardCornerRadius="4dp">
 
-        <ImageView
-            android:id="@+id/img"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            tools:src="@drawable/learn_something_new" />
+            android:layout_height="match_parent">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/gradient_alpha" />
-    </FrameLayout>
+            <View
+                android:id="@+id/line"
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/subject_background" />
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+            <TextView
+                android:id="@id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/line"
+                android:text="9:00 - 10:00"
+                android:textColor="@color/textDarkSecondary"
+                android:textSize="14sp" />
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/time"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/time"
+                android:text="课堂作业"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:srcCompat="@drawable/ic_book"
+                android:tint="@color/textDarkPrimary"
+                android:layout_alignTop="@id/detail"
+                android:layout_alignLeft="@id/time"/>
+
+            <TextView
+                android:id="@+id/detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/img"
+                android:layout_below="@id/time"
+                android:layout_marginLeft="8dp"
+                android:text="完成一张卷子"
+                android:textColor="@color/japanGray"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:tint="@color/dividerColor"
+                app:srcCompat="@drawable/ic_start_btn_tri" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</FrameLayout>

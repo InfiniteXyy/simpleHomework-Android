@@ -3,6 +3,8 @@ package com.xyy.simplehomework.view.fragments.home;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.transition.Fade;
+import android.support.transition.Slide;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.Article;
 import com.xyy.simplehomework.entity.Suggestion;
 import com.xyy.simplehomework.view.MainActivity;
 
@@ -28,6 +31,10 @@ import java.util.List;
 public class FragmentMine extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Fade windowFadeIn = new Fade(Fade.IN);
+        Fade windowFadeOut = new Fade(Fade.OUT);
+        setEnterTransition(windowFadeIn);
+        setExitTransition(windowFadeOut);
         return inflater.inflate(R.layout.fragment_home_mine, container, false);
     }
 
@@ -38,11 +45,24 @@ public class FragmentMine extends Fragment {
                 new Suggestion("早睡觉", R.drawable.sleep),
                 new Suggestion("学习新知识", R.drawable.learn_something_new)
         );
+        List<Article> articles = Arrays.asList(
+                new Article(),
+                new Article(),
+                new Article()
+        );
         view.findViewById(R.id.button).setOnClickListener(v -> ((MainActivity) getActivity()).showAddDialog(null));
         RecyclerView suggestRecycler = view.findViewById(R.id.recycler_view);
         SuggestionAdapter adapter = new SuggestionAdapter(R.layout.item_suggestion, suggestions);
         suggestRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         suggestRecycler.setAdapter(adapter);
+
+        RecyclerView articleRecycler = view.findViewById(R.id.recycler_view2);
+        ArticleAdapter articleAdapter = new ArticleAdapter(R.layout.item_home_headline, articles);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        articleRecycler.setLayoutManager(manager);
+        articleRecycler.setAdapter(articleAdapter);
+
     }
 
     public static class SuggestionAdapter extends BaseQuickAdapter<Suggestion, BaseViewHolder> {
@@ -52,8 +72,21 @@ public class FragmentMine extends Fragment {
 
         @Override
         protected void convert(BaseViewHolder helper, Suggestion item) {
+//            helper.setText(R.id.title, item.getTitle());
+//            Glide.with(mContext).load(item.getImgRes()).into((ImageView) helper.getView(R.id.img));
+        }
+    }
+
+    public static class ArticleAdapter extends BaseQuickAdapter<Article, BaseViewHolder> {
+        ArticleAdapter(int layoutResId, @Nullable List<Article> data) {
+            super(layoutResId, data);
+        }
+
+        @Override
+        protected void convert(BaseViewHolder helper, Article item) {
             helper.setText(R.id.title, item.getTitle());
-            Glide.with(mContext).load(item.getImgRes()).into((ImageView) helper.getView(R.id.img));
+            helper.setText(R.id.time, item.getTime());
+            Glide.with(mContext).load(item.getImgRes()).into((ImageView) helper.getView(R.id.image));
         }
     }
 }

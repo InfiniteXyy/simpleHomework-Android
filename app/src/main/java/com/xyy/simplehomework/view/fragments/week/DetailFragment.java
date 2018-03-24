@@ -33,7 +33,7 @@ import java.util.List;
 
 public class DetailFragment extends Fragment {
     private static final String TAG = "DetailFragment";
-    private View spinnerView;
+    RecyclerView recyclerView;
     private WeekHomeworkAdapter adapter;
     private RecyclerView.OnScrollListener listener;
     private List<Homework> homeworkList;
@@ -43,22 +43,21 @@ public class DetailFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        spinnerView = inflater.inflate(R.layout.item_small_title, container, false);
         return inflater.inflate(R.layout.fragment_week_recycler, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         homeworkList = new ArrayList<>();
         // first, set main recyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.week_recycler_view);
+        recyclerView = view.findViewById(R.id.week_recycler_view);
         adapter = new WeekHomeworkAdapter(R.layout.item_homework, homeworkList);
 
         recyclerView.addOnScrollListener(listener);
         // finally, add spinner to the main recycler
+        View spinnerView = getLayoutInflater().inflate(R.layout.item_small_title, recyclerView, false);
         AppCompatSpinner spinner = spinnerView.findViewById(R.id.spinner);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(),
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(),
                 R.layout.spinner_item_text,
                 getResources().getStringArray(R.array.week_homework_show_type));
         arrayAdapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
@@ -66,8 +65,6 @@ public class DetailFragment extends Fragment {
         adapter.addHeaderView(spinnerView);
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         recyclerView.setAdapter(adapter);
-        adapter.bindToRecyclerView(recyclerView);
-        adapter.setEmptyView(R.layout.empty_view);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

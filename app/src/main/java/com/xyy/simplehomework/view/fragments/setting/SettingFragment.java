@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.transition.Fade;
+import android.support.transition.Slide;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +47,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         int selectTheme = R.style.Theme1;
-        if (((MainActivity) getActivity()) != null) {
+        if (getActivity() != null) {
             selectTheme = ((MainActivity) getActivity()).getThemeId();
         }
         int colors[] = {

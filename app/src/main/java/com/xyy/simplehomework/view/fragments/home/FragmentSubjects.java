@@ -65,17 +65,13 @@ public class FragmentSubjects extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         adapter = new SubjectListAdapter(subjectList);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(getContext(), SubjectActivity.class);
-                intent.putExtra(SubjectActivity.SUBJECT_ID, ((MySubject) adapter.getItem(position)).id);
-                startActivity(intent);
-            }
+        adapter.setOnItemClickListener((adapter, view1, position) -> {
+            Intent intent = new Intent(getContext(), SubjectActivity.class);
+            intent.putExtra(SubjectActivity.SUBJECT_ID, ((MySubject) adapter.getItem(position)).id);
+            startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext(), 1));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),

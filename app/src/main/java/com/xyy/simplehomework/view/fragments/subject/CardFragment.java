@@ -43,5 +43,6 @@ public class CardFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         adapter.addHeaderView(header);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
     }
 }

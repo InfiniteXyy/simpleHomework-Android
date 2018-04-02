@@ -65,7 +65,7 @@
             android:layout_height="match_parent"
             android:layout_below="@id/editTextNote"
             android:layout_marginTop="16dp"
-            tools:listitem="@layout/item_note"></android.support.v7.widget.RecyclerView>
+            tools:listitem="@layout/item_note" />
     </RelativeLayout>
 
 

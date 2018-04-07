@@ -3,7 +3,7 @@ package com.xyy.simplehomework.view.fragments.home;
 import com.xyy.simplehomework.entity.MySubject;
 
 /**
- * Created by xyy on 2018/3/17.
+ * Used for interaction between UI and view model
  */
 
 public interface HomeUIInteraction {

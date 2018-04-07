@@ -5,8 +5,8 @@ import android.arch.lifecycle.ViewModel;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.Homework_;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.helper.DateHelper;
 import com.xyy.simplehomework.view.App;
-import com.xyy.simplehomework.view.helper.DateHelper;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class WeekViewModel extends ViewModel {
         // first, get reference of ObjectBox
         BoxStore boxStore = App.getInstance().getBoxStore();
         homeworkBox = boxStore.boxFor(Homework.class);
-        weekIndex = DateHelper.getWeekIndex();
+        weekIndex = DateHelper.getInstance().getWeekIndex();
         subjectBox = boxStore.boxFor(MySubject.class);
     }
 

@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.view.helper;
+package com.xyy.simplehomework.helper;
 
 import android.os.Build;
 import android.support.design.widget.TabLayout;
@@ -10,10 +10,15 @@ import com.xyy.simplehomework.view.App;
 import java.lang.reflect.Field;
 
 /**
- * Created by xyy on 2018/3/18.
+ * A Util for all kinds of kit customization
  */
 
 public class KitHelper {
+    /**
+     * make tab underline a little bit shorter
+     *
+     * @param tabLayout for dependency injection
+     */
     public static void setUpIndicatorWidth(TabLayout tabLayout) {
         Class<?> tabLayoutClass = tabLayout.getClass();
         Field tabStrip = null;

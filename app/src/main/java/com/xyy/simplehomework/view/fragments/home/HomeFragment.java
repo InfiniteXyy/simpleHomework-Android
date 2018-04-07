@@ -10,19 +10,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MySubject;
+import com.xyy.simplehomework.helper.KitHelper;
 import com.xyy.simplehomework.view.fragments.MyFragment;
 import com.xyy.simplehomework.view.fragments.week.WeekViewModel;
-import com.xyy.simplehomework.view.helper.KitHelper;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Main Fragment for home page
  */
 public class HomeFragment extends MyFragment implements HomeUIInteraction {
     public final static String TAG = "HomeFragment";
@@ -38,19 +37,17 @@ public class HomeFragment extends MyFragment implements HomeUIInteraction {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: ");
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onViewCreated: ");
         final WeekViewModel weekViewModel = ViewModelProviders.of(this).get(WeekViewModel.class);
         viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         ViewPager viewPager = view.findViewById(R.id.mainFragment);
         fragmentPlan = FragmentPlan.newInstance(weekViewModel.getHomeworkData());
         fragmentMine = new FragmentMine();
-        fragmentSubjects = FragmentSubjects.newInstance(viewModel.getSubjectList());
+        fragmentSubjects = FragmentSubjects.newInstance(viewModel.getSubjectList(), this);
         viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {

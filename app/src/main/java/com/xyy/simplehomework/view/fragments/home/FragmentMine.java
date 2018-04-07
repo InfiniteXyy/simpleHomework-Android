@@ -3,7 +3,6 @@ package com.xyy.simplehomework.view.fragments.home;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.transition.Fade;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,16 +23,13 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by xyy on 2018/3/11.
+ * Main Fragment for home page.
+ * Including <em>suggestion/article/profile</em>
  */
 
 public class FragmentMine extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Fade windowFadeIn = new Fade(Fade.IN);
-        Fade windowFadeOut = new Fade(Fade.OUT);
-        setEnterTransition(windowFadeIn);
-        setExitTransition(windowFadeOut);
         return inflater.inflate(R.layout.fragment_home_mine, container, false);
     }
 

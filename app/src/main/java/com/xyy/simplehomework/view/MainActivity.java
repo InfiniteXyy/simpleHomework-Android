@@ -17,6 +17,11 @@ import com.xyy.simplehomework.viewmodel.MainViewModel;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * subject main activity
+ * contains {@link HomeFragment} {@link RecordFragment} {@link SettingFragment}
+ */
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     public MainViewModel viewModel;

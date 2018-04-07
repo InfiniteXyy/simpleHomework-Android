@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.transition.ChangeBounds;
+import android.support.transition.Fade;
 import android.support.transition.Slide;
 import android.support.transition.Transition;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,7 @@ import com.xyy.simplehomework.entity.MySubject;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
- * Created by xyy on 2018/3/24.
+ * Main fragment of subject activity
  */
 
 public class SubjectMainFragment extends Fragment {
@@ -29,6 +30,8 @@ public class SubjectMainFragment extends Fragment {
     public static SubjectMainFragment newInstance(MySubject subject) {
         SubjectMainFragment fragment = new SubjectMainFragment();
         fragment.subject = subject;
+        fragment.setExitTransition(new Fade(Fade.OUT));
+        fragment.setReenterTransition(new Fade(Fade.IN));
         return fragment;
     }
 

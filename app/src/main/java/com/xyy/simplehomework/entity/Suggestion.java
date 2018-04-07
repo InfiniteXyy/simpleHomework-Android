@@ -1,7 +1,8 @@
 package com.xyy.simplehomework.entity;
 
 /**
- * Created by xyy on 2018/3/21.
+ * A domain for index suggestion
+ * e.g.(You have a homework due for tomorrow! hurry up.)
  */
 
 public class Suggestion {
@@ -22,7 +23,6 @@ public class Suggestion {
     public void setTitle(String title) {
         this.title = title;
     }
-
 
     public String getDetail() {
         return detail;

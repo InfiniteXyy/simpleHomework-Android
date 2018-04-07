@@ -13,15 +13,18 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
+import com.xyy.simplehomework.entity.Card;
 
 import java.util.Arrays;
 
+/**
+ * An inside card fragment for specified {@link Card}
+ */
 public class CardFragment extends Fragment {
     private View header;
 
     public static CardFragment newInstance() {
-        CardFragment fragment = new CardFragment();
-        return fragment;
+        return new CardFragment();
     }
 
     @Override
@@ -43,6 +46,5 @@ public class CardFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         adapter.addHeaderView(header);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
     }
 }

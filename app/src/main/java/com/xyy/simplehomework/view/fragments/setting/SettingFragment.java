@@ -21,15 +21,15 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by xyy on 2018/1/29.
+ * Setting fragment for preference setting and data export
  */
 
 public class SettingFragment extends MyFragment implements View.OnClickListener {
     public final static String TAG = "SettingFragment";
     public final static String THEME = "theme";
-    private View last;
-    private Animation fadeIn;
-    private Animation fadeOut;
+    private static Animation fadeIn;
+    private static Animation fadeOut;
+    private View lastSelectColor;
     private List<Integer> themes = Arrays.asList(R.style.Theme1,
             R.style.Theme2,
             R.style.Theme3);
@@ -52,23 +52,26 @@ public class SettingFragment extends MyFragment implements View.OnClickListener 
                 getResources().getColor(R.color.japanTea),
                 getResources().getColor(R.color.japanBrown)
         };
-        fadeIn = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
-        fadeOut = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
-        fadeIn.setDuration(100);
-        fadeOut.setDuration(100);
+        if (fadeIn == null) {
+            fadeIn = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
+            fadeOut = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
+            fadeIn.setDuration(100);
+            fadeOut.setDuration(100);
+        }
 
         View buttons[] = {
                 view.findViewById(R.id.air),
                 view.findViewById(R.id.tea),
                 view.findViewById(R.id.brown)
         };
+
         for (int i = 0; i < 3; i++) {
             ImageView background = buttons[i].findViewById(R.id.circle);
             background.setColorFilter(colors[i]);
             buttons[i].setOnClickListener(this);
         }
-        last = buttons[themes.indexOf(selectTheme)].findViewById(R.id.done);
-        last.setVisibility(View.VISIBLE);
+        lastSelectColor = buttons[themes.indexOf(selectTheme)].findViewById(R.id.done);
+        lastSelectColor.setVisibility(View.VISIBLE);
 
     }
 
@@ -88,14 +91,14 @@ public class SettingFragment extends MyFragment implements View.OnClickListener 
         }
 
         View done = v.findViewById(R.id.done);
-        if (last != done) {
-            if (last != null) {
-                last.setVisibility(View.GONE);
-                last.startAnimation(fadeOut);
+        if (lastSelectColor != done) {
+            if (lastSelectColor != null) {
+                lastSelectColor.setVisibility(View.GONE);
+                lastSelectColor.startAnimation(fadeOut);
             }
             done.setVisibility(View.VISIBLE);
             done.startAnimation(fadeIn);
-            last = done;
+            lastSelectColor = done;
         }
 
         editor.apply();

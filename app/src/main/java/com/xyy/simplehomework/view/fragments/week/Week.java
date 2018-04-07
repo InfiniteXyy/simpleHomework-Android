@@ -1,7 +1,7 @@
 package com.xyy.simplehomework.view.fragments.week;
 
 import com.xyy.simplehomework.entity.Homework;
-import com.xyy.simplehomework.view.helper.DateHelper;
+import com.xyy.simplehomework.helper.DateHelper;
 
 import java.util.Collections;
 import java.util.Date;
@@ -55,6 +55,6 @@ public class Week {
     }
 
     public String getLatestDue() {
-        return "最近的截止日期：" + DateHelper.afterDayFormat(latestDate);
+        return "最近的截止日期：" + DateHelper.getInstance().afterDayFormat(latestDate);
     }
 }

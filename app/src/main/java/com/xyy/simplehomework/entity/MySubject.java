@@ -14,7 +14,7 @@ import io.objectbox.relation.ToMany;
 import io.objectbox.relation.ToOne;
 
 /**
- * Created by xyy on 2018/1/19.
+ * An entity for Subjects including (Math, Sports, or even breakfast)
  */
 
 @Entity
@@ -28,13 +28,9 @@ public class MySubject extends BaseObservable implements MultiItemEntity {
 
 
     public String name;
-    public int color;
-    public byte[] availableWeeks;
 
-
-    public MySubject(String name, int color) {
+    public MySubject(String name) {
         this.name = name;
-        this.color = color;
     }
 
     public MySubject() {
@@ -51,6 +47,7 @@ public class MySubject extends BaseObservable implements MultiItemEntity {
         notifyPropertyChanged(BR.name);
     }
 
+    @Override
     public String toString() {
         return name;
     }

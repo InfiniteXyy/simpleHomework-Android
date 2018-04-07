@@ -5,8 +5,9 @@ import io.objectbox.annotation.Id;
 import io.objectbox.relation.ToOne;
 
 /**
- * Created by xyy on 2018/3/18.
+ * An entity for comments behind each homework
  */
+
 @Entity
 public class Note {
     @Id

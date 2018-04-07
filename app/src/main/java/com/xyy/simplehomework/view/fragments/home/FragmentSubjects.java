@@ -1,9 +1,7 @@
 package com.xyy.simplehomework.view.fragments.home;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,21 +16,20 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.SubjectActivity;
-import com.xyy.simplehomework.view.helper.SimpleDividerItemDecoration;
 
 import java.util.List;
 
 /**
- * Created by xyy on 2018/3/11.
+ * Subject Fragment for viewing all subject.
+ * every single card for overview and act as a button into {@link SubjectActivity}
  */
 
-public class FragmentSubjects extends Fragment {
+public class FragmentSubjects extends Fragment implements View.OnClickListener {
     public final static int TYPE_SUBJECT = 0;
     public final static int TYPE_ADD = 1;
     private RecyclerView recyclerView;
@@ -40,21 +37,13 @@ public class FragmentSubjects extends Fragment {
     private HomeUIInteraction mListener;
     private SubjectListAdapter adapter;
 
-    public static FragmentSubjects newInstance(List<MySubject> subjects) {
+    public static FragmentSubjects newInstance(List<MySubject> subjects, HomeUIInteraction mListener) {
         FragmentSubjects fragmentSubjects = new FragmentSubjects();
         fragmentSubjects.setSubjectList(subjects);
+        fragmentSubjects.mListener = mListener;
         return fragmentSubjects;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (getParentFragment() instanceof HomeUIInteraction) {
-            mListener = (HomeUIInteraction) getParentFragment();
-        } else {
-            throw new RuntimeException("parent Fragment should implement HomeUIInteraction");
-        }
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,8 +76,24 @@ public class FragmentSubjects extends Fragment {
 
     }
 
-    class SubjectListAdapter extends BaseMultiItemQuickAdapter<MySubject, BaseViewHolder> {
+    @Override
+    public void onClick(View view) {
+        final View addDialog = View.inflate(getContext(), R.layout.dialog_subject_add, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("添加课程")
+                .setView(view)
+                .setPositiveButton("添加", (dialog, which) -> {
+                    String name = ((TextInputEditText) addDialog.findViewById(R.id.name)).getText().toString();
+                    if (!name.trim().equals(""))
+                        mListener.putSubject(new MySubject(name));
+                    else
+                        Toast.makeText(getContext(), "请输入正确的学科名称", Toast.LENGTH_SHORT).show();
+                })
+                .create()
+                .show();
+    }
 
+    class SubjectListAdapter extends BaseMultiItemQuickAdapter<MySubject, BaseViewHolder> {
         SubjectListAdapter(List<MySubject> data) {
             super(data);
             addItemType(TYPE_SUBJECT, R.layout.item_home_subject);
@@ -107,25 +112,10 @@ public class FragmentSubjects extends Fragment {
                     helper.setText(R.id.textView, unfinishedNum + "个项目未完成");
                     break;
                 case TYPE_ADD:
-                    helper.itemView.setOnClickListener(v -> {
-                        final View view = View.inflate(getContext(), R.layout.dialog_subject_add, null);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setTitle("添加课程")
-                                .setView(view)
-                                .setPositiveButton("添加", (dialog, which) -> {
-                                    String name = ((TextInputEditText) view.findViewById(R.id.name)).getText().toString();
-                                    if (!name.trim().equals(""))
-                                        mListener.putSubject(new MySubject(name, Color.GRAY));
-                                    else
-                                        Toast.makeText(getContext(), "请输入正确的学科名称", Toast.LENGTH_SHORT).show();
-                                })
-                                .create()
-                                .show();
-                    });
+                    helper.itemView.setOnClickListener(FragmentSubjects.this);
                     break;
 
             }
-
         }
     }
 

@@ -8,13 +8,11 @@ import io.objectbox.annotation.Id;
 import io.objectbox.relation.ToMany;
 
 /**
- * Created by xyy on 2018/1/29.
+ * An Entity for certain semester
  */
 
 @Entity
 public class Semester {
-    public static final int FIRST_TERM = 0;
-    public static final int SECOND_TERM = 1;
     @Id
     public long id;
     @Backlink
@@ -22,14 +20,7 @@ public class Semester {
 
     public Date startDate;
     public Date endDate;
-    public int grade; // 大一是12年级
-    public int term;
 
     public Semester() {
-    }
-
-    public Semester(int grade, int term) {
-        this.grade = grade;
-        this.term = term;
     }
 }

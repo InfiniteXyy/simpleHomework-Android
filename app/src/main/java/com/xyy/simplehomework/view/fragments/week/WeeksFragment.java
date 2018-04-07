@@ -15,7 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.xyy.simplehomework.R;
-import com.xyy.simplehomework.view.helper.DateHelper;
+import com.xyy.simplehomework.helper.DateHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,8 @@ public class WeeksFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Week> weeks = new ArrayList<>();
         List<Week> headerWeeks = new ArrayList<>();
-        for (int i = 0; i <= DateHelper.getWeekIndex(); i++) {
+        int weekIndex = DateHelper.getInstance().getWeekIndex();
+        for (int i = 0; i <= weekIndex; i++) {
             Week week = new Week(i);
             week.setHomeworkList(mListener.getViewModel().getHomeworkData(i));
             if (!week.hasFinished())

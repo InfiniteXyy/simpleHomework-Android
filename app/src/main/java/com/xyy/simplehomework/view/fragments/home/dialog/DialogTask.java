@@ -1,4 +1,4 @@
-package com.xyy.simplehomework.view.fragments.home;
+package com.xyy.simplehomework.view.fragments.home.dialog;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,7 +17,9 @@ import com.xyy.simplehomework.R;
 import java.util.Arrays;
 
 /**
- * Created by xyy on 2018/3/18.
+ * A Task Dialog for adding external plan
+ * e.g. you can add 'Run 3km' to your tomorrow plan
+ * also some suggested plan are included
  */
 
 public class DialogTask extends DialogFragment {

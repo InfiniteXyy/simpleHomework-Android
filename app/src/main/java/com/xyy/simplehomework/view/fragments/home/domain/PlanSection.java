@@ -1,27 +1,23 @@
-package com.xyy.simplehomework.view.fragments.home;
+package com.xyy.simplehomework.view.fragments.home.domain;
 
 import com.chad.library.adapter.base.entity.AbstractExpandableItem;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.entity.Homework;
+import com.xyy.simplehomework.view.fragments.home.FragmentPlan;
 
 /**
- * Created by xyy on 2018/3/11.
+ * A decoration entity to wrap homework
  */
 
 public class PlanSection extends AbstractExpandableItem<Homework> implements MultiItemEntity {
     private String sectionName;
 
     public PlanSection(String sectionName) {
-
         this.sectionName = sectionName;
     }
 
     public String getSectionName() {
         return sectionName;
-    }
-
-    public void setSectionName(String sectionName) {
-        this.sectionName = sectionName;
     }
 
     @Override
@@ -34,8 +30,4 @@ public class PlanSection extends AbstractExpandableItem<Homework> implements Mul
         return FragmentPlan.TYPE_SECTION;
     }
 
-    public void removeSubItems() {
-        if (mSubItems != null)
-            mSubItems.clear();
-    }
 }

@@ -25,7 +25,7 @@ import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.databinding.DialogHomeworkAddBinding;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.view.helper.DateHelper;
+import com.xyy.simplehomework.helper.DateHelper;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -75,7 +75,7 @@ public class AddDialog extends Fragment implements DatePickerDialog.OnDateSetLis
         // Inflate the layout for this fragment
         homework = new Homework();
         DialogHomeworkAddBinding binding = DialogHomeworkAddBinding.inflate(inflater, container, false);
-        homework.weekIndex = DateHelper.getWeekIndex();
+        homework.weekIndex = DateHelper.getInstance().getWeekIndex();
         homework.setDeadline(new Date());
         binding.setHomework(homework);
         binding.setHandler(this);

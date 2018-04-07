@@ -34,7 +34,7 @@ public class RecordFragment extends MyFragment {
     }
 
     public void showAddDialog(MySubject subject) {
-        //    AddDialog.newInstance(null).show(getChildFragmentManager(), null);
+        //    AddDialog.getInstance(null).show(getChildFragmentManager(), null);
         AddDialog addDialog = AddDialog.newInstance(subject, weekFragment);
         addDialog.setmListener(weekFragment);
         Slide slideTransition = new Slide(Gravity.BOTTOM);

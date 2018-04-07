@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
-import com.xyy.simplehomework.view.helper.DateHelper;
+import com.xyy.simplehomework.helper.DateHelper;
 
 import java.util.List;
 
@@ -120,10 +120,10 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     public void onClickWeek(int weekIndex, List<Homework> data) {
         detailFragment.setHomeworkList(data);
         weekBtn.setImageResource(R.drawable.ic_apps_black_24px);
-        if (weekIndex == DateHelper.getWeekIndex()) {
+        if (weekIndex == DateHelper.getInstance().getWeekIndex()) {
             title.setText("本周");
         } else {
-            String titleText = "第" + DateHelper.num2cn[weekIndex + 1] + "周";
+            String titleText = DateHelper.getWeekTitle(weekIndex);
             title.setText(titleText);
         }
         getChildFragmentManager().popBackStack();

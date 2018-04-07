@@ -3,7 +3,6 @@ package com.xyy.simplehomework.view.fragments.home;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.App;
 
@@ -14,12 +13,11 @@ import io.objectbox.BoxStore;
 import io.objectbox.android.ObjectBoxLiveData;
 
 /**
- * Created by xyy on 2018/3/3.
+ * View Model for home page
+ * bind subjects to front page
  */
 
 public class HomeViewModel extends ViewModel {
-    private ObjectBoxLiveData<Homework> homeworkObjectBoxLiveData;
-    private Box<Homework> homeworkBox;
     private Box<MySubject> subjectBox;
     private LiveData<List<MySubject>> subjectLiveData;
 
@@ -27,7 +25,6 @@ public class HomeViewModel extends ViewModel {
     public HomeViewModel() {
         // first, get reference of ObjectBox
         BoxStore boxStore = App.getInstance().getBoxStore();
-        homeworkBox = boxStore.boxFor(Homework.class);
         subjectBox = boxStore.boxFor(MySubject.class);
     }
 
@@ -35,10 +32,10 @@ public class HomeViewModel extends ViewModel {
         return subjectBox.getAll();
     }
 
-
     public void putSubject(MySubject subject) {
         subjectBox.put(subject);
     }
+
 
     public LiveData<List<MySubject>> getSubjectLiveData() {
         if (subjectLiveData == null) {

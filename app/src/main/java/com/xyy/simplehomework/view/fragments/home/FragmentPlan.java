@@ -15,11 +15,14 @@ import android.view.ViewGroup;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
+import com.xyy.simplehomework.helper.DateHelper;
+import com.xyy.simplehomework.view.fragments.home.dialog.DialogTask;
+import com.xyy.simplehomework.view.fragments.home.domain.PlanSection;
 import com.xyy.simplehomework.view.handler.HomeworkHandler;
-import com.xyy.simplehomework.view.helper.DateHelper;
 import com.xyy.simplehomework.view.holder.BaseDataBindingHolder;
 import com.xyy.simplehomework.viewmodel.MainViewModel;
 
@@ -27,10 +30,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by xyy on 2018/3/11.
+ * Plan Fragment for home page.
+ * used to view or modify homework plan
  */
 
-public class FragmentPlan extends Fragment {
+public class FragmentPlan extends Fragment implements BaseQuickAdapter.OnItemChildClickListener {
     public static final int TYPE_SECTION = 0;
     public static final int TYPE_PLAN = 1;
     private static final String[] sectionNames = {
@@ -52,30 +56,14 @@ public class FragmentPlan extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        recyclerView = new RecyclerView(getContext());
-        return recyclerView;
+        return recyclerView = new RecyclerView(getContext());
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ExpandablePlanAdapter(sections);
-        adapter.setOnItemChildClickListener((adapter, view1, position) -> {
-            PopupMenu popupMenu = new PopupMenu(getContext(), view1);
-            popupMenu.getMenuInflater().inflate(R.menu.add_plan, popupMenu.getMenu());
-            popupMenu.show();
-            popupMenu.setOnMenuItemClickListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.task:
-                        new DialogTask().show(getChildFragmentManager(), null);
-                        break;
-                    case R.id.homework:
-                        break;
-                }
-                return false;
-            });
-        });
-
+        adapter.setOnItemChildClickListener(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
     }
 
@@ -84,7 +72,6 @@ public class FragmentPlan extends Fragment {
         for (String name : sectionNames) {
             sections.add(new PlanSection(name));
         }
-
     }
 
     public void classifyPlanHomework(List<Homework> homeworkList) {
@@ -103,6 +90,23 @@ public class FragmentPlan extends Fragment {
         }
         if (adapter != null)
             adapter.replaceData(sections);
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), view);
+        popupMenu.getMenuInflater().inflate(R.menu.add_plan, popupMenu.getMenu());
+        popupMenu.show();
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.task:
+                    new DialogTask().show(getChildFragmentManager(), null);
+                    break;
+                case R.id.homework:
+                    break;
+            }
+            return false;
+        });
     }
 
     class ExpandablePlanAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseDataBindingHolder> {
@@ -126,16 +130,17 @@ public class FragmentPlan extends Fragment {
                     break;
                 case TYPE_SECTION:
                     final int badge = ((PlanSection) item).getSubItems() == null ? 0 : ((PlanSection) item).getSubItems().size();
-                    boolean showAdd = badge == 0 || ((PlanSection) item).isExpanded();
+                    PlanSection section = (PlanSection) item;
+                    boolean showAdd = badge == 0 || section.isExpanded();
                     helper.setGone(R.id.add, showAdd);
                     helper.setGone(R.id.badge, !showAdd);
                     helper.setText(R.id.text, ((PlanSection) item).getSectionName());
                     helper.setText(R.id.badge_num, String.valueOf(badge));
                     helper.itemView.setOnClickListener(v -> {
                         int pos = helper.getAdapterPosition();
-                        if (((PlanSection) item).isExpanded()) {
+                        if (section.isExpanded()) {
                             collapse(pos);
-                        } else if (badge != 0) {
+                        } else if (badge != 0) { // expand only when there exists some sub items
                             expand(pos);
                         }
                     });

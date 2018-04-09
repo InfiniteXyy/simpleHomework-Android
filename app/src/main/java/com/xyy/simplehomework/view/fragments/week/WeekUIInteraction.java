@@ -21,6 +21,4 @@ public interface WeekUIInteraction {
     List<MySubject> getSubjectList();
 
     void putHomework(Homework homework);
-
-    WeekViewModel getViewModel();
 }

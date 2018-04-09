@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,8 @@ import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.helper.KitHelper;
 import com.xyy.simplehomework.view.fragments.MyFragment;
-import com.xyy.simplehomework.view.fragments.week.WeekViewModel;
+
+import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 /**
  * Main Fragment for home page
@@ -30,7 +32,7 @@ public class HomeFragment extends MyFragment implements HomeUIInteraction {
             "计划",
             "课程"
     };
-    private HomeViewModel viewModel;
+    private MainViewModel viewModel;
     private FragmentMine fragmentMine;
     private FragmentSubjects fragmentSubjects;
     private FragmentPlan fragmentPlan;
@@ -42,10 +44,9 @@ public class HomeFragment extends MyFragment implements HomeUIInteraction {
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
-        final WeekViewModel weekViewModel = ViewModelProviders.of(this).get(WeekViewModel.class);
-        viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         ViewPager viewPager = view.findViewById(R.id.mainFragment);
-        fragmentPlan = FragmentPlan.newInstance(weekViewModel.getHomeworkData());
+        fragmentPlan = FragmentPlan.newInstance(viewModel.getHomeworkList());
         fragmentMine = new FragmentMine();
         fragmentSubjects = FragmentSubjects.newInstance(viewModel.getSubjectList(), this);
         viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
@@ -80,7 +81,7 @@ public class HomeFragment extends MyFragment implements HomeUIInteraction {
 
         viewModel.getSubjectLiveData().observe(this, subjects -> fragmentSubjects.setSubjectList(subjects));
 
-        weekViewModel.getAllHomeworkLiveData().observe(this, homework -> {
+        viewModel.getHomeworkLiveData().observe(this, homework -> {
             if (fragmentPlan != null) fragmentPlan.classifyPlanHomework(homework);
         });
 

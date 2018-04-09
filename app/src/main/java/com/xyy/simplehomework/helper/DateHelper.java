@@ -77,8 +77,8 @@ public class DateHelper {
         Box<Semester> box = App.getInstance().getBoxStore().boxFor(Semester.class);
         Semester semester = box
                 .query()
-                .greater(Semester_.startDate, date)
-                .less(Semester_.endDate, date)
+                .less(Semester_.startDate, date)
+                .greater(Semester_.endDate, date)
                 .build()
                 .findFirst();
         if (semester == null) {

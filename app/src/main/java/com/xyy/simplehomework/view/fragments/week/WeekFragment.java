@@ -23,6 +23,7 @@ import com.xyy.simplehomework.R;
 import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.helper.DateHelper;
+import com.xyy.simplehomework.viewmodel.MainViewModel;
 
 import java.util.List;
 
@@ -34,8 +35,8 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     public static final String TAG = "WeekFragment";
     int offsetY = 0;
     private DetailFragment detailFragment;
-    private WeeksFragment weeksFragment;
-    private WeekViewModel viewModel;
+    private WeekListFragment weeksFragment;
+    private MainViewModel viewModel;
     private ImageView weekBtn;
     private FloatingActionButton fab;
     private TextSwitcher title;
@@ -60,7 +61,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(WeekViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         // second, init child fragments
         setFab(getActivity().findViewById(R.id.fab));
         fab.show();
@@ -88,7 +89,7 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
                 }
             }
         });
-        weeksFragment = new WeeksFragment();
+        weeksFragment = new WeekListFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_week, detailFragment)
                 .add(R.id.fragment_week, weeksFragment)
@@ -156,11 +157,6 @@ public class WeekFragment extends Fragment implements WeekUIInteraction {
     @Override
     public void putHomework(Homework homework) {
         viewModel.putHomework(homework);
-    }
-
-    @Override
-    public WeekViewModel getViewModel() {
-        return viewModel;
     }
 
 }

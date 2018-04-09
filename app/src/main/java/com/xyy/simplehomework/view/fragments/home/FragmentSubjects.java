@@ -22,6 +22,7 @@ import com.xyy.simplehomework.entity.Homework;
 import com.xyy.simplehomework.entity.MySubject;
 import com.xyy.simplehomework.view.SubjectActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class FragmentSubjects extends Fragment implements View.OnClickListener {
     public final static int TYPE_SUBJECT = 0;
     public final static int TYPE_ADD = 1;
     private RecyclerView recyclerView;
-    private List<MySubject> subjectList;
+    private List<MySubject> subjectList = new ArrayList<>();
     private HomeUIInteraction mListener;
     private SubjectListAdapter adapter;
 
@@ -68,7 +69,8 @@ public class FragmentSubjects extends Fragment implements View.OnClickListener {
     }
 
     public void setSubjectList(List<MySubject> subjectList) {
-        this.subjectList = subjectList;
+        this.subjectList.clear();
+        this.subjectList.addAll(subjectList);
         this.subjectList.add(new AddBtn());
         if (adapter != null) {
             adapter.replaceData(this.subjectList);

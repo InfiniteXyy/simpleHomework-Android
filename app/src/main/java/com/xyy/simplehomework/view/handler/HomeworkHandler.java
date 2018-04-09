@@ -81,7 +81,7 @@ public class HomeworkHandler implements DatePickerDialog.OnDateSetListener {
         View text = ((View) v.getParent()).findViewById(R.id.text);
         text.startAnimation(finished ? alphaIn : alphaOut);
         homework.setFinished(!finished);
-        MainViewModel.getInstance().appendHomework(homework);
+        viewModel.putHomework(homework);
     }
 
     private void showDetail(View view, boolean visible, boolean needAnim) {
@@ -140,6 +140,6 @@ public class HomeworkHandler implements DatePickerDialog.OnDateSetListener {
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         homework.setPlanDate(new Date(year - 1900, monthOfYear, dayOfMonth));
         Log.d(TAG, "onDateSet: year: " + year + " month: " + monthOfYear + " day: " + dayOfMonth);
-        viewModel.appendHomework(homework);
+        viewModel.putHomework(homework);
     }
 }

@@ -2,6 +2,7 @@ package com.xyy.simplehomework.view;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.xyy.simplehomework.R;
@@ -31,5 +32,9 @@ public class SubjectActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.mainFragment, mainFragment)
                 .commit();
+    }
+
+    public void finish(View v) {
+        super.finish();
     }
 }

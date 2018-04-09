@@ -1,5 +1,6 @@
 package com.xyy.simplehomework.view.fragments.week;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -80,7 +81,6 @@ public class DetailFragment extends Fragment {
                         Collections.sort(data, subjectComparator);
                         break;
                 }
-                Collections.sort(data, ((o1, o2) -> o1.getFinished() ? 1 : -1));
                 adapter.notifyDataSetChanged();
             }
 
@@ -91,7 +91,8 @@ public class DetailFragment extends Fragment {
     }
 
     public void setHomeworkList(List<Homework> list) {
-        homeworkList = list;
+        homeworkList.clear();
+        homeworkList.addAll(list);
         adapter.replaceData(homeworkList);
     }
 
@@ -99,10 +100,6 @@ public class DetailFragment extends Fragment {
         listener = onScrollListener;
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        MainViewModel.getInstance().popHomework();
-    }
 
     class WeekHomeworkAdapter extends BaseQuickAdapter<Homework, BaseDataBindingHolder> {
         private HomeworkHandler handler;
@@ -114,7 +111,8 @@ public class DetailFragment extends Fragment {
         @Override
         protected void convert(BaseDataBindingHolder helper, Homework item) {
             if (handler == null) {
-                handler = new HomeworkHandler(getContext(), MainViewModel.getInstance());
+                handler = new HomeworkHandler(getContext(),
+                        ViewModelProviders.of(getActivity()).get(MainViewModel.class));
             }
             ViewDataBinding binding = helper.getBinding();
             binding.setVariable(BR.homework, item);

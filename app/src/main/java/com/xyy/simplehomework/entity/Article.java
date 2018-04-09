@@ -29,24 +29,19 @@ public class Article {
         }
     };
 
-    private static final Iterator<Map.Entry<String, Integer>> iterator = data.entrySet().iterator();
+    private static Iterator<Map.Entry<String, Integer>> iterator = data.entrySet().iterator();
     private String title;
     private int imgRes;
     private Date time;
 
 
     public Article() {
+        if (!iterator.hasNext())
+            iterator = data.entrySet().iterator();
         Map.Entry<String, Integer> entry = iterator.next();
         title = entry.getKey();
         imgRes = entry.getValue();
         time = DateHelper.afterDays(random.nextInt(5));
-    }
-
-    public static void main(String[] args) {
-        Article a = new Article();
-        Article b = new Article();
-        System.out.println(a);
-        System.out.println(b);
     }
 
     public String getTitle() {

@@ -24,7 +24,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    public MainViewModel viewModel;
     private MyFragment lastFragment;
     private BottomBar bottomBar;
     private int themeId;
@@ -36,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         themeId = getSharedPreferences("data", MODE_PRIVATE).getInt(SettingFragment.THEME, R.style.Theme1);
         setTheme(themeId);
         setContentView(R.layout.activity_main);
-        viewModel = new MainViewModel(this);
 
         fragments = Arrays.asList(
                 new HomeFragment(),
@@ -65,14 +63,12 @@ public class MainActivity extends AppCompatActivity {
                     .show(thisFragment)
                     .commit();
             lastFragment = thisFragment;
-            viewModel.popHomework();
         });
 
     }
 
     @Override
     protected void onDestroy() {
-        viewModel.popHomework();
         super.onDestroy();
         lastFragment = null;
     }

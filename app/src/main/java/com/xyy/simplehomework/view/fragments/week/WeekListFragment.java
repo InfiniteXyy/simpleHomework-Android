@@ -24,7 +24,7 @@ import java.util.List;
  * Created by xyy on 2018/3/12.
  */
 
-public class WeeksFragment extends Fragment {
+public class WeekListFragment extends Fragment {
     BaseQuickAdapter<Week, BaseViewHolder> adapter;
     BaseQuickAdapter<Week, BaseViewHolder> headerAdapter;
     private WeekUIInteraction mListener;
@@ -59,7 +59,7 @@ public class WeeksFragment extends Fragment {
         int weekIndex = DateHelper.getInstance().getWeekIndex();
         for (int i = 0; i <= weekIndex; i++) {
             Week week = new Week(i);
-            week.setHomeworkList(mListener.getViewModel().getHomeworkData(i));
+            week.setHomeworkList(new ArrayList<>());
             if (!week.hasFinished())
                 weeks.add(week);
             else

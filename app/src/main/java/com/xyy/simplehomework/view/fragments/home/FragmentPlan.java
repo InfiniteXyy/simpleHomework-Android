@@ -1,5 +1,8 @@
 package com.xyy.simplehomework.view.fragments.home;
 
+import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -9,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +50,20 @@ public class FragmentPlan extends Fragment implements BaseQuickAdapter.OnItemChi
     private RecyclerView recyclerView;
     private List<MultiItemEntity> sections;
     private ExpandablePlanAdapter adapter;
+    private MainViewModel viewModel;
 
     public static FragmentPlan newInstance(List<Homework> homeworkList) {
         FragmentPlan fragmentPlan = new FragmentPlan();
         fragmentPlan.setSections();
         fragmentPlan.classifyPlanHomework(homeworkList);
         return fragmentPlan;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+        Log.d("view", "onAttach: "+viewModel);
+        super.onAttach(context);
     }
 
     @Override
@@ -121,7 +133,7 @@ public class FragmentPlan extends Fragment implements BaseQuickAdapter.OnItemChi
         @Override
         protected void convert(final BaseDataBindingHolder helper, final MultiItemEntity item) {
             if (handler == null) {
-                handler = new HomeworkHandler(mContext, MainViewModel.getInstance());
+                handler = new HomeworkHandler(mContext, viewModel);
             }
             switch (helper.getItemViewType()) {
                 case TYPE_PLAN:
